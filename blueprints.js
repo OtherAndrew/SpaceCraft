@@ -40,7 +40,8 @@ const simpleDynamicBox = (props, entityManager) => {
                 x: props.x,
                 y: props.y,
                 velocityX: 0,
-                velocityY: 6,
+                velocityY: 0,
+                maxVelocity: 10,
                 angle: 0,
             }),
             new CBoxCollider({
@@ -51,7 +52,8 @@ const simpleDynamicBox = (props, entityManager) => {
             }),
             new CRigidBody({
                 mass: 1
-            })
+            }),
+            new CInput()
         ]
     })
     return e

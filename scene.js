@@ -4,7 +4,7 @@
     You know, a scene.
 */
 class Scene {
-    constructor(input) {
+    constructor() {
         this.entityManager = new EntityManager()
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
     }
@@ -18,9 +18,10 @@ class Scene {
 }
 
 class PhysicsDemoScene extends Scene {
-    constructor(input) {
-        super(input)
+    constructor() {
+        super()
         this.gravitySystem = new GravitySystem(this.entityManager.getEntities)
+        this.inputSystem = new inputSystem(this.entityManager.getEntities)
         this.movementSystem = new MovementSystem(this.entityManager.getEntities)
     }
 
@@ -40,11 +41,10 @@ class PhysicsDemoScene extends Scene {
         }, this.entityManager)
     }
 
-    update() {
+    update(input) {
         this.entityManager.update()
-        this.player.components.transform.y += this.player.components.transform.velocityY
-        this.player.components.boxCollider.x = this.player.components.transform.x
-        this.player.components.boxCollider.y = this.player.components.transform.y
+        this.inputSystem.update(input)
+        this.movementSystem.update()
     }
     draw(ctx) {
         this.entityManager.entities.forEach(e => {

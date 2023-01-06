@@ -67,8 +67,24 @@ class StateManager {
 
 
 // Not sure if this should be a system
-class inputManager {
-
+class MovementSystem {
+    constructor(entities) {
+        this.entities = entities
+    }
+    update() {
+        this.entities.forEach(e => {
+            if(e.components.rigidBody) {
+                let t = e.components.transform
+                t.x += t.velocityX
+                t.y += t.velocityY
+                if(e.components.boxCollider) {
+                    let b = e.components.boxCollider
+                    b.x = t.x
+                    b.y = t.y
+                }
+            }
+        })
+    }
 }
 
 
@@ -82,7 +98,7 @@ class CollisionSystem {
     }
     
     //Collision between two Rectangles, does not return direction of collision
-    #checkCollision(entityA, entityB) {
+    boxCollision(entityA, entityB) {
         if(entityA.components.boxCollider && entityB.components.boxCollider) {
             let a = entityA.components.boxCollider
             let b = entityB.components.boxCollider
@@ -186,28 +202,40 @@ class GravitySystem {
     }
 }
 
-class MovementSystem {
+class inputSystem {
     constructor(entities) {
         this.entities = entities
     }
-    update() {
+    update(input) {
         this.entities.forEach(e => {
-            if(e.components.rigidBody) {
-                let t = e.components.transform
-                if(t.velocityX > t.maxVelocity) {
-                    t.velocityX = t.maxVelocity
-                } if(t.velocityY > t.maxVelocity) {
-                    t.velocityY = t.maxVelocity
-                }
-                t.x += t.velocityX
-                t.y += t.velocityY
-                if(e.components.boxCollider) {
-                    let col = e.components.boxCollider
-                    col.x = t.x
-                    col.y = t.y
-                }
+            if(e.components.input) {
+                let t = e.components
+                console.log(t.transform)
+                 for(let dir in t.input) {
+                    if(input[dir]) {
+                        switch(dir) {
+                            case 'ArrowLeft':
+                                console.log('left')
+                                t.transform.velocityX = -clamp(t.transform.velocityX + t.input.ArrowLeft, 0, t.transform.maxVelocity)
+                                break;
+                            default: 
+                                console.log('right')
+                                t.transform.velocityX = clamp(t.transform.velocityX + t.input.ArrowRight,0,t.transform.maxVelocity)
+                            
+                        } 
+                    } else {
+                        switch(dir) {
+                            case 'ArrowLeft':
+                                t.transform.velocityX = clamp(t.transform.velocityX + t.input.ArrowLeft,0,t.transform.maxVelocity)
+                                break;
+                            default: t.transform.velocityX = clamp(t.transform.velocityX - t.input.ArrowRight,0,t.transform.maxVelocity)
+                            
+                        } 
+                    }
+                 }
+
             }
-        })
+        }) 
     }
 }
 

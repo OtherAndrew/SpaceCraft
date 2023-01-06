@@ -15,6 +15,16 @@
 */
 
 
+
+/**
+ * Component that holds a sprite.
+ * 
+ * @param {Number} sprite 
+ * @param {Number} width 
+ * @param {Number} height 
+ * @param {Number} sizeMod 
+ * @returns this object
+ */
 const CSprite = function CSprite(sprite, width, height, sizeMod) {
     this.sprite = sprite
     this.spriteWidth = width
@@ -28,19 +38,38 @@ const CSprite = function CSprite(sprite, width, height, sizeMod) {
 }
 CSprite.prototype.name = 'sprite'
 
+
+/**
+ * Component that holds entity position, velocity, angle
+ * 
+ * @param {
+ * x: Number,
+ * y: Number,
+ * velocityX: Number,
+ * velocityY: Number,
+ * angle: Number,
+ * maxVelocity: Number
+ * } props 
+ * @returns 
+ */
 const CTransform = function CTransform(props) {
     this.x = props.x || 0
     this.y = props.y || 0
     this.velocityX = props.velocityX || 0
     this.velocityY = props.velocityY || 0
-    this.previousVelocityX = 0
-    this.previousVelocityY = 0
     this.angle = props.angle || 0
-    this.maxVelocity = 8
+    this.maxVelocity = props.maxVelocity
     return this
 }
 CTransform.prototype.name = 'transform'
 
+
+/**
+ * Could be used for an item with a timer maybe
+ * 
+ * @param {Number} total 
+ * @returns 
+ */
 const CLifespan = function CLifespan(total){
     this.remaining = total
     this.total = total
@@ -49,44 +78,40 @@ const CLifespan = function CLifespan(total){
 }
 CLifespan.prototype.name = 'lifespan'
 
+
+/**
+ * Component that holds the states and current state of an entity
+ * 
+ */
 const CState = function CState() {
     this.states = new Map()
     this.currentState = null
 }
 CState.prototype.name = 'state'
 
+
+/**
+ * Component that implements input
+ */
 const CInput = function CInput() {
-    this.entity = null
-    this.update = function(keys) {
-        if(keys.ArrowUp) {
-            this.entity.components.transform.y -= 5
-        }
-        if(keys.ArrowDown) {
-            this.entity.components.transform.y += 5
-        }
-        if(keys.ArrowRight) {
-            this.entity.components.transform.x += 5
-        }
-        if(keys.ArrowLeft) {
-            this.entity.components.transform.x -= 5
-        }
-    }
+    this.ArrowLeft = 2
+    this.ArrowRight = 2
+    
 }
 CInput.prototype.name = 'input'
 
-const CBounce = function CBounce(props) {
-    this.entity = null
-    this.width = props.width // game world bounds
-    this.height = props.height
-    this.speed = props.speed
-    this.update = function() {
-        this.entity.components.transform.velocityX = this.speed
-        this.entity.components.transform.velocityY = this.speed
-    }
-}
 
-CBounce.prototype.name = 'bounce'
-
+/**
+ * Component that represents a box collider.
+ * The collider should have the same dimensions as a sprite.
+ * 
+ * @param {
+ * x: Number,
+ * y: Number,
+ * width: Number,
+ * height: Number
+ * } props 
+ */
 const CBoxCollider = function CBoxCollider(props) {
     this.x = props.x
     this.y = props.y
@@ -95,24 +120,18 @@ const CBoxCollider = function CBoxCollider(props) {
 }
 CBoxCollider.prototype.name = 'boxCollider'
 
+
+/**
+ * Component used to implement gravity with perhaps.
+ * 
+ * @param {
+ * mass: Number,
+ * isGrounded: bool
+ * } props 
+ */
 const CRigidBody = function CRigidBody(props) {
     this.mass = props.mass
     this.isGrounded = false
 
 }
 CRigidBody.prototype.name = 'rigidBody'
-
-/*
-const CForce = function CForce(props) {
-    this.force = props.force
-    this.origin = props.origin
-    this.radius = props.radius
-}
-CForce.prototype.name = 'force'
-
-*/
-
-const CGravity = function CGravity(value) {
-    this.gravityForce = value
-}
-CGravity.prototype.name = 'gravity'

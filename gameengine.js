@@ -89,7 +89,7 @@ class GameEngine {
     };
 
     update() {
-        this.demoScene.update()
+        this.demoScene.update(this.keys)
     };
 
     loop() {

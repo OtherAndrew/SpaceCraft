@@ -8,6 +8,10 @@ Entity - any object within the game. Components are attached to the entities to 
 
 */
 
+/**
+ * Manages the Game entities.
+ * 
+ */
 class EntityManager {
 
     constructor(){
@@ -19,20 +23,44 @@ class EntityManager {
 
     
 
+    /**
+     * Creates and adds an entity to the manager
+     * 
+     * @param {
+     * id: num,
+     * tag: string,
+     * isAlive: bool,
+     * components: list of component objects} props 
+     * 
+     * @returns the created entity
+     */
     addEntity(props) {
         let e = new Entity(props)
         this.toAddEntities.push(e)
         return e
     }
 
+    /**
+     * @returns the entity list
+     */
     get getEntities() {
         return this.entities
     }
 
+    /**
+     * Returns an entity with the tag argument
+     * @param {string} tag 
+     * @returns an enityt with the tag argument
+     */
     getEntity(tag) {
         return this.entitiyMap.get(tag)
     }
 
+    /**
+     * Adds pending entities from the toAddEntities list to the main entities list.
+     * Removes dead entities from the entities list and also from the entitiesMap. Dead === isAlive === false.
+     * Finally, clears the toAddEntities list.
+     */
     update() {
         this.toAddEntities.forEach(e => {
             this.entities.push(e)
@@ -44,6 +72,12 @@ class EntityManager {
             this.entitiyMap.delete(tag)
         }
     }
+
+    /**
+     * Private Helper function for update.
+     * 
+     * @returns the dead entities
+     */
     #removeDeadEntities() {
         if(this.entities.length) {
             let removed = []
@@ -59,6 +93,11 @@ class EntityManager {
     }
 }
 
+
+/**
+ * Entity class. Only the EntityManager should be able to create entities.
+ * 
+ */
 class Entity  {
 
     constructor(props) {
@@ -71,19 +110,17 @@ class Entity  {
         }
     }
 
+    /**
+     * Marks entity for deletion
+     */
     destroy() {
         this.isAlive = false
     }
-    update(keys) {
-        for(let c in this.components) {
-            if(this.components[c].update) {
-                this.components[c].update(keys)
-            }
-        }
-    }
 
-
-
+    /**
+     * Adds component objects to the entity.
+     * @param {list} components 
+     */
     addComponent(components) {
         components.forEach(c => {
             this.components[c.name] = c
