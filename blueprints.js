@@ -9,8 +9,7 @@ entity.
 
 const borderBlueprint = (props, entityManager) => {
     let e = entityManager.addEntity({
-        id: entityManager.entities.length,
-        tag: 'border',
+        tag: 'ground',
         components: [
             new CTransform({
                 x: props.x,
@@ -33,7 +32,6 @@ const borderBlueprint = (props, entityManager) => {
 // This box is meant to be controlled by the player.
 const simpleDynamicBox = (props, entityManager) => {
     let e = entityManager.addEntity({
-        id: entityManager.entities.length,
         tag: 'player',
         components: [
             new CTransform({

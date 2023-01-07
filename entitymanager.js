@@ -35,7 +35,7 @@ class EntityManager {
      * @returns the created entity
      */
     addEntity(props) {
-        let e = new Entity(props)
+        let e = new Entity(props, this.totalEntities++)
         this.toAddEntities.push(e)
         return e
     }
@@ -100,8 +100,8 @@ class EntityManager {
  */
 class Entity  {
 
-    constructor(props) {
-        this.id = props.id
+    constructor(props, id) {
+        this.id = id
         this.tag = props.tag
         this.isAlive = true
         this.components = {}

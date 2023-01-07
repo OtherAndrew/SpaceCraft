@@ -87,14 +87,40 @@ class MovementSystem {
     }
 }
 
+class PlayerCollisionResolution {
+    constructor(player) {
+        this.playerComponents = player.components
+        this.collisions = this.playerComponents.boxCollider.collisions
+    }
+    update() {
+        for(let e in this.collisions) {
+            if(e === 'ground') {
+                this.playerComponents.rigidBody.isGrounded = this.collisions[e]
+                this.collisions[e] = false
+            }
+        }
+    }
+}
 
 // Variety of ways to check for a collection
 class CollisionSystem {
     constructor(entities) {
         this.entities = entities
+        this.collisions = []
     }
     update() {
-        
+        this.entities.forEach(e => {
+            if(e.tag === 'player') {
+                this.entities.forEach(t => {
+                    if(e.id !== t.id) {
+                        if(this.boxCollision(e, t)) {
+                            e.components.boxCollider.collisions[t.tag] = true
+                        }
+                    }
+                })
+            }
+            
+        })
     }
     
     //Collision between two Rectangles, does not return direction of collision
@@ -119,16 +145,32 @@ class CollisionSystem {
     */
 
     // Checks if point is within a rectangle
-    static pointInRect = (point, rect) => {
+    pointInRect = (point, rect) => {
         return (point.x >= rect.x && point.y >= rect.y && point.x < rect.x + rect.width && point.y < rect.y + rect.height)
     }
 
-    static dynamicRectCollision() {
+    dynamicRectCollision(a, b) {
 
+        const expandedRect = {
+            x: b.x - a.x / 2,
+            y: b.y - a.y / 2,
+            width: b.width + a.width,
+            height: b.height + a.height
+        }
+
+        return this.#rayCastCollision({
+            x: a.x + a. width / 2,
+            y: a.y + a.height / 2
+        }, {
+            x: a.velocityX,
+            y: a.velocityY
+        }, expandedRect
+        
+        )
     }
     // Helper function for dynamicCollision. A ray is used from a dynamic rectangle origin to another body to check for a collision,
     // returns direction of collision
-    static #rayCastCollision(rayOrigin, rayDirection, rect) {
+    #rayCastCollision(rayOrigin, rayDirection, rect) {
 
         let timeNear = {
             x: (rect.x - rayOrigin.x) / rayDirection.x,
@@ -210,7 +252,6 @@ class inputSystem {
         this.entities.forEach(e => {
             if(e.components.input) {
                 let t = e.components
-                console.log(t.transform)
                  for(let dir in t.input) {
                     if(input[dir]) {
                         switch(dir) {
@@ -239,39 +280,45 @@ class inputSystem {
     }
 }
 
-/*
-class ForceSystem {
-    constructor(entities) {
-        this.entities = entities
+class PlayerInputSystem {
+    constructor(player) {
+        this.player = player
+        this.playerPos = this.player.components.transform
+        this.hitBox = this.player.components.boxCollider
+        this.speed = 2
+        this.gravity = .4
     }
+    /**
+     * Controlls
+     * a - move left
+     * d - move right
+     * " " - jump
+     * @param {input params} input 
+     */
+    update(input) {
 
-    update() {
-        this.entities.forEach(e => {
-            if(e.components.force) {
-                let f = e.components.force
-                this.entities.forEach(c => {
-                    if(c.id !== e.id) {
-                        if(c.components.rigidBody) {
-                            let acceleration = f.force/c.components.rigidBody.mass
-                            let vx = c.components.transform.vx
-                            let vy = c.components.transform.vy
-                            let maxVelocity = c.components.transform.maxVelocity
-                            let a = c.components.transform.x - e.components.force.origin.x
-                            let b = c.components.transform.y - e.components.force.origin.y
-                            let distance = Math.sqrt((a*a) + (b*b))
-                            let normalizedA = a/distance
-                            let normalizedB = b/distance
-                            let newX = c.components.transform.x += normalizedA * acceleration * -1
-                            let newY = c.components.transform.y += normalizedB * acceleration * -1
-                            console.log(` a: ${a}, b: ${b}, distance: ${distance}, normalizedA: ${normalizedA}, normalizedB:${normalizedB}, newX: ${newX}, newY: ${newY}, acc: ${acceleration}`)
-                            console.log('\n')
-                        }
-                    }
-                })
-            }
-        })
+        if(input['a']) {
+            this.playerPos.velocityX = clamp(this.playerPos.velocityX - this.speed, -this.playerPos.maxVelocity, 0)
+        } else if(input['d']) {
+            this.playerPos.velocityX = clamp(this.playerPos.velocityX + this.speed, 0, this.playerPos.maxVelocity)
+        } else {
+            this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 : (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)   
+        }
+        if(input[' '] && this.player.components.rigidBody.isGrounded) {
+            this.playerPos.velocityY = -10
+            this.player.components.rigidBody.isGrounded = false
+        }
+
+        if(!this.player.components.rigidBody.isGrounded) {
+            this.playerPos.velocityY += this.gravity
+        } else if(this.player.components.rigidBody.isGrounded) {
+            this.playerPos.velocityY = 0 
+        }
+
+        // move hitbox with player
+        this.playerPos.x += this.playerPos.velocityX
+        this.playerPos.y += this.playerPos.velocityY
+        this.hitBox.x = this.playerPos.x
+        this.hitBox.y = this.playerPos.y
     }
 }
-
-*/
-

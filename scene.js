@@ -17,34 +17,43 @@ class Scene {
      }
 }
 
+
 class PhysicsDemoScene extends Scene {
     constructor() {
         super()
-        this.gravitySystem = new GravitySystem(this.entityManager.getEntities)
-        this.inputSystem = new inputSystem(this.entityManager.getEntities)
-        this.movementSystem = new MovementSystem(this.entityManager.getEntities)
+        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities)
     }
 
     init() {
         borderBlueprint({
             x: 50,
+            y: 300,
+            width: 500,
+            height: 50
+        }, this.entityManager)
+
+        borderBlueprint({
+            x: 600,
             y: 500,
-            width: 900,
-            height: 100
+            width: 500,
+            height: 50
         }, this.entityManager)
 
         this.player = simpleDynamicBox({
             x: 300,
-            y: 300,
+            y: 50,
             width: 50,
             height: 50
         }, this.entityManager)
+        this.playerMovement = new PlayerInputSystem(this.player)
+        this.playerCollisionResolution = new PlayerCollisionResolution(this.player)
     }
 
     update(input) {
         this.entityManager.update()
-        this.inputSystem.update(input)
-        this.movementSystem.update()
+        this.playerMovement.update(input)
+        this.collisionSystem.update()
+        this.playerCollisionResolution.update()
     }
     draw(ctx) {
         this.entityManager.entities.forEach(e => {
@@ -57,87 +66,95 @@ class PhysicsDemoScene extends Scene {
             ctx.strokeRect(c.x, c.y, c.width, c.height)
         })
     }
-
-    createPlayer = (assets) => {
-        let e = this.entityManager.addEntity({
-            id: this.entityManager.totalEntities++,
-            tag: 'player',
-            components: [
-                new CTransform({
-                    x: this.WIDTH * .5,
-                    y: this.HEIGHT * .5,
-                    velocityX: 0,
-                    velocityY: 0,
-                    angle: 0
-                }),
-                new CSprite(assets['./assets/sprites/player.png'], 100,91.3, 1.5),
-                new CState(),
-                new CInput(),
-                new CRigidBody({
-                    mass: 1,
-                    gravityMod: 1
-                }),
-                new CBoxCollider({
-                    x: this.WIDTH * .5,
-                    y: this.HEIGHT * .5,
-                    width: Math.floor(100 * 1.5),
-                    height: Math.floor(91.3 * 1.5)
-                }),
-                new CGravity(2)
-
-            ]
-        })
-        e.components.input.entity = e
-        StateManager.addStates(e, [
-            {tag: 'sitting',
-            state: new State({
-                frameX: 0,
-                frameY: 5,
-                maxFrames: 4
-            })},
-    
-            {tag: 'running',
-            state: new State({
-                frameX: 0,
-                frameY: 3,
-                maxFrames: 8
-            })}
-        ])
-        StateManager.setState(e, 'running')
-        this.player = e
-
 }
 
+class TerrainDemoScene extends Scene {
+    constructor() {
+        super()
+    }
 
-updatePlayer() {
-    // check player collisions
-    this.entityManager.getEntities.forEach(e => {
-        if(e.tag !== 'player') {
-            if(CollisionSystem.checkCollision(this.player, e)) {
-                // check which side we collided on
-                let t = this.player.components.boxCollider
-                let h = e.components.boxCollider
-                console.log(t)
-                console.log(h)
-                if(t.x + t.width <= h.x ){
-                    //right collision
-                    console.log('right')
-                } else if(h.x + h.width <= t.x) {
-                    // left collision
-                    console.log('left')
-                } else if(t.y + t.height <= h.y) {
-                    // bottom collision
-                    console.log('bottom')
-                    this.player.components.transform.velocityY = 0
-                } else if(h.y + h.height <= t.y) {
-                    // top collision
-                    console.log('top')
+    init() {
+        this.terrainMap = this.#generateMap()
+        this.#createTerrainEntities()
+    }
+
+    update() {
+        this.entityManager.update()
+    }
+
+    draw(ctx) {
+        this.entityManager.getEntities.forEach(e => {
+            if(e.tag === 'blue') {
+                ctx.fillStyle = 'blue'
+            } else if (e.tag === 'brown') {
+                ctx.fillStyle = 'green'
+            }
+            let c = e.components.transform
+            ctx.strokeRect(c.x, c.y, c.x + 32, c.y + 32)
+            ctx.fillRect(c.x, c.y, c.x + 32, c.y + 32)
+        })
+    }
+
+    #generateMap() {
+        const blockWidth = 32
+        const blockHeight = 24
+        const tMap = []
+        for(let i = 0; i < blockHeight; i++) {
+            let row = []
+            for(let j = 0; j < blockWidth; j++) {
+                if(i < 15) {
+                    row.push('blue')
                 } else {
-                    console.log('collision not handled properly')
+                    row.push('brown')
                 }
+                
+            }
+            tMap.push(row)
+        }
+        return tMap
+    }
+
+    // 32 width blocks by 24 blocks
+    #createTerrainEntities() {
+        const blockWidth = 32
+        const blockHeight = 24
+        for(let i = 0; i < this.terrainMap.length; i++) {
+            let row = this.terrainMap[i]
+            for(let j = 0; j < row.length; j++) {
+                let props = {
+                    x: 32 * j,
+                    y: 32 * i,
+                    width: 32,
+                    height: 32,
+                    color: this.terrainMap[i][j]
+                }
+                this.#createTile(props)
             }
         }
-        
-    })
-}
+    }
+
+    #createTile(props) {
+        let components = []
+
+        if(props.color === 'brown') {
+            components.push(new CBoxCollider({
+                x: props.x,
+                y: props.y,
+                width: props.width,
+                height: props.height
+            }))
+        }
+        components.push(new CTransform({
+            x: props.x,
+            y: props.y,
+            velocityX: 0,
+            velocityY: 0,
+            angle: 0
+        }))
+
+        this.entityManager.addEntity({
+            tag: props.color,
+            components: components
+        })
+    }
 }
