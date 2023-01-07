@@ -57,3 +57,12 @@ window.requestAnimFrame = (() => {
 const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
+
+/**
+ * Restricts the num in between the min and max values.
+ * @param {Number} num 
+ * @param {Number} min 
+ * @param {Number} max 
+ * @returns either the number, min or max.
+ */
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max)

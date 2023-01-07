@@ -2,12 +2,14 @@
 
 class GameEngine {
     constructor(options) {
-        // What you will use to draw
-        // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
+        this.WIDTH = 1024
+        this.HEIGHT = 768
 
-        // Everything that will be updated and drawn each frame
-        this.entities = [];
+
+        //Scenes
+        //this.demoScene = new PhysicsDemoScene(null)
+        this.terrainDemoScene = new TerrainDemoScene()
 
         // Information on the input
         this.click = null;
@@ -21,8 +23,10 @@ class GameEngine {
         };
     };
 
-    init(ctx) {
+    init(ctx, assets) {
         this.ctx = ctx;
+        //this.demoScene.init()
+        this.terrainDemoScene.init()
         this.startInput();
         this.timer = new Timer();
     };
@@ -76,36 +80,19 @@ class GameEngine {
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
 
-    addEntity(entity) {
-        this.entities.push(entity);
-    };
 
     draw() {
-        // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-        // Draw latest things first
-        for (let i = this.entities.length - 1; i >= 0; i--) {
-            this.entities[i].draw(this.ctx, this);
-        }
+        //this.demoScene.draw(this.ctx)
+        this.terrainDemoScene.draw(this.ctx)
+        this.ctx. textAlign = 'left'
+        this.ctx.font = '15px Helvetica'
+        this.ctx.fillText(`FPS: ${Math.floor(1000/this.clockTick)}`, 10,20)
     };
 
     update() {
-        let entitiesCount = this.entities.length;
-
-        for (let i = 0; i < entitiesCount; i++) {
-            let entity = this.entities[i];
-
-            if (!entity.removeFromWorld) {
-                entity.update();
-            }
-        }
-
-        for (let i = this.entities.length - 1; i >= 0; --i) {
-            if (this.entities[i].removeFromWorld) {
-                this.entities.splice(i, 1);
-            }
-        }
+        //this.demoScene.update(this.keys)
+        this.terrainDemoScene.update(this.keys)
     };
 
     loop() {
@@ -113,7 +100,8 @@ class GameEngine {
         this.update();
         this.draw();
     };
+}
 
-};
 
-// KV Le was here :)
+
+
