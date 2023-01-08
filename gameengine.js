@@ -9,7 +9,8 @@ class GameEngine {
 
         //Scenes
         //this.demoScene = new PhysicsDemoScene(null)
-        this.terrainDemoScene = new TerrainDemoScene()
+        //this.terrainDemoScene = new TerrainDemoScene()
+        this.animationDemoScene = new AnimationDemoScene()
 
         // Information on the input
         this.click = null;
@@ -26,9 +27,11 @@ class GameEngine {
     init(ctx, assets) {
         this.ctx = ctx;
         //this.demoScene.init()
-        this.terrainDemoScene.init()
+        //this.terrainDemoScene.init()
+        console.log(assets)
         this.startInput();
         this.timer = new Timer();
+        this.animationDemoScene.init(assets['./assets/sprites/player.png'], this.keys)
     };
 
     start() {
@@ -84,7 +87,8 @@ class GameEngine {
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         //this.demoScene.draw(this.ctx)
-        this.terrainDemoScene.draw(this.ctx)
+        //this.terrainDemoScene.draw(this.ctx)
+        this.animationDemoScene.draw(this.ctx)
         this.ctx. textAlign = 'left'
         this.ctx.font = '15px Helvetica'
         this.ctx.fillText(`FPS: ${Math.floor(1000/this.clockTick)}`, 10,20)
@@ -92,7 +96,8 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.keys)
+        //this.terrainDemoScene.update(this.keys)
+        this.animationDemoScene.update(this.keys, this.clockTick)
     };
 
     loop() {

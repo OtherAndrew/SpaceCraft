@@ -158,3 +158,87 @@ class TerrainDemoScene extends Scene {
         })
     }
 }
+
+
+
+
+
+
+
+class AnimationDemoScene extends Scene {
+    constructor() {
+        super()
+    }
+
+    init(sprite, input) {
+        this.player = this.#createPlayer(sprite)
+        this.playerStateManager = new PlayerStateManager(input, this.player)
+        this.createPlayerStates()
+    }
+
+    update(input, deltaTime) {
+        this.entityManager.update()
+        this.playerStateManager.update(input, deltaTime)
+    }
+
+    draw(ctx) {
+        this.renderSystem.draw(ctx)
+    }
+
+
+    /*
+        I added a fps value to the sprite component so we can control
+        the speed of frames.
+    */
+    #createPlayer(sprite) {
+        let e = this.entityManager.addEntity({
+            tag: 'player',
+            components: [
+                new CTransform({
+                    x: 400,
+                    y: 300,
+                    maxVelocity: 10
+                }),
+                new CSprite(sprite, 100, 91.3, 1.5, .02),
+                new CState()
+            ]
+        })
+        return e
+    }
+
+    /*
+            So basically, the pattern is, you add a state with the x and y values that
+        match an animation, from the sprite sheet. The frameX is mostly always zero, the first frame.
+        I created a Playerstatemanager to manage the state changes when there is inputs.
+        It is under systems.
+        I only mapped two buttons for two animations,
+        a => roll
+        d => run right
+    */
+    createPlayerStates() {
+        this.playerStateManager.addStates([
+            {
+                tag: 'Running',
+                state: new State({
+                    frameX: 0,
+                    frameY: 3,
+                    maxFrames: 8
+                }),
+            }, {
+                tag: 'Idle',
+                state: new State({
+                    frameX: 0,
+                    frameY: 5,
+                    maxFrames: 4
+                })
+            }, {
+                tag: 'Rolling',
+                state: new State({
+                    frameX: 0,
+                    frameY: 6,
+                    maxFrames: 6
+                })
+            }
+        ])
+    }
+}

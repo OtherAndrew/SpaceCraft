@@ -9,9 +9,4 @@ class State {
         this.frameY = props.frameY
         this.maxFrames = props.maxFrames
     }
-    enter(sprite) {
-        sprite.frameX = this.frameX
-        sprite.frameY = this.frameY
-        sprite.maxFrames = this.maxFrames
-    }
 }

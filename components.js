@@ -25,7 +25,7 @@
  * @param {Number} sizeMod 
  * @returns this object
  */
-const CSprite = function CSprite(sprite, width, height, sizeMod) {
+const CSprite = function CSprite(sprite, width, height, sizeMod, fps) {
     this.sprite = sprite
     this.spriteWidth = width
     this.spriteHeight = height
@@ -34,6 +34,8 @@ const CSprite = function CSprite(sprite, width, height, sizeMod) {
     this.frameX = 0
     this.frameY = 0
     this.maxFrames = 0
+    this.frameInterval = fps
+    this.frameTimer = 0
     return this
 }
 CSprite.prototype.name = 'sprite'

@@ -27,6 +27,7 @@ class RenderSystem {
                     sprite.resizeWidth,
                     sprite.resizeHeight        
                 )
+
                 } else {
                 console.log(this.tag, 'requires CTransform component to be drawable')
                 }
@@ -49,42 +50,58 @@ class RenderSystem {
 
 
 // Changes state of an entity. Usually used to change an animation
-class StateManager {
+class PlayerStateManager {
 
-    static addStates(entity, props) {
+    constructor(input, player) {
+        this.input = input
+        this.playerSprite = player.components.sprite
+        this.playerState = player.components.state
+    }
+
+    addStates(props) {
         props.forEach( o => {
-            entity.components.state.states.set(o['tag'], o['state'])
+            this.playerState.states.set(o['tag'], o['state'])
         })
     }
     
-    static setState(entity, s) {
-        let state = entity.components.state
-        state.currentState = state.states.get(s)
-        state.currentState.enter(entity.components.sprite)
+    setState(s) {
+        this.playerState.currentState = s
+        this.enter(this.playerState.states.get(s))
     }
-    
-}
 
-
-// Not sure if this should be a system
-class MovementSystem {
-    constructor(entities) {
-        this.entities = entities
+    enter(state) {
+        this.playerSprite.frameX = state.frameX
+        this.playerSprite.frameY = state.frameY
+        this.playerSprite.maxFrames = state.maxFrames
     }
-    update() {
-        this.entities.forEach(e => {
-            if(e.components.rigidBody) {
-                let t = e.components.transform
-                t.x += t.velocityX
-                t.y += t.velocityY
-                if(e.components.boxCollider) {
-                    let b = e.components.boxCollider
-                    b.x = t.x
-                    b.y = t.y
-                }
+    update(input, deltaTime) {
+        if(this.playerSprite.frameTimer > this.playerSprite.frameInterval) {
+            this.playerSprite.frameTimer = 0
+            if(this.playerSprite.frameX < this.playerSprite.maxFrames) {
+                this.playerSprite.frameX++
+                
+            } else {
+                this.playerSprite.frameX = 0
             }
-        })
+        } else {
+            this.playerSprite.frameTimer += deltaTime
+        }
+        console.log(this.playerSprite.frameTimer)
+        if(input['d']) {
+            if(this.playerState.currentState !== 'Running') {
+                this.setState('Running')
+            }
+        } else if(input['a']) {
+                if(this.playerState.currentState !== 'Rolling') {
+                    this.setState('Rolling')
+                }
+        } else {
+            if(this.playerState.currentState !== 'Idle') {
+                this.setState('Idle')
+            }
+        }
     }
+    
 }
 
 class PlayerCollisionResolution {
@@ -136,13 +153,6 @@ class CollisionSystem {
                 }
         }
     }
-
-
-    /*
-    static checkCollision(e, entities) {
-        for()
-    }
-    */
 
     // Checks if point is within a rectangle
     pointInRect = (point, rect) => {
@@ -227,57 +237,6 @@ class CollisionSystem {
 
 
 
-}
-
-
-//Not sure if gravity should be a system
-class GravitySystem {
-    constructor(entities) {
-        this.entities = entities
-    }
-    update() {
-        this.entities.forEach(e => {
-            if(e.components.gravity) {
-                e.components.transform.velocityY += e.components.gravity.gravityForce
-            }
-        })
-    }
-}
-
-class inputSystem {
-    constructor(entities) {
-        this.entities = entities
-    }
-    update(input) {
-        this.entities.forEach(e => {
-            if(e.components.input) {
-                let t = e.components
-                 for(let dir in t.input) {
-                    if(input[dir]) {
-                        switch(dir) {
-                            case 'ArrowLeft':
-                                console.log('left')
-                                t.transform.velocityX = -clamp(t.transform.velocityX + t.input.ArrowLeft, 0, t.transform.maxVelocity)
-                                break;
-                            default: 
-                                console.log('right')
-                                t.transform.velocityX = clamp(t.transform.velocityX + t.input.ArrowRight,0,t.transform.maxVelocity)
-                            
-                        } 
-                    } else {
-                        switch(dir) {
-                            case 'ArrowLeft':
-                                t.transform.velocityX = clamp(t.transform.velocityX + t.input.ArrowLeft,0,t.transform.maxVelocity)
-                                break;
-                            default: t.transform.velocityX = clamp(t.transform.velocityX - t.input.ArrowRight,0,t.transform.maxVelocity)
-                            
-                        } 
-                    }
-                 }
-
-            }
-        }) 
-    }
 }
 
 class PlayerInputSystem {
