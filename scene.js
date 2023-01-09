@@ -71,90 +71,68 @@ class PhysicsDemoScene extends Scene {
 class TerrainDemoScene extends Scene {
     constructor() {
         super()
+        this.gridSize = 6
+        this.colorScale = 255
+        this.blockWidth = 32
     }
 
     init() {
-        this.terrainMap = this.#generateMap()
-        this.#createTerrainEntities()
+        this.#generateNoiseMap()
+        this.#generateTerrain()
     }
 
-    update() {
+    update(keys) {
         this.entityManager.update()
     }
 
     draw(ctx) {
         this.entityManager.getEntities.forEach(e => {
-            if(e.tag === 'blue') {
-                ctx.fillStyle = 'blue'
-            } else if (e.tag === 'brown') {
-                ctx.fillStyle = 'green'
-            }
-            let c = e.components.transform
-            ctx.strokeRect(c.x, c.y, c.x + 32, c.y + 32)
-            ctx.fillRect(c.x, c.y, c.x + 32, c.y + 32)
+            let pos = e.components.transform
+            let color = e.components.color
+            console.log(color.color)
+            ctx.fillStyle = `rgb(${color.color}, ${color.color}, ${color.color})`
+            ctx.strokeStyle = 'white'
+            ctx.fillRect(pos.x, pos.y, this.blockWidth, this.blockWidth)
+            ctx.strokeRect(pos.x, pos.y, this.blockWidth, this.blockWidth)
         })
     }
 
-    #generateMap() {
-        const blockWidth = 32
-        const blockHeight = 24
-        const tMap = []
-        for(let i = 0; i < blockHeight; i++) {
+    #generateNoiseMap() {
+        this.noiseMap = []
+        for(let y = 0; y < this.gridSize; y += 1/this.gridSize) {
             let row = []
-            for(let j = 0; j < blockWidth; j++) {
-                if(i < 15) {
-                    row.push('blue')
-                } else {
-                    row.push('brown')
-                }
-                
+            for(let x = 0; x < this.gridSize; x += 1/this.gridSize) {
+                let v = parseInt(perlin.get(x,y) * this.colorScale)
+                row.push(v)
             }
-            tMap.push(row)
+            this.noiseMap.push(row)
+            row = []
         }
-        return tMap
+        console.log(this.noiseMap)
+    }
+    #generateTerrain() {
+        this.terrainMap = []
+        this.noiseMap.forEach( (row, y) => {
+            row.forEach((e, x) => {
+                this.#createBlock({
+                    x: x * this.blockWidth,
+                    y: y * this.blockWidth,
+                    color: e
+                })
+            })
+        })
     }
 
-    // 32 width blocks by 24 blocks
-    #createTerrainEntities() {
-        const blockWidth = 32
-        const blockHeight = 24
-        for(let i = 0; i < this.terrainMap.length; i++) {
-            let row = this.terrainMap[i]
-            for(let j = 0; j < row.length; j++) {
-                let props = {
-                    x: 32 * j,
-                    y: 32 * i,
-                    width: 32,
-                    height: 32,
-                    color: this.terrainMap[i][j]
-                }
-                this.#createTile(props)
-            }
-        }
-    }
-
-    #createTile(props) {
-        let components = []
-
-        if(props.color === 'brown') {
-            components.push(new CBoxCollider({
-                x: props.x,
-                y: props.y,
-                width: props.width,
-                height: props.height
-            }))
-        }
-        components.push(new CTransform({
-            x: props.x,
-            y: props.y,
-            velocityX: 0,
-            velocityY: 0,
-            angle: 0
-        }))
-
+    #createBlock(props) {
         this.entityManager.addEntity({
-            tag: props.color,
-            components: components
+            tag: 'block',
+            components: [
+                new CTransform({
+                    x: props.x,
+                    y: props.y,
+                }),
+                new CColor(props.color)
+            ]
         })
     }
 }

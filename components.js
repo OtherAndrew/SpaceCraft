@@ -138,3 +138,10 @@ const CRigidBody = function CRigidBody(props) {
 
 }
 CRigidBody.prototype.name = 'rigidBody'
+
+
+//for testing only
+const CColor = function CColor(color) {
+    this.color = color
+}
+CColor.prototype.name = 'color'
