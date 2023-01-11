@@ -1,3 +1,9 @@
+/**
+ * Source:
+ * https://joeiddon.github.io/projects/javascript/perlin.html#:~:text=The%20Perlin%20noise%20algorithm%20describes,the%20noise%20at%20that%20coordinate.
+ */
+
+
 'use strict';
 let perlin = {
     rand_vect: function(){

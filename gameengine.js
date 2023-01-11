@@ -5,11 +5,14 @@ class GameEngine {
         this.ctx = null;
         this.WIDTH = 1024
         this.HEIGHT = 768
-
+        this.renderedFrames = 0
+        this.currentTime = 0
+        this.lastTime = 0
+        this.frames = 0
 
         //Scenes
-        //this.demoScene = new PhysicsDemoScene(null)
-        this.terrainDemoScene = new TerrainDemoScene()
+        //this.demoScene = new PhysicsDemoScene(this.WIDTH, this.HEIGHT)
+        this.terrainDemoScene = new TerrainDemoScene(this.WIDTH, this.HEIGHT)
         //this.animationDemoScene = new AnimationDemoScene()
 
         // Information on the input
@@ -24,10 +27,10 @@ class GameEngine {
         };
     };
 
-    init(ctx, assets) {
+    init(ctx, assets, tilesPath) {
         this.ctx = ctx;
         //this.demoScene.init()
-        this.terrainDemoScene.init()
+        this.terrainDemoScene.init(assets, tilesPath)
         console.log(assets)
         this.startInput();
         this.timer = new Timer();
@@ -89,9 +92,17 @@ class GameEngine {
         //this.demoScene.draw(this.ctx)
         this.terrainDemoScene.draw(this.ctx)
         //this.animationDemoScene.draw(this.ctx)
+        if(this.currentTime > 1) {
+            this.currentTime = 0
+            this.frames = this.renderedFrames
+            this.renderedFrames = 0
+        } else {
+            this.currentTime += this.clockTick
+            this.renderedFrames++
+        }
         this.ctx. textAlign = 'left'
         this.ctx.font = '15px Helvetica'
-        this.ctx.fillText(`FPS: ${Math.floor(1000/this.clockTick)}`, 10,20)
+        this.ctx.fillText(`FPS: ${this.frames}`, 10,20)
     };
 
     update() {

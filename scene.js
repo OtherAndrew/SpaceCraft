@@ -4,7 +4,9 @@
     You know, a scene.
 */
 class Scene {
-    constructor() {
+    constructor(width, height) {
+        this.WIDTH = width,
+        this.HEIGHT = height
         this.entityManager = new EntityManager()
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
     }
@@ -19,8 +21,8 @@ class Scene {
 
 
 class PhysicsDemoScene extends Scene {
-    constructor() {
-        super()
+    constructor(width, height) {
+        super(width, height)
         this.collisionSystem = new CollisionSystem(this.entityManager.getEntities)
     }
 
@@ -40,13 +42,14 @@ class PhysicsDemoScene extends Scene {
         }, this.entityManager)
 
         this.player = simpleDynamicBox({
-            x: 300,
-            y: 50,
+            x: 0,
+            y: 0,
             width: 50,
             height: 50
         }, this.entityManager)
         this.playerMovement = new PlayerInputSystem(this.player)
         this.playerCollisionResolution = new PlayerCollisionResolution(this.player)
+        this.camera = new Camera(this.player, this)
     }
 
     update(input) {
@@ -54,6 +57,8 @@ class PhysicsDemoScene extends Scene {
         this.playerMovement.update(input)
         this.collisionSystem.update()
         this.playerCollisionResolution.update()
+        this.camera.update()
+        console.log(this.player.components.transform)
     }
     draw(ctx) {
         this.entityManager.entities.forEach(e => {
@@ -63,37 +68,72 @@ class PhysicsDemoScene extends Scene {
                 ctx.strokeStyle = 'black'
             }
             let c = e.components.boxCollider
-            ctx.strokeRect(c.x, c.y, c.width, c.height)
+            ctx.strokeRect(c.x - this.camera.x - 50, c.y - this.camera.y - 60 , c.width, c.height)
         })
     }
 }
 
 class TerrainDemoScene extends Scene {
-    constructor() {
-        super()
-        this.gridSize = 6
+    constructor(width, height) {
+        super(width, height)
+        this.gridSize = 10
         this.colorScale = 255
         this.blockWidth = 32
     }
 
-    init() {
+    init(assets, tilesPath) {
         this.#generateNoiseMap()
         this.#generateTerrain()
+        this.#createPlayer()
+        this.playerMovement = new PlayerInputSystem(this.player)
+        this.camera = new Camera(this.player, this)
+        this.tile = this.entityManager.addEntity({
+            tag:'tile',
+            components: [
+                new CSprite(assets[tilesPath], 16.5, 16, 2, 1),
+                new CTransform({
+                    x: 0,
+                    y: 0,
+                    maxVelocity: 0
+                })
+            ]
+        })
     }
 
     update(keys) {
         this.entityManager.update()
+        this.playerMovement.update(keys)
+        this.camera.update()
     }
 
     draw(ctx) {
         this.entityManager.getEntities.forEach(e => {
-            let pos = e.components.transform
+            if(e.tag === 'player') {
+                let t = e.components.boxCollider
+                ctx.fillStyle = 'red'
+                ctx.fillRect(t.x - this.camera.x, t.y - this.camera.y, t.width, t.height)
+            }
+            else if(e.tag === 'block') {
+                let pos = e.components.transform
             let color = e.components.color
-            console.log(color.color)
             ctx.fillStyle = `rgb(${color.color}, ${color.color}, ${color.color})`
             ctx.strokeStyle = 'white'
-            ctx.fillRect(pos.x, pos.y, this.blockWidth, this.blockWidth)
-            ctx.strokeRect(pos.x, pos.y, this.blockWidth, this.blockWidth)
+            ctx.fillRect(pos.x - this.camera.x, pos.y - this.camera.y, this.blockWidth, this.blockWidth)
+            } else if(e.tag === 'tile') {
+                console.log(e)
+                let s = e.components.sprite
+                ctx.drawImage(
+                    s.sprite,
+                    11 * s.spriteWidth,
+                    s.frameY * s.spriteHeight,
+                    s.spriteWidth,
+                    s.spriteHeight,
+                    e.components.transform.x - this.camera.x,
+                    e.components.transform.y - this.camera.y,
+                    s.resizeWidth,
+                    s.resizeHeight
+                )
+            }
         })
     }
 
@@ -102,7 +142,7 @@ class TerrainDemoScene extends Scene {
         for(let y = 0; y < this.gridSize; y += 1/this.gridSize) {
             let row = []
             for(let x = 0; x < this.gridSize; x += 1/this.gridSize) {
-                let v = parseInt(perlin.get(x,y) * this.colorScale)
+                let v = parseInt(perlin.get(x,y) * this.colorScale + 50)
                 row.push(v)
             }
             this.noiseMap.push(row)
@@ -132,6 +172,26 @@ class TerrainDemoScene extends Scene {
                     y: props.y,
                 }),
                 new CColor(props.color)
+            ]
+        })
+    }
+
+    #createPlayer() {
+        this.player = this.entityManager.addEntity({
+            tag:'player',
+            components: [
+                new CTransform({
+                    x: 100,
+                    y: 100,
+                    maxVelocity: 10
+                }),
+                new CBoxCollider({
+                    x: this.width * .5 + 1,
+                    y: this.height * .5 + 1,
+                    width: 32,
+                    height: 32
+                }),
+                new CRigidBody({mass: 1})
             ]
         })
     }
@@ -173,8 +233,8 @@ class AnimationDemoScene extends Scene {
             tag: 'player',
             components: [
                 new CTransform({
-                    x: 400,
-                    y: 300,
+                    x: this.width * .5 + 1,
+                    y: this.height * .5 + 1,
                     maxVelocity: 10
                 }),
                 new CSprite(sprite, 100, 91.3, 1.5, .02),

@@ -245,7 +245,7 @@ class PlayerInputSystem {
         this.playerPos = this.player.components.transform
         this.hitBox = this.player.components.boxCollider
         this.speed = 2
-        this.gravity = .4
+        this.gravity = 0
     }
     /**
      * Controlls
@@ -260,8 +260,13 @@ class PlayerInputSystem {
             this.playerPos.velocityX = clamp(this.playerPos.velocityX - this.speed, -this.playerPos.maxVelocity, 0)
         } else if(input['d']) {
             this.playerPos.velocityX = clamp(this.playerPos.velocityX + this.speed, 0, this.playerPos.maxVelocity)
+        } else if(input['w']) {
+            this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocity, 0)
+        }else if(input['s']) {
+            this.playerPos.velocityY = clamp(this.playerPos.velocityY + this.speed, 0, this.playerPos.maxVelocity)
         } else {
-            this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 : (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)   
+            this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 : (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)
+            this.playerPos.velocityY === 0 ? this.playerPos.velocityY = 0 : (this.playerPos.velocityY > 0 ? this.playerPos.velocityY -= this.speed : this.playerPos.velocityY += this.speed)     
         }
         if(input[' '] && this.player.components.rigidBody.isGrounded) {
             this.playerPos.velocityY = -10
