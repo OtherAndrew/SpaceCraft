@@ -88,6 +88,10 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+
+        // draw camera on top of everything else
+        this.camera.draw(this.ctx);
+        this.hud.draw(this.ctx);
     };
 
     update() {
@@ -96,10 +100,13 @@ class GameEngine {
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
 
-            if (!entity.removeFromWorld) {
+            if (!entity.removeFromWorld /*&& on-camera*/) {
                 entity.update();
             }
         }
+
+        this.camera.update();
+        this.hud.update();
 
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
@@ -114,6 +121,4 @@ class GameEngine {
         this.draw();
     };
 
-};
-
-// KV Le was here :)
+}
