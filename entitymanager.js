@@ -103,6 +103,7 @@ class Entity  {
     constructor(props, id) {
         this.id = id
         this.tag = props.tag
+        this.isDrawable = false
         this.isAlive = true
         this.components = {}
         if(props.components) {

@@ -11,8 +11,15 @@ class GameEngine {
         this.frames = 0
 
         //Scenes
-        //this.demoScene = new PhysicsDemoScene(this.WIDTH, this.HEIGHT)
-        this.terrainDemoScene = new TerrainDemoScene(this.WIDTH, this.HEIGHT)
+        this.demoScene = new PhysicsDemoScene(this.WIDTH, this.HEIGHT)
+        /*
+        this.terrainDemoScene = new TerrainScene({
+            height: this.HEIGHT,
+            width: this.WIDTH,
+            gridSize: 22,
+            blockSize: 32
+        })
+        */
         //this.animationDemoScene = new AnimationDemoScene()
 
         // Information on the input
@@ -29,8 +36,8 @@ class GameEngine {
 
     init(ctx, assets, tilesPath) {
         this.ctx = ctx;
-        //this.demoScene.init()
-        this.terrainDemoScene.init(assets, tilesPath)
+        this.demoScene.init()
+        //this.terrainDemoScene.init(assets[tilesPath])
         console.log(assets)
         this.startInput();
         this.timer = new Timer();
@@ -89,8 +96,8 @@ class GameEngine {
 
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        //this.demoScene.draw(this.ctx)
-        this.terrainDemoScene.draw(this.ctx)
+        this.demoScene.draw(this.ctx)
+        //this.terrainDemoScene.draw(this.ctx)
         //this.animationDemoScene.draw(this.ctx)
         if(this.currentTime > 1) {
             this.currentTime = 0
@@ -106,8 +113,8 @@ class GameEngine {
     };
 
     update() {
-        //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.keys)
+        this.demoScene.update(this.keys)
+        //this.terrainDemoScene.update(this.keys)
         //this.animationDemoScene.update(this.keys, this.clockTick)
     };
 
