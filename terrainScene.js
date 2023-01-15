@@ -7,12 +7,12 @@ class TerrainScene extends Scene {
         //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
         this.blockValues = [
-            'solidDirt',
-            'solidDirt',
-            'solidDirt',
-            'solidDirt',
-            'solidDirt',
-            'solidDirt',
+            'ruby',
+            'stone',
+            'stone',
+            'stone',
+            'dirt',
+            'dirt',
             'null',
             'null',
             'null',
@@ -25,13 +25,17 @@ class TerrainScene extends Scene {
      * Player and player movement are for testing purposes
      * @param {Image} sprite 
      */
-    init(sprite) {
-        this.tileSprite = sprite
+    init(dirt, stone, ruby, caveBackground) {
+        this.tileDirtSprite = dirt
+        this.tileStoneSprite = stone
+        this.tileRubySprite = ruby
+        this.caveBackground = caveBackground
+        this.#generateBackgrounds()
         this.#generateNoiseMap()
         this.#generateTerrain()
         this.#createPlayer()
         this.playerMovement = new PlayerInputSystem(this.player)
-        this.camera = new Camera(this.player, this)
+        this.camera = new Camera(this.player, this, (this.gridSize*this.gridSize*32))
         this.renderBox = new RenderBox(this.player, this.gridSize, this.blockWidth)
     }
 
@@ -102,15 +106,37 @@ class TerrainScene extends Scene {
      */
     #createBlock(props) {
         switch(this.blockValues[props.value]) {
-            case 'solidDirt':
+            case 'dirt':
                 return this.entityManager.addEntity({
-                    tag: 'solidDirt',
+                    tag: 'dirt',
                     components: [
                         new CTransform({
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileSprite, 18, 16, 2, 1)
+                        new CSprite(this.tileDirtSprite, 18, 16, 2, 1)
+                    ]
+                })
+            case 'stone':
+                return this.entityManager.addEntity({
+                    tag: 'stone',
+                    components: [
+                        new CTransform({
+                            x: props.x,
+                            y: props.y,
+                        }),
+                        new CSprite(this.tileStoneSprite, 18, 16, 2, 1)
+                    ]
+                })
+            case 'ruby':
+                return this.entityManager.addEntity({
+                    tag: 'stone',
+                    components: [
+                        new CTransform({
+                            x: props.x,
+                            y: props.y,
+                        }),
+                        new CSprite(this.tileRubySprite, 18, 16, 2, 1)
                     ]
                 })
             default: 
@@ -137,11 +163,24 @@ class TerrainScene extends Scene {
                     height: 32
                 }),
                 new CRigidBody({mass: 1}),
-                new CSprite(this.tileSprite, 16,16,2,1)
+                new CSprite(this.tileDirtSprite, 16,16,2,1)
             ]
         })
     }
 
+    #generateBackgrounds() {
+        this.entityManager.addEntity({
+            tag: 'background',
+            components: [
+                new CTransform({
+                    x: 0,
+                    y: 0,
+                    maxVelocity: 0
+                }),
+                new CSprite(this.caveBackground, 320, 180, 5, 1)
+            ]
+        })
+    }
 
     /**
      * This method checks to see what is in the bounds of the view screen. 
@@ -150,11 +189,11 @@ class TerrainScene extends Scene {
      */
     #updateTileState() {
         this.entityManager.getEntities.forEach(e => {
-            if(e.tag !== 'player') {
-                if(e.components.transform.x > (this.renderBox.x - 18) * 32 &&
-                e.components.transform.x < (this.renderBox.x + 18) * 32 &&
-                e.components.transform.y > (this.renderBox.y - 14) * 32 &&
-                e.components.transform.y < (this.renderBox.y + 12) * 32) {
+            if(e.tag !== 'player' && e.tag !== 'background') {
+                if(e.components.transform.x > (this.renderBox.x - this.blockWidth) * this.blockWidth &&
+                e.components.transform.x < (this.renderBox.x + this.blockWidth) * this.blockWidth &&
+                e.components.transform.y > (this.renderBox.y - this.blockWidth) * this.blockWidth &&
+                e.components.transform.y < (this.renderBox.y + this.blockWidth) * this.blockWidth) {
                     e.isDrawable = true
                     this.#checkIfExposed(e)
                 } else {

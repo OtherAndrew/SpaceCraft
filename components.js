@@ -19,7 +19,7 @@
 /**
  * Component that holds a sprite.
  * 
- * @param {Number} sprite 
+ * @param {Image} sprite 
  * @param {Number} width 
  * @param {Number} height 
  * @param {Number} sizeMod 

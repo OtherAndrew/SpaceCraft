@@ -15,23 +15,25 @@ class RenderSystem {
 
         this.entities.forEach(e => {
             if(e.isDrawable) {
-                if(e.components.transform) {
+                if(e.components.transform && e.components.sprite) {
                     let sprite = e.components.sprite
-                    ctx.drawImage(
-                        sprite.sprite,
-                        sprite.frameX * sprite.spriteWidth,
-                        sprite.frameY * sprite.spriteHeight,
-                        sprite.spriteWidth,
-                        sprite.spriteHeight,
-                        e.components.transform.x - camera.x,
-                        e.components.transform.y - camera.y,
-                        sprite.resizeWidth,
-                        sprite.resizeHeight        
-                    )
-    
-                    } else {
-                    console.log(this.tag, 'requires CTransform component to be drawable')
+                    try {
+                        ctx.drawImage(
+                            sprite.sprite,
+                            sprite.frameX * sprite.spriteWidth,
+                            sprite.frameY * sprite.spriteHeight,
+                            sprite.spriteWidth,
+                            sprite.spriteHeight,
+                            e.components.transform.x - camera.x,
+                            e.components.transform.y - camera.y,
+                            sprite.resizeWidth,
+                            sprite.resizeHeight        
+                        )
+                    } catch (error) {
+                        console.log(e, 'failed to draw.')
                     }
+    
+                    } 
             }
         })
         
@@ -261,7 +263,7 @@ class PlayerInputSystem {
         this.playerPos = this.player.components.transform
         this.hitBox = this.player.components.boxCollider
         this.speed = 2
-        this.gravity = 2.5
+        this.gravity = 0
     }
     /**
      * Controlls
