@@ -1,9 +1,7 @@
 
-class TerrainScene extends Scene {
-    constructor(config) {
-        super(config.width, config.height)
-        this.gridSize = config.gridSize
-        this.blockWidth = config.blockSize
+class WorldScene extends Scene {
+    constructor() {
+        super()
         //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
         this.blockValues = [
@@ -25,18 +23,18 @@ class TerrainScene extends Scene {
      * Player and player movement are for testing purposes
      * @param {Image} sprite 
      */
-    init(dirt, stone, ruby, caveBackground) {
-        this.tileDirtSprite = dirt
-        this.tileStoneSprite = stone
-        this.tileRubySprite = ruby
-        this.caveBackground = caveBackground
+    init(assets) {
+        this.tileDirtSprite = assets[TILES_DIRT_PATH]
+        this.tileStoneSprite = assets[TILES_STONE_PATH]
+        this.tileRubySprite = assets[TILES_RUBY_PATH]
+        this.caveBackground = assets[BACKGROUND_CAVE_PATH]
         this.#generateBackgrounds()
         this.#generateNoiseMap()
         this.#generateTerrain()
         this.#createPlayer()
         this.playerMovement = new PlayerInputSystem(this.player)
-        this.camera = new Camera(this.player, this, (this.gridSize*this.gridSize*32))
-        this.renderBox = new RenderBox(this.player, this.gridSize, this.blockWidth)
+        this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
+        this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
     }
 
     update(keys) {
@@ -68,9 +66,9 @@ class TerrainScene extends Scene {
         this.noiseMap = []
         let valueOffset = 10
         let valueAdditional = 5
-        for(let y = 0; y < this.gridSize; y += 1/this.gridSize) {
+        for(let y = 0; y < GRIDSIZE; y += 1/GRIDSIZE) {
             let row = []
-            for(let x = 0; x < this.gridSize; x += 1/this.gridSize) {
+            for(let x = 0; x < GRIDSIZE; x += 1/GRIDSIZE) {
                 let v = parseInt(perlin.get(x,y) * valueOffset + valueAdditional)
                 row.push(v)
             }
@@ -89,8 +87,8 @@ class TerrainScene extends Scene {
             let r = []
             row.forEach((val, x) => {
                 r.push(this.#createBlock({
-                    x: x * this.blockWidth,
-                    y: y * this.blockWidth,
+                    x: x * BLOCKSIZE,
+                    y: y * BLOCKSIZE,
                     value: val
                 }).tag)
             })
@@ -190,10 +188,10 @@ class TerrainScene extends Scene {
     #updateTileState() {
         this.entityManager.getEntities.forEach(e => {
             if(e.tag !== 'player' && e.tag !== 'background') {
-                if(e.components.transform.x > (this.renderBox.x - this.blockWidth) * this.blockWidth &&
-                e.components.transform.x < (this.renderBox.x + this.blockWidth) * this.blockWidth &&
-                e.components.transform.y > (this.renderBox.y - this.blockWidth) * this.blockWidth &&
-                e.components.transform.y < (this.renderBox.y + this.blockWidth) * this.blockWidth) {
+                if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
+                e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
+                e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
+                e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
                     e.isDrawable = true
                     this.#checkIfExposed(e)
                 } else {
@@ -209,8 +207,8 @@ class TerrainScene extends Scene {
      * @param {Entity} e 
      */
     #checkIfExposed(e) {
-        let posX = e.components.transform.x / this.blockWidth
-        let posY = e.components.transform.y / this.blockWidth
+        let posX = e.components.transform.x / BLOCKSIZE
+        let posY = e.components.transform.y / BLOCKSIZE
         if(this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
             this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||
             this.terrainMap[clamp(posY-1,0,posY)][posX] === 'air' ||
