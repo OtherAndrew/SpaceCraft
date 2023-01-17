@@ -11,26 +11,30 @@ class RenderSystem {
         this.entities = entities
     }
 
-    draw(ctx) {
+    draw(ctx, camera) {
 
         this.entities.forEach(e => {
-            if(e.components.transform) {
-                let sprite = e.components.sprite
-                ctx.drawImage(
-                    sprite.sprite,
-                    sprite.frameX * sprite.spriteWidth,
-                    sprite.frameY * sprite.spriteHeight,
-                    sprite.spriteWidth,
-                    sprite.spriteHeight,
-                    e.components.transform.x,
-                    e.components.transform.y,
-                    sprite.resizeWidth,
-                    sprite.resizeHeight        
-                )
-
-                } else {
-                console.log(this.tag, 'requires CTransform component to be drawable')
-                }
+            if(e.isDrawable) {
+                if(e.components.transform && e.components.sprite) {
+                    let sprite = e.components.sprite
+                    try {
+                        ctx.drawImage(
+                            sprite.sprite,
+                            sprite.frameX * sprite.spriteWidth,
+                            sprite.frameY * sprite.spriteHeight,
+                            sprite.spriteWidth,
+                            sprite.spriteHeight,
+                            e.components.transform.x - camera.x,
+                            e.components.transform.y - camera.y,
+                            sprite.resizeWidth,
+                            sprite.resizeHeight        
+                        )
+                    } catch (error) {
+                        console.log(e, 'failed to draw.')
+                    }
+    
+                    } 
+            }
         })
         
     }
@@ -45,6 +49,20 @@ class RenderSystem {
             }
         })
         
+    }
+}
+
+class RenderBox {
+    constructor(player, gridSize, blockSize) {
+        this.player = player
+        this.gridSize = gridSize,
+        this.blockSize = blockSize
+        this.x = 0
+        this.y = 0
+    }
+    update() {
+        this.x = Math.ceil(this.player.components.transform.x / this.blockSize)
+        this.y = Math.ceil(this.player.components.transform.y / this.blockSize)
     }
 }
 
@@ -269,7 +287,7 @@ class PlayerInputSystem {
             this.playerPos.velocityY === 0 ? this.playerPos.velocityY = 0 : (this.playerPos.velocityY > 0 ? this.playerPos.velocityY -= this.speed : this.playerPos.velocityY += this.speed)     
         }
         if(input[' '] && this.player.components.rigidBody.isGrounded) {
-            this.playerPos.velocityY = -10
+            this.playerPos.velocityY = -20
             this.player.components.rigidBody.isGrounded = false
         }
 

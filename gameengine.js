@@ -2,18 +2,16 @@
 
 class GameEngine {
     constructor(options) {
+
         this.ctx = null;
-        this.WIDTH = 1024
-        this.HEIGHT = 768
+        //used to calculate FPS
         this.renderedFrames = 0
         this.currentTime = 0
         this.lastTime = 0
         this.frames = 0
 
         //Scenes
-        //this.demoScene = new PhysicsDemoScene(this.WIDTH, this.HEIGHT)
-        this.terrainDemoScene = new TerrainDemoScene(this.WIDTH, this.HEIGHT)
-        //this.animationDemoScene = new AnimationDemoScene()
+        this.terrainDemoScene = new WorldScene()
 
         // Information on the input
         this.click = null;
@@ -27,14 +25,13 @@ class GameEngine {
         };
     };
 
-    init(ctx, assets, tilesPath) {
+    init(ctx, assets) {
+
         this.ctx = ctx;
-        //this.demoScene.init()
-        this.terrainDemoScene.init(assets, tilesPath)
+        this.terrainDemoScene.init(assets)
         console.log(assets)
         this.startInput();
         this.timer = new Timer();
-        //this.animationDemoScene.init(assets['./assets/sprites/player.png'], this.keys)
     };
 
     start() {
@@ -88,8 +85,8 @@ class GameEngine {
 
 
     draw() {
+
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        //this.demoScene.draw(this.ctx)
         this.terrainDemoScene.draw(this.ctx)
         //this.animationDemoScene.draw(this.ctx)
         if(this.currentTime > 1) {
