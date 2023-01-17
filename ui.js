@@ -1,9 +1,21 @@
 class HUD {
     constructor() {
         Object.assign(this, {open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
-        this.entities = new Array(16).fill(null);
+        // this.entities = new Array(16).fill(null);
+        this.entities = [];
+
+        let i = 0;
+        for (let row = 0; row < 4; row++) {
+            for (let col = 0; col < 4; col++) {
+                this.entities.push(new Container(i++, this.x + (this.s * col), this.y - (this.s * row)))
+            }
+        }
+
         this.entitiesCount = new Map();
-        // this.game.hud = this;
+
+        this.entities[0].item = new block1();
+
+        console.log(this.entities);
 
         // for testing HUD vs Inventory mode
         // this.open = true;
@@ -124,53 +136,38 @@ class HUD {
             ctx.globalAlpha = 0.7;
             rowCount = 1;
         }
+        let i = 0;
         for (let row = 0; row < rowCount; row++) {
             for (let col = 0; col < 4; col++) {
-                if (row < 4) {
-                    this.roundRect(ctx, this.x + (this.s * col), this.y - (this.s * row), this.d, this.d, this.r);
-                } else if (col === 3) {
-                    this.roundRect(ctx, this.x + (this.s * col), this.y - (this.s * row), this.d, this.d, this.r);
+                if (this.entities[i]) {
+                    this.entities[i].draw(ctx);
+                    i++;
                 }
             }
         }
         ctx.globalAlpha = 1;
-
-        // draw ents in inventory (placeholder)
-        for (let i = 0; i < 16; i++) {
-            if (this.entities[i]) {
-                this.entities[i].draw();
-            }
-        }
-    };
-
-    // credit: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
-    roundRect(ctx, x, y, w, h, radius) {
-        let r = x + w;
-        let b = y + h;
-        ctx.beginPath();
-        ctx.fillStyle = "blue";
-        ctx.strokeStyle = "white";
-        ctx.lineWidth="2";
-        ctx.moveTo(x+radius, y);
-        ctx.lineTo(r-radius, y);
-        ctx.quadraticCurveTo(r, y, r, y+radius);
-        ctx.lineTo(r, y+h-radius);
-        ctx.quadraticCurveTo(r, b, r-radius, b);
-        ctx.lineTo(x+radius, b);
-        ctx.quadraticCurveTo(x, b, x, b-radius);
-        ctx.lineTo(x, y+radius);
-        ctx.quadraticCurveTo(x, y, x+radius, y);
-        ctx.fill();
-        ctx.stroke();
     };
 }
 
-class Container {
+class Container extends Path2D {
     constructor(slot, x, y) {
+        super();
         Object.assign(this, {slot, x, y});
-        this.item = null;
         this.midx = this.x + 21;
         this.midy = this.y + 21;
+        this.item = null;
+        this.itemCount = 0;
+        this.roundRect(this.x, this.y, 42, 42, 15)
+
+        // canvas.addEventListener("click", e => {
+        //     if (ctx.isPointInPath(this, e.offsetX, e.offsetY)) {
+        //         ctx.fillSytle = "green";
+        //         ctx.fill(this);
+        //     } else {
+        //         ctx.fillSytle = "blue";
+        //         ctx.fill(this);
+        //     }
+        // });
     }
 
     update() {
@@ -178,69 +175,73 @@ class Container {
     }
 
     draw(ctx) {
-        this.roundRect(ctx, this.x, this.y, 42, 42, 15)
-        if (this.item) {
-            this.item.draw(ctx, this.midx - this.item.x / 2, this.midy - this.item.y / 2);
-        }
-    }
-
-    roundRect(ctx, x, y, w, h, radius) {
-        let r = x + w;
-        let b = y + h;
-        ctx.beginPath();
         ctx.fillStyle = "blue";
         ctx.strokeStyle = "white";
         ctx.lineWidth="2";
-        ctx.moveTo(x+radius, y);
-        ctx.lineTo(r-radius, y);
-        ctx.quadraticCurveTo(r, y, r, y+radius);
-        ctx.lineTo(r, y+h-radius);
-        ctx.quadraticCurveTo(r, b, r-radius, b);
-        ctx.lineTo(x+radius, b);
-        ctx.quadraticCurveTo(x, b, x, b-radius);
-        ctx.lineTo(x, y+radius);
-        ctx.quadraticCurveTo(x, y, x+radius, y);
-        ctx.fill();
-        ctx.stroke();
+        ctx.fill(this);
+        ctx.stroke(this);
+        // this.roundRect(ctx, this.x, this.y, 42, 42, 15);
+        if (this.item) {
+            this.item.draw(ctx, this.midx - this.item.width / 2, this.midy - this.item.height / 2);
+        }
+    }
+
+    // credit: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
+    // roundRect(ctx, x, y, w, h, radius) {
+    //     let r = x + w;
+    //     let b = y + h;
+    //     ctx.beginPath();
+    //     ctx.fillStyle = "blue";
+    //     ctx.strokeStyle = "white";
+    //     ctx.lineWidth="2";
+    //     ctx.moveTo(x+radius, y);
+    //     ctx.lineTo(r-radius, y);
+    //     ctx.quadraticCurveTo(r, y, r, y+radius);
+    //     ctx.lineTo(r, y+h-radius);
+    //     ctx.quadraticCurveTo(r, b, r-radius, b);
+    //     ctx.lineTo(x+radius, b);
+    //     ctx.quadraticCurveTo(x, b, x, b-radius);
+    //     ctx.lineTo(x, y+radius);
+    //     ctx.quadraticCurveTo(x, y, x+radius, y);
+    //     ctx.fill();
+    //     ctx.stroke();
+    // };
+}
+
+// Testing classes
+class Block {
+    constructor() {
+        this.sprite = null;
+        this.width = 32;
+        this.height = 32;
+    };
+
+    draw(ctx, x, y) {
+        ctx.drawImage(ASSET_MANAGER.getAsset(this.sprite), x, y);
     };
 }
 
 // Testing classes
-class block2 {
+class block1 extends Block {
     constructor() {
+        super();
         this.type = "rock";
-        this.sprite = ASSET_MANAGER.getAsset("./sprites/b2.png");
-        this.width = 32;
-        this.height = 32;
-    };
-
-    draw(ctx, x, y) {
-        ctx.drawImage(this.sprite, x, y);
+        this.sprite = "./assets/sprites/b1.png";
     };
 }
 
-class block1 {
+class block2 extends Block {
     constructor() {
+        super();
         this.type = "sand";
-        this.sprite = ASSET_MANAGER.getAsset("./sprites/b1.png");
-        this.width = 32;
-        this.height = 32;
-    };
-
-    draw(ctx, x, y) {
-        ctx.drawImage(this.sprite, x, y);
+        this.sprite = "./assets/sprites/b2.png";
     };
 }
 
-class block3 {
+class block3 extends Block {
     constructor() {
+        super();
         this.type = "dirt";
-        this.sprite = ASSET_MANAGER.getAsset("./sprites/b3.png");
-        this.width = 32;
-        this.height = 32;
-    };
-
-    draw(ctx, x, y) {
-        ctx.drawImage(this.sprite, x, y);
+        this.sprite = "./assets/sprites/b3.png";
     };
 }

@@ -53,8 +53,6 @@ class WorldScene extends Scene {
     draw(ctx) {
         this.renderSystem.draw(ctx, this.camera)
         
-        this.hud.draw(ctx);
-        
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
@@ -62,6 +60,8 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
+
+        this.hud.draw(ctx);
     }
 
     /**
