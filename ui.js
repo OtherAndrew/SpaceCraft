@@ -1,27 +1,27 @@
 class HUD {
-    constructor(game) {
-        Object.assign(this, {game, open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
+    constructor() {
+        Object.assign(this, {open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
         this.entities = new Array(16).fill(null);
         this.entitiesCount = new Map();
-        this.game.hud = this;
+        // this.game.hud = this;
 
         // for testing HUD vs Inventory mode
         // this.open = true;
 
         // for testing Ent list
-        this.add(new weapon1());
-        this.add(new block2());
-        this.add(new weapon1());
-        this.add(new plant1());
-        this.remove(0);
-        this.add(new block5());
-        this.remove(0);
-        this.add(new weapon1());
-        this.add(new weapon1());
-        this.swap(0, 10);
-        this.delete(15);
+        // this.add(new block3());
+        // this.add(new block2());
+        // this.add(new block3());
+        // this.add(new plant1());
+        // this.remove(0);
+        // this.add(new block1());
+        // this.remove(0);
+        // this.add(new block3());
+        // this.add(new block3());
+        // this.swap(0, 10);
+        // this.delete(15);
 
-        console.log(this);
+        // console.log(this);
     };
 
     // called by ent remove system to add to inven
@@ -165,43 +165,82 @@ class HUD {
     };
 }
 
+class Container {
+    constructor(slot, x, y) {
+        Object.assign(this, {slot, x, y});
+        this.item = null;
+        this.midx = this.x + 21;
+        this.midy = this.y + 21;
+    }
+
+    update() {
+
+    }
+
+    draw(ctx) {
+        this.roundRect(ctx, this.x, this.y, 42, 42, 15)
+        if (this.item) {
+            this.item.draw(ctx, this.midx - this.item.x / 2, this.midy - this.item.y / 2);
+        }
+    }
+
+    roundRect(ctx, x, y, w, h, radius) {
+        let r = x + w;
+        let b = y + h;
+        ctx.beginPath();
+        ctx.fillStyle = "blue";
+        ctx.strokeStyle = "white";
+        ctx.lineWidth="2";
+        ctx.moveTo(x+radius, y);
+        ctx.lineTo(r-radius, y);
+        ctx.quadraticCurveTo(r, y, r, y+radius);
+        ctx.lineTo(r, y+h-radius);
+        ctx.quadraticCurveTo(r, b, r-radius, b);
+        ctx.lineTo(x+radius, b);
+        ctx.quadraticCurveTo(x, b, x, b-radius);
+        ctx.lineTo(x, y+radius);
+        ctx.quadraticCurveTo(x, y, x+radius, y);
+        ctx.fill();
+        ctx.stroke();
+    };
+}
+
 // Testing classes
 class block2 {
     constructor() {
         this.type = "rock";
+        this.sprite = ASSET_MANAGER.getAsset("./sprites/b2.png");
+        this.width = 32;
+        this.height = 32;
     };
 
-    draw() {
-
+    draw(ctx, x, y) {
+        ctx.drawImage(this.sprite, x, y);
     };
 }
 
-class block5 {
+class block1 {
     constructor() {
         this.type = "sand";
+        this.sprite = ASSET_MANAGER.getAsset("./sprites/b1.png");
+        this.width = 32;
+        this.height = 32;
     };
 
-    draw() {
-
-    };
-}
-
-class weapon1 {
-    constructor() {
-        this.type = "sword";
-    };
-
-    draw() {
-
+    draw(ctx, x, y) {
+        ctx.drawImage(this.sprite, x, y);
     };
 }
 
-class plant1 {
+class block3 {
     constructor() {
-        this.type = "sunflower";
+        this.type = "dirt";
+        this.sprite = ASSET_MANAGER.getAsset("./sprites/b3.png");
+        this.width = 32;
+        this.height = 32;
     };
 
-    draw() {
-
+    draw(ctx, x, y) {
+        ctx.drawImage(this.sprite, x, y);
     };
 }

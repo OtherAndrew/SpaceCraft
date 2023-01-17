@@ -34,6 +34,9 @@ class WorldScene extends Scene {
         this.#createPlayer()
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
+
+        this.hud = new HUD();
+
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
     }
 
@@ -43,10 +46,15 @@ class WorldScene extends Scene {
         this.camera.update()
         this.renderBox.update()
         this.#updateTileState()
+        
+        this.hud.update();
     }
 
     draw(ctx) {
         this.renderSystem.draw(ctx, this.camera)
+        
+        this.hud.draw(ctx);
+        
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
