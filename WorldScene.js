@@ -207,6 +207,9 @@ class WorldScene extends Scene {
      * @param {Entity} e 
      */
     #checkIfExposed(e) {
+        
+        if(e.components.boxCollider) return
+
         let posX = e.components.transform.x / BLOCKSIZE
         let posY = e.components.transform.y / BLOCKSIZE
         if(this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
