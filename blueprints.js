@@ -16,7 +16,7 @@ const borderBlueprint = (props, entityManager) => {
                 y: props.y,
                 velocityX: 0,
                 velocityY: 0,
-                rotation: 0,
+                angle: 0,
             }),
             new CBoxCollider({
                 x: props.x,
@@ -40,7 +40,7 @@ const simpleDynamicBox = (props, entityManager) => {
                 velocityX: 0,
                 velocityY: 0,
                 maxVelocity: 10,
-                rotation: 0,
+                angle: 0,
             }),
             new CBoxCollider({
                 x: props.x,
@@ -48,7 +48,9 @@ const simpleDynamicBox = (props, entityManager) => {
                 width: props.width,
                 height: props.height
             }),
-            new CRigidBody(1),
+            new CRigidBody({
+                mass: 1
+            }),
             new CInput()
         ]
     })
