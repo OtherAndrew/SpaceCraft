@@ -5,7 +5,6 @@ class RenderSystem {
     }
 
     draw(ctx, camera) {
-
         this.entities.forEach(e => {
             if(e.isDrawable) {
                 if(e.components.transform && e.components.sprite) {

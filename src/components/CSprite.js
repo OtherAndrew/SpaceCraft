@@ -13,8 +13,8 @@
  * @param {number} height Sprite height
  * @param {number} scale  Scale factor to apply to sprite, 1 by default
  * @param {number} fps    Frames per second of sprite animation, 60 by default.
- * @param {number} frameX X Position of sprite on sprite sheet, 0 by default.
- * @param {number} frameY Y Position of sprite on sprite sheet, 0 by default.
+ * @param {number} frameX X position of frame on sprite sheet (not pixel position!), 0 by default.
+ * @param {number} frameY Y position of frame on sprite sheet (not pixel position!), 0 by default.
  * @returns {CSprite}     The CSprite component
  * @constructor
  */

@@ -1,3 +1,6 @@
+/**
+ * @todo What is this for?
+ */
 class PlayerCollisionResolution {
     constructor(player) {
         this.playerComponents = player.components
