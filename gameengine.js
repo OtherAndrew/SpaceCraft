@@ -87,6 +87,8 @@ class GameEngine {
     draw() {
 
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.fillStyle = 'rgb(159,109,50)'
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
         this.terrainDemoScene.draw(this.ctx)
         //this.animationDemoScene.draw(this.ctx)
         if(this.currentTime > 1) {
