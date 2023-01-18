@@ -186,7 +186,7 @@ class WorldScene extends Scene {
                     width: 32,
                     height: 32
                 }),
-                new CRigidBody({mass: 1}),
+                new CRigidBody(1),
                 new CSprite(this.tileDirtSprite, 16,16,2,1)
             ]
         })

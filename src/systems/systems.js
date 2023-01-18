@@ -26,8 +26,8 @@ class RenderSystem {
                             sprite.spriteHeight,
                             e.components.transform.x - camera.x,
                             e.components.transform.y - camera.y,
-                            sprite.resizeWidth,
-                            sprite.resizeHeight        
+                            sprite.drawWidth,
+                            sprite.drawHeight
                         )
                     } catch (error) {
                         console.log(e, 'failed to draw.')
@@ -55,7 +55,7 @@ class RenderSystem {
 class RenderBox {
     constructor(player, gridSize, blockSize) {
         this.player = player
-        this.gridSize = gridSize,
+        this.gridSize = gridSize
         this.blockSize = blockSize
         this.x = 0
         this.y = 0
@@ -283,8 +283,10 @@ class PlayerInputSystem {
         }else if(input['s']) {
             this.playerPos.velocityY = clamp(this.playerPos.velocityY + this.speed, 0, this.playerPos.maxVelocity)
         } else {
-            this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 : (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)
-            this.playerPos.velocityY === 0 ? this.playerPos.velocityY = 0 : (this.playerPos.velocityY > 0 ? this.playerPos.velocityY -= this.speed : this.playerPos.velocityY += this.speed)     
+            this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 :
+                (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)
+            this.playerPos.velocityY === 0 ? this.playerPos.velocityY = 0 :
+                (this.playerPos.velocityY > 0 ? this.playerPos.velocityY -= this.speed : this.playerPos.velocityY += this.speed)
         }
         if(input[' '] && this.player.components.rigidBody.isGrounded) {
             this.playerPos.velocityY = -20
