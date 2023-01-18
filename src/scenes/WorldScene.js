@@ -24,10 +24,17 @@ class WorldScene extends Scene {
      * @param {Image} sprite 
      */
     init(assets) {
+        //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
         this.tileStoneSprite = assets[TILES_STONE_PATH]
         this.tileRubySprite = assets[TILES_RUBY_PATH]
         this.caveBackground = assets[BACKGROUND_CAVE_PATH]
+
+        //background
+        this.backgroundSurface0 = assets[BACKGROUND_SURFACE_0]
+        this.backgroundSurface1 = assets[BACKGROUND_SURFACE_1]
+
+
         this.#generateBackgrounds()
         this.#generateNoiseMap()
         this.#generateTerrain()
@@ -47,6 +54,7 @@ class WorldScene extends Scene {
 
     draw(ctx) {
         this.renderSystem.draw(ctx, this.camera)
+        /*
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
@@ -54,6 +62,7 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
+        */
     }
 
     /**
@@ -89,7 +98,8 @@ class WorldScene extends Scene {
                 r.push(this.#createBlock({
                     x: x * BLOCKSIZE,
                     y: y * BLOCKSIZE,
-                    value: val
+                    value: val,
+                    recurse: true
                 }).tag)
             })
             this.terrainMap.push(r)
@@ -105,6 +115,15 @@ class WorldScene extends Scene {
     #createBlock(props) {
         switch(this.blockValues[props.value]) {
             case 'dirt':
+                if(props.y < (50 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + 3.7)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                } else if (props.y > (120 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + 2.7)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                }
                 return this.entityManager.addEntity({
                     tag: 'dirt',
                     components: [
@@ -112,10 +131,19 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileDirtSprite, 18, 16, 2, 1)
+                        new CSprite(this.tileDirtSprite, 18, 18, 2, 1, 8, 5)
                     ]
                 })
             case 'stone':
+                if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + 3)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                } else if(props.y > (120 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + .4)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                }
                 return this.entityManager.addEntity({
                     tag: 'stone',
                     components: [
@@ -123,10 +151,15 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileStoneSprite, 18, 16, 2, 1)
+                        new CSprite(this.tileStoneSprite, 18, 18, 2, 1, 8, 5)
                     ]
                 })
             case 'ruby':
+                if(props.y < (120 * BLOCKSIZE)) {
+                    props.value = Math.round(Math.random() + .4)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                }
                 return this.entityManager.addEntity({
                     tag: 'stone',
                     components: [
@@ -134,7 +167,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileRubySprite, 18, 16, 2, 1)
+                        new CSprite(this.tileRubySprite, 18, 18, 2, 1, 8, 2)
                     ]
                 })
             default: 
@@ -160,24 +193,41 @@ class WorldScene extends Scene {
                     width: 32,
                     height: 32
                 }),
-                new CRigidBody({mass: 1}),
+                new CRigidBody(1),
                 new CSprite(this.tileDirtSprite, 16,16,2,1)
             ]
         })
     }
 
     #generateBackgrounds() {
-        this.entityManager.addEntity({
-            tag: 'background',
-            components: [
-                new CTransform({
-                    x: 0,
-                    y: 0,
-                    maxVelocity: 0
-                }),
-                new CSprite(this.caveBackground, 320, 180, 5, 1)
-            ]
-        })
+        let surfaceBackWidth = 512
+        let surfaceBackHeight = 240
+        let resizeVal = 2
+
+        for(let i = 0; i < 2; i++) {
+            this.entityManager.addEntity({
+                tag: 'background_layer_0',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * resizeVal),
+                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
+                        maxVelocity: 0
+                    }),
+                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                ]
+            })
+            this.entityManager.addEntity({
+                tag: 'background_layer_1',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * resizeVal),
+                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
+                        maxVelocity: 0
+                    }),
+                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                ]
+            })
+        }
     }
 
     /**
@@ -187,7 +237,7 @@ class WorldScene extends Scene {
      */
     #updateTileState() {
         this.entityManager.getEntities.forEach(e => {
-            if(e.tag !== 'player' && e.tag !== 'background') {
+            if(e.tag !== 'player' && !e.tag.includes('background')) {
                 if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
@@ -212,7 +262,8 @@ class WorldScene extends Scene {
 
         let posX = e.components.transform.x / BLOCKSIZE
         let posY = e.components.transform.y / BLOCKSIZE
-        if(this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
+        if ( posY === 0 || 
+            this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
             this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||
             this.terrainMap[clamp(posY-1,0,posY)][posX] === 'air' ||
             this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX] === 'air') {

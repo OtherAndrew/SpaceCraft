@@ -6,15 +6,30 @@
     <title>MFV - Engine Test</title>
   
     <script type="text/javascript" src="./assetmanager.js"></script>
-    <script type="text/javascript" src="./systems.js"></script>
     <script type ="text/javascript" src="./blueprints.js"></script>
-    <script type="text/javascript" src="./timer.js"></script>
+    <script type="text/javascript" src="src/utils/timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./scene.js"></script>
-    <script type="text/javascript" src="./WorldScene.js"></script>
-    <script type="text/javascript" src="./util.js"></script>
+    <script type="text/javascript" src="src/scenes/WorldScene.js"></script>
+    <script type="text/javascript" src="src/utils/util.js"></script>
     <script type="text/javascript" src="./states.js"></script>
-    <script type="text/javascript" src="./components.js"></script>
+
+<!--    entities-->
+    <script type="text/javascript" src="./src/entities/RenderBox.js"></script>
+<!--    components-->
+    <script type="text/javascript" src="./src/components/CBoxCollider.js"></script>
+    <script type="text/javascript" src="./src/components/CInput.js"></script>
+    <script type="text/javascript" src="./src/components/CRigidBody.js"></script>
+    <script type="text/javascript" src="./src/components/CSprite.js"></script>
+    <script type="text/javascript" src="./src/components/CTransform.js"></script>
+
+<!--    systems-->
+    <script type="text/javascript" src="./src/systems/CollisionSystem.js"></script>
+    <script type="text/javascript" src="./src/systems/PlayerCollisionResolution.js"></script>
+    <script type="text/javascript" src="./src/systems/PlayerInputSystem.js"></script>
+    <script type="text/javascript" src="./src/systems/PlayerStateManager.js"></script>
+    <script type="text/javascript" src="./src/systems/RenderSystem.js"></script>
+
     <script type="text/javascript" src="./entitymanager.js"></script>
     <script type="text/javascript" src="./perlin.js"></script>
     <script type="text/javascript" src="./camera.js"></script>
