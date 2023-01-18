@@ -12,8 +12,6 @@ class GameEngine {
 
         //Scenes
         this.terrainDemoScene = new WorldScene()
-        this.hud = new HUD(this);
-
         // Information on the input
         this.click = null;
         this.mouse = null;
@@ -110,7 +108,6 @@ class GameEngine {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.terrainDemoScene.draw(this.ctx)
         //this.animationDemoScene.draw(this.ctx)
-        this.hud.draw(this.ctx); // UI ON TOP OF EVERYTHING
         if(this.currentTime > 1) {
             this.currentTime = 0
             this.frames = this.renderedFrames
@@ -126,10 +123,8 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        if (!this.uiActive) // PAUSE GAME WHEN UI IS OPEN
-            this.terrainDemoScene.update(this.keys);
+        this.terrainDemoScene.update(this.uiActive, this.keys);
         //this.animationDemoScene.update(this.keys, this.clockTick)
-        this.hud.update(this.uiActive); // UI LAST AT ALL TIMES
     };
 
     loop() {

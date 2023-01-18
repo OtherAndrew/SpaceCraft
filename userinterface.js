@@ -1,6 +1,6 @@
 class HUD {
-    constructor(game) {
-        Object.assign(this, {game, open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
+    constructor(scene) {
+        Object.assign(this, {scene, open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
         // this.entities = new Array(16).fill(null);
         this.containers = [];
 

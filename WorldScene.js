@@ -21,7 +21,7 @@ class WorldScene extends Scene {
     /**
      * Initializes this class' terrain entities
      * Player and player movement are for testing purposes
-     * @param {Image} sprite 
+     * @param assets
      */
     init(assets) {
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
@@ -35,19 +35,22 @@ class WorldScene extends Scene {
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
+        this.hud = new HUD(this);
     }
 
-    update(keys) {
-        this.entityManager.update()
-        this.playerMovement.update(keys)
-        this.camera.update()
-        this.renderBox.update()
-        this.#updateTileState()
+    update(uiActive, keys) {
+        if (!uiActive) {
+            this.entityManager.update()
+            this.playerMovement.update(keys)
+            this.camera.update()
+            this.renderBox.update()
+            this.#updateTileState()
+        }
+        this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
 
     draw(ctx) {
         this.renderSystem.draw(ctx, this.camera)
-        
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
@@ -55,6 +58,7 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
+        this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
     }
 
     /**
