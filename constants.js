@@ -106,6 +106,8 @@ const RUBY_GEN_STATS = {
 
 //Backgrounds
 const BACKGROUND_CAVE_PATH = './assets/backgrounds/cave_background.png'
+const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
+const BACKGROUND_SURFACE_1 ='./assets/backgrounds/surface_background_1.png'
 
 
 
@@ -127,6 +129,7 @@ const TERRAIN_ASSETS_ARRAY = [
     TILES_TIN_PATH,
     TILES_TITANITE_PATH,
     TILES_TUNGSTEN_PATH,
-    BACKGROUND_CAVE_PATH
+    BACKGROUND_SURFACE_0,
+    BACKGROUND_SURFACE_1
 ]
 

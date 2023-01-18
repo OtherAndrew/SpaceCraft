@@ -24,10 +24,17 @@ class WorldScene extends Scene {
      * @param {Image} sprite 
      */
     init(assets) {
+        //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
         this.tileStoneSprite = assets[TILES_STONE_PATH]
         this.tileRubySprite = assets[TILES_RUBY_PATH]
         this.caveBackground = assets[BACKGROUND_CAVE_PATH]
+
+        //background
+        this.backgroundSurface0 = assets[BACKGROUND_SURFACE_0]
+        this.backgroundSurface1 = assets[BACKGROUND_SURFACE_1]
+
+
         this.#generateBackgrounds()
         this.#generateNoiseMap()
         this.#generateTerrain()
@@ -193,17 +200,34 @@ class WorldScene extends Scene {
     }
 
     #generateBackgrounds() {
-        this.entityManager.addEntity({
-            tag: 'background',
-            components: [
-                new CTransform({
-                    x: 0,
-                    y: 0,
-                    maxVelocity: 0
-                }),
-                new CSprite(this.caveBackground, 320, 180, 5, 1)
-            ]
-        })
+        let surfaceBackWidth = 512
+        let surfaceBackHeight = 240
+        let resizeVal = 2
+
+        for(let i = 0; i < 2; i++) {
+            this.entityManager.addEntity({
+                tag: 'background_layer_0',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * resizeVal),
+                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
+                        maxVelocity: 0
+                    }),
+                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                ]
+            })
+            this.entityManager.addEntity({
+                tag: 'background_layer_1',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * resizeVal),
+                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
+                        maxVelocity: 0
+                    }),
+                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                ]
+            })
+        }
     }
 
     /**
@@ -213,7 +237,7 @@ class WorldScene extends Scene {
      */
     #updateTileState() {
         this.entityManager.getEntities.forEach(e => {
-            if(e.tag !== 'player' && e.tag !== 'background') {
+            if(e.tag !== 'player' && !e.tag.includes('background')) {
                 if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&

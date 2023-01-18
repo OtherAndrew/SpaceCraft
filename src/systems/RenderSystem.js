@@ -9,6 +9,14 @@ class RenderSystem {
             if(e.isDrawable) {
                 if(e.components.transform && e.components.sprite) {
                     let sprite = e.components.sprite
+                    let xSpeed = camera.x
+                    let ySpeed = camera.y
+                    if(e.tag === 'background_layer_0') {
+                        xSpeed = camera.x * .05
+                    } else if(e.tag === 'background_layer_1') {
+                        xSpeed = camera.x * .08
+                    }
+
                     try {
                         ctx.drawImage(
                             sprite.sprite,
@@ -16,15 +24,14 @@ class RenderSystem {
                             sprite.frameY * sprite.spriteHeight,
                             sprite.spriteWidth,
                             sprite.spriteHeight,
-                            e.components.transform.x - camera.x,
-                            e.components.transform.y - camera.y,
+                            e.components.transform.x - xSpeed,
+                            e.components.transform.y - ySpeed,
                             sprite.drawWidth,
                             sprite.drawHeight
                         )
                     } catch (error) {
                         console.log(e, 'failed to draw.')
                     }
-
                 }
             }
         })
