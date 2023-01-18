@@ -47,6 +47,7 @@ class WorldScene extends Scene {
 
     draw(ctx) {
         this.renderSystem.draw(ctx, this.camera)
+        /*
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
@@ -54,6 +55,7 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
+        */
     }
 
     /**
@@ -89,7 +91,8 @@ class WorldScene extends Scene {
                 r.push(this.#createBlock({
                     x: x * BLOCKSIZE,
                     y: y * BLOCKSIZE,
-                    value: val
+                    value: val,
+                    recurse: true
                 }).tag)
             })
             this.terrainMap.push(r)
@@ -105,6 +108,15 @@ class WorldScene extends Scene {
     #createBlock(props) {
         switch(this.blockValues[props.value]) {
             case 'dirt':
+                if(props.y < (50 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + 3.7)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                } else if (props.y > (120 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + 2.7)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                }
                 return this.entityManager.addEntity({
                     tag: 'dirt',
                     components: [
@@ -112,10 +124,19 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileDirtSprite, 18, 16, 2, 1)
+                        new CSprite(this.tileDirtSprite, 18, 18, 2, 1, 8, 5)
                     ]
                 })
             case 'stone':
+                if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + 3)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                } else if(props.y > (120 * BLOCKSIZE) && props.recurse) {
+                    props.value = Math.round(Math.random() + .4)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                }
                 return this.entityManager.addEntity({
                     tag: 'stone',
                     components: [
@@ -123,10 +144,15 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileStoneSprite, 18, 16, 2, 1)
+                        new CSprite(this.tileStoneSprite, 18, 18, 2, 1, 8, 5)
                     ]
                 })
             case 'ruby':
+                if(props.y < (120 * BLOCKSIZE)) {
+                    props.value = Math.round(Math.random() + .4)
+                    props.recurse = false
+                    return this.#createBlock(props)
+                }
                 return this.entityManager.addEntity({
                     tag: 'stone',
                     components: [
@@ -134,7 +160,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileRubySprite, 18, 16, 2, 1)
+                        new CSprite(this.tileRubySprite, 18, 18, 2, 1, 8, 2)
                     ]
                 })
             default: 
@@ -212,7 +238,8 @@ class WorldScene extends Scene {
 
         let posX = e.components.transform.x / BLOCKSIZE
         let posY = e.components.transform.y / BLOCKSIZE
-        if(this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
+        if ( posY === 0 || 
+            this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
             this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||
             this.terrainMap[clamp(posY-1,0,posY)][posX] === 'air' ||
             this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX] === 'air') {
