@@ -1,21 +1,21 @@
 class HUD {
-    constructor() {
-        Object.assign(this, {open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
+    constructor(game) {
+        Object.assign(this, {game, open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
         // this.entities = new Array(16).fill(null);
-        this.entities = [];
+        this.containers = [];
 
         let i = 0;
         for (let row = 0; row < 4; row++) {
             for (let col = 0; col < 4; col++) {
-                this.entities.push(new Container(i++, this.x + (this.s * col), this.y - (this.s * row)))
+                this.containers.push(new Container(i++, this.x + (this.s * col), this.y - (this.s * row)))
             }
         }
 
         this.entitiesCount = new Map();
-
-        this.entities[0].item = new block1();
-
-        console.log(this.entities);
+        this.containers[0].item = new block1();
+        this.containers[1].item = new block2();
+        this.containers[2].item = new block3();
+        console.log(this.containers);
 
         // for testing HUD vs Inventory mode
         // this.open = true;
@@ -44,15 +44,15 @@ class HUD {
         // rough first draft code, needs refactor
         let firstNull = null;
         for (let i = 0; i < 16; i++) {
-            if (this.entities[i] && entity.constructor === this.entities[i].constructor) {
+            if (this.containers[i] && entity.constructor === this.containers[i].constructor) {
                 this.increment(i);
                 return true;
-            } else if (firstNull == null && this.entities[i] == null) {
+            } else if (firstNull == null && this.containers[i] == null) {
                 firstNull = i;
             }
         }
         if (firstNull != null) {
-            this.entities[firstNull] = entity;
+            this.containers[firstNull] = entity;
             this.increment(firstNull);
             return true;
         } else {
@@ -72,12 +72,12 @@ class HUD {
     // called by ent place system to remove from inven
     // returns ent to be re-added to engine
     remove(index) {
-        let ent = this.entities[index];
+        let ent = this.containers[index];
         if (ent) {
             if (this.decrement(index)) {
                 return structuredClone(ent);
             } else {
-                this.entities[index] = null;
+                this.containers[index] = null;
                 return ent;
             }
         }
@@ -99,9 +99,9 @@ class HUD {
 
     // called to swap ent locations
     swap(from, to) {
-        let placeholder = this.entities[from];
-        this.entities[from] = this.entities[to];
-        this.entities[to] = placeholder;
+        let placeholder = this.containers[from];
+        this.containers[from] = this.containers[to];
+        this.containers[to] = placeholder;
 
         let countF = this.entitiesCount.get(from);
         let countT = this.entitiesCount.get(to);
@@ -119,18 +119,19 @@ class HUD {
 
     // called to delete ent entirely from inven
     delete(index) {
-        this.entities[index] = null;
+        this.containers[index] = null;
         this.entitiesCount.delete(index);
         // disable it completely
         // ent = null;
     };
 
-    update() {
-
+    update(uiActive) {
+        this.open = uiActive;
     };
 
     draw(ctx) {
         // draw backdrop of inventory
+        ctx.save();
         let rowCount = 5;
         if (!this.open) {
             ctx.globalAlpha = 0.7;
@@ -139,13 +140,13 @@ class HUD {
         let i = 0;
         for (let row = 0; row < rowCount; row++) {
             for (let col = 0; col < 4; col++) {
-                if (this.entities[i]) {
-                    this.entities[i].draw(ctx);
+                if (this.containers[i]) {
+                    this.containers[i].draw(ctx);
                     i++;
                 }
             }
         }
-        ctx.globalAlpha = 1;
+        ctx.restore();
     };
 }
 
@@ -157,6 +158,7 @@ class Container extends Path2D {
         this.midy = this.y + 21;
         this.item = null;
         this.itemCount = 0;
+        this.selected = false;
         this.roundRect(this.x, this.y, 42, 42, 15)
 
         // canvas.addEventListener("click", e => {
@@ -170,10 +172,6 @@ class Container extends Path2D {
         // });
     }
 
-    update() {
-
-    }
-
     draw(ctx) {
         ctx.fillStyle = "blue";
         ctx.strokeStyle = "white";
@@ -182,7 +180,11 @@ class Container extends Path2D {
         ctx.stroke(this);
         // this.roundRect(ctx, this.x, this.y, 42, 42, 15);
         if (this.item) {
-            this.item.draw(ctx, this.midx - this.item.width / 2, this.midy - this.item.height / 2);
+            let itemImage = ASSET_MANAGER.getAsset(this.item.sprite);
+            let shrunkX = itemImage.width * 0.65;
+            let shrunkY = itemImage.height * 0.65;
+            ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
+            // this.item.draw(ctx, this.midx - this.item.width / 2, this.midy - this.item.height / 2);
         }
     }
 

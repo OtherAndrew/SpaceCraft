@@ -12,11 +12,13 @@ class GameEngine {
 
         //Scenes
         this.terrainDemoScene = new WorldScene()
+        this.hud = new HUD(this);
 
         // Information on the input
         this.click = null;
         this.mouse = null;
         this.wheel = null;
+        this.uiActive = false;
         this.keys = {};
 
         // Options and the Details
@@ -45,8 +47,8 @@ class GameEngine {
 
     startInput() {
         const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
+            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left - 1,
+            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top - 1
         });
         
         this.ctx.canvas.addEventListener("mousemove", e => {
@@ -79,16 +81,36 @@ class GameEngine {
             this.rightclick = getXandY(e);
         });
 
+        /* KEY LISTENERS FOR:
+         I    : INVENTORY
+         C    : CRAFT
+         ESC  : EXIT UI */
+        const that = this;
+        this.ctx.canvas.addEventListener("keyup", e => {
+                switch (e.code) {
+                    case "KeyI":
+                        that.uiActive = true;
+                        console.log(that.uiActive);
+                        break;
+                    case "KeyC":
+                        that.uiActive = true;
+                        console.log(that.uiActive);
+                        break;
+                    case "Escape":
+                        that.uiActive = false;
+                        console.log(that.uiActive);
+                        break;
+                }
+            }, false);
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
 
-
     draw() {
-
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.terrainDemoScene.draw(this.ctx)
         //this.animationDemoScene.draw(this.ctx)
+        this.hud.draw(this.ctx); // UI ON TOP OF EVERYTHING
         if(this.currentTime > 1) {
             this.currentTime = 0
             this.frames = this.renderedFrames
@@ -104,8 +126,10 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.keys)
+        if (!this.uiActive) // PAUSE GAME WHEN UI IS OPEN
+            this.terrainDemoScene.update(this.keys);
         //this.animationDemoScene.update(this.keys, this.clockTick)
+        this.hud.update(this.uiActive); // UI LAST AT ALL TIMES
     };
 
     loop() {

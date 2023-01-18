@@ -34,9 +34,6 @@ class WorldScene extends Scene {
         this.#createPlayer()
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
-
-        this.hud = new HUD();
-
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
     }
 
@@ -46,8 +43,6 @@ class WorldScene extends Scene {
         this.camera.update()
         this.renderBox.update()
         this.#updateTileState()
-        
-        this.hud.update();
     }
 
     draw(ctx) {
@@ -60,8 +55,6 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
-
-        this.hud.draw(ctx);
     }
 
     /**
