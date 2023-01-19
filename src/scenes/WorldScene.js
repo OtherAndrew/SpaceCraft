@@ -140,7 +140,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CStaticSprite(this.tileDirtSprite, 18, 18, 2, 8, 5)
+                        new CSprite(this.tileDirtSprite, 18, 18, 2, 1, 8, 5)
                     ]
                 })
             case 'stone':
@@ -160,7 +160,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CStaticSprite(this.tileStoneSprite, 18, 18, 2, 8, 5)
+                        new CSprite(this.tileStoneSprite, 18, 18, 2, 1, 8, 5)
                     ]
                 })
             case 'ruby':
@@ -176,7 +176,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CStaticSprite(this.tileRubySprite, 18, 18, 2, 8, 2)
+                        new CSprite(this.tileRubySprite, 18, 18, 2, 1, 8, 2)
                     ]
                 })
             default: 
@@ -188,8 +188,7 @@ class WorldScene extends Scene {
      * A player entity for testing purposes
      */
     #createPlayer() {
-        this.player = this.entityManager.addEntity(
-            new Player(this.playerSprite, 0.25));
+        this.player = this.entityManager.addEntity(new Player(this.playerSprite, 0.25));
     }
 
     #generateBackgrounds() {
@@ -206,7 +205,7 @@ class WorldScene extends Scene {
                         y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
                         maxVelocity: 0
                     }),
-                    new CStaticSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, resizeVal)
+                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
                 ]
             })
             this.entityManager.addEntity({
@@ -217,7 +216,7 @@ class WorldScene extends Scene {
                         y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
                         maxVelocity: 0
                     }),
-                    new CStaticSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, resizeVal)
+                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
                 ]
             })
         }

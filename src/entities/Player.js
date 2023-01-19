@@ -9,7 +9,7 @@ class Player {
         this.tag = "player";
         this.scale = scale;
         this.components = [
-            new CStaticSprite(sprite, sWidth, sHeight, scale, 0, 1),
+            new CSprite(sprite, sWidth, sHeight, scale, 30),
             new CTransform({
                 x: positionX,
                 y: positionY,
