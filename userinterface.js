@@ -108,7 +108,7 @@ class Container extends Path2D {
         this.item = null;
         this.count = 0;
         this.selected = false;
-        this.roundRect(this.x, this.y, 42, 42, 15)
+        // this.roundRect(this.x, this.y, 42, 42, 15)
 
         // canvas.addEventListener("click", e => {
         //     if (ctx.isPointInPath(this, e.offsetX, e.offsetY)) {
@@ -122,12 +122,12 @@ class Container extends Path2D {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "blue";
-        ctx.strokeStyle = "white";
-        ctx.lineWidth="2";
-        ctx.fill(this);
-        ctx.stroke(this);
-        // this.roundRect(ctx, this.x, this.y, 42, 42, 15);
+        // ctx.fillStyle = "blue";
+        // ctx.strokeStyle = "white";
+        // ctx.lineWidth="2";
+        // ctx.fill(this);
+        // ctx.stroke(this);
+        this.roundRect(ctx, this.x, this.y, 42, 42, 15);
         if (this.item) {
             let itemImage = ASSET_MANAGER.getAsset(this.item.sprite);
             let shrunkX = itemImage.width * 0.65;
@@ -142,25 +142,25 @@ class Container extends Path2D {
     }
 
     // credit: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
-    // roundRect(ctx, x, y, w, h, radius) {
-    //     let r = x + w;
-    //     let b = y + h;
-    //     ctx.beginPath();
-    //     ctx.fillStyle = "blue";
-    //     ctx.strokeStyle = "white";
-    //     ctx.lineWidth="2";
-    //     ctx.moveTo(x+radius, y);
-    //     ctx.lineTo(r-radius, y);
-    //     ctx.quadraticCurveTo(r, y, r, y+radius);
-    //     ctx.lineTo(r, y+h-radius);
-    //     ctx.quadraticCurveTo(r, b, r-radius, b);
-    //     ctx.lineTo(x+radius, b);
-    //     ctx.quadraticCurveTo(x, b, x, b-radius);
-    //     ctx.lineTo(x, y+radius);
-    //     ctx.quadraticCurveTo(x, y, x+radius, y);
-    //     ctx.fill();
-    //     ctx.stroke();
-    // };
+    roundRect(ctx, x, y, w, h, radius) {
+        let r = x + w;
+        let b = y + h;
+        ctx.beginPath();
+        ctx.fillStyle = "blue";
+        ctx.strokeStyle = "white";
+        ctx.lineWidth="2";
+        ctx.moveTo(x+radius, y);
+        ctx.lineTo(r-radius, y);
+        ctx.quadraticCurveTo(r, y, r, y+radius);
+        ctx.lineTo(r, y+h-radius);
+        ctx.quadraticCurveTo(r, b, r-radius, b);
+        ctx.lineTo(x+radius, b);
+        ctx.quadraticCurveTo(x, b, x, b-radius);
+        ctx.lineTo(x, y+radius);
+        ctx.quadraticCurveTo(x, y, x+radius, y);
+        ctx.fill();
+        ctx.stroke();
+    };
 }
 
 // Testing classes
