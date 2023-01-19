@@ -11,7 +11,7 @@ class GameEngine {
         this.frames = 0
 
         //Scenes
-        this.terrainDemoScene = new WorldScene()
+        this.terrainDemoScene = new WorldScene(this)
         // Information on the input
         this.click = null;
         this.mouse = null;
@@ -26,7 +26,6 @@ class GameEngine {
     };
 
     init(ctx, assets) {
-
         this.ctx = ctx;
         this.terrainDemoScene.init(assets)
         console.log(assets)
@@ -79,6 +78,12 @@ class GameEngine {
             this.rightclick = getXandY(e);
         });
 
+        this.ctx.canvas.addEventListener("keydown", e => {
+            if (e.code === "Tab") {  // PREVENT TABBING OUT
+                e.preventDefault();
+            }
+        });
+
         /* KEY LISTENERS FOR:
          I    : INVENTORY
          C    : CRAFT
@@ -86,16 +91,16 @@ class GameEngine {
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
                 switch (e.code) {
-                    case "KeyI":
-                        that.uiActive = true;
-                        console.log(that.uiActive);
-                        break;
-                    case "KeyC":
-                        that.uiActive = true;
-                        console.log(that.uiActive);
-                        break;
+                    // case "KeyQ":
+                    //     that.uiActive = !that.uiActive;
+                    //     console.log(that.uiActive);
+                    //     break;
                     case "Escape":
                         that.uiActive = false;
+                        console.log(that.uiActive);
+                        break;
+                    case "Tab":
+                        that.uiActive = !that.uiActive;
                         console.log(that.uiActive);
                         break;
                 }

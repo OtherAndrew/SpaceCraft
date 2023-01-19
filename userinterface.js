@@ -1,71 +1,41 @@
 class HUD {
     constructor(scene) {
         Object.assign(this, {scene, open: false, x: 420, y: 690, d: 42, r: 15, s: 47});
-        // this.entities = new Array(16).fill(null);
+        this.game = this.scene.game;
         this.containers = [];
-
         let i = 0;
         for (let row = 0; row < 4; row++) {
             for (let col = 0; col < 4; col++) {
                 this.containers.push(new Container(i++, this.x + (this.s * col), this.y - (this.s * row)))
             }
         }
+        this.fillCount = 0;
 
-        this.entitiesCount = new Map();
-        this.containers[0].item = new block1();
-        this.containers[1].item = new block2();
-        this.containers[2].item = new block3();
         console.log(this.containers);
-
-        // for testing HUD vs Inventory mode
-        // this.open = true;
-
-        // for testing Ent list
-        // this.add(new block3());
-        // this.add(new block2());
-        // this.add(new block3());
-        // this.add(new plant1());
-        // this.remove(0);
-        // this.add(new block1());
-        // this.remove(0);
-        // this.add(new block3());
-        // this.add(new block3());
-        // this.swap(0, 10);
-        // this.delete(15);
-
-        // console.log(this);
+        console.log("Fill count: %d", this.fillCount);
     };
 
     // called by ent remove system to add to inven
     add(entity) {
-        if (this.entitiesCount.size === 16) {
+        if (this.fillCount === 16) {
             return false;
         }
-        // rough first draft code, needs refactor
         let firstNull = null;
         for (let i = 0; i < 16; i++) {
-            if (this.containers[i] && entity.constructor === this.containers[i].constructor) {
-                this.increment(i);
+            if (this.containers[i].item && entity.tag === this.containers[i].item.tag) {
+                this.containers[i].count++;
                 return true;
-            } else if (firstNull == null && this.containers[i] == null) {
-                firstNull = i;
+            } else if (firstNull == null && this.containers[i].item == null) {
+                firstNull = this.containers[i];
             }
         }
         if (firstNull != null) {
-            this.containers[firstNull] = entity;
-            this.increment(firstNull);
+            firstNull.item = entity;
+            firstNull.count++;
+            this.fillCount++;
             return true;
         } else {
             return false;
-        }
-    };
-
-    // called by add to stack ents of a type in inven
-    increment(index) {
-        if (this.entitiesCount.has(index)) {
-            this.entitiesCount.set(index, this.entitiesCount.get(index) + 1);
-        } else {
-            this.entitiesCount.set(index, 1);
         }
     };
 
@@ -73,57 +43,36 @@ class HUD {
     // returns ent to be re-added to engine
     remove(index) {
         let ent = this.containers[index];
-        if (ent) {
-            if (this.decrement(index)) {
-                return structuredClone(ent);
+        if (ent.item) {
+            if (--ent.count) {
+                return structuredClone(ent.item);
             } else {
-                this.containers[index] = null;
-                return ent;
+                let item = ent.item;
+                ent.item = null;
+                this.fillCount--;
+                return item;
             }
         }
-    };
-
-    // called by remove to remove ents from a stack in inven
-    // returns remaining count
-    decrement(index) {
-        if (this.entitiesCount.has(index)) {
-            var count = this.entitiesCount.get(index) - 1;
-            if (count) {
-                this.entitiesCount.set(index, count);
-            } else {
-                this.entitiesCount.delete(index);
-            }
-        }
-        return count;
     };
 
     // called to swap ent locations
     swap(from, to) {
-        let placeholder = this.containers[from];
-        this.containers[from] = this.containers[to];
-        this.containers[to] = placeholder;
+        let placeholder = this.containers[from].item;
+        this.containers[from].item = this.containers[to].item;
+        this.containers[to].item = placeholder;
 
-        let countF = this.entitiesCount.get(from);
-        let countT = this.entitiesCount.get(to);
-        if (countF && countT) {
-            this.entitiesCount.set(from, countT);
-            this.entitiesCount.set(to, countF);
-        } else if (countF) {
-            this.entitiesCount.delete(from);
-            this.entitiesCount.set(to, countF);
-        } else if (countT) {
-            this.entitiesCount.delete(to);
-            this.entitiesCount.set(to, countT);
-        }
+        placeholder = this.containers[from].count;
+        this.containers[from].count = this.containers[to].count;
+        this.containers[to].count = placeholder;
     };
 
     // called to delete ent entirely from inven
-    delete(index) {
-        this.containers[index] = null;
-        this.entitiesCount.delete(index);
-        // disable it completely
-        // ent = null;
-    };
+    // delete(index) {
+    //     this.containers[index] = null;
+    //     this.entitiesCount.delete(index);
+    //     // disable it completely
+    //     // ent = null;
+    // };
 
     update(uiActive) {
         this.open = uiActive;
@@ -157,16 +106,16 @@ class Container extends Path2D {
         this.midx = this.x + 21;
         this.midy = this.y + 21;
         this.item = null;
-        this.itemCount = 0;
+        this.count = 0;
         this.selected = false;
         this.roundRect(this.x, this.y, 42, 42, 15)
 
         // canvas.addEventListener("click", e => {
         //     if (ctx.isPointInPath(this, e.offsetX, e.offsetY)) {
-        //         ctx.fillSytle = "green";
+        //         ctx.fillStyle = "green";
         //         ctx.fill(this);
         //     } else {
-        //         ctx.fillSytle = "blue";
+        //         ctx.fillStyle = "blue";
         //         ctx.fill(this);
         //     }
         // });
@@ -184,7 +133,11 @@ class Container extends Path2D {
             let shrunkX = itemImage.width * 0.65;
             let shrunkY = itemImage.height * 0.65;
             ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
-            // this.item.draw(ctx, this.midx - this.item.width / 2, this.midy - this.item.height / 2);
+            ctx.save();
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = "white";
+            ctx.fillText(this.count, this.x+8, this.y + 33);
+            ctx.restore();
         }
     }
 
@@ -227,7 +180,7 @@ class Block {
 class block1 extends Block {
     constructor() {
         super();
-        this.type = "rock";
+        this.tag = "rock";
         this.sprite = "./assets/sprites/b1.png";
     };
 }
@@ -235,7 +188,7 @@ class block1 extends Block {
 class block2 extends Block {
     constructor() {
         super();
-        this.type = "sand";
+        this.tag = "sand";
         this.sprite = "./assets/sprites/b2.png";
     };
 }
@@ -243,7 +196,7 @@ class block2 extends Block {
 class block3 extends Block {
     constructor() {
         super();
-        this.type = "dirt";
+        this.tag = "dirt";
         this.sprite = "./assets/sprites/b3.png";
     };
 }

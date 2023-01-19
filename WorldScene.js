@@ -1,7 +1,8 @@
 
 class WorldScene extends Scene {
-    constructor() {
+    constructor(game) {
         super()
+        this.game = game;
         //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
         this.blockValues = [
