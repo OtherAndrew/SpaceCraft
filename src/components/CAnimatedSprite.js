@@ -20,29 +20,3 @@ const CAnimatedSprite = function CAnimatedSprite(spriteSheet, width, height, fps
     return this;
 };
 CAnimatedSprite.prototype.name = 'animatedSprite';
-
-    /**
-     * Adds animation to animated sprite component
-     * @param state                Corresponding state for animation
-     * @param direction            Direction the sprite is facing
-     * @param {number} startFrameX X pixel position of animation start frame
-     * @param {number} startFrameY Y pixel position of animation start frame
-     * @param {number} frameCount  Number of frames of animation
-     * @param {number} width       Width of sprite (if different from default width)
-     * @param {number} height      Height of sprite (if different from default height)
-     * @returns {Animation}        Animation object from parameters
-     */
-    addAnimation(state, direction, startFrameX, startFrameY, frameCount,
-                 width = this.width, height = this.height) {
-        const animation = new Animation({
-            spriteSheet: this.spriteSheet,
-            width: width,
-            height: height,
-            frameCount: frameCount,
-            startFrameX: startFrameX,
-            startFrameY: startFrameY,
-            fps: this.fps
-        });
-        this.animations[state][direction] = animation;
-        return animation;
-    };

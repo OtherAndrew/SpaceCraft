@@ -188,31 +188,7 @@ class WorldScene extends Scene {
      * A player entity for testing purposes
      */
     #createPlayer() {
-        this.player = this.entityManager.addEntity({
-            tag:'player',
-            components: [
-                new CSprite(
-                    this.playerSprite,
-                    200,
-                    250,
-                    0.25,
-                    30
-                ),
-                new CTransform({
-                    x: WIDTH / 2,
-                    y: HEIGHT * 2 / 3,
-                    maxVelocity: 100
-                }),
-                new CBoxCollider({
-                    x: 100,
-                    y: 100,
-                    width: BLOCKSIZE,
-                    height: BLOCKSIZE
-                }),
-                new CRigidBody(1),
-                new CInput()
-            ]
-        })
+        this.player = this.entityManager.addEntity(new Player(this.playerSprite, 0.25));
     }
 
     #generateBackgrounds() {
