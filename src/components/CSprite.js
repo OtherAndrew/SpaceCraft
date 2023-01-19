@@ -28,9 +28,9 @@ const CSprite = function CSprite(sprite, width, height,
     this.drawHeight = this.spriteHeight * scale;
     this.frameX = frameX;
     this.frameY = frameY;
-    this.frameInterval = 1 / fps;
+    this.frameDuration = 1 / fps;
     this.frameCount = frameCount;
-    this.frameTimer = 0;
-    return this
+    this.elapsedTime = 0;
+    return this;
 };
 CSprite.prototype.name = 'sprite';

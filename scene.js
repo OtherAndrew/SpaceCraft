@@ -8,6 +8,7 @@ class Scene {
     constructor() {
         this.entityManager = new EntityManager()
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
+        this.playerStateManager = new PlayerStateManager()
     }
 
     update() {

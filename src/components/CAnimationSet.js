@@ -8,7 +8,7 @@
 class CAnimationSet {
 
     /**
-     * Initializes Animation Set
+     * Initializes AnimationOld Set
      * @param {ImageBitmap} spriteSheet The sprite sheet to use
      * @param {number} width            Default sprite width
      * @param {number} height           Default sprite height
@@ -30,11 +30,11 @@ class CAnimationSet {
      * @param {number} frameCount  Number of frames of animation
      * @param {number} width       Width of sprite (if different from default width)
      * @param {number} height      Height of sprite (if different from default height)
-     * @returns {Animation}        Animation object from parameters
+     * @returns {AnimationOld}        AnimationOld object from parameters
      */
     addAnimation(state, direction, startFrameX, startFrameY, frameCount,
                           width = this.width, height = this.height) {
-        const animation = new Animation({
+        const animation = new AnimationOld({
             spriteSheet: this.spriteSheet,
             width: width,
             height: height,

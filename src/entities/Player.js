@@ -8,10 +8,10 @@ class Player {
 
         this.tag = "player";
         this.scale = scale;
+        this.states = [];
         this.components = [
             new CSprite(sprite, sWidth, sHeight, {
                 scale: scale,
-                frameY: 1,
                 fps: 30
             }),
             new CTransform({
@@ -22,11 +22,12 @@ class Player {
             new CBoxCollider({
                 x: positionX,
                 y: positionY,
-                width: BLOCKSIZE,
-                height: BLOCKSIZE
+                width: sWidth * scale,
+                height: sHeight * scale
             }),
             new CRigidBody(1),
-            new CInput()
+            new CInput(),
+            new CState()
         ];
 
         return this;

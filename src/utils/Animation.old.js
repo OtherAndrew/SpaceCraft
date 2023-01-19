@@ -4,10 +4,10 @@
  * @author Andrew Nguyen
  * @version 1/18/23
  */
-class Animation {
+class AnimationOld {
 
     /**
-     * Initializes Animation
+     * Initializes AnimationOld
      * @param {ImageBitmap} spriteSheet The sprite sheet to use
      * @param {number} width            The sprite width
      * @param {number} height           The sprite height
@@ -16,7 +16,7 @@ class Animation {
      * @param {number} startFrameY      The Y pixel position of the start frame on the sprite sheet, 0 by default
      * @param {boolean} loop            If the animation should loop, false by default
      * @param {number} fps              Frames per second, 60 by default
-     * @return {Animation}              This Animation object.
+     * @return {AnimationOld}              This AnimationOld object.
      */
     constructor({ spriteSheet, width, height, frameCount,
                 startFrameX = 0, startFrameY = 0, loop = false, fps = 60}) {

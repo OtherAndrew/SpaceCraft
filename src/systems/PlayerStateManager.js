@@ -2,52 +2,58 @@
 class PlayerStateManager {
 
     constructor(input, player) {
-        this.input = input
-        this.playerSprite = player.components.sprite
-        this.playerState = player.components.state
+        this.input = input;
+        this.playerSprite = player.components.sprite;
+        this.playerState = player.components.state;
+        this.playerState.states["idleR"] = new Animation(0, 0, 1);
+        this.playerState.states["idleL"] = new Animation(1, 0, 1);
+        this.playerState.states["walkR"] = new Animation(0, 1, 12);
+        this.playerState.states["walkL"] = new Animation(1, 2, 12);
     }
 
-    addStates(props) {
-        props.forEach( o => {
-            this.playerState.states.set(o['tag'], o['state'])
-        })
-    }
+    // addAnimations(states) {
+    //     props.forEach( o => {
+    //         this.playerState.states.set(o['tag'], o['state'])
+    //     })
+    // }
+
+    // addAnimations() {
+    //     this.playerState.states["idleR"] = new Animation(0, 0, 1);
+    //     this.playerState.states["idleL"] = new Animation(1, 0, 1);
+    //     this.playerState.states["walkR"] = new Animation(0, 1, 12);
+    //     this.playerState.states["walkL"] = new Animation(1, 2, 12);
+    // }
 
     setState(s) {
-        this.playerState.currentState = s
-        this.enter(this.playerState.states.get(s))
+        this.playerState.currentState = s;
+        this.enter(this.playerState.states[s]);
     }
 
-    enter(state) {
-        this.playerSprite.frameX = state.frameX
-        this.playerSprite.frameY = state.frameY
-        this.playerSprite.frameCount = state.frameCount
+    enter(animation) {
+        this.playerSprite.frameX = animation.frameX;
+        this.playerSprite.frameY = animation.frameY;
+        this.playerSprite.frameCount = animation.frameCount;
     }
-    update(input, deltaTime) {
-        if(this.playerSprite.frameTimer > this.playerSprite.frameInterval) {
-            this.playerSprite.frameTimer = 0
-            if(this.playerSprite.frameX < this.playerSprite.frameCount) {
-                this.playerSprite.frameX++
-
+    update(input, tick) {
+        const animationTime = this.playerSprite.frameDuration * this.playerSprite.frameCount;
+        if (this.playerSprite.elapsedTime > animationTime) {
+            this.playerSprite.elapsedTime = 0;
+            if (this.playerSprite.frameX < this.playerSprite.frameCount) {
+                this.playerSprite.frameX++;
             } else {
-                this.playerSprite.frameX = 0
+                this.playerSprite.frameX = 0;
             }
         } else {
-            this.playerSprite.frameTimer += deltaTime
+            this.playerSprite.elapsedTime += tick;
         }
-        console.log(this.playerSprite.frameTimer)
-        if(input['d']) {
-            if(this.playerState.currentState !== 'Running') {
-                this.setState('Running')
-            }
-        } else if(input['a']) {
-            if(this.playerState.currentState !== 'Rolling') {
-                this.setState('Rolling')
-            }
+        console.log(this.playerSprite.elapsedTime);
+        if (input['d']) {
+            if (this.playerState.currentState !== 'walkR') this.setState('walkR');
+        } else if (input['a']) {
+            if (this.playerState.currentState !== 'walkL') this.setState('walkL');
         } else {
-            if(this.playerState.currentState !== 'Idle') {
-                this.setState('Idle')
-            }
+            if (this.playerState.currentState === 'walkR') this.setState('idleR');
+            if (this.playerState.currentState === 'walkL') this.setState('idleL');
         }
     }
 }

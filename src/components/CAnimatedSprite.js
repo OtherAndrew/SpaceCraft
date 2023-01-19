@@ -6,7 +6,7 @@
  */
 
 /**
- * Initializes Animation Set
+ * Initializes AnimationOld Set
  * @param {ImageBitmap} spriteSheet The sprite sheet to use
  * @param {number} width            Default sprite width
  * @param {number} height           Default sprite height
