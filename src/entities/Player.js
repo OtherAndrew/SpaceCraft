@@ -27,7 +27,7 @@ class Player {
             }),
             new CRigidBody(1),
             new CInput(),
-            new CState()
+            new CState(0, 0, 1, "idleR")
         ];
 
         return this;

@@ -47,6 +47,9 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this);
+
+
+        this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
     }
 
     update(uiActive, keys) {
@@ -55,6 +58,7 @@ class WorldScene extends Scene {
             this.playerMovement.update(keys)
             this.camera.update()
             this.renderBox.update()
+            this.playerStateManager.update(keys, this.game.clockTick)
             this.#updateTileState()
         }
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
