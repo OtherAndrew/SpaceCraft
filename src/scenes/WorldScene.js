@@ -25,6 +25,9 @@ class WorldScene extends Scene {
      * @param assets
      */
     init(assets) {
+        // entities
+        this.playerSprite = assets[PLAYER_PATH];
+
         //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
         this.tileStoneSprite = assets[TILES_STONE_PATH]
@@ -188,19 +191,26 @@ class WorldScene extends Scene {
         this.player = this.entityManager.addEntity({
             tag:'player',
             components: [
+                new CSprite(
+                    this.playerSprite,
+                    200,
+                    250,
+                    0.25,
+                    30
+                ),
                 new CTransform({
-                    x: 100,
-                    y: 100,
-                    maxVelocity: 10
+                    x: WIDTH / 2,
+                    y: HEIGHT * 2 / 3,
+                    maxVelocity: 100
                 }),
                 new CBoxCollider({
-                    x: this.width * .5 + 1,
-                    y: this.height * .5 + 1,
-                    width: 32,
-                    height: 32
+                    x: 100,
+                    y: 100,
+                    width: BLOCKSIZE,
+                    height: BLOCKSIZE
                 }),
                 new CRigidBody(1),
-                new CSprite(this.tileDirtSprite, 16,16,2,1)
+                new CInput()
             ]
         })
     }

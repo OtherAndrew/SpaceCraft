@@ -9,17 +9,16 @@
 
 /**
  * Initializes Box Collider component
- * @param {Object} properties Position and size
- * @param {number} properties.x      X coordinate of collider center
- * @param {number} properties.y      Y coordinate of collider center
- * @param {number} properties.width  Collider width
- * @param {number} properties.height Collider height
- * @returns {CCircleCollider}        The box collider component
+ * @param {number} x          X coordinate of collider center
+ * @param {number} y          Y coordinate of collider center
+ * @param {number} width      Collider width
+ * @param {number} height     Collider height
+ * @returns {CCircleCollider} The box collider component
  * @constructor
  */
 const CBoxCollider = function CBoxCollider({ x, y, width, height }) {
     Object.assign(this, { x, y, width, height });
     this.collisions = {};
     return this;
-}
+};
 CBoxCollider.prototype.name = 'boxCollider';
