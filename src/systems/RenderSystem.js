@@ -41,7 +41,7 @@ class RenderSystem {
     update() {
         this.entities.forEach(e => {
             let sprite = e.components.sprite
-            if(sprite.frameX >= sprite.maxFrames) {
+            if(sprite.frameX >= sprite.frameCount) {
                 sprite.frameX = 0
             } else {
                 sprite.frameX++

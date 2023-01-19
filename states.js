@@ -7,6 +7,6 @@ class State {
     constructor(props) {
         this.frameX = props.frameX
         this.frameY = props.frameY
-        this.maxFrames = props.maxFrames
+        this.maxFrames = props.frameCount
     }
 }

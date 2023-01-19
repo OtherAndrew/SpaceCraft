@@ -21,12 +21,12 @@ class PlayerStateManager {
     enter(state) {
         this.playerSprite.frameX = state.frameX
         this.playerSprite.frameY = state.frameY
-        this.playerSprite.maxFrames = state.maxFrames
+        this.playerSprite.frameCount = state.frameCount
     }
     update(input, deltaTime) {
         if(this.playerSprite.frameTimer > this.playerSprite.frameInterval) {
             this.playerSprite.frameTimer = 0
-            if(this.playerSprite.frameX < this.playerSprite.maxFrames) {
+            if(this.playerSprite.frameX < this.playerSprite.frameCount) {
                 this.playerSprite.frameX++
 
             } else {
