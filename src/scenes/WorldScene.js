@@ -1,7 +1,8 @@
 
 class WorldScene extends Scene {
-    constructor() {
+    constructor(game) {
         super()
+        this.game = game;
         //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
         this.blockValues = [
@@ -21,13 +22,20 @@ class WorldScene extends Scene {
     /**
      * Initializes this class' terrain entities
      * Player and player movement are for testing purposes
-     * @param {Image} sprite 
+     * @param assets
      */
     init(assets) {
+        //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
         this.tileStoneSprite = assets[TILES_STONE_PATH]
         this.tileRubySprite = assets[TILES_RUBY_PATH]
         this.caveBackground = assets[BACKGROUND_CAVE_PATH]
+
+        //background
+        this.backgroundSurface0 = assets[BACKGROUND_SURFACE_0]
+        this.backgroundSurface1 = assets[BACKGROUND_SURFACE_1]
+
+
         this.#generateBackgrounds()
         this.#generateNoiseMap()
         this.#generateTerrain()
@@ -35,14 +43,18 @@ class WorldScene extends Scene {
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
+        this.hud = new HUD(this);
     }
 
-    update(keys) {
-        this.entityManager.update()
-        this.playerMovement.update(keys)
-        this.camera.update()
-        this.renderBox.update()
-        this.#updateTileState()
+    update(uiActive, keys) {
+        if (!uiActive) {
+            this.entityManager.update()
+            this.playerMovement.update(keys)
+            this.camera.update()
+            this.renderBox.update()
+            this.#updateTileState()
+        }
+        this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
 
     draw(ctx) {
@@ -56,6 +68,7 @@ class WorldScene extends Scene {
             }
         })
         */
+        this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
     }
 
     /**
@@ -193,17 +206,34 @@ class WorldScene extends Scene {
     }
 
     #generateBackgrounds() {
-        this.entityManager.addEntity({
-            tag: 'background',
-            components: [
-                new CTransform({
-                    x: 0,
-                    y: 0,
-                    maxVelocity: 0
-                }),
-                new CSprite(this.caveBackground, 320, 180, 5, 1)
-            ]
-        })
+        let surfaceBackWidth = 512
+        let surfaceBackHeight = 240
+        let resizeVal = 2
+
+        for(let i = 0; i < 2; i++) {
+            this.entityManager.addEntity({
+                tag: 'background_layer_0',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * resizeVal),
+                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
+                        maxVelocity: 0
+                    }),
+                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                ]
+            })
+            this.entityManager.addEntity({
+                tag: 'background_layer_1',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * resizeVal),
+                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
+                        maxVelocity: 0
+                    }),
+                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                ]
+            })
+        }
     }
 
     /**
@@ -213,7 +243,7 @@ class WorldScene extends Scene {
      */
     #updateTileState() {
         this.entityManager.getEntities.forEach(e => {
-            if(e.tag !== 'player' && e.tag !== 'background') {
+            if(e.tag !== 'player' && !e.tag.includes('background')) {
                 if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
@@ -238,7 +268,7 @@ class WorldScene extends Scene {
 
         let posX = e.components.transform.x / BLOCKSIZE
         let posY = e.components.transform.y / BLOCKSIZE
-        if ( posY === 0 || 
+        if ( posY === 0 ||
             this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
             this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||
             this.terrainMap[clamp(posY-1,0,posY)][posX] === 'air' ||
