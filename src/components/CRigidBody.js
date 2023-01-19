@@ -16,5 +16,5 @@ const CRigidBody = function CRigidBody(mass) {
     this.mass = mass;
     this.isGrounded = false;
     return this;
-}
+};
 CRigidBody.prototype.name = 'rigidBody';

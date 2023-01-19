@@ -8,24 +8,19 @@
 
 /**
  * Initializes CTransform component
- * @param {Object} properties             Position and velocity.
- * @param {number} properties.x           X position of object, 0 by default.
- * @param {number} properties.y           Y position of object, 0 by default.
- * @param {number} properties.velocityX   X velocity of object, 0 by default.
- * @param {number} properties.velocityY   Y velocity of object, 0 by default.
- * @param {number} properties.rotation    Rotation of object, 0 by default.
- * @param {number} properties.maxVelocity Maximum velocity value object can reach.
+ * @param {number} x           X position of object, 0 by default.
+ * @param {number} y           Y position of object, 0 by default.
+ * @param {number} velocityX   Initial X velocity of object, 0 by default.
+ * @param {number} velocityY   Initial Y velocity of object, 0 by default.
+ * @param {number} rotation    Rotation of object, 0 by default.
+ * @param {number} maxVelocity Maximum velocity value object can reach.
  * @returns {CTransform}
  * @constructor
  */
-const CTransform = function CTransform({ x, y, velocityX, velocityY,
-                                         rotation, maxVelocity }) {
-    this.x = x || 0;
-    this.y = y || 0;
-    this.velocityX = velocityX || 0;
-    this.velocityY = velocityY || 0;
-    this.rotation = rotation || 0;
-    this.maxVelocity = maxVelocity;
+const CTransform = function CTransform({ x = 0, y = 0, velocityX = 0, velocityY = 0,
+                                         rotation = 0, maxVelocity = Number.MAX_SAFE_INTEGER }) {
+
+    Object.assign(this, {x, y, velocityX, velocityY, rotation, maxVelocity});
     return this;
-}
+};
 CTransform.prototype.name = 'transform';

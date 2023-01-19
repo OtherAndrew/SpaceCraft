@@ -18,5 +18,5 @@ const CCircleCollider = function CCircleCollider({ x, y, radius }) {
     Object.assign(this, { x, y, radius });
     this.collisions = {};
     return this;
-}
+};
 CCircleCollider.prototype.name = 'circleCollider';

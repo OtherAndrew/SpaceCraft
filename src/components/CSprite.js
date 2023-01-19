@@ -32,5 +32,5 @@ const CSprite = function CSprite(sprite, width, height,
     this.maxFrames = 0;
     this.frameTimer = 0;
     return this
-}
+};
 CSprite.prototype.name = 'sprite';
