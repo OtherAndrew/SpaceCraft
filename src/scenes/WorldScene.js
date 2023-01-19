@@ -1,7 +1,8 @@
 
 class WorldScene extends Scene {
-    constructor() {
+    constructor(game) {
         super()
+        this.game = game;
         //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
         this.blockValues = [
@@ -21,7 +22,7 @@ class WorldScene extends Scene {
     /**
      * Initializes this class' terrain entities
      * Player and player movement are for testing purposes
-     * @param {Image} sprite 
+     * @param assets
      */
     init(assets) {
         //tiles
@@ -42,14 +43,18 @@ class WorldScene extends Scene {
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
+        this.hud = new HUD(this);
     }
 
-    update(keys) {
-        this.entityManager.update()
-        this.playerMovement.update(keys)
-        this.camera.update()
-        this.renderBox.update()
-        this.#updateTileState()
+    update(uiActive, keys) {
+        if (!uiActive) {
+            this.entityManager.update()
+            this.playerMovement.update(keys)
+            this.camera.update()
+            this.renderBox.update()
+            this.#updateTileState()
+        }
+        this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
 
     draw(ctx) {
@@ -63,6 +68,7 @@ class WorldScene extends Scene {
             }
         })
         */
+        this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
     }
 
     /**
@@ -262,7 +268,7 @@ class WorldScene extends Scene {
 
         let posX = e.components.transform.x / BLOCKSIZE
         let posY = e.components.transform.y / BLOCKSIZE
-        if ( posY === 0 || 
+        if ( posY === 0 ||
             this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
             this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||
             this.terrainMap[clamp(posY-1,0,posY)][posX] === 'air' ||

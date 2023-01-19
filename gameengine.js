@@ -11,12 +11,12 @@ class GameEngine {
         this.frames = 0
 
         //Scenes
-        this.terrainDemoScene = new WorldScene()
-
+        this.terrainDemoScene = new WorldScene(this)
         // Information on the input
         this.click = null;
         this.mouse = null;
         this.wheel = null;
+        this.uiActive = false;
         this.keys = {};
 
         // Options and the Details
@@ -26,7 +26,6 @@ class GameEngine {
     };
 
     init(ctx, assets) {
-
         this.ctx = ctx;
         this.terrainDemoScene.init(assets)
         console.log(assets)
@@ -45,8 +44,8 @@ class GameEngine {
 
     startInput() {
         const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
+            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left - 1,
+            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top - 1
         });
         
         this.ctx.canvas.addEventListener("mousemove", e => {
@@ -79,13 +78,38 @@ class GameEngine {
             this.rightclick = getXandY(e);
         });
 
+        this.ctx.canvas.addEventListener("keydown", e => {
+            if (e.code === "Tab") {  // PREVENT TABBING OUT
+                e.preventDefault();
+            }
+        });
+
+        /* KEY LISTENERS FOR:
+         I    : INVENTORY
+         C    : CRAFT
+         ESC  : EXIT UI */
+        const that = this;
+        this.ctx.canvas.addEventListener("keyup", e => {
+                switch (e.code) {
+                    // case "KeyQ":
+                    //     that.uiActive = !that.uiActive;
+                    //     console.log(that.uiActive);
+                    //     break;
+                    case "Escape":
+                        that.uiActive = false;
+                        console.log(that.uiActive);
+                        break;
+                    case "Tab":
+                        that.uiActive = !that.uiActive;
+                        console.log(that.uiActive);
+                        break;
+                }
+            }, false);
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
 
-
     draw() {
-
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.fillStyle = 'rgb(159,109,50)'
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
@@ -106,7 +130,7 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.keys)
+        this.terrainDemoScene.update(this.uiActive, this.keys);
         //this.animationDemoScene.update(this.keys, this.clockTick)
     };
 
