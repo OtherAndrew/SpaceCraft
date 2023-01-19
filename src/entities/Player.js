@@ -9,7 +9,11 @@ class Player {
         this.tag = "player";
         this.scale = scale;
         this.components = [
-            new CSprite(sprite, sWidth, sHeight, scale, 30),
+            new CSprite(sprite, sWidth, sHeight, {
+                scale: scale,
+                frameY: 1,
+                fps: 30
+            }),
             new CTransform({
                 x: positionX,
                 y: positionY,

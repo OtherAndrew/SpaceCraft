@@ -140,7 +140,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileDirtSprite, 18, 18, 2, 1, 8, 5)
+                        new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 })
                     ]
                 })
             case 'stone':
@@ -160,7 +160,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileStoneSprite, 18, 18, 2, 1, 8, 5)
+                        new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 })
                     ]
                 })
             case 'ruby':
@@ -176,7 +176,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileRubySprite, 18, 18, 2, 1, 8, 2)
+                        new CSprite(this.tileRubySprite, 18, 18, {scale: 2, frameX: 8, frameY: 2})
                     ]
                 })
             default: 
@@ -205,7 +205,7 @@ class WorldScene extends Scene {
                         y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
                         maxVelocity: 0
                     }),
-                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, { scale: resizeVal } )
                 ]
             })
             this.entityManager.addEntity({
@@ -216,7 +216,7 @@ class WorldScene extends Scene {
                         y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
                         maxVelocity: 0
                     }),
-                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, resizeVal, 1)
+                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, { scale: resizeVal })
                 ]
             })
         }

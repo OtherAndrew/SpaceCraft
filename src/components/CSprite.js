@@ -20,7 +20,7 @@
  * @constructor
  */
 const CSprite = function CSprite(sprite, width, height,
-                                 scale = 1, frameX = 0, frameY = 0, fps = 1, frameCount = 1) {
+                                 { scale = 1, frameX = 0, frameY = 0, fps = 1, frameCount = 1} ) {
     this.sprite = sprite;
     this.spriteWidth = width;
     this.spriteHeight = height;
