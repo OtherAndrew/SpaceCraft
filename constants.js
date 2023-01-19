@@ -109,7 +109,10 @@ const BACKGROUND_CAVE_PATH = './assets/backgrounds/cave_background.png'
 const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
 const BACKGROUND_SURFACE_1 ='./assets/backgrounds/surface_background_1.png'
 
-
+// TESTING
+const B1 = './assets/sprites/b1.png'
+const B2 = './assets/sprites/b2.png'
+const B3 = './assets/sprites/b3.png'
 
 // arrays to queue using a loop
 const TERRAIN_ASSETS_ARRAY = [
@@ -130,6 +133,9 @@ const TERRAIN_ASSETS_ARRAY = [
     TILES_TITANITE_PATH,
     TILES_TUNGSTEN_PATH,
     BACKGROUND_SURFACE_0,
-    BACKGROUND_SURFACE_1
+    BACKGROUND_SURFACE_1,
+    B1,
+    B2,
+    B3
 ]
 

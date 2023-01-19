@@ -43,7 +43,8 @@ class WorldScene extends Scene {
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
-        this.hud = new HUD(this);
+        this.containerManager.createInventory(this.player, 420, 690, 4, 4);
+        this.hud = new HUD(this.containerManager, this.player);
     }
 
     update(uiActive, keys) {
