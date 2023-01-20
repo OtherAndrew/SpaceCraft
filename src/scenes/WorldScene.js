@@ -140,23 +140,15 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return this.entityManager.addEntity({
-                    tag: 'dirt',
-                    components: [
-                        new CTransform({
-                            x: props.x,
-                            y: props.y,
-                        }),
-                        // new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, startFrameX: 8, frameY: 5 })
-                        new CSprite({
-                            sprite: this.tileDirtSprite,
-                            sWidth: 18,
-                            sHeight: 18,
-                            scale: 2,
-                            startFrameX: 8,
-                            frameY: 5
-                        })
-                    ]
+                return new DirtBlock(this.entityManager, {
+                    sprite: this.tileDirtSprite,
+                    x: props.x,
+                    y: props.y,
+                    sWidth: 18,
+                    sHeight: 18,
+                    scale: 2,
+                    frameX: 8,
+                    frameY: 5
                 })
             case 'stone':
                 if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
@@ -168,23 +160,15 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return this.entityManager.addEntity({
-                    tag: 'stone',
-                    components: [
-                        new CTransform({
-                            x: props.x,
-                            y: props.y,
-                        }),
-                        // new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, startFrameX: 8, frameY: 5 })
-                        new CSprite({
-                            sprite: this.tileStoneSprite,
-                            sWidth: 18,
-                            sHeight: 18,
-                            scale: 2,
-                            startFrameX: 8,
-                            frameY: 5
-                        })
-                    ]
+                return new StoneBlock(this.entityManager, {
+                    sprite: this.tileStoneSprite,
+                    x: props.x,
+                    y: props.y,
+                    sWidth: 18,
+                    sHeight: 18,
+                    scale: 2,
+                    frameX: 8,
+                    frameY: 5
                 })
             case 'ruby':
                 if(props.y < (120 * BLOCKSIZE)) {
@@ -192,22 +176,15 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return this.entityManager.addEntity({
-                    tag: 'stone',
-                    components: [
-                        new CTransform({
-                            x: props.x,
-                            y: props.y,
-                        }),
-                        new CSprite({
-                            sprite: this.tileRubySprite,
-                            sWidth: 18,
-                            sHeight: 18,
-                            scale: 2,
-                            startFrameX: 8,
-                            frameY: 2
-                        })
-                    ]
+                return new StoneBlock(this.entityManager, {
+                    sprite: this.tileRubySprite,
+                    x: props.x,
+                    y: props.y,
+                    sWidth: 18,
+                    sHeight: 18,
+                    scale: 2,
+                    frameX: 8,
+                    frameY: 2
                 })
             default: 
                 return {tag: 'air'}
