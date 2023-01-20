@@ -19,6 +19,10 @@ class HUD {
         this.player = player;
         this.cm = containermanager;
         this.containers = this.cm.getInventory(player);
+        // this.containers[0].active = true;
+        for (let bar = 1; bar < 4; bar++) {
+            this.containers[bar].active = false;
+        }
         // this.fillCount = 0;
         this.add(new block1());
         this.add(new block2());
@@ -92,6 +96,7 @@ class HUD {
 
     update(uiActive) {
         this.open = uiActive;
+        this.cm.activateInventory(this.player);
     };
 
     draw(ctx) {
@@ -106,8 +111,7 @@ class HUD {
         for (let row = 0; row < rowCount; row++) {
             for (let col = 0; col < 4; col++) {
                 if (this.containers[i]) {
-                    this.containers[i].draw(ctx);
-                    i++;
+                    this.containers[i++].draw(ctx);
                 }
             }
         }

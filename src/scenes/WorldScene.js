@@ -43,19 +43,20 @@ class WorldScene extends Scene {
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
-        this.containerManager.createInventory(this.player, 420, 690, 4, 4);
+        this.containerManager.createInventory(this.player, 420, 690, 4, 4, true);
         this.hud = new HUD(this.containerManager, this.player);
     }
 
-    update(uiActive, keys) {
+    update(uiActive, keys, click) {
         if (!uiActive) {
-            this.entityManager.update()
-            this.playerMovement.update(keys)
-            this.camera.update()
-            this.renderBox.update()
-            this.#updateTileState()
+            this.entityManager.update();
+            this.playerMovement.update(keys);
+            this.camera.update();
+            this.renderBox.update();
+            this.#updateTileState();
         }
-        this.hud.update(uiActive); // UI LAST AT ALL TIMES
+        this.containerManager.update(uiActive, click);
+        this.hud.update(uiActive); // UI LAST AT ALL TIMES        
     }
 
     draw(ctx) {
@@ -69,7 +70,9 @@ class WorldScene extends Scene {
             }
         })
         */
+        // this.containerManager.draw(ctx);
         this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
+        
     }
 
     /**

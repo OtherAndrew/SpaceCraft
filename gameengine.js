@@ -13,7 +13,7 @@ class GameEngine {
         //Scenes
         this.terrainDemoScene = new WorldScene(this)
         // Information on the input
-        this.click = null;
+        this.mouseclick = null;
         this.mouse = null;
         this.wheel = null;
         this.uiActive = false;
@@ -55,11 +55,17 @@ class GameEngine {
             this.mouse = getXandY(e);
         });
 
-        this.ctx.canvas.addEventListener("click", e => {
+        this.ctx.canvas.addEventListener("mousedown", e => {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
             }
-            this.click = getXandY(e);
+            this.mouseclick = getXandY(e);
+            console.log(this.mouseclick);
+        });
+
+        this.ctx.canvas.addEventListener("mouseup", e => {
+            this.mouseclick = null;
+            console.log(this.mouseclick);
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
@@ -85,9 +91,8 @@ class GameEngine {
         });
 
         /* KEY LISTENERS FOR:
-         I    : INVENTORY
-         C    : CRAFT
-         ESC  : EXIT UI */
+         TAB    : INVENTORY
+         ESC    : EXIT UI */
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
                 switch (e.code) {
@@ -130,7 +135,7 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.uiActive, this.keys);
+        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseclick);
         //this.animationDemoScene.update(this.keys, this.clockTick)
     };
 
