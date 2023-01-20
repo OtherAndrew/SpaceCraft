@@ -11,7 +11,7 @@ class Player {
         this.components = [
             new CSprite(sprite, sWidth, sHeight, {
                 scale: scale,
-                fps: 500
+                fps: 30
             }),
             new CTransform({
                 x: positionX,

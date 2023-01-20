@@ -19,6 +19,8 @@ class PlayerStateManager {
         this.playerState.states["idleL"] = { startFrameX: 1, frameY: 0 };
         this.playerState.states["walkR"] = { startFrameX: 0, lastFrameX: 11, frameY: 1 };
         this.playerState.states["walkL"] = { startFrameX: 0, lastFrameX: 11, frameY: 2 };
+        this.playerState.states["jumpR"] = { startFrameX: 0, frameY: 1 };
+        this.playerState.states["jumpL"] = { startFrameX: 0, frameY: 2 };
     }
 
     setState(s) {
@@ -32,7 +34,7 @@ class PlayerStateManager {
         this.playerSprite.lastFrameX = state.lastFrameX;
     }
     update(input, tick) {
-        const animationTime = this.playerSprite.frameDuration * this.playerSprite.lastFrameX;
+        const animationTime = this.playerSprite.frameDuration * (this.playerSprite.lastFrameX + 1);
         if (this.playerSprite.elapsedTime > animationTime) {
             this.playerSprite.elapsedTime = 0;
             if (this.playerSprite.startFrameX < this.playerSprite.lastFrameX) {
@@ -44,14 +46,17 @@ class PlayerStateManager {
             this.playerSprite.elapsedTime += tick;
         }
         console.log(this.playerSprite.elapsedTime);
+        const currentState = this.playerState.currentState;
         if (input['d']) {
-            if (this.playerState.currentState !== 'walkR') this.setState('walkR');
+            if (currentState !== 'walkR') this.setState('walkR');
         } else if (input['a']) {
-            if (this.playerState.currentState !== 'walkL') this.setState('walkL');
+            if (currentState !== 'walkL') this.setState('walkL');
+        } else if (input['w'] || input['s']) {
+            if (currentState === 'idleR' || currentState === 'walkR') this.setState('jumpR');
+            else if (currentState === 'idleL' || currentState === 'walkL') this.setState('jumpL');
         } else {
-            if (this.playerState.currentState === 'walkR') this.setState('idleR');
-            else if (this.playerState.currentState === 'walkL') this.setState('idleL');
-            // this.setState('idleR');
+            if (currentState === 'walkR' || currentState === 'jumpR') this.setState('idleR');
+            else if (currentState === 'walkL' || currentState === 'jumpL') this.setState('idleL');
         }
     }
 }
