@@ -7,11 +7,11 @@
 class Animation {
     /**
      * Initializes Animation object.
-     * @param {number} frameX     X position of start frame (not pixel position!)
-     * @param {number} frameY     Y position of start frame (not pixel position!)
-     * @param {number} frameCount Number of frames of animation.
+     * @param {number} firstFrameX X position of first frame (not pixel position!)
+     * @param {number} lastFrameX  X position of last frame (not pixel position!), firstFrameX by default
+     * @param {number} frameY      Y position of start frame (not pixel position!)
      */
-    constructor(frameX, frameY, frameCount) {
-        Object.assign(this, { frameX: startFrameX, frameY, frameCount: lastFrameX });
+    constructor({firstFrameX, lastFrameX = firstFrameX, frameY }) {
+        Object.assign(this, { firstFrameX, lastFrameX, frameY });
     };
 }

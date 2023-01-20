@@ -15,12 +15,12 @@ class PlayerStateManager {
     // }
 
     addAnimations() {
-        this.playerState.states["idleR"] = { startFrameX: 0, frameY: 0 };
-        this.playerState.states["idleL"] = { startFrameX: 1, frameY: 0 };
-        this.playerState.states["walkR"] = { startFrameX: 0, lastFrameX: 11, frameY: 1 };
-        this.playerState.states["walkL"] = { startFrameX: 0, lastFrameX: 11, frameY: 2 };
-        this.playerState.states["jumpR"] = { startFrameX: 0, frameY: 1 };
-        this.playerState.states["jumpL"] = { startFrameX: 0, frameY: 2 };
+        this.playerState.states["idleR"] = new Animation({ firstFrameX: 0, frameY: 0 });
+        this.playerState.states["idleL"] = new Animation({ firstFrameX: 1, frameY: 0 });
+        this.playerState.states["walkR"] = new Animation({ firstFrameX: 0, lastFrameX: 11, frameY: 1 });
+        this.playerState.states["walkL"] = new Animation({ firstFrameX: 0, lastFrameX: 11, frameY: 2 });
+        this.playerState.states["jumpR"] = new Animation({ firstFrameX: 0, frameY: 1 });
+        this.playerState.states["jumpL"] = new Animation({ firstFrameX: 0, frameY: 2 });
     }
 
     setState(s) {
@@ -29,24 +29,12 @@ class PlayerStateManager {
     }
 
     enter(state) {
-        this.playerSprite.startFrameX = state.startFrameX;
-        this.playerSprite.currentFrame = this.playerSprite.startFrameX;
+        this.playerSprite.firstFrameX = state.firstFrameX;
+        this.playerSprite.currentFrame = this.playerSprite.firstFrameX;
         this.playerSprite.frameY = state.frameY;
         this.playerSprite.lastFrameX = state.lastFrameX;
     }
-    update(input, tick) {
-        // const animationTime = this.playerSprite.frameDuration * (this.playerSprite.lastFrameX + 1);
-        // if (this.playerSprite.elapsedTime > animationTime) {
-        //     this.playerSprite.elapsedTime = 0;
-        //     if (this.playerSprite.currentFrame < this.playerSprite.lastFrameX) {
-        //         this.playerSprite.currentFrame++;
-        //     } else {
-        //         this.playerSprite.currentFrame = this.playerSprite.startFrameX;
-        //     }
-        // } else {
-        //     this.playerSprite.elapsedTime += tick;
-        // }
-        // console.log(this.playerSprite.elapsedTime);
+    update(input) {
         const currentState = this.playerState.currentState;
         if (input['d']) {
             if (currentState !== 'walkR') this.setState('walkR');

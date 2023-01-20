@@ -195,37 +195,39 @@ class WorldScene extends Scene {
      * A player entity for testing purposes
      */
     #createPlayer() {
-        // this.player = this.entityManager.addEntity(new Player(this.playerSprite, 0.25));
+        this.player = this.entityManager.addEntity(new Player(this.playerSprite));
 
-        const positionX = WIDTH / 2;
-        const positionY = HEIGHT / 2;
-        const sWidth = 200;
-        const sHeight = 250;
-        const scale = 0.25;
-
-        this.player = this.entityManager.addEntity({
-            tag: 'player',
-            components: [
-                new CSprite(this.playerSprite, sWidth, sHeight, {
-                    scale: scale,
-                    fps: 30
-                }),
-                new CTransform({
-                    x: positionX,
-                    y: positionY,
-                    maxVelocity: 15
-                }),
-                new CBoxCollider({
-                    x: positionX,
-                    y: positionY,
-                    width: sWidth * scale,
-                    height: sHeight * scale
-                }),
-                new CRigidBody(1),
-                new CInput(),
-                new CState()
-            ]
-        });
+        // const positionX = WIDTH / 2;
+        // const positionY = HEIGHT / 2;
+        // const sWidth = 200;
+        // const sHeight = 250;
+        // const scale = 0.25;
+        // const dWidth = sWidth * scale;
+        // const dHeight = sWidth * scale;
+        //
+        // this.player = this.entityManager.addEntity({
+        //     tag: 'player',
+        //     components: [
+        //         new CSprite(this.playerSprite, sWidth, sHeight, {
+        //             scale: scale,
+        //             fps: 30
+        //         }),
+        //         new CTransform({
+        //             x: positionX,
+        //             y: positionY,
+        //             maxVelocity: 15
+        //         }),
+        //         new CBoxCollider({
+        //             x: positionX,
+        //             y: positionY,
+        //             width: dWidth,
+        //             height: dHeight
+        //         }),
+        //         new CRigidBody(1),
+        //         // new CInput(),
+        //         new CState()
+        //     ]
+        // });
     }
 
     #generateBackgrounds() {
