@@ -8,7 +8,7 @@
 
 /**
  * Initializes CSprite component
- * @param {image} sprite       Sprite sheet
+ * @param {Image} sprite       Sprite sheet
  * @param {number} width       Sprite width on sprite sheet
  * @param {number} height      Sprite height on sprite sheet
  * @param {number} scale       Scale factor to apply to sprite, 1 by default

@@ -13,7 +13,7 @@
  * @param {number} y          Y coordinate of collider center
  * @param {number} width      Collider width
  * @param {number} height     Collider height
- * @returns {CCircleCollider} The box collider component
+ * @returns {CBoxCollider} The box collider component
  * @constructor
  */
 const CBoxCollider = function CBoxCollider({ x, y, width, height }) {
