@@ -7,7 +7,6 @@
 
 /**
  * Initializes new StoneBlock
- * @param {EntityManager} entityManager Game entity manager
  * @param {Object} props                Stone block position and display properties
  * @param {Image} props.sprite          Stone block sprite sheet
  * @param {number} props.x              X position on canvas to draw stone block
@@ -17,11 +16,11 @@
  * @param {number} props.scale          Scale factor to apply to stone block, 1 by default
  * @param {number} props.frameX         X position of sprite frame (not pixel position!)
  * @param {number} props.frameY         Y position of sprite frame (not pixel position!)
- * @returns {Entity}                    The stone block entity.
+ * @returns {Object}                    The stone block properties.
  * @constructor
  */
-const StoneBlock = function(entityManager, props) {
-    return entityManager.addEntity({
+const StoneBlock = function(props) {
+    return {
         tag: 'stone',
         components: [
             new CTransform({
@@ -37,6 +36,6 @@ const StoneBlock = function(entityManager, props) {
                 frameY: props.frameY
             })
         ]
-    });
+    };
 }
 StoneBlock.prototype.name = 'stoneBlock';

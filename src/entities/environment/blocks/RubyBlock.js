@@ -7,7 +7,6 @@
 
 /**
  * Initializes new RubyBlock
- * @param {EntityManager} entityManager Game entity manager
  * @param {Object} props                Ruby block position and display properties
  * @param {Image} props.sprite          Ruby block sprite sheet
  * @param {number} props.x              X position on canvas to draw ruby block
@@ -17,11 +16,11 @@
  * @param {number} props.scale          Scale factor to apply to ruby block, 1 by default
  * @param {number} props.frameX         X position of sprite frame (not pixel position!)
  * @param {number} props.frameY         Y position of sprite frame (not pixel position!)
- * @returns {Entity}                    The ruby block entity.
+ * @returns {Object}                    The ruby block properties.
  * @constructor
  */
-const RubyBlock = function(entityManager, props) {
-    return entityManager.addEntity({
+const RubyBlock = function(props) {
+    return {
         tag: 'ruby',
         components: [
             new CTransform({
@@ -37,6 +36,6 @@ const RubyBlock = function(entityManager, props) {
                 frameY: props.frameY
             })
         ]
-    });
+    };
 }
 RubyBlock.prototype.name = 'rubyBlock';

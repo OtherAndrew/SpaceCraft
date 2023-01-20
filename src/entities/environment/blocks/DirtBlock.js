@@ -7,7 +7,6 @@
 
 /**
  * Initializes new DirtBlock
- * @param {EntityManager} entityManager Game entity manager
  * @param {Object} props                Dirt block position and display properties
  * @param {Image} props.sprite          Dirt block sprite sheet
  * @param {number} props.x              X position on canvas to draw dirt block
@@ -17,11 +16,11 @@
  * @param {number} props.scale          Scale factor to apply to dirt block, 1 by default
  * @param {number} props.frameX         X position of sprite frame (not pixel position!)
  * @param {number} props.frameY         Y position of sprite frame (not pixel position!)
- * @returns {Entity}                    The dirt block entity.
+ * @returns {Object}                    The dirt block properties.
  * @constructor
  */
-const DirtBlock = function(entityManager, props) {
-    return entityManager.addEntity({
+const DirtBlock = function(props) {
+    return {
         tag: 'stone',
         components: [
             new CTransform({
@@ -37,6 +36,6 @@ const DirtBlock = function(entityManager, props) {
                 frameY: props.frameY
             })
         ]
-    });
+    };
 }
 DirtBlock.prototype.name = 'dirtBlock';

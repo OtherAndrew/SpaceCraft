@@ -140,7 +140,7 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return new DirtBlock(this.entityManager, {
+                return this.entityManager.addEntity(new DirtBlock({
                     sprite: this.tileDirtSprite,
                     x: props.x,
                     y: props.y,
@@ -149,7 +149,7 @@ class WorldScene extends Scene {
                     scale: 2,
                     frameX: 8,
                     frameY: 5
-                })
+                }));
             case 'stone':
                 if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
                     props.value = Math.round(Math.random() + 3)
@@ -160,7 +160,7 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return new StoneBlock(this.entityManager, {
+                return this.entityManager.addEntity(new StoneBlock({
                     sprite: this.tileStoneSprite,
                     x: props.x,
                     y: props.y,
@@ -169,14 +169,14 @@ class WorldScene extends Scene {
                     scale: 2,
                     frameX: 8,
                     frameY: 5
-                })
+                }));
             case 'ruby':
                 if(props.y < (120 * BLOCKSIZE)) {
                     props.value = Math.round(Math.random() + .4)
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return new StoneBlock(this.entityManager, {
+                return this.entityManager.addEntity(new RubyBlock({
                     sprite: this.tileRubySprite,
                     x: props.x,
                     y: props.y,
@@ -185,7 +185,7 @@ class WorldScene extends Scene {
                     scale: 2,
                     frameX: 8,
                     frameY: 2
-                })
+                }));
             default: 
                 return {tag: 'air'}
         }
@@ -198,14 +198,15 @@ class WorldScene extends Scene {
         const spriteWidth = 200;
         const spriteHeight = 250;
         const scale = BLOCKSIZE / spriteWidth * 1.5;
-        this.player = new Player(this.entityManager, {
+
+        this.player = this.entityManager.addEntity(new Player({
             sprite: this.playerSprite,
             x: WIDTH / 2,
             y: HEIGHT / 2,
             sWidth : spriteWidth,
             sHeight: spriteHeight,
             scale: scale
-        });
+        }));
     }
 
     #generateBackgrounds() {
