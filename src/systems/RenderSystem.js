@@ -20,14 +20,14 @@ class RenderSystem {
                     try {
                         ctx.drawImage(
                             sprite.sprite,
-                            sprite.currentFrame * sprite.width,
-                            sprite.frameY * sprite.height,
-                            sprite.width,
-                            sprite.height,
+                            sprite.currentFrame * sprite.sWidth,
+                            sprite.frameY * sprite.sHeight,
+                            sprite.sWidth,
+                            sprite.sHeight,
                             e.components.transform.x - xSpeed,
                             e.components.transform.y - ySpeed,
-                            sprite.drawWidth,
-                            sprite.drawHeight
+                            sprite.dWidth,
+                            sprite.dHeight
                         )
                     } catch (error) {
                         console.log(e, 'failed to draw.')

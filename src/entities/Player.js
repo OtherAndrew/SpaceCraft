@@ -21,7 +21,10 @@ const Player = function(entityManager, { sprite, x, y, sWidth, sHeight, scale = 
     return entityManager.addEntity({
         tag: 'player',
         components: [
-            new CSprite(sprite, sWidth, sHeight, {
+            new CSprite({
+                sprite: sprite,
+                sWidth: sWidth,
+                sHeight: sHeight,
                 scale: scale,
                 fps: 30
             }),
