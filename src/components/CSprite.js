@@ -12,7 +12,7 @@
  * @param {number} width       Sprite width
  * @param {number} height      Sprite height
  * @param {number} scale       Scale factor to apply to sprite, 1 by default
- * @param {number} startFrameX X position of first frame on sprite sheet (not pixel position!), 0 by default.
+ * @param {number} firstFrameX X position of first frame on sprite sheet (not pixel position!), 0 by default.
  * @param {number} lastFrameX  X position of the last frame on sprite sheet (not pixel position!), 0 by default.
  * @param {number} frameY      Y position of frame on sprite sheet (not pixel position!), 0 by default.
  * @param {number} fps         Frames per second of sprite animation, 1 by default.
@@ -20,9 +20,9 @@
  * @constructor
  */
 const CSprite = function CSprite(sprite, width, height,
-                                 { scale = 1, startFrameX = 0, lastFrameX = 0, frameY = 0, fps = 1, } ) {
-    Object.assign(this, { sprite, width, height, startFrameX, lastFrameX, frameY  });
-
+                                 { scale = 1, firstFrameX = 0, lastFrameX = 0, frameY = 0, fps = 1, } ) {
+    Object.assign(this, { sprite, width, height, firstFrameX, lastFrameX, frameY  });
+    this.currentFrame = this.firstFrameX;
     this.frameDuration = 1 / fps;
     this.drawWidth = this.width * scale;
     this.drawHeight = this.height * scale;

@@ -20,7 +20,7 @@ class RenderSystem {
                     try {
                         ctx.drawImage(
                             sprite.sprite,
-                            sprite.startFrameX * sprite.width,
+                            sprite.currentFrame * sprite.width,
                             sprite.frameY * sprite.height,
                             sprite.width,
                             sprite.height,
@@ -38,17 +38,22 @@ class RenderSystem {
 
     }
 
-    update() {
+    update(tick) {
         this.entities.forEach(e => {
             let sprite = e.components.sprite;
-            if (sprite.lastFrameX > 1) {
-                console.log("frame: " + sprite.startFrameX);
-                if (sprite.startFrameX >= sprite.lastFrameX - 1) {
-                    sprite.frameX = 0;
+            if (sprite.lastFrameX > 0) {
+                if (sprite.elapsedTime > sprite.frameDuration) {
+                    console.log("frame: " + sprite.currentFrame);
+                    sprite.elapsedTime = 0;
+                    if (sprite.currentFrame === sprite.lastFrameX) {
+                        sprite.currentFrame = sprite.firstFrameX;
+                    } else {
+                        sprite.currentFrame++;
+                    }
                 } else {
-                    sprite.startFrameX++;
-                }
-            }
+                    sprite.elapsedTime += tick;
+                };
+            };
         });
     };
 }

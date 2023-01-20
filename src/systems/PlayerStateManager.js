@@ -30,22 +30,23 @@ class PlayerStateManager {
 
     enter(state) {
         this.playerSprite.startFrameX = state.startFrameX;
+        this.playerSprite.currentFrame = this.playerSprite.startFrameX;
         this.playerSprite.frameY = state.frameY;
         this.playerSprite.lastFrameX = state.lastFrameX;
     }
     update(input, tick) {
-        const animationTime = this.playerSprite.frameDuration * (this.playerSprite.lastFrameX + 1);
-        if (this.playerSprite.elapsedTime > animationTime) {
-            this.playerSprite.elapsedTime = 0;
-            if (this.playerSprite.startFrameX < this.playerSprite.lastFrameX) {
-                this.playerSprite.startFrameX++;
-            } else {
-                this.playerSprite.startFrameX = 0;
-            }
-        } else {
-            this.playerSprite.elapsedTime += tick;
-        }
-        console.log(this.playerSprite.elapsedTime);
+        // const animationTime = this.playerSprite.frameDuration * (this.playerSprite.lastFrameX + 1);
+        // if (this.playerSprite.elapsedTime > animationTime) {
+        //     this.playerSprite.elapsedTime = 0;
+        //     if (this.playerSprite.currentFrame < this.playerSprite.lastFrameX) {
+        //         this.playerSprite.currentFrame++;
+        //     } else {
+        //         this.playerSprite.currentFrame = this.playerSprite.startFrameX;
+        //     }
+        // } else {
+        //     this.playerSprite.elapsedTime += tick;
+        // }
+        // console.log(this.playerSprite.elapsedTime);
         const currentState = this.playerState.currentState;
         if (input['d']) {
             if (currentState !== 'walkR') this.setState('walkR');

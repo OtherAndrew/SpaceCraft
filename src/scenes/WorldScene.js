@@ -44,12 +44,13 @@ class WorldScene extends Scene {
         this.#generateTerrain()
         this.#createPlayer()
         this.playerMovement = new PlayerInputSystem(this.player)
+        this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
+
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this);
 
-
-        this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
+        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
     update(uiActive, keys) {
@@ -59,6 +60,8 @@ class WorldScene extends Scene {
             this.camera.update()
             this.renderBox.update()
             this.playerStateManager.update(keys, this.game.clockTick)
+            this.collisionSystem.update()
+            this.renderSystem.update(this.game.clockTick);
             this.#updateTileState()
         }
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
@@ -205,12 +208,12 @@ class WorldScene extends Scene {
             components: [
                 new CSprite(this.playerSprite, sWidth, sHeight, {
                     scale: scale,
-                    fps: 500
+                    fps: 30
                 }),
                 new CTransform({
                     x: positionX,
                     y: positionY,
-                    maxVelocity: 25
+                    maxVelocity: 15
                 }),
                 new CBoxCollider({
                     x: positionX,
