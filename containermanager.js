@@ -121,13 +121,42 @@ class ContainerManager {
         }
     }
 
-    // draw(ctx) {
-    //     for (let i = 0; i < this.activeInventory.length; i++) {
-    //         for (let c = 0; c < this.activeInventory[i].length; c++) {
-    //             this.activeInventory[i][c].draw(ctx);
-    //         }
-    //     }
-    // }
+    draw(uiActive, ctx) {
+        if (uiActive) {
+            for (let c = 0; c < this.activeInventory[0].length; c++) {
+                this.activeInventory[0][c].draw(ctx);
+            }
+        } else {
+            ctx.save();
+            ctx.globalAlpha = 0.7;
+            for (let c = 0; c < 4; c++) {
+                this.activeInventory[0][c].draw(ctx);
+            }
+            ctx.restore();
+        }
+        
+        // ctx.save();
+        // let rowCount = 5;
+        // if (!uiActive) {
+        //     ctx.globalAlpha = 0.7;
+        //     rowCount = 1;
+        // }
+        // let i = 0;
+        // for (let row = 0; row < rowCount; row++) {
+        //     for (let col = 0; col < 4; col++) {
+        //         if (this.activeInventory[0][i]) {
+        //             this.activeInventory[0][i++].draw(ctx);
+        //         }
+        //     }
+        // }
+        // ctx.restore();
+        
+        for (let i = 1; i < this.activeInventory.length; i++) {
+            for (let c = 0; c < this.activeInventory[i].length; c++) {
+                this.activeInventory[i][c].draw(ctx);
+            }
+        }
+    }
     
     update(uiActive, click) {
         if (uiActive) { // ui is active
@@ -139,7 +168,7 @@ class ContainerManager {
                     if (click.T !== this.lastClick.T) { // new click!
                         this.activateContainer(hit, click); // activate or swap as necessary
                     }
-                }
+                } // add clicking on non-container deactivation of selected
             }
         } else { // ui is not active
             this.deactivateContainer(); // if something is selected deselect it

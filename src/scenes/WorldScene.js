@@ -59,7 +59,7 @@ class WorldScene extends Scene {
         this.hud.update(uiActive); // UI LAST AT ALL TIMES        
     }
 
-    draw(ctx) {
+    draw(uiActive, ctx) {
         this.renderSystem.draw(ctx, this.camera)
         /*
         this.entityManager.getEntities.forEach(e => {
@@ -70,8 +70,8 @@ class WorldScene extends Scene {
             }
         })
         */
-        // this.containerManager.draw(ctx);
-        this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
+        this.containerManager.draw(uiActive, ctx);
+        // this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
         
     }
 
