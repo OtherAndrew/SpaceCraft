@@ -44,9 +44,13 @@ class WorldScene extends Scene {
         this.#generateTerrain()
         this.#createPlayer()
         this.playerMovement = new PlayerInputSystem(this.player)
+        this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
+
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this);
+
+        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
     update(uiActive, keys, mouseDown) {
@@ -55,6 +59,9 @@ class WorldScene extends Scene {
             this.playerMovement.update(keys)
             this.camera.update()
             this.renderBox.update()
+            this.playerStateManager.update(keys, this.game.clockTick)
+            this.collisionSystem.update()
+            this.renderSystem.update(this.game.clockTick);
             this.#updateTileState()
         }
         if(mouseDown) {
@@ -140,17 +147,16 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return this.entityManager.addEntity({
-                    tag: 'dirt',
-                    components: [
-                        new CTransform({
-                            x: props.x,
-                            y: props.y,
-                        }),
-                        new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 }),
-                        new CLifespan(TILE_DIRT_LIFESPAN)
-                    ]
-                })
+                return this.entityManager.addEntity(new DirtBlock({
+                    sprite: this.tileDirtSprite,
+                    x: props.x,
+                    y: props.y,
+                    sWidth: 18,
+                    sHeight: 18,
+                    scale: 2,
+                    frameX: 8,
+                    frameY: 5
+                }));
             case 'stone':
                 if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
                     props.value = Math.round(Math.random() + 3)
@@ -161,34 +167,32 @@ class WorldScene extends Scene {
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return this.entityManager.addEntity({
-                    tag: 'stone',
-                    components: [
-                        new CTransform({
-                            x: props.x,
-                            y: props.y,
-                        }),
-                        new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 }),
-                        new CLifespan(TILE_DIRT_LIFESPAN)
-                    ]
-                })
+                return this.entityManager.addEntity(new StoneBlock({
+                    sprite: this.tileStoneSprite,
+                    x: props.x,
+                    y: props.y,
+                    sWidth: 18,
+                    sHeight: 18,
+                    scale: 2,
+                    frameX: 8,
+                    frameY: 5
+                }));
             case 'ruby':
                 if(props.y < (120 * BLOCKSIZE)) {
                     props.value = Math.round(Math.random() + .4)
                     props.recurse = false
                     return this.#createBlock(props)
                 }
-                return this.entityManager.addEntity({
-                    tag: 'stone',
-                    components: [
-                        new CTransform({
-                            x: props.x,
-                            y: props.y,
-                        }),
-                        new CSprite(this.tileRubySprite, 18, 18, {scale: 2, frameX: 8, frameY: 2}),
-                        new CLifespan(TILE_DIRT_LIFESPAN)
-                    ]
-                })
+                return this.entityManager.addEntity(new RubyBlock({
+                    sprite: this.tileRubySprite,
+                    x: props.x,
+                    y: props.y,
+                    sWidth: 18,
+                    sHeight: 18,
+                    scale: 2,
+                    frameX: 8,
+                    frameY: 2
+                }));
             default: 
                 return {tag: 'air'}
         }
@@ -198,37 +202,45 @@ class WorldScene extends Scene {
      * A player entity for testing purposes
      */
     #createPlayer() {
-        this.player = this.entityManager.addEntity(new Player(this.playerSprite, 0.25));
+        const spriteWidth = 200;
+        const spriteHeight = 250;
+        const scale = BLOCKSIZE / spriteWidth * 1.5;
+
+        this.player = this.entityManager.addEntity(new Player({
+            sprite: this.playerSprite,
+            x: WIDTH / 2,
+            y: HEIGHT / 2,
+            sWidth : spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
     }
 
     #generateBackgrounds() {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
-        let resizeVal = 2
+        let scale = 2
 
         for(let i = 0; i < 2; i++) {
-            this.entityManager.addEntity({
-                tag: 'background_layer_0',
-                components: [
-                    new CTransform({
-                        x: (surfaceBackWidth * i * resizeVal),
-                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
-                        maxVelocity: 0
-                    }),
-                    new CSprite(this.backgroundSurface0, surfaceBackWidth, surfaceBackHeight, { scale: resizeVal } )
-                ]
-            })
-            this.entityManager.addEntity({
-                tag: 'background_layer_1',
-                components: [
-                    new CTransform({
-                        x: (surfaceBackWidth * i * resizeVal),
-                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
-                        maxVelocity: 0
-                    }),
-                    new CSprite(this.backgroundSurface1, surfaceBackWidth, surfaceBackHeight, { scale: resizeVal })
-                ]
-            })
+            this.entityManager.addEntity(new Background_0({
+                x: (surfaceBackWidth * i * scale),
+                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
+                maxVelocity: 0,
+                sprite: this.backgroundSurface0,
+                sWidth: surfaceBackWidth,
+                sHeight: surfaceBackHeight,
+                scale: scale
+            }));
+
+            this.entityManager.addEntity(new Background_1({
+                x: (surfaceBackWidth * i * scale),
+                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
+                maxVelocity: 0,
+                sprite: this.backgroundSurface1,
+                sWidth: surfaceBackWidth,
+                sHeight: surfaceBackHeight,
+                scale: scale
+            }));
         }
     }
 

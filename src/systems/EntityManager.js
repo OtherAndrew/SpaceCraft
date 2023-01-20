@@ -21,18 +21,13 @@ class EntityManager {
         this.toAddEntities = []
     }
 
-    
-
     /**
      * Creates and adds an entity to the manager
-     * 
-     * @param {
-     * id: num,
-     * tag: string,
-     * isAlive: bool,
-     * components: list of component objects} props 
-     * 
-     * @returns the created entity
+     * @todo isAlive?
+     * @param {Object} props          Entity properties
+     * @param {string} props.tag      Entity tag
+     * @param {[]} props.components   Entity components
+     * @returns {Entity}              the created entity
      */
     addEntity(props) {
         let e = new Entity(props, this.totalEntities++)
@@ -101,13 +96,20 @@ class EntityManager {
  */
 class Entity  {
 
+    /**
+     *
+     * @param {Object} props
+     * @param {string} props.tag
+     * @param {[]} props.components
+     * @param {number} id
+     */
     constructor(props, id) {
         this.id = id
         this.tag = props.tag
         this.isDrawable = true
         this.isAlive = true
         this.components = {}
-        if(props.components) {
+        if (props.components) {
             this.addComponent(props.components)
         }
     }
@@ -121,7 +123,7 @@ class Entity  {
 
     /**
      * Adds component objects to the entity.
-     * @param {list} components 
+     * @param {[]} components
      */
     addComponent(components) {
         components.forEach(c => {

@@ -20,14 +20,14 @@ class RenderSystem {
                     try {
                         ctx.drawImage(
                             sprite.sprite,
-                            sprite.frameX * sprite.spriteWidth,
-                            sprite.frameY * sprite.spriteHeight,
-                            sprite.spriteWidth,
-                            sprite.spriteHeight,
+                            sprite.currentFrame * sprite.sWidth,
+                            sprite.frameY * sprite.sHeight,
+                            sprite.sWidth,
+                            sprite.sHeight,
                             e.components.transform.x - xSpeed,
                             e.components.transform.y - ySpeed,
-                            sprite.drawWidth,
-                            sprite.drawHeight
+                            sprite.dWidth,
+                            sprite.dHeight
                         )
                     } catch (error) {
                         console.log(e, 'failed to draw.')
@@ -38,15 +38,23 @@ class RenderSystem {
 
     }
 
-    update() {
+    update(tick) {
         this.entities.forEach(e => {
-            let sprite = e.components.sprite
-            if(sprite.frameX >= sprite.frameCount) {
-                sprite.frameX = 0
-            } else {
-                sprite.frameX++
-            }
-        })
+            let sprite = e.components.sprite;
+            if (sprite.lastFrameX !== sprite.firstFrameX) { // if has animations
+                if (sprite.elapsedTime >= sprite.frameDuration) {
 
-    }
+                    console.log("state: " + sprite.state + ", frame: " + sprite.currentFrame);
+                    sprite.elapsedTime = 0;
+                    if (sprite.currentFrame === sprite.lastFrameX) { // reset frame
+                        sprite.currentFrame = sprite.firstFrameX;
+                    } else {
+                        sprite.currentFrame++;
+                    }
+                } else {
+                    sprite.elapsedTime += tick;
+                }
+            }
+        });
+    };
 }

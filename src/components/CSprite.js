@@ -8,29 +8,26 @@
 
 /**
  * Initializes CSprite component
- * @param {image} sprite      Sprite sheet
- * @param {number} width      Sprite width
- * @param {number} height     Sprite height
- * @param {number} scale      Scale factor to apply to sprite, 1 by default
- * @param {number} frameX     X position of frame on sprite sheet (not pixel position!), 0 by default.
- * @param {number} frameY     Y position of frame on sprite sheet (not pixel position!), 0 by default.
- * @param {number} fps        Frames per second of sprite animation, 1 by default.
- * @param {number} frameCount Number of frames of sprite animation, 1 by default.
- * @returns {CSprite}         The CSprite component
+ * @param {Image} sprite       Sprite sheet
+ * @param {number} sWidth       Sprite width on sprite sheet
+ * @param {number} sHeight      Sprite height on sprite sheet
+ * @param {number} scale       Scale factor to apply to sprite, 1 by default
+ * @param {number} firstFrameX X position of first frame on sprite sheet (not pixel position!), 0 by default.
+ * @param {number} frameY      Y position of frame on sprite sheet (not pixel position!), 0 by default.
+ * @param {number} lastFrameX  X position of the last frame on sprite sheet (not pixel position!), firstFrameX by default.
+ * @param {number} fps         Frames per second of sprite animation, 1 by default.
+ * @returns {CSprite}          The CSprite component
  * @constructor
  */
-const CSprite = function CSprite(sprite, width, height,
-                                 { scale = 1, frameX = 0, frameY = 0, fps = 1, frameCount = 1} ) {
-    this.sprite = sprite;
-    this.spriteWidth = width;
-    this.spriteHeight = height;
-    this.drawWidth = this.spriteWidth * scale;
-    this.drawHeight = this.spriteHeight * scale;
-    this.frameX = frameX;
-    this.frameY = frameY;
-    this.frameInterval = 1 / fps;
-    this.frameCount = frameCount;
-    this.frameTimer = 0;
-    return this
+const CSprite = function CSprite({sprite, sWidth, sHeight, scale = 1,
+                                  firstFrameX = 0, frameY = 0, lastFrameX = firstFrameX,
+                                  fps = 1 }) {
+    Object.assign(this, { sprite, sWidth, sHeight, firstFrameX, frameY, lastFrameX, fps });
+    this.currentFrame = this.firstFrameX;
+    this.frameDuration = 1 / fps;
+    this.dWidth = this.sWidth * scale;
+    this.dHeight = this.sHeight * scale;
+    this.elapsedTime = 0;
+    return this;
 };
 CSprite.prototype.name = 'sprite';
