@@ -211,41 +211,28 @@ class WorldScene extends Scene {
     #generateBackgrounds() {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
-        let resizeVal = 2
+        let scale = 2
 
         for(let i = 0; i < 2; i++) {
-            this.entityManager.addEntity({
-                tag: 'background_layer_0',
-                components: [
-                    new CTransform({
-                        x: (surfaceBackWidth * i * resizeVal),
-                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: this.backgroundSurface0,
-                        sWidth: surfaceBackWidth,
-                        sHeight: surfaceBackHeight,
-                        scale: resizeVal
-                    })
-                ]
-            })
-            this.entityManager.addEntity({
-                tag: 'background_layer_1',
-                components: [
-                    new CTransform({
-                        x: (surfaceBackWidth * i * resizeVal),
-                        y: (-surfaceBackHeight * resizeVal) + BLOCKSIZE,
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: this.backgroundSurface1,
-                        sWidth: surfaceBackWidth,
-                        sHeight: surfaceBackHeight,
-                        scale: resizeVal
-                    })
-                ]
-            })
+            this.entityManager.addEntity(new Background_0({
+                x: (surfaceBackWidth * i * scale),
+                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
+                maxVelocity: 0,
+                sprite: this.backgroundSurface0,
+                sWidth: surfaceBackWidth,
+                sHeight: surfaceBackHeight,
+                scale: scale
+            }));
+
+            this.entityManager.addEntity(new Background_1({
+                x: (surfaceBackWidth * i * scale),
+                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
+                maxVelocity: 0,
+                sprite: this.backgroundSurface1,
+                sWidth: surfaceBackWidth,
+                sHeight: surfaceBackHeight,
+                scale: scale
+            }));
         }
     }
 
