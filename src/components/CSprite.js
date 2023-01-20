@@ -21,7 +21,7 @@
  */
 const CSprite = function CSprite(sprite, width, height,
                                  { scale = 1, startFrameX = 0, lastFrameX = 0, frameY = 0, fps = 1, } ) {
-    Object.assign(this, { sprite, width, height, startFrameX, lastFrameX, frameY  })
+    Object.assign(this, { sprite, width, height, startFrameX, lastFrameX, frameY  });
 
     this.frameDuration = 1 / fps;
     this.drawWidth = this.width * scale;

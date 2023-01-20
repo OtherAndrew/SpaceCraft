@@ -15,10 +15,10 @@ class PlayerStateManager {
     // }
 
     addAnimations() {
-        this.playerState.states["idleR"] = {startFrameX: 0, frameY: 0, lastFrameX: 1};
-        this.playerState.states["idleL"] = {startFrameX: 1, frameY: 0, lastFrameX: 1};
-        this.playerState.states["walkR"] = {startFrameX: 0, frameY: 1, lastFrameX: 12};
-        this.playerState.states["walkL"] = {startFrameX: 0, frameY: 2, lastFrameX: 12};
+        this.playerState.states["idleR"] = { startFrameX: 0, frameY: 0 };
+        this.playerState.states["idleL"] = { startFrameX: 1, frameY: 0 };
+        this.playerState.states["walkR"] = { startFrameX: 0, lastFrameX: 11, frameY: 1 };
+        this.playerState.states["walkL"] = { startFrameX: 0, lastFrameX: 11, frameY: 2 };
     }
 
     setState(s) {
@@ -49,9 +49,9 @@ class PlayerStateManager {
         } else if (input['a']) {
             if (this.playerState.currentState !== 'walkL') this.setState('walkL');
         } else {
-            // if (this.playerState.currentState === 'walkR') this.setState('idleR');
-            // if (this.playerState.currentState === 'walkL') this.setState('idleL');
-            this.setState('idleR')
+            if (this.playerState.currentState === 'walkR') this.setState('idleR');
+            else if (this.playerState.currentState === 'walkL') this.setState('idleL');
+            // this.setState('idleR');
         }
     }
 }
