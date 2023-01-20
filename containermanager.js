@@ -82,7 +82,7 @@ class ContainerManager {
         this.activeContainer.count = swapContainer.count;
         swapContainer.count = placeholder;
 
-        this.deactivateContainer();
+        this.deactivateContainer(); // affected by metronome effect
     }
 
     swapViaContainers(active, hit) {
@@ -102,7 +102,7 @@ class ContainerManager {
 
     // no inventory is being drawn to the screen
     deactivateInventory() {
-        this.activeInventory.length = 0;
+        this.activeInventory.length = 1;
     }
 
     // return container clicked on
@@ -128,29 +128,35 @@ class ContainerManager {
     //         }
     //     }
     // }
-
+    
     update(uiActive, click) {
         if (uiActive) { // ui is active
-            let hit = this.checkHit(click); // container if valid click, else null
-            if (hit) { // container was selected
-                if (!this.activeContainer) { // if there isn't already a selected container
-                    hit.selected = true; // make hit container light up
-                    this.activeContainer = hit; // save hit container
-                } else { // there already is a selected container
-                    // let active = this.activeContainer;
-                    // this.deactivateContainer();
-                    // this.swapViaContainers(active, hit);
-                    this.swapViaContainer(hit);
+            let hit = this.checkHit(click); // what was click: container or nothing
+            if (hit) { // click on container
+                if (this.lastClick == null) { // there was no prev click
+                    this.activateContainer(hit, click); // activate or swap as necessary
+                } else { // lastClick was something
+                    if (click.T !== this.lastClick.T) { // new click!
+                        this.activateContainer(hit, click); // activate or swap as necessary
+                    }
                 }
             }
         } else { // ui is not active
-            if (this.activeContainer) { // if something is selected deselect it
-                this.activeContainer.selected = false;
-                this.activeContainer = null;
-            }
+            this.deactivateContainer(); // if something is selected deselect it
+            this.lastClick = null; // don't bother remembering last click
         }
     }
 
+    activateContainer(hit, click) {
+        if (!this.activeContainer) { // no current container
+            hit.selected = true;
+            this.activeContainer = hit;
+        } else {
+            this.swapViaContainer(hit);
+        }
+        this.lastClick = click;
+    }
+    
     deactivateContainer() {
         if (this.activeContainer) {
             this.activeContainer.selected = false;

@@ -43,9 +43,16 @@ class GameEngine {
     };
 
     startInput() {
+
         const getXandY = e => ({
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left - 1,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top - 1
+        });
+
+        const getXYT = e => ({
+            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left - 1,
+            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top - 1,
+            T: this.timer.gameTime
         });
         
         this.ctx.canvas.addEventListener("mousemove", e => {
@@ -57,15 +64,15 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("mousedown", e => {
             if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
+                console.log("CLICK", getXYT(e));
             }
-            this.mouseclick = getXandY(e);
+            this.mouseclick = getXYT(e);
             console.log(this.mouseclick);
         });
 
         this.ctx.canvas.addEventListener("mouseup", e => {
             this.mouseclick = null;
-            console.log(this.mouseclick);
+            console.log("mouse:"+this.mouseclick);
         });
 
         this.ctx.canvas.addEventListener("wheel", e => {
@@ -102,11 +109,11 @@ class GameEngine {
                     //     break;
                     case "Escape":
                         that.uiActive = false;
-                        console.log(that.uiActive);
+                        // console.log("UI: " + that.uiActive);
                         break;
                     case "Tab":
                         that.uiActive = !that.uiActive;
-                        console.log(that.uiActive);
+                        // console.log("UI: " + that.uiActive);
                         break;
                 }
             }, false);
