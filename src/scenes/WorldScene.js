@@ -49,13 +49,16 @@ class WorldScene extends Scene {
         this.hud = new HUD(this);
     }
 
-    update(uiActive, keys) {
+    update(uiActive, keys, mouseDown) {
         if (!uiActive) {
             this.entityManager.update()
             this.playerMovement.update(keys)
             this.camera.update()
             this.renderBox.update()
             this.#updateTileState()
+        }
+        if(mouseDown) {
+            this.breakBlock(mouseDown, this.player, this.terrainMap)
         }
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
@@ -104,12 +107,16 @@ class WorldScene extends Scene {
         this.noiseMap.forEach( (row, y) => {
             let r = []
             row.forEach((val, x) => {
-                r.push(this.#createBlock({
+                let e = this.#createBlock({
                     x: x * BLOCKSIZE,
                     y: y * BLOCKSIZE,
                     value: val,
                     recurse: true
-                }).tag)
+                })
+                r.push({
+                    tag: e.tag,
+                    id: e.id
+                })
             })
             this.terrainMap.push(r)
         })
@@ -140,7 +147,8 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 })
+                        new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 }),
+                        new CLifespan(TILE_DIRT_LIFESPAN)
                     ]
                 })
             case 'stone':
@@ -160,7 +168,8 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 })
+                        new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 }),
+                        new CLifespan(TILE_DIRT_LIFESPAN)
                     ]
                 })
             case 'ruby':
@@ -176,7 +185,8 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileRubySprite, 18, 18, {scale: 2, frameX: 8, frameY: 2})
+                        new CSprite(this.tileRubySprite, 18, 18, {scale: 2, frameX: 8, frameY: 2}),
+                        new CLifespan(TILE_DIRT_LIFESPAN)
                     ]
                 })
             default: 
@@ -268,5 +278,30 @@ class WorldScene extends Scene {
                     })
                 ])
             }
+    }
+
+
+
+    breakBlock(pos, player, terrainMap) {
+        let offsetX = player.components.transform.x >= WIDTH/2 ?
+                      player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
+                      WIDTH_PIXELS - (WIDTH_PIXELS - player.components.transform.x) - WIDTH * .75 :
+                      (player.components.transform.x - WIDTH/2) :
+                       0
+        console.log(offsetX)
+        let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
+        let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
+        console.log(mapX, mapY)
+        console.log(terrainMap[mapY][mapX])
+        if(terrainMap[mapY][mapX].tag === 'dirt') {
+            let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
+            e.components.lifespan.current -= 1
+            console.log(e.components.lifespan.current)
+            if(e.components.lifespan.current <= 0) {
+                e.destroy()
+                terrainMap[mapY][mapX].tag = 'air'
+                terrainMap[mapY][mapX].id = null
+            }
+        }
     }
 }

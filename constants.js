@@ -9,6 +9,7 @@ const WIDTH = 1024
 const HEIGHT = 768
 const GRIDSIZE = 15
 const BLOCKSIZE = 32
+const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 
 // Entity Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";
@@ -103,6 +104,9 @@ const RUBY_GEN_STATS = {
     rate: 0.0
 }
 
+
+//Tiles Lifespan numbers
+const TILE_DIRT_LIFESPAN = 20
 
 
 //Backgrounds

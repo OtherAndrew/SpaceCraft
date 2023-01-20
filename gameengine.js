@@ -14,6 +14,7 @@ class GameEngine {
         this.terrainDemoScene = new WorldScene(this)
         // Information on the input
         this.click = null;
+        this.mouseDown = null;
         this.mouse = null;
         this.wheel = null;
         this.uiActive = false;
@@ -61,6 +62,20 @@ class GameEngine {
             }
             this.click = getXandY(e);
         });
+
+        this.ctx.canvas.addEventListener('mousedown', e => {
+            if (this.options.debugging) {
+                console.log("MouseDown", getXandY(e));
+            }
+            this.mouseDown = getXandY(e);
+        })
+
+        this.ctx.canvas.addEventListener('mouseup', e => {
+            if (this.options.debugging) {
+                console.log("MouseUp", getXandY(e));
+            }
+            this.mouseDown = null
+        })
 
         this.ctx.canvas.addEventListener("wheel", e => {
             if (this.options.debugging) {
@@ -130,7 +145,7 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.uiActive, this.keys);
+        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown);
         //this.animationDemoScene.update(this.keys, this.clockTick)
     };
 

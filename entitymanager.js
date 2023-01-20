@@ -48,12 +48,13 @@ class EntityManager {
     }
 
     /**
-     * Returns an entity with the tag argument
-     * @param {string} tag 
-     * @returns an enityt with the tag argument
+     * Returns an entity groups by tag or a single entity with id
+     * 
+     * @param {string, Number} tag 
+     * @returns an entity group with tag argument or entity with id argument
      */
-    getEntity(tag) {
-        return this.entitiyMap.get(tag)
+    getEntity(arg) {
+        if(typeof arg === 'number') return this.entitiyMap.get(arg)
     }
 
     /**
@@ -64,7 +65,7 @@ class EntityManager {
     update() {
         this.toAddEntities.forEach(e => {
             this.entities.push(e)
-            this.entitiyMap.set(e.tag, this.totalEntities++)
+            this.entitiyMap.set(e.id, e)
         })
         let removed = this.#removeDeadEntities()
         this.toAddEntities.length = 0
