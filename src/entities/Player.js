@@ -8,11 +8,10 @@ class Player {
 
         this.tag = "player";
         this.scale = scale;
-        this.states = [];
         this.components = [
             new CSprite(sprite, sWidth, sHeight, {
                 scale: scale,
-                fps: 30
+                fps: 500
             }),
             new CTransform({
                 x: positionX,
@@ -27,7 +26,7 @@ class Player {
             }),
             new CRigidBody(1),
             new CInput(),
-            new CState(0, 0, 1, "idleR")
+            new CState()
         ];
 
         return this;

@@ -1,9 +1,9 @@
 class Animator {
     constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop) {
-        Object.assign(this, {spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop});
+        Object.assign(this, {spritesheet, xStart, yStart, width, height, frameCount: lastFrameX, frameDuration, framePadding, reverse, loop});
 
         this.elapsedTime = 0;
-        this.totalTime = this.frameCount * this.frameDuration;
+        this.totalTime = this.lastFrameX * this.frameDuration;
     };
 
     drawFrame(tick, ctx, x, y, scale) {

@@ -10,8 +10,5 @@
  * Initializes CInput component
  * @constructor
  */
-const CInput = function CInput() {
-    this.ArrowLeft = 2;
-    this.ArrowRight = 2;
-};
+const CInput = function CInput() {};
 CInput.prototype.name = 'input';

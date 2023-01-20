@@ -14,9 +14,9 @@
  * @returns {CState}            The CState component.
  * @constructor
  */
-const CState = function CState(frameX, frameY, frameCount, initialState = 'idleR') {
+const CState = function CState(initialState = 'idleR') {
     this.currentState = initialState;
-    this.states = ["idleR", "idleL", "walkR", "walkL"];
+    this.states = [initialState];
     return this;
 };
 CState.prototype.name = 'state';

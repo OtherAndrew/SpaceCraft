@@ -144,7 +144,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 })
+                        new CSprite(this.tileDirtSprite, 18, 18, {scale: 2, startFrameX: 8, frameY: 5 })
                     ]
                 })
             case 'stone':
@@ -164,7 +164,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, frameX: 8, frameY: 5 })
+                        new CSprite(this.tileStoneSprite, 18, 18, {scale: 2, startFrameX: 8, frameY: 5 })
                     ]
                 })
             case 'ruby':
@@ -180,7 +180,7 @@ class WorldScene extends Scene {
                             x: props.x,
                             y: props.y,
                         }),
-                        new CSprite(this.tileRubySprite, 18, 18, {scale: 2, frameX: 8, frameY: 2})
+                        new CSprite(this.tileRubySprite, 18, 18, {scale: 2, startFrameX: 8, frameY: 2})
                     ]
                 })
             default: 
@@ -192,7 +192,37 @@ class WorldScene extends Scene {
      * A player entity for testing purposes
      */
     #createPlayer() {
-        this.player = this.entityManager.addEntity(new Player(this.playerSprite, 0.25));
+        // this.player = this.entityManager.addEntity(new Player(this.playerSprite, 0.25));
+
+        const positionX = WIDTH / 2;
+        const positionY = HEIGHT / 2;
+        const sWidth = 200;
+        const sHeight = 250;
+        const scale = 0.25;
+
+        this.player = this.entityManager.addEntity({
+            tag: 'player',
+            components: [
+                new CSprite(this.playerSprite, sWidth, sHeight, {
+                    scale: scale,
+                    fps: 500
+                }),
+                new CTransform({
+                    x: positionX,
+                    y: positionY,
+                    maxVelocity: 25
+                }),
+                new CBoxCollider({
+                    x: positionX,
+                    y: positionY,
+                    width: sWidth * scale,
+                    height: sHeight * scale
+                }),
+                new CRigidBody(1),
+                new CInput(),
+                new CState()
+            ]
+        });
     }
 
     #generateBackgrounds() {

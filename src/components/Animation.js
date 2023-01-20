@@ -12,6 +12,6 @@ class Animation {
      * @param {number} frameCount Number of frames of animation.
      */
     constructor(frameX, frameY, frameCount) {
-        Object.assign(this, { frameX, frameY, frameCount });
+        Object.assign(this, { frameX: startFrameX, frameY, frameCount: lastFrameX });
     };
 }
