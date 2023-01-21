@@ -44,7 +44,6 @@ class RenderSystem {
             if (sprite.lastFrameX !== sprite.firstFrameX) { // if has animations
                 if (sprite.elapsedTime >= sprite.frameDuration) {
 
-                    console.log("state: " + sprite.state + ", frame: " + sprite.currentFrame);
                     sprite.elapsedTime = 0;
                     if (sprite.currentFrame === sprite.lastFrameX) { // reset frame
                         sprite.currentFrame = sprite.firstFrameX;
