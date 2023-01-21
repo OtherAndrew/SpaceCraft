@@ -1,8 +1,8 @@
 /*
 Manages and creates Entities.
-A Entity Factory. Nothing else should be able to create entities without going through a manager.
+A NPC Factory. Nothing else should be able to create entities without going through a manager.
 
-Entity - any object within the game. Components are attached to the entities to give them functionality.
+NPC - any object within the game. Components are attached to the entities to give them functionality.
 
 
 
@@ -24,9 +24,9 @@ class EntityManager {
     /**
      * Creates and adds an entity to the manager
      * @todo isAlive?
-     * @param {Object} props          Entity properties
-     * @param {string} props.tag      Entity tag
-     * @param {[]} props.components   Entity components
+     * @param {Object} props          NPC properties
+     * @param {string} props.tag      NPC tag
+     * @param {[]} props.components   NPC components
      * @returns {Entity}              the created entity
      */
     addEntity(props) {
@@ -90,7 +90,7 @@ class EntityManager {
 
 
 /**
- * Entity class. Only the EntityManager should be able to create entities.
+ * NPC class. Only the EntityManager should be able to create entities.
  * 
  */
 class Entity  {

@@ -27,6 +27,7 @@ class WorldScene extends Scene {
     init(assets) {
         // entities
         this.playerSprite = assets[PLAYER_PATH];
+        this.entitySprite = assets[ENTITY_PATH];
 
         //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
@@ -42,15 +43,19 @@ class WorldScene extends Scene {
         this.#generateBackgrounds()
         this.#generateNoiseMap()
         this.#generateTerrain()
+        this.#createEntity()
         this.#createPlayer()
+
         this.playerMovement = new PlayerInputSystem(this.player)
         this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
+
+        this.monsterStateManager = new MonsterStateManager(this.entity);
 
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this);
 
-        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
+        // this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
     update(uiActive, keys) {
@@ -60,8 +65,9 @@ class WorldScene extends Scene {
             this.camera.update()
             this.renderBox.update()
             this.playerStateManager.update(keys, this.game.clockTick)
-            this.collisionSystem.update()
+            // this.collisionSystem.update()
             this.renderSystem.update(this.game.clockTick);
+            this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
         }
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
@@ -209,6 +215,24 @@ class WorldScene extends Scene {
         }));
     }
 
+    /**
+     * A non-player entity for testing purposes
+     */
+    #createEntity() {
+        const spriteWidth = 200;
+        const spriteHeight = 250;
+        const scale = BLOCKSIZE / spriteWidth * 1.5;
+
+        this.entity = this.entityManager.addEntity(new NPC({
+            sprite: this.entitySprite,
+            x: WIDTH / 2,
+            y: HEIGHT / 2,
+            sWidth : spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+    }
+
     #generateBackgrounds() {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
@@ -261,7 +285,7 @@ class WorldScene extends Scene {
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
      * A player will be able to collide with a exposed block, so they must be given colliders.
-     * @param {Entity} e 
+     * @param {NPC} e
      */
     #checkIfExposed(e) {
         

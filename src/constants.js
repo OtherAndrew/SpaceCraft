@@ -10,8 +10,9 @@ const HEIGHT = 768
 const GRIDSIZE = 15
 const BLOCKSIZE = 32
 
-// Entity Sprite Sheets
+// NPC Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";
+const ENTITY_PATH = "./assets/sprites/entity.png";
 
 
 //Tiles
