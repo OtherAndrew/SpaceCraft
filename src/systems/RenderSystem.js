@@ -30,7 +30,7 @@ class RenderSystem {
                             sprite.dHeight
                         )
                     } catch (error) {
-                        console.log(e, 'failed to draw.')
+                        console.log(e, 'Failed to draw: ' + error)
                     }
                 }
             }
