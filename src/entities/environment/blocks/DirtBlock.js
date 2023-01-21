@@ -34,7 +34,8 @@ const DirtBlock = function(props) {
                 scale: props.scale,
                 startFrameX: props.frameX,
                 frameY: props.frameY
-            })
+            }),
+            new CLifespan(TILE_DIRT_LIFESPAN)
         ]
     };
 }
