@@ -70,7 +70,7 @@ class WorldScene extends Scene {
             this.renderSystem.update(this.game.clockTick);
             this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
-            this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
         }
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
