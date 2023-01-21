@@ -15,12 +15,12 @@ class PlayerStateManager {
     // }
 
     addAnimations() {
-        this.playerState.states["idleR"] = new Animation({ firstFrameX: 0, frameY: 0 });
-        this.playerState.states["idleL"] = new Animation({ firstFrameX: 1, frameY: 0 });
-        this.playerState.states["walkR"] = new Animation({ firstFrameX: 0, lastFrameX: 11, frameY: 1 });
-        this.playerState.states["walkL"] = new Animation({ firstFrameX: 0, lastFrameX: 11, frameY: 2 });
-        this.playerState.states["jumpR"] = new Animation({ firstFrameX: 0, frameY: 1 });
-        this.playerState.states["jumpL"] = new Animation({ firstFrameX: 0, frameY: 2 });
+        this.playerState.states["idleR"] = new AnimationProps(0, 0);
+        this.playerState.states["idleL"] = new AnimationProps(1, 0);
+        this.playerState.states["walkR"] = new AnimationProps(0, 1, 11);
+        this.playerState.states["walkL"] = new AnimationProps(0, 2, 11);
+        this.playerState.states["jumpR"] = new AnimationProps(0, 1);
+        this.playerState.states["jumpL"] = new AnimationProps(0, 2);
     }
 
     setState(s) {
