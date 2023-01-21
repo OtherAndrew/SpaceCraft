@@ -3,20 +3,22 @@ class ContainerManager {
         this.owners = {}; // owner and the inventory pairs
         this.slots = []; // every container by their universal slot number
         this.slotCount = 0; // universal slot number count
-        this.activeInventory = [];
-        this.activeContainer = null;
-        this.lastClick = null;
+        this.activeInventory = []; // inventories on screen
+        this.activeContainer = null; // player selected container
+        this.lastClick = null; // tracks last mouse click to check if new
     }
 
-    createInventory(owner, x, y, row, col, reverse=false) {
+    createInventory(owner, x, y, row, col, color="blue", reverse=false) {
         let newInventory = [];
         let internalCount = 0;
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < col; j++) {
                 if (reverse)
-                    newInventory[internalCount] = new Container(owner, x+(47*j), y-(47*i), this.slotCount++);
+                    newInventory[internalCount] = new Container(
+                        owner, x+(47*j), y-(47*i), this.slotCount++, color);
                 else
-                    newInventory[internalCount] = new Container(owner, x+(47*j), y+(47*i), this.slotCount++);
+                    newInventory[internalCount] = new Container(
+                        owner, x+(47*j), y+(47*i), this.slotCount++, color);
                 this.slots.push(newInventory[internalCount++]);
             }
         }
@@ -62,37 +64,33 @@ class ContainerManager {
         }
     }
 
-    swapInInventory(owner, from, to) {
-        let inventory = this.getInventory(owner);
-        let placeholder = inventory[from].item;
-        inventory[from].item = inventory[to].item;
-        inventory[to].item = placeholder;
-
-        placeholder = inventory[from].count;
-        inventory[from].count = inventory[to].count;
-        inventory[to].count = placeholder;
-    }
+    // called to delete ent entirely from inven
+    // delete(index) {
+    //     this.containers[index] = null;
+    //     this.entitiesCount.delete(index);
+    //     // disable it completely
+    //     // ent = null;
+    // };
 
     swapViaContainer(swapContainer) {
-        let placeholder = this.activeContainer.item;
-        this.activeContainer.item = swapContainer.item;
-        swapContainer.item = placeholder;
+        if (swapContainer.item && this.activeContainer.item 
+            && swapContainer.item.tag === this.activeContainer.item.tag) { // stack if same
+            this.activeContainer.count = this.activeContainer.count + swapContainer.count;
+        } else if (!swapContainer.owner && this.activeContainer.item) { // trashcan (need check for selling?)
+            swapContainer.item = this.activeContainer.item;
+            swapContainer.count = this.activeContainer.count;
+            this.activeContainer.item = null;
+            this.activeContainer.count = 0;
+        } else { // swap
+            let placeholder = this.activeContainer.item;
+            this.activeContainer.item = swapContainer.item;
+            swapContainer.item = placeholder;
 
-        placeholder = this.activeContainer.count;
-        this.activeContainer.count = swapContainer.count;
-        swapContainer.count = placeholder;
-
+            placeholder = this.activeContainer.count;
+            this.activeContainer.count = swapContainer.count;
+            swapContainer.count = placeholder;
+        }
         this.deactivateContainer(); // affected by metronome effect
-    }
-
-    swapViaContainers(active, hit) {
-        let placeholder = active.item;
-        active.item = hit.item;
-        hit.item = placeholder;
-
-        placeholder = active.count;
-        active.count = hit.count;
-        hit.count = placeholder;
     }
 
     // this ent's inventory is being drawn to the screen
@@ -102,7 +100,7 @@ class ContainerManager {
 
     // no inventory is being drawn to the screen
     deactivateInventory() {
-        this.activeInventory.length = 1;
+        this.activeInventory.length = 2;
     }
 
     // return container clicked on
@@ -126,6 +124,7 @@ class ContainerManager {
             for (let c = 0; c < this.activeInventory[0].length; c++) {
                 this.activeInventory[0][c].draw(ctx);
             }
+            this.activeInventory[1][0].draw(ctx);
         } else {
             ctx.save();
             ctx.globalAlpha = 0.7;
@@ -134,24 +133,7 @@ class ContainerManager {
             }
             ctx.restore();
         }
-        
-        // ctx.save();
-        // let rowCount = 5;
-        // if (!uiActive) {
-        //     ctx.globalAlpha = 0.7;
-        //     rowCount = 1;
-        // }
-        // let i = 0;
-        // for (let row = 0; row < rowCount; row++) {
-        //     for (let col = 0; col < 4; col++) {
-        //         if (this.activeInventory[0][i]) {
-        //             this.activeInventory[0][i++].draw(ctx);
-        //         }
-        //     }
-        // }
-        // ctx.restore();
-        
-        for (let i = 1; i < this.activeInventory.length; i++) {
+        for (let i = 2; i < this.activeInventory.length; i++) {
             for (let c = 0; c < this.activeInventory[i].length; c++) {
                 this.activeInventory[i][c].draw(ctx);
             }
@@ -194,10 +176,9 @@ class ContainerManager {
     }
 }
 
-class Container /*extends Path2D*/ {
-    constructor(owner, x, y, slot) {
-        // super();
-        Object.assign(this, {owner, x, y, slot});
+class Container {
+    constructor(owner, x, y, slot, fillColor, strokeColor="white") {
+        Object.assign(this, {owner, x, y, slot, fillColor, strokeColor});
         this.midx = this.x + 21;
         this.midy = this.y + 21;
         this.item = null;
@@ -205,15 +186,10 @@ class Container /*extends Path2D*/ {
     }
 
     draw(ctx) {
-        // ctx.fillStyle = "blue";
-        // ctx.strokeStyle = "white";
-        // ctx.lineWidth="2";
-        // ctx.fill(this);
-        // ctx.stroke(this);
         if (this.selected) {
             this.roundRect(ctx, this.x, this.y, "orange");
         } else {
-            this.roundRect(ctx, this.x, this.y);
+            this.roundRect(ctx, this.x, this.y, this.fillColor);
         }
         if (this.item) {
             let itemImage = ASSET_MANAGER.getAsset(this.item.sprite);
@@ -229,12 +205,12 @@ class Container /*extends Path2D*/ {
     }
 
     // credit: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
-    roundRect(ctx, x, y, color="blue", d=42, radius=15) {
+    roundRect(ctx, x, y, color, d=42, radius=15) {
         let r = x + d;
         let b = y + d;
         ctx.beginPath();
         ctx.fillStyle = color;
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = this.strokeColor;
         ctx.lineWidth="2";
         ctx.moveTo(x+radius, y);
         ctx.lineTo(r-radius, y);
@@ -247,5 +223,5 @@ class Container /*extends Path2D*/ {
         ctx.quadraticCurveTo(x, y, x+radius, y);
         ctx.fill();
         ctx.stroke();
-    };
+    }
 }

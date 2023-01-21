@@ -43,7 +43,6 @@ class WorldScene extends Scene {
         this.playerMovement = new PlayerInputSystem(this.player)
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
-        this.containerManager.createInventory(this.player, 420, 690, 4, 4, true);
         this.hud = new HUD(this.containerManager, this.player);
     }
 
@@ -56,7 +55,7 @@ class WorldScene extends Scene {
             this.#updateTileState();
         }
         this.containerManager.update(uiActive, click);
-        this.hud.update(uiActive); // UI LAST AT ALL TIMES        
+        // this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
 
     draw(uiActive, ctx) {
