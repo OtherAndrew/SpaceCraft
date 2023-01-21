@@ -50,6 +50,7 @@ class WorldScene extends Scene {
         this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
 
         this.monsterStateManager = new MonsterStateManager(this.entity);
+        this.renderSystem = new RenderSystem(this.entityManager.getEntities)
 
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
@@ -69,6 +70,7 @@ class WorldScene extends Scene {
             this.renderSystem.update(this.game.clockTick);
             this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
+            this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
         }
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
@@ -150,11 +152,11 @@ class WorldScene extends Scene {
                     sprite: this.tileDirtSprite,
                     x: props.x,
                     y: props.y,
-                    sWidth: 18,
-                    sHeight: 18,
-                    scale: 2,
-                    frameX: 8,
-                    frameY: 5
+                    sWidth: 16,
+                    sHeight: 16,
+                    scale: BLOCKSIZE / 16,
+                    frameX: getRandomInt(6),
+                    frameY: getRandomInt(2)
                 }));
             case 'stone':
                 if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
@@ -170,11 +172,11 @@ class WorldScene extends Scene {
                     sprite: this.tileStoneSprite,
                     x: props.x,
                     y: props.y,
-                    sWidth: 18,
-                    sHeight: 18,
-                    scale: 2,
-                    frameX: 8,
-                    frameY: 5
+                    sWidth: 16,
+                    sHeight: 16,
+                    scale: BLOCKSIZE / 16,
+                    frameX: getRandomInt(6),
+                    frameY: getRandomInt(2)
                 }));
             case 'ruby':
                 if(props.y < (120 * BLOCKSIZE)) {
@@ -186,11 +188,10 @@ class WorldScene extends Scene {
                     sprite: this.tileRubySprite,
                     x: props.x,
                     y: props.y,
-                    sWidth: 18,
-                    sHeight: 18,
-                    scale: 2,
-                    frameX: 8,
-                    frameY: 2
+                    sWidth: 16,
+                    sHeight: 16,
+                    scale: BLOCKSIZE / 16,
+                    frameX: getRandomInt(3)
                 }));
             default: 
                 return {tag: 'air'}
@@ -285,14 +286,14 @@ class WorldScene extends Scene {
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
      * A player will be able to collide with a exposed block, so they must be given colliders.
-     * @param {NPC} e
+     * @param {Entity} e
      */
     #checkIfExposed(e) {
         
         if(e.components.boxCollider) return
 
-        let posX = e.components.transform.x / BLOCKSIZE
-        let posY = e.components.transform.y / BLOCKSIZE
+        const posX = e.components.transform.x / BLOCKSIZE
+        const posY = e.components.transform.y / BLOCKSIZE
         if ( posY === 0 ||
             this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
             this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||

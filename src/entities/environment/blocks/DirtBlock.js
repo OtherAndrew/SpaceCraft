@@ -32,7 +32,7 @@ const DirtBlock = function(props) {
                 sWidth: props.sWidth,
                 sHeight: props.sHeight,
                 scale: props.scale,
-                startFrameX: props.frameX,
+                firstFrameX: props.frameX,
                 frameY: props.frameY
             })
         ]

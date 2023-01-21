@@ -66,3 +66,4 @@ const getDistance = (p1, p2) => {
  * @returns either the number, min or max.
  */
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+const getRandomInt = (max) =>  Math.floor(Math.random() * max);
