@@ -37,67 +37,67 @@ const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
 const BISMUTH_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const COAL_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 7.0
 }
 const COBALT_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const COPPER_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 7.0
 }
 const FERRITE_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const GOLD_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 6.0
 }
 const IRON_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 7.0
 }
 const PARAFFIN_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const SAND_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 15.0
 }
 const SILICA_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 5.0
 }
 const TIN_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 2.5
 }
 const TITANITE_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 1.5
 }
 const TUNGSTEN_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const RUBY_GEN_STATS = {
     yMin: 0,
