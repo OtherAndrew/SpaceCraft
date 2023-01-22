@@ -35,6 +35,8 @@ class HUD {
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();
+        } else {
+            ctx.drawImage(ASSET_MANAGER.getAsset("./assets/overlay/overlaymockup.png"), 0, 0);
         }
     }
 
