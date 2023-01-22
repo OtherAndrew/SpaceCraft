@@ -347,7 +347,7 @@ class WorldScene extends Scene {
                       (player.components.transform.x - WIDTH/2) : 0
         let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
         let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
-
+        if(mapY < 0) return
         console.log(terrainMap[mapY][mapX].tag)
         if(terrainMap[mapY][mapX].tag.includes('tile')) {
             console.log("inside")
