@@ -108,6 +108,8 @@ const RUBY_GEN_STATS = {
 
 //Tiles Lifespan numbers
 const TILE_DIRT_LIFESPAN = 20
+const TILE_STONE_LIFESPAN = 30
+const TILE_RUBY_LIFESPAN = 50
 
 
 //Backgrounds

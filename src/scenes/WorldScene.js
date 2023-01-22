@@ -344,14 +344,13 @@ class WorldScene extends Scene {
         let offsetX = player.components.transform.x >= WIDTH/2 ?
                       player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
                       WIDTH_PIXELS - (WIDTH_PIXELS - player.components.transform.x) - WIDTH * .75 :
-                      (player.components.transform.x - WIDTH/2) :
-                       0
-        console.log(offsetX)
+                      (player.components.transform.x - WIDTH/2) : 0
         let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
         let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
-        console.log(mapX, mapY)
-        console.log(terrainMap[mapY][mapX])
-        if(terrainMap[mapY][mapX].tag === 'dirt') {
+
+        console.log(terrainMap[mapY][mapX].tag)
+        if(terrainMap[mapY][mapX].tag.includes('tile')) {
+            console.log("inside")
             let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
             e.components.lifespan.current -= 1
             console.log(e.components.lifespan.current)

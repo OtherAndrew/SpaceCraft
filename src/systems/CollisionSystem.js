@@ -21,7 +21,7 @@ class CollisionSystem {
                                 if(t.components.boxCollider) {
                                     if(this.boxCollision(e, t, deltaTime)) {
                                         if(t.tag.includes('tile')) {
-                                            e.components.boxCollider.collisions[t.tag] = this.#checkDirection(e,t)
+                                            e.components.boxCollider.collisions[t.tag] = {pos: t.components.boxCollider, dir:this.#checkDirection(e,t)}
                                         } else {
                                             e.components.boxCollider.collisions[t.tag] = true
                                         }  
@@ -41,20 +41,26 @@ class CollisionSystem {
         let collisions = player.components.boxCollider.collisions
         for(let e in collisions) {
             if(e.includes('tile')) {
-               if(collisions[e].length > 0) {
-                collisions[e].forEach(dir => {
+               if(collisions[e].dir.length > 0) {
+                collisions[e].dir.forEach(dir => {
                     if(dir === 'DOWN') {
-                        player.components.transform.velocityy = 0
+                        player.components.transform.velocitY = 0
+                        player.components.transform.y = collisions[e].pos.y - player.components.boxCollider.height
                         player.components.rigidBody.isGrounded = true
                     } else if(dir === 'UP') {
                         player.components.transform.velocityY = 0
-                    } else if(dir === 'RIGHT' || dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
+                        player.components.transform.y = collisions[e].pos.y + BLOCKSIZE
+                    } else if(dir === 'RIGHT') {
                         player.components.transform.velocityX = 0
+                        player.components.transform.x = collisions[e].pos.x - player.components.boxCollider.width
+                    } else if(dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
+                        player.components.transform.velocityX = 0
+                        player.components.transform.x = collisions[e].pos.x + BLOCKSIZE
                     } else {
                         player.components.rigidBody.isGrounded = false
                     }
                 })
-                collisions[e].length = 0
+                collisions[e].dir.length = 0
                }
             }
         }
