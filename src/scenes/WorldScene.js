@@ -54,8 +54,8 @@ class WorldScene extends Scene {
             this.renderBox.update();
             this.#updateTileState();
         }
+        this.hud.update(uiActive, keys); // UI LAST AT ALL TIMES
         this.containerManager.update(uiActive, click);
-        // this.hud.update(uiActive); // UI LAST AT ALL TIMES
     }
 
     draw(uiActive, ctx) {
@@ -69,9 +69,8 @@ class WorldScene extends Scene {
             }
         })
         */
+        this.hud.draw(uiActive, ctx); // UI ON TOP OF EVERYTHING
         this.containerManager.draw(uiActive, ctx);
-        // this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
-        
     }
 
     /**

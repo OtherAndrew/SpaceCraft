@@ -1,6 +1,6 @@
 class HUD {
     constructor(containermanager, player) {
-        // hook relevant ent and system
+        // register relevant ent and system
         this.player = player;
         this.cm = containermanager;
         
@@ -11,10 +11,9 @@ class HUD {
         this.cm.activateInventory(null);
         
         this.containers = this.cm.getInventory(player);
-        this.containers[0].active = true;
-        for (let bar = 1; bar < 4; bar++) {
-            this.containers[bar].active = false;
-        }
+        this.activeContainer = this.containers[0];
+        this.getStartPoint();
+
         this.add(new block1());
         this.add(new block2());
         this.add(new block1());
@@ -27,47 +26,39 @@ class HUD {
         this.cm.addToInventory(this.player, entity);
     };
 
-    // called by ent place system to remove from inven
-    // returns ent to be re-added to engine
-    // remove(index) {
-    //     this.cm.removeFromInventory(this.player, index);
-    // };
-    //
-    // // called to swap ent locations
-    // swap(from, to) {
-    //     this.cm.swapInInventory(this.player, from, to);
-    // };
+    draw(uiActive, ctx) {
+        if (!uiActive) {
+            ctx.save();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "yellow";
+            this.getStartPoint();
+            ctx.rect(this.x, this.y, 42, 42);
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
 
-    // called to delete ent entirely from inven
-    // delete(index) {
-    //     this.containers[index] = null;
-    //     this.entitiesCount.delete(index);
-    //     // disable it completely
-    //     // ent = null;
-    // };
+    getStartPoint() {
+        this.x = this.activeContainer.x;
+        this.y = this.activeContainer.y;
+    }
 
-    // update(uiActive) {
-    //     this.open = uiActive;
-    // };
-
-    // draw(ctx) {
-    //     // draw backdrop of inventory
-    //     ctx.save();
-    //     let rowCount = 5;
-    //     if (!this.open) {
-    //         ctx.globalAlpha = 0.7;
-    //         rowCount = 1;
-    //     }
-    //     let i = 0;
-    //     for (let row = 0; row < rowCount; row++) {
-    //         for (let col = 0; col < 4; col++) {
-    //             if (this.containers[i]) {
-    //                 this.containers[i++].draw(ctx);
-    //             }
-    //         }
-    //     }
-    //     ctx.restore();
-    // };
+    update(uiActive, keys) {
+        if (!uiActive) {
+            if (keys['1']) {
+                this.activeContainer = this.containers[0];
+            }
+            if (keys['2']) {
+                this.activeContainer = this.containers[1];
+            }
+            if (keys['3']) {
+                this.activeContainer = this.containers[2];
+            }
+            if (keys['4']) {
+                this.activeContainer = this.containers[3];
+            }
+        }
+    }
 }
 // Testing classes
 class Block {

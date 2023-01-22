@@ -4,7 +4,7 @@ class ContainerManager {
         this.slots = []; // every container by their universal slot number
         this.slotCount = 0; // universal slot number count
         this.activeInventory = []; // inventories on screen
-        this.activeContainer = null; // player selected container
+        this.selectedContainer = null; // player selected container
         this.lastClick = null; // tracks last mouse click to check if new
     }
 
@@ -73,21 +73,23 @@ class ContainerManager {
     // };
 
     swapViaContainer(swapContainer) {
-        if (swapContainer.item && this.activeContainer.item 
-            && swapContainer.item.tag === this.activeContainer.item.tag) { // stack if same
-            this.activeContainer.count = this.activeContainer.count + swapContainer.count;
-        } else if (!swapContainer.owner && this.activeContainer.item) { // trashcan (need check for selling?)
-            swapContainer.item = this.activeContainer.item;
-            swapContainer.count = this.activeContainer.count;
-            this.activeContainer.item = null;
-            this.activeContainer.count = 0;
+        if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
+            && swapContainer.item.tag === this.selectedContainer.item.tag) { // stack if same
+            swapContainer.count = swapContainer.count + this.selectedContainer.count;
+            this.selectedContainer.item = null;
+            this.selectedContainer.count = 0;
+        } else if (!swapContainer.owner && this.selectedContainer.item) { // trashcan (need check for selling?)
+            swapContainer.item = this.selectedContainer.item;
+            swapContainer.count = this.selectedContainer.count;
+            this.selectedContainer.item = null;
+            this.selectedContainer.count = 0;
         } else { // swap
-            let placeholder = this.activeContainer.item;
-            this.activeContainer.item = swapContainer.item;
+            let placeholder = this.selectedContainer.item;
+            this.selectedContainer.item = swapContainer.item;
             swapContainer.item = placeholder;
 
-            placeholder = this.activeContainer.count;
-            this.activeContainer.count = swapContainer.count;
+            placeholder = this.selectedContainer.count;
+            this.selectedContainer.count = swapContainer.count;
             swapContainer.count = placeholder;
         }
         this.deactivateContainer(); // affected by metronome effect
@@ -159,9 +161,9 @@ class ContainerManager {
     }
 
     activateContainer(hit, click) {
-        if (!this.activeContainer) { // no current container
+        if (!this.selectedContainer) { // no current container
             hit.selected = true;
-            this.activeContainer = hit;
+            this.selectedContainer = hit;
         } else {
             this.swapViaContainer(hit);
         }
@@ -169,9 +171,9 @@ class ContainerManager {
     }
     
     deactivateContainer() {
-        if (this.activeContainer) {
-            this.activeContainer.selected = false;
-            this.activeContainer = null;
+        if (this.selectedContainer) {
+            this.selectedContainer.selected = false;
+            this.selectedContainer = null;
         }
     }
 }
@@ -192,10 +194,13 @@ class Container {
             this.roundRect(ctx, this.x, this.y, this.fillColor);
         }
         if (this.item) {
+            // center item image
             let itemImage = ASSET_MANAGER.getAsset(this.item.sprite);
             let shrunkX = itemImage.width * 0.65;
             let shrunkY = itemImage.height * 0.65;
             ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
+            
+            // stack counter
             ctx.save();
             ctx.globalAlpha = 1;
             ctx.fillStyle = "white";
