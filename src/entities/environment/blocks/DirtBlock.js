@@ -21,7 +21,7 @@
  */
 const DirtBlock = function(props) {
     return {
-        tag: 'dirt',
+        tag: 'dirt tile',
         components: [
             new CTransform({
                 x: props.x,

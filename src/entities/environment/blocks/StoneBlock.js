@@ -21,7 +21,7 @@
  */
 const StoneBlock = function(props) {
     return {
-        tag: 'stone',
+        tag: 'stone tile',
         components: [
             new CTransform({
                 x: props.x,

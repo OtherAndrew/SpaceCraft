@@ -3,114 +3,110 @@ class CollisionSystem {
     constructor(entities) {
         this.entities = entities
         this.collisions = []
+        this.directions = {
+            UP: [-130,-45],
+            DOWN: [45,130],
+            UP_LEFT: [-179,-135],
+            DOWN_LEFT: [135, 180],
+            RIGHT: [-30,30]
+        }
     }
-    update() {
+    update(deltaTime) {
         this.entities.forEach(e => {
-            if(e.tag === 'player') {
-                this.entities.forEach(t => {
-                    if(e.id !== t.id) {
-                        if(this.boxCollision(e, t)) {
-                            e.components.boxCollider.collisions[t.tag] = true
+            if(e.isDrawable) {
+                if(e.tag === 'player') {
+                    this.entities.forEach(t => {
+                        if(e.isDrawable) {
+                            if(e.id !== t.id) {
+                                if(t.components.boxCollider) {
+                                    if(this.boxCollision(e, t, deltaTime)) {
+                                        if(t.tag.includes('tile')) {
+                                            e.components.boxCollider.collisions[t.tag] = this.#checkDirection(e,t)
+                                        } else {
+                                            e.components.boxCollider.collisions[t.tag] = true
+                                        }  
+                                    }
+                                    this.#playerCollisionResolution(e)
+                                }
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
 
         })
     }
 
-    //Collision between two Rectangles, does not return direction of collision
-    boxCollision(entityA, entityB) {
-        if(entityA.components.boxCollider && entityB.components.boxCollider) {
-            let a = entityA.components.boxCollider
-            let b = entityB.components.boxCollider
-            if(a.x < b.x + b.width &&
-                a.x + a.width > b.x &&
-                a.y < b.y + b.height &&
-                a.y + a.height > b.y) {
-                return true
+    #playerCollisionResolution(player) {
+        let collisions = player.components.boxCollider.collisions
+        for(let e in collisions) {
+            if(e.includes('tile')) {
+               if(collisions[e].length > 0) {
+                collisions[e].forEach(dir => {
+                    if(dir === 'DOWN') {
+                        player.components.transform.velocityy = 0
+                        player.components.rigidBody.isGrounded = true
+                    } else if(dir === 'UP') {
+                        player.components.transform.velocityY = 0
+                    } else if(dir === 'RIGHT' || dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
+                        player.components.transform.velocityX = 0
+                    } else {
+                        player.components.rigidBody.isGrounded = false
+                    }
+                })
+                collisions[e].length = 0
+               }
             }
         }
+    }
+
+    //Collision between two Rectangles, does not return direction of collision
+    boxCollision(entityA, entityB, deltaTime) {
+
+        let a = entityA.components.boxCollider
+        let b = entityB.components.boxCollider
+        let futurePos = {
+            x: a.x + (entityA.components.transform.velocityX * deltaTime),
+            y: a.y + (entityA.components.transform.velocityY * deltaTime)
+        }
+        if(futurePos.x < b.x + b.width &&
+            futurePos.x + a.width > b.x &&
+            futurePos.y < b.y + b.height &&
+            futurePos.y + a.height > b.y) {
+            return true
+        }
+    }
+
+    /**
+     * Checks which side the collision occurs.
+     * entityA is the player.
+     * @param {Entity} entityA 
+     * @param {Entity} entityB 
+     * @return {Array} of directions
+     */
+    #checkDirection(entityA, entityB) {
+        let a = entityA.components.boxCollider
+        let b = entityB.components.boxCollider
+        let midPointA = {
+            x: a.x + (a.width * .5),
+            y: a.y + (a.height * .5)
+        }
+        let midPointB = {
+            x: b.x + (b.width * .5),
+            y: b.y + (b.height * .5)
+        }
+        let degree = getDirection(midPointA, midPointB)
+        let result = []
+        for(let dir in this.directions) {
+            if(isBetween(degree, this.directions[dir][0], this.directions[dir][1])) {
+                result.push(dir)
+            }
+        }
+       return result
     }
 
     // Checks if point is within a rectangle
     pointInRect = (point, rect) => {
         return (point.x >= rect.x && point.y >= rect.y && point.x < rect.x + rect.width && point.y < rect.y + rect.height)
-    }
-
-    dynamicRectCollision(a, b) {
-
-        const expandedRect = {
-            x: b.x - a.x / 2,
-            y: b.y - a.y / 2,
-            width: b.width + a.width,
-            height: b.height + a.height
-        }
-
-        return this.#rayCastCollision({
-                x: a.x + a. width / 2,
-                y: a.y + a.height / 2
-            }, {
-                x: a.velocityX,
-                y: a.velocityY
-            }, expandedRect
-
-        )
-    }
-    // Helper function for dynamicCollision. A ray is used from a dynamic rectangle origin to another body to check for a collision,
-    // returns direction of collision
-    #rayCastCollision(rayOrigin, rayDirection, rect) {
-
-        let timeNear = {
-            x: (rect.x - rayOrigin.x) / rayDirection.x,
-            y: (rect.y - rayOrigin.y) / rayDirection.y
-        }
-        let timeFar = {
-            x: (rect.x + rect.width - rayOrigin.x) / rayDirection.x,
-            y: (rect.y + rect.height - rayOrigin.y) / rayDirection.y
-        }
-        if(timeNear.x > timeFar.x) {
-            let temp = timeNear.x
-            timeNear.x = timeFar.x
-            timeFar.x = temp
-        }
-        if(timeNear.y > timeFar.y) {
-            let temp = timeNear.y
-            timeNear.y = timeFar.y
-            timeFar.y = temp
-        }
-        if(timeNear.x > timeFar.y || timeNear.y > timeFar.x) {
-            return false
-        }
-
-        let timeHitNear = Math.max(timeNear.x, timeNear.y)
-        let timeHitFar = Math.min(timeFar.x, timeFar.y)
-        if(timeHitFar < 0) return false
-
-
-        let contactNormal = {
-            x: 0,
-            y: 0
-        }
-        let contactPoint = {
-            x: rayOrigin.x + timeHitNear * rayDirection.x,
-            y: rayOrigin.y + timeHitNear * rayDirection.y
-        }
-
-        if(timeNear.x > timeNear.y) {
-            if(rayDirection.x < 0) {
-                contactNormal.x = 1
-            } else {
-                contactNormal.x = -1
-            }
-        } else if (timeNear.x < timeNear.y) {
-            if(rayDirection.y < 0) {
-                contactNormal.y = 1
-            } else {
-                contactNormal.y = -1
-            }
-        }
-
-        return true, {contactNormal: contactNormal, contactPoint: contactPoint, hit: timeHitNear}
     }
 }

@@ -21,7 +21,7 @@
  */
 const RubyBlock = function(props) {
     return {
-        tag: 'ruby',
+        tag: 'ruby tile',
         components: [
             new CTransform({
                 x: props.x,

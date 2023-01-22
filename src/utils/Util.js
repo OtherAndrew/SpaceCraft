@@ -59,6 +59,28 @@ const getDistance = (p1, p2) => {
 };
 
 /**
+ * Returns the angle of p2 from a horizontal line on p1.
+ * 
+ * @param {CTransform} p1 
+ * @param {CTransform} p2 
+ * @returns result in degrees
+ */
+const getDirection = (p1, p2) => {
+    return Math.atan2((p2.y - p1.y),(p2.x-p1.x)) * 180 / Math.PI
+}
+
+/**
+ * Checks if number is in between given range.
+ * @param {number} num
+ * @param {number} min
+ * @param {number} max
+ * @return {boolean}
+ */
+const isBetween = (num, min, max) => {
+    return num >= min && num <= max
+}
+
+/**
  * Restricts the num in between the min and max values.
  * @param {Number} num 
  * @param {Number} min 
@@ -66,4 +88,5 @@ const getDistance = (p1, p2) => {
  * @returns either the number, min or max.
  */
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+
 const getRandomInt = (max) =>  Math.floor(Math.random() * max);

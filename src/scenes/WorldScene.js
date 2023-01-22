@@ -17,6 +17,7 @@ class WorldScene extends Scene {
             'null',
             'null',
         ]
+        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities)
     }
 
     /**
@@ -55,11 +56,9 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this);
-
-        // this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
-    update(uiActive, keys, mouseDown) {
+    update(uiActive, keys, mouseDown, deltaTime) {
         if (!uiActive) {
             this.entityManager.update()
             this.playerMovement.update(keys)
@@ -70,25 +69,29 @@ class WorldScene extends Scene {
             this.renderSystem.update(this.game.clockTick);
             this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
-            // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            this.collisionSystem.update(deltaTime)
+            // temporary spot for this
+            if(mouseDown) {
+                this.breakBlock(mouseDown, this.player, this.terrainMap)
+            }
         }
-        if(mouseDown) {
-            this.breakBlock(mouseDown, this.player, this.terrainMap)
-        }
+        
         this.hud.update(uiActive); // UI LAST AT ALL TIMES
+        //console.log(this.player.components.rigidBody.isGrounded)
     }
 
     draw(ctx) {
         this.renderSystem.draw(ctx, this.camera)
-        /*
+        
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
-                ctx.fillStyle = 'rgba(200,200,100,1)'
+                ctx.fillStyle = 'rgba(200,200,100,.3)'
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
-        */
+        
         this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
     }
 
@@ -135,7 +138,6 @@ class WorldScene extends Scene {
             })
             this.terrainMap.push(r)
         })
-        console.log(this.terrainMap)
     }
 
     /**
@@ -215,8 +217,8 @@ class WorldScene extends Scene {
 
         this.player = this.entityManager.addEntity(new Player({
             sprite: this.playerSprite,
-            x: WIDTH / 2,
-            y: HEIGHT / 2,
+            x: WIDTH_PIXELS * .5,
+            y: -100,
             sWidth : spriteWidth,
             sHeight: spriteHeight,
             scale: scale
@@ -301,21 +303,36 @@ class WorldScene extends Scene {
 
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
-        if ( posY === 0 ||
-            this.terrainMap[posY][clamp(posX-1, 0, posX)] === 'air' ||
-            this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)] === 'air' ||
-            this.terrainMap[clamp(posY-1,0,posY)][posX] === 'air' ||
-            this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX] === 'air') {
+
+        if(e.isDrawable && e.tag.includes('tile')) {
+            //adds 'ground' tag to block so player can jump off of it
+            if(posY === 0 || this.terrainMap[clamp(posY-1,0,posY)][posX].tag === 'air') {
                 e.addComponent([
                     new CBoxCollider({
                         x: e.components.transform.x,
                         y: e.components.transform.y,
-                        width: 32,
-                        height: 32
+                        width: BLOCKSIZE,
+                        height: BLOCKSIZE
                     })
                 ])
+                e.tag = e.tag + " ground"
             }
+            if ( 
+                this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
+                this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)].tag === 'air' ||
+                this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air') {
+                    e.addComponent([
+                        new CBoxCollider({
+                            x: e.components.transform.x,
+                            y: e.components.transform.y,
+                            width: BLOCKSIZE,
+                            height: BLOCKSIZE
+                        })
+                    ])
+                }
+        }
     }
+
 
 
 

@@ -3,8 +3,8 @@ class PlayerInputSystem {
         this.player = player
         this.playerPos = this.player.components.transform
         this.hitBox = this.player.components.boxCollider
-        this.speed = 2
-        this.gravity = 0
+        this.speed = 1
+        this.gravity = 1.5
     }
     /**
      * Controlls

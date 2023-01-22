@@ -145,7 +145,7 @@ class GameEngine {
 
     update() {
         //this.demoScene.update(this.keys)
-        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown);
+        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.clockTick);
         //this.animationDemoScene.update(this.keys, this.clockTick)
     };
 
