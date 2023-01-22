@@ -48,6 +48,12 @@ class GameEngine {
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left - 1,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top - 1
         });
+
+        const getXYT = e => ({
+            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left - 1,
+            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top - 1,
+            T: this.timer.gameTime
+        });
         
         this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.options.debugging) {
@@ -67,7 +73,7 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("MouseDown", getXandY(e));
             }
-            this.mouseDown = getXandY(e);
+            this.mouseDown = getXYT(e);
         })
 
         this.ctx.canvas.addEventListener('mouseup', e => {
@@ -100,9 +106,8 @@ class GameEngine {
         });
 
         /* KEY LISTENERS FOR:
-         I    : INVENTORY
-         C    : CRAFT
-         ESC  : EXIT UI */
+         TAB    : INVENTORY
+         ESC    : EXIT UI */
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
                 switch (e.code) {
@@ -112,11 +117,11 @@ class GameEngine {
                     //     break;
                     case "Escape":
                         that.uiActive = false;
-                        console.log(that.uiActive);
+                        // console.log("UI: " + that.uiActive);
                         break;
                     case "Tab":
                         that.uiActive = !that.uiActive;
-                        console.log(that.uiActive);
+                        // console.log("UI: " + that.uiActive);
                         break;
                 }
             }, false);
@@ -128,7 +133,7 @@ class GameEngine {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.fillStyle = 'rgb(159,109,50)'
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-        this.terrainDemoScene.draw(this.ctx)
+        this.terrainDemoScene.draw(this.uiActive, this.ctx)
         //this.animationDemoScene.draw(this.ctx)
         if(this.currentTime > 1) {
             this.currentTime = 0

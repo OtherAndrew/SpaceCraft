@@ -89,4 +89,9 @@ const isBetween = (num, min, max) => {
  */
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
+/**
+ * Returns a random integer between 0 (inclusive) and `max` (exclusive).
+ * @param {Number} max
+ * @returns {Number} A random integer between 0 (inclusive) and `max` (exclusive).
+ */
 const getRandomInt = (max) =>  Math.floor(Math.random() * max);

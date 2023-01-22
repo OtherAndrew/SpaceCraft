@@ -55,7 +55,9 @@ class WorldScene extends Scene {
 
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
-        this.hud = new HUD(this);
+        this.hud = new HUD(this.containerManager, this.player);
+
+        // this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
     update(uiActive, keys, mouseDown, deltaTime) {
@@ -77,11 +79,12 @@ class WorldScene extends Scene {
             }
         }
         
-        this.hud.update(uiActive); // UI LAST AT ALL TIMES
+        this.hud.update(uiActive, keys); // UI LAST AT ALL TIMES
         //console.log(this.player.components.rigidBody.isGrounded)
+        this.containerManager.update(uiActive, mouseDown);
     }
 
-    draw(ctx) {
+    draw(uiActive, ctx) {
         this.renderSystem.draw(ctx, this.camera)
         
         this.entityManager.getEntities.forEach(e => {
@@ -92,7 +95,8 @@ class WorldScene extends Scene {
             }
         })
         
-        this.hud.draw(ctx); // UI ON TOP OF EVERYTHING
+        this.hud.draw(uiActive, ctx); // UI ON TOP OF EVERYTHING
+        this.containerManager.draw(uiActive, ctx);
     }
 
     /**

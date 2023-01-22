@@ -37,67 +37,67 @@ const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
 const BISMUTH_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const COAL_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 7.0
 }
 const COBALT_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const COPPER_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 7.0
 }
 const FERRITE_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const GOLD_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 6.0
 }
 const IRON_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 7.0
 }
 const PARAFFIN_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const SAND_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 15.0
 }
 const SILICA_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 5.0
 }
 const TIN_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 2.5
 }
 const TITANITE_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 1.5
 }
 const TUNGSTEN_GEN_STATS = {
     yMin: 0,
     yMax: 0,
-    rate: 0.0
+    rate: 3.0
 }
 const RUBY_GEN_STATS = {
     yMin: 0,
@@ -115,7 +115,10 @@ const BACKGROUND_CAVE_PATH = './assets/backgrounds/cave_background.png'
 const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
 const BACKGROUND_SURFACE_1 ='./assets/backgrounds/surface_background_1.png'
 
-
+// TESTING
+const B1 = './assets/sprites/b1.png'
+const B2 = './assets/sprites/b2.png'
+const B3 = './assets/sprites/b3.png'
 
 // arrays to queue using a loop
 const TERRAIN_ASSETS_ARRAY = [
@@ -136,6 +139,9 @@ const TERRAIN_ASSETS_ARRAY = [
     TILES_TITANITE_PATH,
     TILES_TUNGSTEN_PATH,
     BACKGROUND_SURFACE_0,
-    BACKGROUND_SURFACE_1
+    BACKGROUND_SURFACE_1,
+    B1,
+    B2,
+    B3
 ]
 
