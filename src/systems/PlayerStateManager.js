@@ -21,6 +21,8 @@ class PlayerStateManager {
         this.playerState.states["walkL"] = new AnimationProps(0, 2, 11);
         this.playerState.states["jumpR"] = new AnimationProps(0, 1);
         this.playerState.states["jumpL"] = new AnimationProps(0, 2);
+        this.playerState.states["crouchR"] = new AnimationProps(5, 1);
+        this.playerState.states["crouchL"] = new AnimationProps(5, 2);
     }
 
     setState(s) {
@@ -40,12 +42,15 @@ class PlayerStateManager {
             if (currentState !== 'walkR') this.setState('walkR');
         } else if (input['a']) {
             if (currentState !== 'walkL') this.setState('walkL');
-        } else if (input['w'] || input['s'] || input[' ']) {
+        } else if (input['s']) {
+            if (currentState === 'idleR' || currentState === 'walkR' || currentState === 'jumpR') this.setState('crouchR');
+            else if (currentState === 'idleL' || currentState === 'walkL' || currentState === 'jumpL') this.setState('crouchL');
+        } else if (input['w'] || input[' ']) {
             if (currentState === 'idleR' || currentState === 'walkR') this.setState('jumpR');
             else if (currentState === 'idleL' || currentState === 'walkL') this.setState('jumpL');
         } else {
-            if (currentState === 'walkR' || currentState === 'jumpR') this.setState('idleR');
-            else if (currentState === 'walkL' || currentState === 'jumpL') this.setState('idleL');
+            if (currentState === 'walkR' || currentState === 'jumpR' || currentState === 'crouchR') this.setState('idleR');
+            else if (currentState === 'walkL' || currentState === 'jumpL' || currentState === 'crouchL') this.setState('idleL');
         }
     }
 }
