@@ -40,7 +40,7 @@ class PlayerStateManager {
             if (currentState !== 'walkR') this.setState('walkR');
         } else if (input['a']) {
             if (currentState !== 'walkL') this.setState('walkL');
-        } else if (input['w'] || input['s']) {
+        } else if (input['w'] || input['s'] || input[' ']) {
             if (currentState === 'idleR' || currentState === 'walkR') this.setState('jumpR');
             else if (currentState === 'idleL' || currentState === 'walkL') this.setState('jumpL');
         } else {
