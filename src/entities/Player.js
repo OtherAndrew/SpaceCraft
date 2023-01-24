@@ -32,7 +32,7 @@ const Player = function(props) {
                 x: props.x,
                 y: props.y,
                 maxVelocityX: 15,
-                maxVelocityY: 150
+                maxVelocityY: 50
             }),
             new CBoxCollider({
                 x: props.x,
@@ -44,6 +44,11 @@ const Player = function(props) {
             // new CInput(),
             new CState()
         ]
+        /*
+        aMethod: function(arg) {
+            doStuff;
+        }
+         */
     };
 }
 Player.prototype.name = 'player';

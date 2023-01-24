@@ -23,6 +23,7 @@ class PlayerInputSystem {
             this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
         }else if(input['s']) { // fast fall
             this.playerPos.velocityY = clamp(this.playerPos.velocityY + this.speed, 0, this.playerPos.maxVelocityY)
+            this.playerPos.velocityX = 0;
         } else {
             this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 :
                 (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)

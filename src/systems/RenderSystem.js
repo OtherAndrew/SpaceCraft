@@ -20,8 +20,8 @@ class RenderSystem {
                     try {
                         ctx.drawImage(
                             sprite.sprite,
-                            sprite.currentFrame * sprite.sWidth,
-                            sprite.frameY * sprite.sHeight,
+                            sprite.currentFrame * sprite.sWidth /* + 1 * padding*/,
+                            sprite.frameY * sprite.sHeight /* + 1 * padding*/,
                             sprite.sWidth,
                             sprite.sHeight,
                             e.components.transform.x - xSpeed,
@@ -41,7 +41,7 @@ class RenderSystem {
     update(tick) {
         this.entities.forEach(e => {
             let sprite = e.components.sprite;
-            if (sprite.lastFrameX !== sprite.firstFrameX) { // if has animations
+            if (sprite.lastFrameX !== sprite.firstFrameX) { // has animations
                 if (sprite.elapsedTime >= sprite.frameDuration) {
 
                     sprite.elapsedTime = 0;
