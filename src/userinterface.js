@@ -29,9 +29,10 @@ class HUD {
     draw(uiActive, ctx) {
         if (!uiActive) {
             ctx.save();
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 3;
             ctx.strokeStyle = "yellow";
             this.getStartPoint();
+            ctx.beginPath();
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();
