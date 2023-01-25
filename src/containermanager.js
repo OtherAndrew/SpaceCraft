@@ -123,10 +123,11 @@ class ContainerManager {
 
     draw(uiActive, ctx) {
         if (uiActive) {
-            for (let c = 0; c < this.activeInventory[0].length; c++) {
-                this.activeInventory[0][c].draw(ctx);
+            for (let i = 0; i < this.activeInventory.length; i++) {
+                for (let c = 0; c < this.activeInventory[i].length; c++) {
+                    this.activeInventory[i][c].draw(ctx);
+                }
             }
-            this.activeInventory[1][0].draw(ctx);
         } else {
             ctx.save();
             ctx.globalAlpha = 0.7;
@@ -134,11 +135,6 @@ class ContainerManager {
                 this.activeInventory[0][c].draw(ctx);
             }
             ctx.restore();
-        }
-        for (let i = 2; i < this.activeInventory.length; i++) {
-            for (let c = 0; c < this.activeInventory[i].length; c++) {
-                this.activeInventory[i][c].draw(ctx);
-            }
         }
     }
     
