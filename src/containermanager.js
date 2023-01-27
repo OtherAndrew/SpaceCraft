@@ -8,6 +8,10 @@ class ContainerManager {
         this.lastClick = null; // tracks last mouse click to check if new
     }
 
+    contain(item, count=0) {
+        return new Container()
+    }
+
     createInventory(owner, x, y, row, col, color="blue", reverse=false) {
         let newInventory = [];
         let internalCount = 0;

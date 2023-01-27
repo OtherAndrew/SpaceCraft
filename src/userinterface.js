@@ -2,6 +2,7 @@ class HUD {
     constructor(containermanager, player) {
         // register relevant ent and system
         this.player = player;
+        this.player.health = 80;
         this.cm = containermanager;
         
         // create player inventory and trashcan
@@ -29,10 +30,23 @@ class HUD {
     draw(uiActive, ctx) {
         if (!uiActive) {
             ctx.save();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "white";
+            ctx.beginPath();
+            ctx.rect(420,670, 183, 10);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.fillStyle = "red"
+            ctx.rect(420,670, 183 * this.player.health / 100, 10); // depends on player health rep
+            ctx.fill();
+            ctx.restore();
+            
+            ctx.save();
+            ctx.beginPath();
             ctx.lineWidth = 3;
             ctx.strokeStyle = "yellow";
             this.getStartPoint();
-            ctx.beginPath();
+            // ctx.beginPath();
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();
