@@ -52,14 +52,14 @@ class Player {
     };
 
     #addAnimations() {
-        const spriteComp = this.components.find(component => component.name === 'sprite');
-        spriteComp.animationMap.set('idleR', new AnimationProps(0, 0));
-        spriteComp.animationMap.set('idleL', new AnimationProps(1, 0));
-        spriteComp.animationMap.set('walkR', new AnimationProps(0, 1, 11));
-        spriteComp.animationMap.set('walkL', new AnimationProps(0, 2, 11));
-        spriteComp.animationMap.set('jumpR', new AnimationProps(0, 1));
-        spriteComp.animationMap.set('jumpL', new AnimationProps(0, 2));
-        spriteComp.animationMap.set('crouchR', new AnimationProps(5, 1));
-        spriteComp.animationMap.set('crouchL', new AnimationProps(5, 2));
+        const aMap = this.components.find(component => component.name === 'sprite').animationMap;
+        aMap.set('idleR', new AnimationProps(0, 0));
+        aMap.set('idleL', new AnimationProps(1, 0));
+        aMap.set('walkR', new AnimationProps(0, 1, 11));
+        aMap.set('walkL', new AnimationProps(0, 2, 11));
+        aMap.set('jumpR', new AnimationProps(0, 1));
+        aMap.set('jumpL', new AnimationProps(0, 2));
+        aMap.set('crouchR', new AnimationProps(5, 1));
+        aMap.set('crouchL', new AnimationProps(5, 2));
     };
 }
