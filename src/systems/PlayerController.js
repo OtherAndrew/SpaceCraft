@@ -47,8 +47,8 @@ class PlayerController {
             // this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
             this.player.components.rigidBody.isGrounded = false
             this.pTransform.velocityY = -15;
-            if (this.direction === 'right') this.pState.setState('jumpR');
-            else if (this.direction === "left") this.pState.setState('jumpL');
+            if (this.direction === 'right') this.pState.setState('flyR');
+            else if (this.direction === "left") this.pState.setState('flyL');
         }
 
         if(!this.player.components.rigidBody.isGrounded) {

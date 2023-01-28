@@ -68,4 +68,9 @@ class Player {
         aMap.set('crouchR', new AnimationProps(5, 1));
         aMap.set('crouchL', new AnimationProps(5, 2));
     };
+
+    #addBehaviors(transform) {
+        const bMap = transform.behaviorMap;
+        // bMap.set();
+    }
 }
