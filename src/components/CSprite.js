@@ -33,29 +33,33 @@ class CSprite {
         this.dWidth = this.sWidth * scale;
         this.dHeight = this.sHeight * scale;
         this.elapsedTime = 0;
+        this.currentState = 'idleR';
         this.animationMap = new Map();
         return this;
     };
 
-    /**
-     * Adds animation properties to sprite
-     * @param {string} state
-     * @param {AnimationProps} aProps
-     */
-    addAnimation(state, aProps) {
-        this.animationMap.set(state, aProps);
-    }
+    // /**
+    //  * Adds animation properties to sprite
+    //  * @param {string} state
+    //  * @param {AnimationProps} aProps
+    //  */
+    // addAnimation(state, aProps) {
+    //     this.animationMap.set(state, aProps);
+    // }
 
     /**
      * Sets sprite animation properties.
      * @param {string} state
      */
     setAnimation(state) {
-        const aProps = this.animationMap.get(state);
-        this.firstFrameX = aProps.firstFrameX;
-        this.currentFrame = this.firstFrameX;
-        this.frameY = aProps.frameY;
-        this.lastFrameX = aProps.lastFrameX;
+        if (state !== this.currentState) {
+            const aProps = this.animationMap.get(state);
+            this.firstFrameX = aProps.firstFrameX;
+            this.currentFrame = this.firstFrameX;
+            this.frameY = aProps.frameY;
+            this.lastFrameX = aProps.lastFrameX;
+            this.currentState = state;
+        }
     }
 
     /**

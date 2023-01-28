@@ -38,19 +38,19 @@ class PlayerStateManager {
     }
     update(input) {
         const currentState = this.playerState.currentState;
-        if (input['d']) {
-            if (currentState !== 'walkR') this.setState('walkR');
-        } else if (input['a']) {
-            if (currentState !== 'walkL') this.setState('walkL');
-        } else if (input['s']) {
-            if (currentState === 'idleR' || currentState === 'walkR' || currentState === 'jumpR') this.setState('crouchR');
-            else if (currentState === 'idleL' || currentState === 'walkL' || currentState === 'jumpL') this.setState('crouchL');
-        } else if (input['w'] || input[' ']) {
-            if (currentState === 'idleR' || currentState === 'walkR') this.setState('jumpR');
-            else if (currentState === 'idleL' || currentState === 'walkL') this.setState('jumpL');
-        } else {
-            if (currentState === 'walkR' || currentState === 'jumpR' || currentState === 'crouchR') this.setState('idleR');
-            else if (currentState === 'walkL' || currentState === 'jumpL' || currentState === 'crouchL') this.setState('idleL');
-        }
+        // if (input['d']) {
+        //     if (currentState !== 'walkR') this.setState('walkR');
+        // } else if (input['a']) {
+        //     if (currentState !== 'walkL') this.setState('walkL');
+        // } else if (input['s']) {
+        //     if (currentState === 'idleR' || currentState === 'walkR' || currentState === 'jumpR') this.setState('crouchR');
+        //     else if (currentState === 'idleL' || currentState === 'walkL' || currentState === 'jumpL') this.setState('crouchL');
+        // } else if (input['w'] || input[' ']) {
+        //     if (currentState === 'idleR' || currentState === 'walkR') this.setState('jumpR');
+        //     else if (currentState === 'idleL' || currentState === 'walkL') this.setState('jumpL');
+        // } else {
+        //     if (currentState === 'walkR' || currentState === 'jumpR' || currentState === 'crouchR') this.setState('idleR');
+        //     else if (currentState === 'walkL' || currentState === 'jumpL' || currentState === 'crouchL') this.setState('idleL');
+        // }
     }
 }

@@ -2,6 +2,7 @@ class PlayerInputSystem {
     constructor(player) {
         this.player = player
         this.playerPos = this.player.components.transform
+        this.playerSprite = this.player.components.sprite
         this.hitBox = this.player.components.boxCollider
         this.speed = 1
         this.gravity = 1.5
@@ -17,8 +18,10 @@ class PlayerInputSystem {
 
         if(input['a']) {
             this.playerPos.velocityX = clamp(this.playerPos.velocityX - this.speed, -this.playerPos.maxVelocityX, 0)
+            this.playerSprite.setAnimation('walkL');
         } else if(input['d']) {
             this.playerPos.velocityX = clamp(this.playerPos.velocityX + this.speed, 0, this.playerPos.maxVelocityX)
+            this.playerSprite.setAnimation('walkR');
         } else if(input['w']) { // jetpack?
             this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
         }else if(input['s']) { // fast fall
