@@ -34,5 +34,20 @@ class CSprite {
         this.dHeight = this.sHeight * scale;
         this.elapsedTime = 0;
         return this;
+    };
+
+    update(tick) {
+        if (this.lastFrameX !== this.firstFrameX) { // has animations
+            if (this.elapsedTime >= this.frameDuration) {
+                if (this.currentFrame === this.lastFrameX) { // reset frame
+                    this.currentFrame = this.firstFrameX;
+                } else {
+                    this.currentFrame++;
+                }
+                this.elapsedTime = 0;
+            } else {
+                this.elapsedTime += tick;
+            }
+        }
     }
 }

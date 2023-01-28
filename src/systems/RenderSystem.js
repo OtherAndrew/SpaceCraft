@@ -40,20 +40,7 @@ class RenderSystem {
 
     update(tick) {
         this.entities.forEach(e => {
-            let sprite = e.components.sprite;
-            if (sprite.lastFrameX !== sprite.firstFrameX) { // has animations
-                if (sprite.elapsedTime >= sprite.frameDuration) {
-
-                    sprite.elapsedTime = 0;
-                    if (sprite.currentFrame === sprite.lastFrameX) { // reset frame
-                        sprite.currentFrame = sprite.firstFrameX;
-                    } else {
-                        sprite.currentFrame++;
-                    }
-                } else {
-                    sprite.elapsedTime += tick;
-                }
-            }
+            e.components.sprite.update(tick);
         });
     };
 }
