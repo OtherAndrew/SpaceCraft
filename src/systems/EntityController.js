@@ -1,5 +1,5 @@
 // Changes state of an entity. Usually used to change an animation
-class MonsterStateManager {
+class EntityController {
 
     constructor(entity) {
         this.entityTransform = entity.components.transform;

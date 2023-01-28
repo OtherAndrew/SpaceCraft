@@ -49,7 +49,7 @@ class WorldScene extends Scene {
 
         this.playerMovement = new PlayerController(this.player)
 
-        this.monsterStateManager = new MonsterStateManager(this.entity);
+        this.monsterStateManager = new EntityController(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
 
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
@@ -61,6 +61,7 @@ class WorldScene extends Scene {
 
     update(uiActive, keys, mouseDown, deltaTime) {
         if (!uiActive) {
+            // draw stuff last
             this.entityManager.update()
             this.playerMovement.update(keys)
             this.camera.update()

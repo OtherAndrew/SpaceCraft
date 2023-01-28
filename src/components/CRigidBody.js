@@ -13,10 +13,11 @@ class CRigidBody {
      * @returns {CRigidBody} The component.
      * @constructor
      */
-    constructor(mass = 1) {
+    constructor() {
         this.name = 'rigidBody';
-        this.mass = mass;
         this.isGrounded = false;
+        this.direction = 'right';
+        this.input = input;
         return this;
     }
 }

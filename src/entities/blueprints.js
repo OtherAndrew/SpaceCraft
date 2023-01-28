@@ -48,7 +48,7 @@ const simpleDynamicBox = (props, entityManager) => {
                 width: props.width,
                 height: props.height
             }),
-            new CRigidBody(1),
+            new CRigidBody(),
             new CInput()
         ]
     })

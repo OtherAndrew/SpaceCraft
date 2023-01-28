@@ -42,8 +42,7 @@ class Player {
                 width: props.sWidth * props.scale,
                 height: props.sHeight * props.scale
             }),
-            new CRigidBody(1),
-            new CState()
+            new CRigidBody(),
         ];
         this.#addAnimations();
     };

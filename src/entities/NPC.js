@@ -38,7 +38,7 @@ const NPC = function(props) {
                 width: props.sWidth * props.scale,
                 height: props.sHeight * props.scale
             }),
-            new CRigidBody(1),
+            new CRigidBody(),
             // new CInput(),
             new CState('walkR')
         ]
