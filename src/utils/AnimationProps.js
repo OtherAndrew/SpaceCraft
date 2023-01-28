@@ -15,5 +15,6 @@ class AnimationProps {
     constructor(firstFrameX, frameY , lastFrameX = firstFrameX) {
         this.name = 'animationProps';
         Object.assign(this, { firstFrameX, frameY, lastFrameX });
+        return this;
     }
 }

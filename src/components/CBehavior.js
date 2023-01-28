@@ -5,7 +5,7 @@ class CBehavior {
      * @constructor
      */
     constructor() {
-        Object.assign(this, {});
+        // Object.assign(this, {});
         this.name = 'behavior';
         this.behaviorMap = new Map();
         return this;

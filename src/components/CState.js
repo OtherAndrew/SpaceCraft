@@ -27,7 +27,7 @@ class CState {
         if (state !== this.currentState) {
             this.currentState = state;
             if (this.sprite) this.sprite.setAnimation(this.currentState);
-            // this.behavior ? this.behavior.setBehavior(this.currentState);
+            // if (this.behavior) this.behavior.setBehavior(this.currentState);
         }
     }
 

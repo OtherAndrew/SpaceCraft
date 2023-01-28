@@ -8,9 +8,11 @@ class BehaviorProps {
     /**
      * Initializes BehaviorProps object.
      * @param {number} velocityX
+     * @param {number} velocityY
      */
-    constructor(velocityX = 0) {
+    constructor(velocityX = 0, velocityY = 0) {
         this.name = 'behaviorProps';
-        Object.assign(this, { velocityX });
+        Object.assign(this, { velocityX, velocityY });
+        return this;
     }
 }

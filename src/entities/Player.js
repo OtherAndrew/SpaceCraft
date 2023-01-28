@@ -63,6 +63,8 @@ class Player {
         aMap.set('walkL', new AnimationProps(0, 2, 11));
         aMap.set('jumpR', new AnimationProps(0, 1));
         aMap.set('jumpL', new AnimationProps(0, 2));
+        aMap.set('flyR', new AnimationProps(0, 1));
+        aMap.set('flyL', new AnimationProps(0, 2));
         aMap.set('crouchR', new AnimationProps(5, 1));
         aMap.set('crouchL', new AnimationProps(5, 2));
     };

@@ -3,7 +3,6 @@ class PlayerController {
         this.player = player
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
-        this.pCollider = this.player.components.boxCollider;
         this.acceleration = 1
         this.gravity = 1.5
 
@@ -47,7 +46,7 @@ class PlayerController {
         if(input['w']) { // jetpack?
             // this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
             this.player.components.rigidBody.isGrounded = false
-            this.pTransform.velocityY = -20;
+            this.pTransform.velocityY = -15;
             if (this.direction === 'right') this.pState.setState('jumpR');
             else if (this.direction === "left") this.pState.setState('jumpL');
         }

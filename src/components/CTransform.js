@@ -26,7 +26,18 @@ class CTransform {
         Object.assign(this, {x, y, velocityX, velocityY, rotation, maxVelocityX, maxVelocityY});
         this.name = 'transform'
         this.collider = {};
+        this.behaviorMap = new Map();
         return this;
+    }
+
+    /**
+     * Sets movement properties.
+     * @param {string} state
+     */
+    setBehavior(state) {
+        const bProps = this.behaviorMap.get(state);
+        this.velocityX = bProps.velocityX;
+        this.velocityY = bProps.velocityY;
     }
 
     update(tick) {
