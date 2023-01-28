@@ -17,10 +17,14 @@
  * @returns {Object}             The player properties.
  * @constructor
  */
-const Player = function(props) {
-    return {
-        tag: 'player',
-        components: [
+
+
+class Player {
+
+    constructor(props) {
+        this.tag = 'player';
+        this.name = 'player';
+        this.components = [
             new CSprite({
                 sprite: props.sprite,
                 sWidth: props.sWidth,
@@ -43,13 +47,7 @@ const Player = function(props) {
             new CRigidBody(1),
             // new CInput(),
             new CState()
-        ]
-        /*
-        aMethod: function(arg) {
-            doStuff;
-        }
-         */
-    };
-}
-Player.prototype.name = 'player';
+        ];
 
+    }
+}
