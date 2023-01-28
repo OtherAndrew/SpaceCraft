@@ -6,6 +6,7 @@ class PlayerController {
         this.hitBox = this.player.components.boxCollider
         this.speed = 1
         this.gravity = 1.5
+        this.direction = 'right';
     }
     /**
      * Controlls
@@ -19,29 +20,35 @@ class PlayerController {
         if(input['a']) {
             this.playerPos.velocityX = clamp(this.playerPos.velocityX - this.speed, -this.playerPos.maxVelocityX, 0)
             this.playerSprite.setAnimation('walkL');
+            this.direction = 'left'
         } else if(input['d']) {
             this.playerPos.velocityX = clamp(this.playerPos.velocityX + this.speed, 0, this.playerPos.maxVelocityX)
             this.playerSprite.setAnimation('walkR');
+            this.direction = "right"
         } else if(input['w']) { // jetpack?
-            this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
+            // this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
+
+            this.player.components.rigidBody.isGrounded = false
+            this.playerPos.velocityY = -20;
+
         }else if(input['s']) { // fast fall
             this.playerPos.velocityY = clamp(this.playerPos.velocityY + this.speed, 0, this.playerPos.maxVelocityY)
             this.playerPos.velocityX = 0;
-            if (currentState === 'idleR' || currentState === 'walkR' || currentState === 'jumpR') this.playerSprite.setAnimation('crouchR');
-            else if (currentState === 'idleL' || currentState === 'walkL' || currentState === 'jumpL') this.playerSprite.setAnimation('crouchL');
+            if (this.direction === 'right') this.playerSprite.setAnimation('crouchR');
+            else if (this.direction === "left") this.playerSprite.setAnimation('crouchL');
         } else {
             this.playerPos.velocityX === 0 ? this.playerPos.velocityX = 0 :
                 (this.playerPos.velocityX > 0 ? this.playerPos.velocityX -= this.speed : this.playerPos.velocityX += this.speed)
             this.playerPos.velocityY === 0 ? this.playerPos.velocityY = 0 :
                 (this.playerPos.velocityY > 0 ? this.playerPos.velocityY -= this.speed : this.playerPos.velocityY += this.speed)
-            if (currentState === 'walkR' || currentState === 'jumpR' || currentState === 'crouchR') this.playerSprite.setAnimation('idleR');
-                else if (currentState === 'walkL' || currentState === 'jumpL' || currentState === 'crouchL') this.playerSprite.setAnimation('idleL');
+            if (this.direction === 'right' && this.player.components.rigidBody.isGrounded) this.playerSprite.setAnimation('idleR');
+            else if (this.direction === "left" && this.player.components.rigidBody.isGrounded) this.playerSprite.setAnimation('idleL');
         }
-        if((input[' '] || input['w']) && this.player.components.rigidBody.isGrounded) { //jump
+        if((input[' ']) && this.player.components.rigidBody.isGrounded) { //jump
             this.playerPos.velocityY = -25
             this.player.components.rigidBody.isGrounded = false
             if (currentState === 'idleR' || currentState === 'walkR') this.playerSprite.setAnimation('jumpR');
-                else if (currentState === 'idleL' || currentState === 'walkL') this.playerSprite.setAnimation('jumpL');
+            else if (currentState === 'idleL' || currentState === 'walkL') this.playerSprite.setAnimation('jumpL');
         }
 
         if(!this.player.components.rigidBody.isGrounded) {

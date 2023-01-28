@@ -38,15 +38,6 @@ class CSprite {
         return this;
     };
 
-    // /**
-    //  * Adds animation properties to sprite
-    //  * @param {string} state
-    //  * @param {AnimationProps} aProps
-    //  */
-    // addAnimation(state, aProps) {
-    //     this.animationMap.set(state, aProps);
-    // }
-
     /**
      * Sets sprite animation properties.
      * @param {string} state
