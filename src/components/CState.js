@@ -19,14 +19,15 @@ class CState {
         // this.direction = 'right';
         // this.grounded = false;
         this.sprite = {};
-        // this.behavior = {};
+        this.behavior = {};
         return this;
     }
 
     setState(state) {
         if (state !== this.currentState) {
             this.currentState = state;
-            this.sprite.setAnimation(this.currentState);
+            if (this.sprite) this.sprite.setAnimation(this.currentState);
+            // this.behavior ? this.behavior.setBehavior(this.currentState);
         }
     }
 
