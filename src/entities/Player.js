@@ -22,36 +22,41 @@ class Player {
     constructor(props) {
         this.tag = 'player';
         this.name = 'player';
-        this.components = [
-            new CSprite({
-                sprite: props.sprite,
-                sWidth: props.sWidth,
-                sHeight: props.sHeight,
-                scale: props.scale,
-                fps: 30
-            }),
-            new CTransform({
-                x: props.x,
-                y: props.y,
-                maxVelocityX: 15,
-                maxVelocityY: 30
-            }),
-            new CBoxCollider({
-                x: props.x,
-                y: props.y,
-                width: props.sWidth * props.scale,
-                height: props.sHeight * props.scale
-            }),
-            new CRigidBody(),
-            // new CState()
-        ];
-        this.#addAnimations();
-        this.components.find(component => component.name === 'transform').register(
-            this.components.find(component => component.name === 'boxCollider'));
+        this.components = this.#buildComponents(props);
+        return this;
     };
 
-    #addAnimations() {
-        const aMap = this.components.find(component => component.name === 'sprite').animationMap;
+    #buildComponents(props) {
+        const sprite = new CSprite({
+            sprite: props.sprite,
+            sWidth: props.sWidth,
+            sHeight: props.sHeight,
+            scale: props.scale,
+            fps: 30
+        });
+        const transform = new CTransform({
+            x: props.x,
+            y: props.y,
+            maxVelocityX: 15,
+            maxVelocityY: 30
+        });
+        const collider = new CBoxCollider({
+            x: props.x,
+            y: props.y,
+            width: props.sWidth * props.scale,
+            height: props.sHeight * props.scale
+        });
+
+        this.#addAnimations(sprite);
+        transform.collider = collider
+        const state = new CState();
+        state.sprite = sprite;
+
+        return [sprite, transform, collider, new CRigidBody(), state];
+    }
+
+    #addAnimations(sprite) {
+        const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0));
         aMap.set('idleL', new AnimationProps(1, 0));
         aMap.set('walkR', new AnimationProps(0, 1, 11));

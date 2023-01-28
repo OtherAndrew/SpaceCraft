@@ -29,11 +29,6 @@ class CTransform {
         return this;
     }
 
-    register(collider) {
-        this.collider = collider;
-        this.collider.transform = this;
-    }
-
     update(tick) {
         this.x += this.velocityX * tick * 60
         this.y += this.velocityY * tick * 60
