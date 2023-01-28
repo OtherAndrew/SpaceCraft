@@ -49,7 +49,7 @@ class WorldScene extends Scene {
 
         this.playerMovement = new PlayerController(this.player)
 
-        this.monsterStateManager = new EntityController(this.entity);
+        // this.monsterStateManager = new EntityController(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
 
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
@@ -68,7 +68,7 @@ class WorldScene extends Scene {
             this.renderBox.update()
             // this.collisionSystem.update()
             this.renderSystem.update(this.game.clockTick);
-            this.monsterStateManager.update(this.game.clockTick)
+            // this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update(deltaTime)

@@ -16,8 +16,6 @@ class CRigidBody {
     constructor() {
         this.name = 'rigidBody';
         this.isGrounded = false;
-        this.direction = 'right';
-        this.input = input;
         return this;
     }
 }

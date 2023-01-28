@@ -40,7 +40,7 @@ const NPC = function(props) {
             }),
             new CRigidBody(),
             // new CInput(),
-            new CState('walkR')
+            new CState()
         ]
     };
 }

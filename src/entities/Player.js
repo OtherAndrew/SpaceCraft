@@ -43,6 +43,7 @@ class Player {
                 height: props.sHeight * props.scale
             }),
             new CRigidBody(),
+            new CState()
         ];
         this.#addAnimations();
     };
