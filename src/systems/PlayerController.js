@@ -10,15 +10,13 @@ class PlayerController {
 
         this.direction = 'right';
     }
+
     /**
-     * Controlls
-     * a - move left
-     * d - move right
-     * " " - jump
-     * @param {input params} input
+     * Updates player state, animation, and position
+     * @param input keyboard input
+     * @param tick time slice
      */
-    update(input) {
-        const currentState = this.pSprite.currentState;
+    update(input, tick) {
         if(input['a']) {
             this.pTransform.velocityX = clamp(this.pTransform.velocityX - this.acceleration, -this.pTransform.maxVelocityX, 0)
             if (this.player.components.rigidBody.isGrounded) this.pSprite.setAnimation('walkL');
@@ -33,8 +31,9 @@ class PlayerController {
             if (this.direction === 'right') this.pSprite.setAnimation('crouchR');
             else if (this.direction === "left") this.pSprite.setAnimation('crouchL');
         } else {
-            this.pTransform.velocityX === 0 ? this.pTransform.velocityX = 0 :
-                (this.pTransform.velocityX > 0 ? this.pTransform.velocityX -= this.acceleration : this.pTransform.velocityX += this.acceleration)
+            // this.pTransform.velocityX === 0 ? this.pTransform.velocityX = 0 :
+            //     (this.pTransform.velocityX > 0 ? this.pTransform.velocityX -= this.acceleration : this.pTransform.velocityX += this.acceleration)
+            this.pTransform.velocityX = 0;
             if (this.direction === 'right' && this.player.components.rigidBody.isGrounded) this.pSprite.setAnimation('idleR');
             else if (this.direction === "left" && this.player.components.rigidBody.isGrounded) this.pSprite.setAnimation('idleL');
         }
@@ -62,9 +61,8 @@ class PlayerController {
         // set animation
         // move hitbox with player
         // CTransform.update()?
-        this.pTransform.x += this.pTransform.velocityX
-        this.pTransform.y += this.pTransform.velocityY
-        this.pCollider.x = this.pTransform.x
-        this.pCollider.y = this.pTransform.y
+        this.pTransform.update(tick);
+        // this.pCollider.x = this.pTransform.x
+        // this.pCollider.y = this.pTransform.y
     }
 }

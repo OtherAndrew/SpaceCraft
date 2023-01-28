@@ -63,7 +63,7 @@ class WorldScene extends Scene {
         if (!uiActive) {
             // draw stuff last
             this.entityManager.update()
-            this.playerMovement.update(keys)
+            this.playerMovement.update(keys, deltaTime)
             this.camera.update()
             this.renderBox.update()
             // this.collisionSystem.update()

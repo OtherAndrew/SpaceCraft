@@ -25,7 +25,22 @@ class CTransform {
                     maxVelocityX = Number.MAX_SAFE_INTEGER, maxVelocityY = Number.MAX_SAFE_INTEGER }) {
         Object.assign(this, {x, y, velocityX, velocityY, rotation, maxVelocityX, maxVelocityY});
         this.name = 'transform'
+        this.collider = {};
         return this;
+    }
+
+    register(collider) {
+        this.collider = collider;
+        this.collider.transform = this;
+    }
+
+    update(tick) {
+        this.x += this.velocityX * tick * 60
+        this.y += this.velocityY * tick * 60
+        if (this.collider) {
+            this.collider.x = this.x;
+            this.collider.y = this.y;
+        }
     }
 
 }

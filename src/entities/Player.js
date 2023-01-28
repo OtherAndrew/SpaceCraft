@@ -34,7 +34,7 @@ class Player {
                 x: props.x,
                 y: props.y,
                 maxVelocityX: 15,
-                maxVelocityY: 50
+                maxVelocityY: 30
             }),
             new CBoxCollider({
                 x: props.x,
@@ -43,9 +43,11 @@ class Player {
                 height: props.sHeight * props.scale
             }),
             new CRigidBody(),
-            new CState()
+            // new CState()
         ];
         this.#addAnimations();
+        this.components.find(component => component.name === 'transform').register(
+            this.components.find(component => component.name === 'boxCollider'));
     };
 
     #addAnimations() {
