@@ -48,7 +48,6 @@ class WorldScene extends Scene {
         this.#createPlayer()
 
         this.playerMovement = new PlayerInputSystem(this.player)
-        this.playerStateManager = new PlayerStateManager(this.playerMovement, this.player);
 
         this.monsterStateManager = new MonsterStateManager(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
@@ -66,7 +65,6 @@ class WorldScene extends Scene {
             this.playerMovement.update(keys)
             this.camera.update()
             this.renderBox.update()
-            this.playerStateManager.update(keys, this.game.clockTick)
             // this.collisionSystem.update()
             this.renderSystem.update(this.game.clockTick);
             this.monsterStateManager.update(this.game.clockTick)
