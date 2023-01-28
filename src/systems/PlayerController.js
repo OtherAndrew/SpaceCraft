@@ -3,7 +3,7 @@ class PlayerController {
         this.player = player
         this.playerPos = this.player.components.transform
         this.playerSprite = this.player.components.sprite
-        this.hitBox = this.player.components.boxCollider
+        this.hitBox = this.player.components.boxCollider;
         this.speed = 1
         this.gravity = 1.5
         this.direction = 'right';

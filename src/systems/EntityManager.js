@@ -128,7 +128,7 @@ class Entity  {
     addComponent(components) {
         components.forEach(c => {
             this.components[c.name] = c
-        })
+        });
     }
 }
 

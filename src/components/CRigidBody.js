@@ -6,15 +6,17 @@
  * @version 1/18/23
  */
 
-/**
- * Initializes CRigidBody component.
- * @param {number} mass  Mass of object.
- * @returns {CRigidBody} The component.
- * @constructor
- */
-const CRigidBody = function CRigidBody(mass) {
-    this.mass = mass;
-    this.isGrounded = false;
-    return this;
-};
-CRigidBody.prototype.name = 'rigidBody';
+class CRigidBody {
+    /**
+     * Initializes CRigidBody component.
+     * @param {number} mass  Mass of object.
+     * @returns {CRigidBody} The component.
+     * @constructor
+     */
+    constructor(mass = 1) {
+        this.name = 'rigidBody';
+        this.mass = mass;
+        this.isGrounded = false;
+        return this;
+    }
+}
