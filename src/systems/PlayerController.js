@@ -1,4 +1,4 @@
-class PlayerInputSystem {
+class PlayerController {
     constructor(player) {
         this.player = player
         this.playerPos = this.player.components.transform

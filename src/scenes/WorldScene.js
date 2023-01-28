@@ -47,7 +47,7 @@ class WorldScene extends Scene {
         this.#createEntity()
         this.#createPlayer()
 
-        this.playerMovement = new PlayerInputSystem(this.player)
+        this.playerMovement = new PlayerController(this.player)
 
         this.monsterStateManager = new MonsterStateManager(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
