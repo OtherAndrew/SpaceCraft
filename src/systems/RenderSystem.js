@@ -20,8 +20,8 @@ class RenderSystem {
                     try {
                         ctx.drawImage(
                             sprite.sprite,
-                            sprite.currentFrame * (sprite.sWidth * sprite.padding),
-                            sprite.frameY * (sprite.sHeight * sprite.padding),
+                            sprite.currentFrame * (sprite.sWidth + sprite.padding),
+                            sprite.frameY * (sprite.sHeight + sprite.padding),
                             sprite.sWidth,
                             sprite.sHeight,
                             e.components.transform.x - xSpeed,
