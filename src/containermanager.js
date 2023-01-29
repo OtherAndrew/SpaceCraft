@@ -130,6 +130,7 @@ class ContainerManager {
     // this ent's inventory is being drawn to the screen
     activateInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
+        console.log(this.owners[owner]);
     }
 
     // no inventory is being drawn to the screen
