@@ -52,13 +52,20 @@ class CraftMenu {
         // check player counts
         // update own/required counts
         // update whether something creatable or not
-        // if (uiActive) {
-        //     for (let i = 0; i < this.recipes.length; i++) {
-        //         if (this.cm.activeInventory.contains(this.recipes[i])) {
-        //             this.cm.checkSufficient(this.cm.getInventory(this.recipes[i])[0]);
-        //         }
-        //     }
-        // }
+        if (uiActive) {
+            for (let i = 2; i < this.cm.activeInventory.length; i++) {
+                if (this.recipes.includes(this.cm.activeInventory[i][0].owner)) {
+                    this.cm.activeInventory[i][0].uncraftable = !this.cm.checkSufficient(this.cm.activeInventory[i]);
+                }
+                for (let j = 1; j < this.cm.activeInventory[i].length; j++) {
+                    let playerCount = this.cm.playerCounts.get(this.cm.activeInventory[i][j].item.tag);
+                    this.cm.activeInventory[i][j].update = function () {
+                        this.displayText = playerCount + "/" + this.count;
+                    }
+                    this.cm.activeInventory[i][j].insufficient = playerCount < this.cm.activeInventory[i][j].count;
+                }
+            }
+        }
     }
 
     // draw(uiActive) {

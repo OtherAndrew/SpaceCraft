@@ -82,7 +82,7 @@ class WorldScene extends Scene {
     }
 
     draw(uiActive, ctx) {
-        this.renderSystem.draw(ctx, this.camera)
+        this.renderSystem.draw(ctx, this.camera);
         /*
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){

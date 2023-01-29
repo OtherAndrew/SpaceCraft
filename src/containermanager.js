@@ -100,9 +100,8 @@ class ContainerManager {
                 }
             }
         }
-        if (owner === "player") {
+        if (owner === "player") 
             this.playerCounts.set(item.tag, this.playerCounts.get(item.tag) - requisite.count);
-        }
     }
 
     swapViaContainer(swapContainer) {
@@ -131,7 +130,6 @@ class ContainerManager {
     // this ent's inventory is being drawn to the screen
     activateInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
-        console.log(this.activeInventory);
     }
 
     // no inventory is being drawn to the screen
@@ -141,6 +139,7 @@ class ContainerManager {
 
     draw(uiActive, ctx) {
         if (uiActive) {
+            ctx.drawImage(ASSET_MANAGER.getAsset('./assets/backgrounds/bg.png'), 0, 0);
             for (let i = 0; i < this.activeInventory.length; i++) {
                 for (let c = 0; c < this.activeInventory[i].length; c++) {
                     this.activeInventory[i][c].draw(ctx);
@@ -157,6 +156,11 @@ class ContainerManager {
     }
     
     update(uiActive, click) {
+        for (let i = 0; i < this.activeInventory.length; i++) {
+            for (let j = 0; j < this.activeInventory[i].length; j++) {
+                this.activeInventory[i][j].update();
+            }
+        }
         if (uiActive) { // ui is active
             let hit = this.checkHit(click); // what was click: container or nothing
             if (hit) {
@@ -194,45 +198,29 @@ class ContainerManager {
                         click.x <= this.activeInventory[i][c].x + 42 &&
                         this.activeInventory[i][c].y <= click.y &&
                         click.y <= this.activeInventory[i][c].y + 42) {
-                        return this.activeInventory[i][c];
+                            return this.activeInventory[i][c];
                     }
                 }
             }
         }
     }
 
-    checkSufficient(requisite, owner="player") {
-        let item = requisite.item;
-        if (owner === "player") {
-            if (this.playerCounts.get(item.tag))
-                return this.playerCounts.get(item.tag) >= requisite.count;
-            else
-                return false;
-        }
-        let count = 0;
-        let inventory = this.getInventory(owner)
-        for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i].item && item.tag === inventory[i].item.tag) {
-                count += inventory[i].count;
-            }
-        }
-        return count >= requisite.count;
+    checkSufficient(recipe, owner="player") {
+        let craftable = true;
+        for (let i = 1; i < recipe.length && craftable; i++)
+            craftable = this.checkCount(recipe[i], owner);
+        return craftable;
     }
 
     checkCount(requisite, owner="player") {
         let item = requisite.item;
-        if (owner === "player") {
-            if (this.playerCounts.get(item.tag))
-                return this.playerCounts.get(item.tag) >= requisite.count;
-            else
-                return false;
-        }
+        if (owner === "player") 
+            return (this.playerCounts.get(item.tag) ? this.playerCounts.get(item.tag) >= requisite.count : false);
         let count = 0;
         let inventory = this.getInventory(owner)
         for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i].item && item.tag === inventory[i].item.tag) {
+            if (inventory[i].item && inventory[i].item.tag === item.tag) 
                 count += inventory[i].count;
-            }
         }
         return count >= requisite.count;
     }
@@ -256,14 +244,9 @@ class ContainerManager {
 
     craftContainerItem(product, click) {
         let recipe = this.getInventory(product.keyword);
-        let craftable = true;
-        for (let i = 1; i < recipe.length && craftable; i++) {
-            craftable = this.checkSufficient(recipe[i]);
-        }
-        if (craftable) {
-            for (let i = 1; i < recipe.length; i++) {
+        if (this.checkSufficient(recipe)) {
+            for (let i = 1; i < recipe.length; i++) 
                 this.removeForCrafting(recipe[i]);
-            }
             this.addToInventory("player", recipe[0].item, recipe[0].count);
         }
         this.lastClick = click;
@@ -289,6 +272,10 @@ class Container {
         this.midy = this.y + halfway;
     }
 
+    update() {
+        this.displayText = this.count;
+    }
+
     draw(ctx) {
         if (this.selected) {
             this.roundRect(ctx, this.x, this.y, "orange");
@@ -302,11 +289,11 @@ class Container {
             let shrunkY = itemImage.height * (0.015 * this.width);
             ctx.save();
             if (this.uncraftable) {
-                ctx.globalAlpha = 0.5;
+                ctx.globalAlpha = 0.40;
             }
             ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
-            ctx.restore();
             this.drawStrokedText(ctx, this.x + Math.round(0.2 * this.width), this.y + Math.round(0.8 * this.width));
+            ctx.restore();
         }
     }
 
@@ -319,10 +306,14 @@ class Container {
         ctx.lineWidth = 3;
         ctx.lineJoin="round";
         ctx.miterLimit=2;
-        ctx.strokeText(this.count, x, y);
-        ctx.fillStyle = this.textColor;
+        ctx.strokeText(this.displayText, x, y);
+        if (this.insufficient) {
+            ctx.fillStyle = "red";
+        } else {
+            ctx.fillStyle = this.textColor;
+        }
         ctx.lineWidth = 1;
-        ctx.fillText(this.count, x, y);
+        ctx.fillText(this.displayText, x, y);
         ctx.restore();
     }
 
