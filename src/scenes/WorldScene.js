@@ -92,7 +92,7 @@ class WorldScene extends Scene {
             }
         })
         */
-        this.craftingMenu.draw(uiActive);
+        // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx);
         this.hud.draw(uiActive, ctx);
     }

@@ -3,6 +3,7 @@ class ContainerManager {
         this.owners = {}; // owner and the inventory pairs
         this.slots = []; // every container by their universal slot number
         this.slotCount = 0; // universal slot number count
+        this.playerCounts = new Map;
         this.activeInventory = []; // inventories on screen
         this.selectedContainer = null; // player selected container
         this.lastClick = null; // tracks last mouse click to check if new
@@ -40,6 +41,7 @@ class ContainerManager {
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].item && item.tag === inventory[i].item.tag) {
                 inventory[i].count += count;
+                this.addPlayerCount(owner, item, count);
                 return 0;
             } else if (firstNull == null && inventory[i].item == null) {
                 firstNull = inventory[i];
@@ -48,9 +50,21 @@ class ContainerManager {
         if (firstNull != null) {
             firstNull.item = item;
             firstNull.count = count;
+            this.addPlayerCount(owner, item, count);
             return 1;
         } else {
             return -1;
+        }
+    }
+
+    addPlayerCount(owner, item, count) {
+        if (owner === "player") {
+            let current = this.playerCounts.get(item.tag);
+            if (current) {
+                this.playerCounts.set(item.tag, current + count);
+            } else {
+                this.playerCounts.set(item.tag, count);
+            }
         }
     }
 
@@ -70,10 +84,11 @@ class ContainerManager {
 
     // metronome bug
     removeForCrafting(requisite, owner="player") {
-        let inventory = this.getInventory(owner);
+        let item = requisite.item;
         let count = requisite.count;
+        let inventory = this.getInventory(owner);
         for (let i = 0; i < inventory.length && count; i++) {
-            if (inventory[i].item && inventory[i].item.tag === requisite.item.tag) {
+            if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 let owned = inventory[i].count;
                 if (count >= owned) {
                     count -= owned;
@@ -85,15 +100,10 @@ class ContainerManager {
                 }
             }
         }
+        if (owner === "player") {
+            this.playerCounts.set(item.tag, this.playerCounts.get(item.tag) - requisite.count);
+        }
     }
-
-    // called to delete ent entirely from inven
-    // delete(index) {
-    //     this.containers[index] = null;
-    //     this.entitiesCount.delete(index);
-    //     // disable it completely
-    //     // ent = null;
-    // };
 
     swapViaContainer(swapContainer) {
         if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
@@ -115,7 +125,7 @@ class ContainerManager {
             this.selectedContainer.count = swapContainer.count;
             swapContainer.count = placeholder;
         }
-        this.deactivateContainer(); // affected by metronome effect
+        this.deselectContainer(); // affected by metronome effect
     }
 
     // this ent's inventory is being drawn to the screen
@@ -127,34 +137,6 @@ class ContainerManager {
     // no inventory is being drawn to the screen
     deactivateInventory() {
         this.activeInventory.length = 2;
-    }
-
-    // return container clicked on
-    checkHit(click) {
-        if (click) {
-            for (let i = 0; i < this.activeInventory.length; i++) {
-                for (let c = 0; c < this.activeInventory[i].length; c++) {
-                    if (this.activeInventory[i][c].x <= click.x &&
-                        click.x <= this.activeInventory[i][c].x + 42 &&
-                        this.activeInventory[i][c].y <= click.y &&
-                        click.y <= this.activeInventory[i][c].y + 42) {
-                        return this.activeInventory[i][c];
-                    }
-                }
-            }
-        }
-    }
-
-    checkInsufficient(requisite, owner="player") {
-        let item = requisite.item;
-        let count = 0;
-        let inventory = this.getInventory(owner)
-        for (let i = 0; i < inventory.length; i++) {
-            if (inventory[i].item && item.tag === inventory[i].item.tag) {
-                count += inventory[i].count;
-            }
-        }
-        return count < requisite.count;
     }
 
     draw(uiActive, ctx) {
@@ -180,48 +162,82 @@ class ContainerManager {
             if (hit) {
                 if (hit.keyword == null) { // click on container and it wasn't special
                     if (this.lastClick == null) { // there was no prev click
-                        this.activateContainer(hit, click); // activate or swap as necessary
+                        this.selectContainer(hit, click); // activate or swap as necessary
                     } else { // lastClick was something
                         if (click.T !== this.lastClick.T) { // new click!
-                            this.activateContainer(hit, click); // activate or swap as necessary
+                            this.selectContainer(hit, click); // activate or swap as necessary
                         }
                     } // add clicking on non-container deactivation of selected
                 } else if (hit.keyword !== "recipe") { // click on container and it is special
-                    this.deactivateContainer();
+                    this.deselectContainer();
                     if (this.lastClick == null) {
-                        this.craftItem(hit, click);
+                        this.craftContainerItem(hit, click);
                     } else {
                         if (click.T !== this.lastClick.T) { // new click!
-                            this.craftItem(hit, click);
+                            this.craftContainerItem(hit, click);
                         }
                     }
                 }
             }
         } else { // ui is not active
-            this.deactivateContainer(); // if something is selected deselect it
+            this.deselectContainer(); // if something is selected deselect it
             this.lastClick = null; // don't bother remembering last click
         }
     }
 
-    craftItem(product, click) {
-        let recipe = this.getInventory(product.keyword);
-        let craftable = true;
-        for (let i = 1; i < recipe.length; i++) {
-            if (this.checkInsufficient(recipe[i])) {
-                craftable = false;
-                break;
+    // return container clicked on
+    checkHit(click) {
+        if (click) {
+            for (let i = 0; i < this.activeInventory.length; i++) {
+                for (let c = 0; c < this.activeInventory[i].length; c++) {
+                    if (this.activeInventory[i][c].x <= click.x &&
+                        click.x <= this.activeInventory[i][c].x + 42 &&
+                        this.activeInventory[i][c].y <= click.y &&
+                        click.y <= this.activeInventory[i][c].y + 42) {
+                        return this.activeInventory[i][c];
+                    }
+                }
             }
         }
-        if (craftable) {
-            for (let i = 1; i < recipe.length; i++) {
-                this.removeForCrafting(recipe[i]);
-            }
-            this.addToInventory("player", recipe[0].item, recipe[0].count);
-        }
-        this.lastClick = click;
     }
 
-    activateContainer(hit, click) {
+    checkSufficient(requisite, owner="player") {
+        let item = requisite.item;
+        if (owner === "player") {
+            if (this.playerCounts.get(item.tag))
+                return this.playerCounts.get(item.tag) >= requisite.count;
+            else
+                return false;
+        }
+        let count = 0;
+        let inventory = this.getInventory(owner)
+        for (let i = 0; i < inventory.length; i++) {
+            if (inventory[i].item && item.tag === inventory[i].item.tag) {
+                count += inventory[i].count;
+            }
+        }
+        return count >= requisite.count;
+    }
+
+    checkCount(requisite, owner="player") {
+        let item = requisite.item;
+        if (owner === "player") {
+            if (this.playerCounts.get(item.tag))
+                return this.playerCounts.get(item.tag) >= requisite.count;
+            else
+                return false;
+        }
+        let count = 0;
+        let inventory = this.getInventory(owner)
+        for (let i = 0; i < inventory.length; i++) {
+            if (inventory[i].item && item.tag === inventory[i].item.tag) {
+                count += inventory[i].count;
+            }
+        }
+        return count >= requisite.count;
+    }
+
+    selectContainer(hit, click) {
         if (!this.selectedContainer) { // no current container
             hit.selected = true;
             this.selectedContainer = hit;
@@ -231,11 +247,26 @@ class ContainerManager {
         this.lastClick = click;
     }
     
-    deactivateContainer() {
+    deselectContainer() {
         if (this.selectedContainer) {
             this.selectedContainer.selected = false;
             this.selectedContainer = null;
         }
+    }
+
+    craftContainerItem(product, click) {
+        let recipe = this.getInventory(product.keyword);
+        let craftable = true;
+        for (let i = 1; i < recipe.length && craftable; i++) {
+            craftable = this.checkSufficient(recipe[i]);
+        }
+        if (craftable) {
+            for (let i = 1; i < recipe.length; i++) {
+                this.removeForCrafting(recipe[i]);
+            }
+            this.addToInventory("player", recipe[0].item, recipe[0].count);
+        }
+        this.lastClick = click;
     }
 }
 
