@@ -55,6 +55,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
+        this.craftingMenu = new CraftMenu(this.containerManager);
 
         // this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
@@ -75,8 +76,9 @@ class WorldScene extends Scene {
         if(mouseDown) {
             this.breakBlock(mouseDown, this.player, this.terrainMap)
         }
-        this.hud.update(uiActive, keys); // UI LAST AT ALL TIMES
+        this.craftingMenu.update(uiActive);
         this.containerManager.update(uiActive, mouseDown);
+        this.hud.update(uiActive, keys);
     }
 
     draw(uiActive, ctx) {
@@ -90,8 +92,9 @@ class WorldScene extends Scene {
             }
         })
         */
-        this.hud.draw(uiActive, ctx); // UI ON TOP OF EVERYTHING
+        this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx);
+        this.hud.draw(uiActive, ctx);
     }
 
     /**

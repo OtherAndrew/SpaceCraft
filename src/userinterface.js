@@ -1,44 +1,57 @@
 class HUD {
     constructor(containermanager, player) {
-        // register relevant ent and system
-        this.player = player;
-        this.player.health = 80;
         this.cm = containermanager;
-        
+        this.player = player;
+
         // create player inventory and trashcan
-        this.cm.createInventory(this.player, 420, 690, 4, 4, undefined, true);
+        this.cm.createInventory("player", 420, 690, 4, 4, undefined, "reverse");
         this.cm.createInventory(null, 561, 502, 1, 1, "red");
-        this.cm.activateInventory(this.player);
+        this.cm.activateInventory("player");
         this.cm.activateInventory(null);
-        
-        this.containers = this.cm.getInventory(player);
+
+        this.containers = this.cm.getInventory("player");
         this.activeContainer = this.containers[0];
         this.getStartPoint();
 
+        // TESTING
         this.add(new block1());
         this.add(new block2());
         this.add(new block1());
         this.add(new block3());
         console.log(this.containers);
+        this.player.health = 100;
     };
 
-    // called by ent remove system to add to inven
+    // TESTING
     add(entity) {
-        this.cm.addToInventory(this.player, entity);
+        this.cm.addToInventory("player", entity);
     };
+
+    getStartPoint() {
+        this.x = this.activeContainer.x;
+        this.y = this.activeContainer.y;
+    }
 
     draw(uiActive, ctx) {
         if (!uiActive) {
             ctx.save();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = "white";
             ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(420,670, 183, 10);
+            ctx.fill();
+            ctx.beginPath();
+            let healthPercentage = this.player.health / 100
+            if (healthPercentage > 0.75) ctx.fillStyle = "green";
+            else if (healthPercentage > 0.50) ctx.fillStyle = "yellow";
+            else if (healthPercentage > 0.25) ctx.fillStyle = "orange";
+            else ctx.fillStyle = "red";
+            ctx.rect(420,670, 183 * healthPercentage, 10); // depends on player health rep
+            ctx.fill();
+            ctx.beginPath();
+            ctx.strokeStyle = "white";
             ctx.rect(420,670, 183, 10);
             ctx.stroke();
-            ctx.beginPath();
-            ctx.fillStyle = "red"
-            ctx.rect(420,670, 183 * this.player.health / 100, 10); // depends on player health rep
-            ctx.fill();
             ctx.restore();
             
             ctx.save();
@@ -46,7 +59,6 @@ class HUD {
             ctx.lineWidth = 3;
             ctx.strokeStyle = "yellow";
             this.getStartPoint();
-            // ctx.beginPath();
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();
@@ -55,29 +67,16 @@ class HUD {
         }
     }
 
-    getStartPoint() {
-        this.x = this.activeContainer.x;
-        this.y = this.activeContainer.y;
-    }
-
     update(uiActive, keys) {
         if (!uiActive) {
-            if (keys['1']) {
-                this.activeContainer = this.containers[0];
-            }
-            if (keys['2']) {
-                this.activeContainer = this.containers[1];
-            }
-            if (keys['3']) {
-                this.activeContainer = this.containers[2];
-            }
-            if (keys['4']) {
-                this.activeContainer = this.containers[3];
-            }
+            if (keys['1']) this.activeContainer = this.containers[0];
+            if (keys['2']) this.activeContainer = this.containers[1];
+            if (keys['3']) this.activeContainer = this.containers[2];
+            if (keys['4']) this.activeContainer = this.containers[3];
         }
     }
 }
-// Testing classes
+// TESTING
 class Block {
     constructor() {
         this.sprite = null;
@@ -90,7 +89,6 @@ class Block {
     };
 }
 
-// Testing classes
 class block1 extends Block {
     constructor() {
         super();
