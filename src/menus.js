@@ -30,15 +30,16 @@ class CraftMenu {
         for (const entry in this.recipes) {
             let recipe = this.recipes[entry];
             if (recipe.includes("table")) {
-                this.denoteProduct(recipe, "green");
+                this.denoteRecipe(recipe, "green");
             } else if (recipe.includes("furnace")) {
-                this.denoteProduct(recipe, "grey");
+                this.denoteRecipe(recipe, "grey");
             }
         }
     }
 
-    denoteProduct(owner, color) {
-        let product = this.cm.getInventory(owner)[0];
+    denoteRecipe(owner, color) {
+        let recipe = this.cm.getInventory(owner)
+        let product = recipe[0];
         product.keyword = owner;
         product.font = "bold 20";
         product.fillColor = color;
@@ -46,12 +47,16 @@ class CraftMenu {
         product.y -= 4;
         product.width += 7;
         product.calculateMiddle();
+
+        for (let i = 1; i < recipe.length; i++) {
+            recipe[i].playerCount = this.cm.playerCounts.get(recipe[i].item.tag);
+            recipe[i].update = function() {
+                this.displayText = recipe[i].playerCount + "/" + this.count;
+            }
+        }
     }
 
     update(uiActive) {
-        // check player counts
-        // update own/required counts
-        // update whether something creatable or not
         if (uiActive) {
             for (let i = 2; i < this.cm.activeInventory.length; i++) {
                 if (this.recipes.includes(this.cm.activeInventory[i][0].owner)) {
@@ -59,18 +64,12 @@ class CraftMenu {
                 }
                 for (let j = 1; j < this.cm.activeInventory[i].length; j++) {
                     let playerCount = this.cm.playerCounts.get(this.cm.activeInventory[i][j].item.tag);
-                    this.cm.activeInventory[i][j].update = function () {
-                        this.displayText = playerCount + "/" + this.count;
-                    }
+                    this.cm.activeInventory[i][j].playerCount = playerCount;
                     this.cm.activeInventory[i][j].insufficient = playerCount < this.cm.activeInventory[i][j].count;
                 }
             }
         }
     }
-
-    // draw(uiActive) {
-    //
-    // }
 }
 
 class StoreMenu {

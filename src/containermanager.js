@@ -130,6 +130,7 @@ class ContainerManager {
     // this ent's inventory is being drawn to the screen
     activateInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
+        console.log(this.owners[owner]);
     }
 
     // no inventory is being drawn to the screen
@@ -288,9 +289,8 @@ class Container {
             let shrunkX = itemImage.width * (0.015 * this.width);
             let shrunkY = itemImage.height * (0.015 * this.width);
             ctx.save();
-            if (this.uncraftable) {
+            if (this.uncraftable)
                 ctx.globalAlpha = 0.40;
-            }
             ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
             this.drawStrokedText(ctx, this.x + Math.round(0.2 * this.width), this.y + Math.round(0.8 * this.width));
             ctx.restore();
@@ -307,11 +307,9 @@ class Container {
         ctx.lineJoin="round";
         ctx.miterLimit=2;
         ctx.strokeText(this.displayText, x, y);
-        if (this.insufficient) {
+        ctx.fillStyle = this.textColor;
+        if (this.insufficient)
             ctx.fillStyle = "red";
-        } else {
-            ctx.fillStyle = this.textColor;
-        }
         ctx.lineWidth = 1;
         ctx.fillText(this.displayText, x, y);
         ctx.restore();
