@@ -55,6 +55,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
+        this.craftingMenu = new CraftMenu(this.containerManager);
 
         // this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
@@ -77,15 +78,16 @@ class WorldScene extends Scene {
                 this.breakBlock(mouseDown, this.player, this.terrainMap)
             }
         }
-        
-        this.hud.update(uiActive, keys); // UI LAST AT ALL TIMES
+
         //console.log(this.player.components.rigidBody.isGrounded)
+        this.craftingMenu.update(uiActive);
         this.containerManager.update(uiActive, mouseDown);
+        this.hud.update(uiActive, keys);
     }
 
     draw(uiActive, ctx) {
         this.renderSystem.draw(ctx, this.camera)
-        
+
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
@@ -93,9 +95,10 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
-        
-        this.hud.draw(uiActive, ctx); // UI ON TOP OF EVERYTHING
+
+        // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx);
+        this.hud.draw(uiActive, ctx);
     }
 
     /**
@@ -320,7 +323,7 @@ class WorldScene extends Scene {
                 ])
                 e.tag = e.tag + " ground"
             }
-            if ( 
+            if (
                 this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
                 this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)].tag === 'air' ||
                 this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air') {

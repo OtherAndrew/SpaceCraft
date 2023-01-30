@@ -16,7 +16,7 @@ class EntityManager {
 
     constructor(){
         this.entities = []
-        this.entitiyMap = new Map()
+        this.entityMap = new Map()
         this.totalEntities = 0
         this.toAddEntities = []
     }
@@ -49,7 +49,7 @@ class EntityManager {
      * @returns an entity group with tag argument or entity with id argument
      */
     getEntity(arg) {
-        if(typeof arg === 'number') return this.entitiyMap.get(arg)
+        if(typeof arg === 'number') return this.entityMap.get(arg)
     }
 
     /**
@@ -60,12 +60,12 @@ class EntityManager {
     update() {
         this.toAddEntities.forEach(e => {
             this.entities.push(e)
-            this.entitiyMap.set(e.id, e)
+            this.entityMap.set(e.id, e)
         })
         let removed = this.#removeDeadEntities()
         this.toAddEntities.length = 0
         for(let tag in removed) {
-            this.entitiyMap.delete(tag)
+            this.entityMap.delete(tag)
         }
     }
 
