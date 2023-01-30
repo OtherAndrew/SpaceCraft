@@ -12,7 +12,7 @@ class SporeController {
         this.gravity = 1.5
         //this.direction = 'right';
         this.spore.components.rigidBody.isGrounded = false
-        this.Transform.velocityY = 10
+        this.Transform.velocityY = 0
     }
 
     /**
@@ -29,11 +29,11 @@ class SporeController {
 
         //implement physics if not on the ground, need to check for empty space
 
-        if(!this.spore.components.rigidBody.isGrounded) {
-            this.Transform.velocityY += this.gravity
-        } else if(this.spore.components.rigidBody.isGrounded) {
-            this.Transform.velocityY = 0
-        }
+        // if(!this.spore.components.rigidBody.isGrounded) {
+        //     this.Transform.velocityY += this.gravity
+        // } else if(this.spore.components.rigidBody.isGrounded) {
+        //     this.Transform.velocityY = 0
+        // }
 
         this.Transform.update(tick);
         // this.pCollider.x = this.pTransform.x
