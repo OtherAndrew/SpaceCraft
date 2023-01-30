@@ -1,30 +1,71 @@
-class DirtCarver {
-    constructor(game) {
-        //this.game = game;
-        this.speed = 0; //base travel speed 25
-        this.x = 0;
-        this.y = 0;
-        this.face = 0;  //0 face right, 1 face left
+class Dirtcarver {
+    /**
+     * Initializes Dirtcarver (enemy)
+     * @param {Object} props         enemy position and display properties
+     * @param {Image} props.sprite   enemy sprite sheet
+     * @param {number} props.x       X position of starting frame
+     * @param {number} props.y       Y position of the starting frame
+     * @param {number} props.sWidth  frame width
+     * @param {number} props.sHeight frame height
+     * @param {number} props.scale   frame scale
+     * @returns {Object}             return enemy
+     * @constructor
+     */
+    constructor(props) {
+        this.tag = 'dirtcarver';
+        this.name = 'dirtcarver';
+        this.components = this.#buildComponents(props);
+        return this;
+    };
 
-        Object.assign(this, {game});
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/dirtcarver25f.png");
-        this.animations = []
-        //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-        this.animations.push(new Animator(this.spritesheet, 0,6,64, 20, 4, .06, 2));
-        this.animations.push(new Animator(this.spritesheet, 0,33,64, 20, 4, .06, 2));
+    #buildComponents(props) {
+        const sprite = new CSprite({
+            sprite: props.sprite,
+            sWidth: props.sWidth,
+            sHeight: props.sHeight,
+            scale: props.scale,
+            firstFrameX: 0,
+            frameY: 0,
+            lastFrameX: 3,
+            fps: 12,
+            padding: 3
+        });
+        const transform = new CTransform({
+            x: props.x,
+            y: props.y,
+            velocityX: 0,
+            velocityY: 0,
+            maxVelocityX: 0,
+            maxVelocityY: 0
+        });
+        const collider = new CBoxCollider({
+            x: props.x,
+            y: props.y,
+            width: props.sWidth * props.scale,
+            height: props.sHeight * props.scale
+        });
+
+        this.#addAnimations(sprite);
+        transform.collider = collider
+        const state = new CState();
+        state.sprite = sprite;
+
+        return [sprite, transform, collider, new CRigidBody(), state];
     }
 
-    update() {
-        if (this.x > 400) {
-            this.x -= 400;
-        }
-        this.x += this.speed * this.game.clockTick;
+    #addAnimations(sprite) {
+        const aMap = sprite.animationMap;
+        aMap.set('idleR', new AnimationProps(0, 0, 0));
+        aMap.set('idleL', new AnimationProps(0, 1,0));
+        aMap.set('walkR', new AnimationProps(0, 0, 3));
+        aMap.set('walkL', new AnimationProps(0, 1, 3));
+        // aMap.set('jumpR', new AnimationProps(0, 1));
+        // aMap.set('jumpL', new AnimationProps(0, 2));
+        // aMap.set('flyR', new AnimationProps(0, 1));
+        // aMap.set('flyL', new AnimationProps(0, 2));
+        // aMap.set('crouchR', new AnimationProps(5, 1));
+        // aMap.set('crouchL', new AnimationProps(5, 2));
+    };
 
-    }
-    draw(ctx) {
-        //use this.face to switch side.
-        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x ,this.y, 1);
-        this.animations[1].drawFrame(this.game.clockTick, ctx, this.x ,this.y+50, 1);
-
-    }
 }
+

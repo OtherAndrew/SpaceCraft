@@ -30,6 +30,8 @@ class WorldScene extends Scene {
         this.playerSprite = assets[PLAYER_PATH];
         this.entitySprite = assets[ENTITY_PATH];
         this.sporeSprite = assets[SPORE_PATH];
+        this.dirtCarverSprite = assets[DIRTCARVER_PATH];
+        this.lightJellySprite = assets[LIGHTJELLY_PATH];
 
         //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
@@ -48,8 +50,12 @@ class WorldScene extends Scene {
         this.#createEntity()
         this.#createPlayer()
         this.#createSpore()
+        this.#createDirtcarver()
+        this.#createLightjelly()
         this.playerMovement = new PlayerController(this.player)
         this.sporeManager = new SporeController(this.spore)
+        this.dirtcarverManager = new DirtcarverController(this.dirtcarver)
+        this.lightjellyManager = new LightjellyController(this.lightjelly, this.player)
         // this.monsterStateManager = new EntityController(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
 
@@ -67,6 +73,8 @@ class WorldScene extends Scene {
             this.entityManager.update()
             this.playerMovement.update(keys, deltaTime)
             this.sporeManager.update(deltaTime)
+            this.dirtcarverManager.update(deltaTime)
+            this.lightjellyManager.update(deltaTime)
             this.camera.update()
             this.renderBox.update()
             // this.collisionSystem.update()
@@ -262,11 +270,7 @@ class WorldScene extends Scene {
         //console.log(test)
         this.spore = this.entityManager.addEntity(new Spore({
             sprite: this.sporeSprite,
-            //x: this.player.positionX,
-            //x: this.player.transform.x,
-
             x: this.player.components.transform.x,
-            //y: this.player.transform.y,
             y: this.player.components.transform.y - 50,
             sWidth: spriteWidth,
             sHeight: spriteHeight,
@@ -274,6 +278,49 @@ class WorldScene extends Scene {
         }));
 
     }
+
+    /**
+     *  dirtcarver spawn condition
+     */
+    #createDirtcarver() {
+        const spriteWidth = 262;
+        const spriteHeight = 84;
+        const scale = 0.5;
+        this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
+            sprite: this.dirtCarverSprite,
+            //controller for spawn point
+
+            x: this.player.components.transform.x - 100,
+            y: this.player.components.transform.y - 50,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+
+    }
+
+    /**
+     *  lightjelly spawn condition
+     */
+    #createLightjelly() {
+        const spriteWidth = 168;
+        const spriteHeight = 219;
+        const scale = .5;
+        //const test = this.player.transform.x;
+        //console.log(test)
+        this.lightjelly = this.entityManager.addEntity(new Lightjelly({
+            sprite: this.lightJellySprite,
+            //controller for spawn point
+
+            x: this.player.components.transform.x + 300,
+            y: this.player.components.transform.y - 300,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+
+    }
+
     #generateBackgrounds() {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
@@ -363,9 +410,6 @@ class WorldScene extends Scene {
                 }
         }
     }
-
-
-
 
     breakBlock(pos, player, terrainMap) {
         let offsetX = player.components.transform.x >= WIDTH/2 ?

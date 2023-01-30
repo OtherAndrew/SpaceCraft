@@ -27,7 +27,7 @@ class Spore {
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 7,
-            fps: 15,
+            fps: 4,
             padding: 3
         });
         const transform = new CTransform({

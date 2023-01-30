@@ -1,51 +1,62 @@
-class LightJelly {
-    constructor(game) {
-        //this.game = game;
-        this.speed = 25; //base travel speed 25
-        this.x = 0;
-        this.y = 0;
-        this.face = 0;  //0 face right, 1 face left
 
-        Object.assign(this, {game});
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/lightjelly25f.png");
-        this.animations = []
-        //spritesheet, xStart, yStart, width, height, frameCount, frameDuration, framePadding, reverse, loop
-        this.animations.push(new Animator(this.spritesheet, 0,3,52, 67, 6, .08, 1.5));
-        //this.animations.push(new Animator(this.spritesheet, 0,33,64, 20, 4, .06, 2));
+class Lightjelly {
+    /**
+     * Initializes lightJelly (enemy)
+     * @param {Object} props         enemy position and display properties
+     * @param {Image} props.sprite   enemy sprite sheet
+     * @param {number} props.x       X position of starting frame
+     * @param {number} props.y       Y position of the starting frame
+     * @param {number} props.sWidth  frame width
+     * @param {number} props.sHeight frame height
+     * @param {number} props.scale   frame scale
+     * @returns {Object}             return enemy
+     * @constructor
+     */
+    constructor(props) {
+        this.tag = 'lightjelly';
+        this.name = 'lightjelly';
+        this.components = this.#buildComponents(props);
+        return this;
+    };
+    #buildComponents(props) {
+        const sprite = new CSprite({
+            sprite: props.sprite,
+            sWidth: props.sWidth,
+            sHeight: props.sHeight,
+            scale: props.scale,
+            firstFrameX: 0,
+            frameY: 0,
+            lastFrameX: 5,
+            fps: 12,
+            padding: 3
+        });
+        const transform = new CTransform({
+            x: props.x,
+            y: props.y,
+            velocityX: 1,
+            velocityY: 1,
+            maxVelocityX: 0,
+            maxVelocityY: 0
+        });
+        const collider = new CBoxCollider({
+            x: props.x,
+            y: props.y,
+            width: props.sWidth * props.scale,
+            height: props.sHeight * props.scale
+        });
+
+        this.#addAnimations(sprite);
+        transform.collider = collider
+        const state = new CState();
+        state.sprite = sprite;
+
+        return [sprite, transform, collider, new CRigidBody(), state];
     }
 
-    update() {
-        if (this.face == 0) {
-            this.x += this.speed * this.game.clockTick;
-        } else {
-            this.x -= this.speed * this.game.clockTick;
-        }
+    #addAnimations(sprite) {
+        const aMap = sprite.animationMap;
+        aMap.set('idleR', new AnimationProps(0, 0,7));
 
-    }
-    draw(ctx) {
-        //use this.face to switch side.
-        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x ,this.y, 1);
+    };
 
-        //tinting effect
-        /*
-        var imgData = ctx.getImageData(this.x, this.y, this.spritesheet.width, this.spritesheet.height);
-
-        // Loop through all the pixels
-        for (var i = 0; i < imgData.data.length; i += 4) {
-            // Get the red, green, and blue values
-            var red = imgData.data[i];
-            var green = imgData.data[i + 1];
-            var blue = imgData.data[i + 2];
-
-            // Apply the tint color
-            imgData.data[i] = red * 0.5; // e.g. 50% red
-            imgData.data[i + 1] = green * 1; // e.g. 50% green
-            imgData.data[i + 2] = blue * 1; // e.g. 50% blue
-        }
-
-        // Put the image data back on the canvas
-        ctx.putImageData(imgData, this.x, this.y);
-
-         */
-    }
 }

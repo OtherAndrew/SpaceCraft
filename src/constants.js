@@ -10,13 +10,14 @@ const HEIGHT = 768
 const GRIDSIZE = 15
 const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
+const GRAVITY = 9.8
 
 // NPC Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";
 const ENTITY_PATH = "./assets/sprites/entity.png";
 const SPORE_PATH = "./assets/sprites/spore.png";
-// const DIRTCARVER_PATH = "./assets/sprites/dirtcarver25f.png";
-// const LIGHTJELLY_PATH = "./assets/sprites/lightjelly25f.png";
+const DIRTCARVER_PATH = "./assets/sprites/dirtcarver.png";
+const LIGHTJELLY_PATH = "./assets/sprites/lightjelly.png";
 
 
 //Tiles
@@ -152,6 +153,8 @@ const TERRAIN_ASSETS_ARRAY = [
     B2,
     B3,
     O1,
-    SPORE_PATH
+    SPORE_PATH,
+    DIRTCARVER_PATH,
+    LIGHTJELLY_PATH
 ]
 
