@@ -265,9 +265,9 @@ class WorldScene extends Scene {
             //x: this.player.positionX,
             //x: this.player.transform.x,
 
-            x: WIDTH /2,
+            x: this.player.components.transform.x,
             //y: this.player.transform.y,
-            y: HEIGHT/2,
+            y: this.player.components.transform.y - 50,
             sWidth: spriteWidth,
             sHeight: spriteHeight,
             scale: scale

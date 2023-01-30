@@ -33,10 +33,10 @@ class Spore {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            velocityX: 1,
-            velocityY: 10,
+            velocityX: 0,
+            velocityY: 0,
             maxVelocityX: 0,
-            maxVelocityY: 10
+            maxVelocityY: 0
         });
         const collider = new CBoxCollider({
             x: props.x,
