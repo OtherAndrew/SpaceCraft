@@ -12,8 +12,9 @@ class LightjellyController {
         this.gravity = 0
         //this.direction = 'right';
         // this.lightjelly.components.rigidBody.isGrounded = false
-        this.Transform.velocityX = 1
-        this.Transform.velocityY = 1
+        this.Transform.velocityX = 0
+        this.Transform.velocityY = 0
+        this.velocity = 1
     }
 
     /**
@@ -26,40 +27,72 @@ class LightjellyController {
 
         //default state
         this.state.setState('idleR');
-        let distance = Math.sqrt(Math.pow(this.lightjelly.components.transform.x - this.player.components.transform.x, 2)
-            + Math.pow(this.lightjelly.components.transform.y - this.player.components.transform.y, 2));
-        if (distance >= 0) {
-            // let angle = Math.atan2(this.player.components.transform.y - this.lightjelly.components.transform.y,
-            //     this.player.components.transform.x - this.lightjelly.components.transform.x);
-            if (this.player.components.transform.y < this.lightjelly.components.transform.y
-                && this.player.components.transform.x < this.lightjelly.components.transform.x) {
-                this.lightjelly.components.transform.y -= 1
-                this.lightjelly.components.transform.x -= 1
 
-            } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
-                && this.player.components.transform.x < this.lightjelly.components.transform.x) {
-                this.lightjelly.components.transform.y += 1
-                this.lightjelly.components.transform.x -= 1
 
-            } else if (this.player.components.transform.y < this.lightjelly.components.transform.y
-                && this.player.components.transform.x > this.lightjelly.components.transform.x) {
-                this.lightjelly.components.transform.y -= 1
-                this.lightjelly.components.transform.x += 1
+        if (this.player.components.transform.y < this.lightjelly.components.transform.y
+            && this.player.components.transform.x < this.lightjelly.components.transform.x) {
+            this.lightjelly.components.transform.y -= this.velocity
+            this.lightjelly.components.transform.x -= this.velocity
 
-            } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
-                && this.player.components.transform.x > this.lightjelly.components.transform.x) {
-                this.lightjelly.components.transform.y += 1
-                this.lightjelly.components.transform.x += 1
+        } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
+            && this.player.components.transform.x < this.lightjelly.components.transform.x) {
+            this.lightjelly.components.transform.y += this.velocity
+            this.lightjelly.components.transform.x -= this.velocity
 
-            }
-            // this.lightjelly.components.transform.x += Math.cos(angle) * this.Transform.velocityX;
-            // this.lightjelly.components.transform.y += Math.sin(angle) * this.Transform.velocityX;
+        } else if (this.player.components.transform.y < this.lightjelly.components.transform.y
+            && this.player.components.transform.x > this.lightjelly.components.transform.x) {
+            this.lightjelly.components.transform.y -= this.velocity
+            this.lightjelly.components.transform.x += this.velocity
+
+        } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
+            && this.player.components.transform.x > this.lightjelly.components.transform.x) {
+            this.lightjelly.components.transform.y += this.velocity
+            this.lightjelly.components.transform.x += this.velocity
         }
         // Calculate the angle between the monster and player
 
 
         this.Transform.update(tick);
-        // this.pCollider.x = this.pTransform.x
-        // this.pCollider.y = this.pTransform.y
+
     }
 }
+
+
+// let distance = Math.sqrt(Math.pow(this.lightjelly.components.transform.x - this.player.components.transform.x, 2)
+//     + Math.pow(this.lightjelly.components.transform.y - this.player.components.transform.y, 2));
+// if (distance >= 0) {
+//     let xdist = this.player.components.transform.x - this.lightjelly.components.transform.x
+//     let ydist = this.player.components.transform.y - this.lightjelly.components.transform.y
+//     this.lightjelly.components.transform.x += xdist > 0 ? 1 : -1;
+//     this.lightjelly.components.transform.y += ydist > 0 ? 1 : -1;
+//     this.lightjelly.components.transform.x += xdist < 0 ? -1 : 1;
+//     this.lightjelly.components.transform.y += ydist < 0 ? -1 : 1;
+
+
+
+// let angle = Math.atan2(this.player.components.transform.y - this.lightjelly.components.transform.y,
+//     this.player.components.transform.x - this.lightjelly.components.transform.x);
+
+// if (this.player.components.transform.y < this.lightjelly.components.transform.y
+//     && this.player.components.transform.x < this.lightjelly.components.transform.x) {
+//     this.lightjelly.components.transform.y -= 1
+//     this.lightjelly.components.transform.x -= 1
+//
+// } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
+//     && this.player.components.transform.x < this.lightjelly.components.transform.x) {
+//     this.lightjelly.components.transform.y += 1
+//     this.lightjelly.components.transform.x -= 1
+//
+// } else if (this.player.components.transform.y < this.lightjelly.components.transform.y
+//     && this.player.components.transform.x > this.lightjelly.components.transform.x) {
+//     this.lightjelly.components.transform.y -= 1
+//     this.lightjelly.components.transform.x += 1
+//
+// } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
+//     && this.player.components.transform.x > this.lightjelly.components.transform.x) {
+//     this.lightjelly.components.transform.y += 1
+//     this.lightjelly.components.transform.x += 1
+
+// }
+// this.lightjelly.components.transform.x += Math.cos(angle) * this.Transform.velocityX;
+// this.lightjelly.components.transform.y += Math.sin(angle) * this.Transform.velocityX;
