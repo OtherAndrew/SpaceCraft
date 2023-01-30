@@ -14,6 +14,9 @@ const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 // NPC Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";
 const ENTITY_PATH = "./assets/sprites/entity.png";
+const SPORE_PATH = "./assets/sprites/spore.png";
+// const DIRTCARVER_PATH = "./assets/sprites/dirtcarver25f.png";
+// const LIGHTJELLY_PATH = "./assets/sprites/lightjelly25f.png";
 
 
 //Tiles
@@ -148,6 +151,7 @@ const TERRAIN_ASSETS_ARRAY = [
     B1,
     B2,
     B3,
-    O1
+    O1,
+    SPORE_PATH
 ]
 

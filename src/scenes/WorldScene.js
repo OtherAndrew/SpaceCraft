@@ -29,6 +29,7 @@ class WorldScene extends Scene {
         // entities
         this.playerSprite = assets[PLAYER_PATH];
         this.entitySprite = assets[ENTITY_PATH];
+        this.sporeSprite = assets[SPORE_PATH];
 
         //tiles
         this.tileDirtSprite = assets[TILES_DIRT_PATH]
@@ -46,9 +47,9 @@ class WorldScene extends Scene {
         this.#generateTerrain()
         this.#createEntity()
         this.#createPlayer()
-
+        this.#createSpore()
         this.playerMovement = new PlayerController(this.player)
-
+        this.sporeManager = new SporeController(this.spore)
         // this.monsterStateManager = new EntityController(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
 
@@ -65,6 +66,7 @@ class WorldScene extends Scene {
             // draw stuff last
             this.entityManager.update()
             this.playerMovement.update(keys, deltaTime)
+            this.sporeManager.update(deltaTime)
             this.camera.update()
             this.renderBox.update()
             // this.collisionSystem.update()
@@ -249,6 +251,29 @@ class WorldScene extends Scene {
         }));
     }
 
+    /**
+     *  spore
+     */
+    #createSpore() {
+        const spriteWidth = 138;
+        const spriteHeight = 196;
+        const scale = 0.5;
+        //const test = this.player.transform.x;
+        //console.log(test)
+        this.spore = this.entityManager.addEntity(new Spore({
+            sprite: this.sporeSprite,
+            //x: this.player.positionX,
+            //x: this.player.transform.x,
+
+            x: WIDTH /2,
+            //y: this.player.transform.y,
+            y: HEIGHT/2,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+
+    }
     #generateBackgrounds() {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
