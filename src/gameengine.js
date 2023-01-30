@@ -242,7 +242,6 @@ class GameEngine {
         this.ctx.fillStyle = 'rgb(159,109,50)'
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
         this.terrainDemoScene.draw(this.uiActive, this.ctx)
-        //this.animationDemoScene.draw(this.ctx)
         if(this.currentTime > 1) {
             this.currentTime = 0
             this.frames = this.renderedFrames
@@ -257,9 +256,7 @@ class GameEngine {
     };
 
     update() {
-        //this.demoScene.update(this.keys)
         this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.clockTick);
-        //this.animationDemoScene.update(this.keys, this.clockTick)
     };
 
     loop() {
