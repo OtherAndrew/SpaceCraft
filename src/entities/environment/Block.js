@@ -36,6 +36,9 @@ const Block = function(props) {
                 scale: props.scale,
                 startFrameX: props.frameX || 0,
                 frameY: props.frameY || 0
+            }),
+            new CProperties({
+                isCollectable: false
             })
         ]
     };

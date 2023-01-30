@@ -3,20 +3,6 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-        //Sets numerical value ranges to blocks so we can map them to the terrainMap
-        // Ranges from 0 to 10 ish
-        this.blockValues = [
-            'ruby',
-            'stone',
-            'stone',
-            'stone',
-            'dirt',
-            'dirt',
-            'null',
-            'null',
-            'null',
-            'null',
-        ]
         this.collisionSystem = new CollisionSystem(this.entityManager.getEntities)
     }
 
@@ -29,35 +15,17 @@ class WorldScene extends Scene {
         // entities
         this.playerSprite = assets[PLAYER_PATH];
         this.entitySprite = assets[ENTITY_PATH];
-
-        //tiles
-        this.tileDirtSprite = assets[TILES_DIRT_PATH]
-        this.tileStoneSprite = assets[TILES_STONE_PATH]
-        this.tileRubySprite = assets[TILES_RUBY_PATH]
-        this.caveBackground = assets[BACKGROUND_CAVE_PATH]
-
-        //background
-        this.backgroundSurface0 = assets[BACKGROUND_SURFACE_0]
-        this.backgroundSurface1 = assets[BACKGROUND_SURFACE_1]
-
-
-        this.#generateBackgrounds()
-        this.#generateNoiseMap()
-        this.#generateTerrain()
+        this.terrainMap = getTerrain(this.entityManager)
         this.#createEntity()
         this.#createPlayer()
-
         this.playerMovement = new PlayerController(this.player)
-
         // this.monsterStateManager = new EntityController(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
-
         this.camera = new Camera(this.player)
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-
-        // this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
+        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
     update(uiActive, keys, mouseDown, deltaTime) {
@@ -67,19 +35,16 @@ class WorldScene extends Scene {
             this.playerMovement.update(keys, deltaTime)
             this.camera.update()
             this.renderBox.update()
-            // this.collisionSystem.update()
             this.renderSystem.update(this.game.clockTick);
             // this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            // wthis.collisionSystem.update(deltaTime)
+            this.collisionSystem.update(deltaTime)
             // temporary spot for this
             if(mouseDown) {
                 this.breakBlock(mouseDown, this.player, this.terrainMap)
             }
         }
-
-        //console.log(this.player.components.rigidBody.isGrounded)
         this.craftingMenu.update(uiActive);
         this.containerManager.update(uiActive, mouseDown);
         this.hud.update(uiActive, keys);
@@ -99,135 +64,6 @@ class WorldScene extends Scene {
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx);
         this.hud.draw(uiActive, ctx);
-    }
-
-    /**
-     * Private class function. Generates a (2*gridSize) * (2*gridSize) matrix of perlin noise values
-     * The values are from -1 to 1 so it is modified by multiplying by valueOffset and adding valueAddition
-     * so it can be easy to work with.
-     * Range from 0 to 120 ish.
-     */
-    #generateNoiseMap() {
-        this.noiseMap = []
-        let valueOffset = 10
-        let valueAdditional = 5
-        for(let y = 0; y < GRIDSIZE; y += 1/GRIDSIZE) {
-            let row = []
-            for(let x = 0; x < GRIDSIZE; x += 1/GRIDSIZE) {
-                let v = parseInt(perlin.get(x,y) * valueOffset + valueAdditional)
-                row.push(v)
-            }
-            this.noiseMap.push(row)
-            row = []
-        }
-        console.log(this.noiseMap.length, this.noiseMap[0].length)
-    }
-
-    /**
-     * Private class function. Uses a noiseMap to place blocks according to the blockValues.
-     * 
-     */
-    #generateTerrain() {
-        this.terrainMap = []
-        //fill first half of terrainmap matrix with empty air cells
-        for(let i = 0; i < this.noiseMap.length; i++) {
-            let r = []
-            for(let j = 0; j < this.noiseMap.length; j++) {
-                r.push({
-                    tag: 'air',
-                    id: null
-                })
-            }
-            this.terrainMap.push(r)
-        }
-        let sizeSoFar = this.terrainMap[0].length
-        console.log(sizeSoFar)
-        this.noiseMap.forEach( (row, y) => {
-            y += sizeSoFar
-            let r = []
-            row.forEach((val, x) => {
-                let e = this.#createBlock({
-                    x: x * BLOCKSIZE,
-                    y: y * BLOCKSIZE,
-                    value: val,
-                    recurse: true
-                })
-                r.push({
-                    tag: e.tag,
-                    id: e.id
-                })
-            })
-            this.terrainMap.push(r)
-        })
-        console.log(this.terrainMap.length, this.terrainMap[0].length)
-        console.log(this.terrainMap)
-    }
-
-    /**
-     * Creates a tile entity according to the noise value 
-     * @param {*} props 
-     * @returns 
-     */
-    #createBlock(props) {
-        switch(this.blockValues[props.value]) {
-            case 'dirt':
-                if(props.y < (50 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + 3.7)
-                    props.recurse = false
-                    return this.#createBlock(props)
-                } else if (props.y > (120 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + 2.7)
-                    props.recurse = false
-                    return this.#createBlock(props)
-                }
-                return this.entityManager.addEntity(new DirtBlock({
-                    sprite: this.tileDirtSprite,
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }));
-            case 'stone':
-                if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + 3)
-                    props.recurse = false
-                    return this.#createBlock(props)
-                } else if(props.y > (120 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + .4)
-                    props.recurse = false
-                    return this.#createBlock(props)
-                }
-                return this.entityManager.addEntity(new StoneBlock({
-                    sprite: this.tileStoneSprite,
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }));
-            case 'ruby':
-                if(props.y < (120 * BLOCKSIZE)) {
-                    props.value = Math.round(Math.random() + .4)
-                    props.recurse = false
-                    return this.#createBlock(props)
-                }
-                return this.entityManager.addEntity(new RubyBlock({
-                    sprite: this.tileRubySprite,
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(3)
-                }));
-            default: 
-                return {tag: 'air', id: null}
-        }
     }
 
     /**
@@ -264,35 +100,6 @@ class WorldScene extends Scene {
             sHeight: spriteHeight,
             scale: scale
         }));
-    }
-
-    #generateBackgrounds() {
-        let surfaceBackWidth = 512
-        let surfaceBackHeight = 240
-        let scale = 2
-        let offset = BLOCKSIZE * 2
-
-        for(let i = 0; i < 2; i++) {
-            this.entityManager.addEntity(new Background_0({
-                x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
-                maxVelocity: 0,
-                sprite: this.backgroundSurface0,
-                sWidth: surfaceBackWidth,
-                sHeight: surfaceBackHeight,
-                scale: scale
-            }));
-
-            this.entityManager.addEntity(new Background_1({
-                x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
-                maxVelocity: 0,
-                sprite: this.backgroundSurface1,
-                sWidth: surfaceBackWidth,
-                sHeight: surfaceBackHeight,
-                scale: scale
-            }));
-        }
     }
 
     /**
@@ -356,10 +163,6 @@ class WorldScene extends Scene {
                 }
         }
     }
-
-
-
-
     breakBlock(pos, player, terrainMap) {
         let offsetX = player.components.transform.x >= WIDTH/2 ?
                       player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
