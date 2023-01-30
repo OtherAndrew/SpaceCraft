@@ -16,22 +16,17 @@ class RenderSystem {
                     } else if(e.tag === 'background_layer_1') {
                         xSpeed = camera.x * .08
                     }
-
-                    try {
-                        ctx.drawImage(
-                            sprite.sprite,
-                            sprite.currentFrame * sprite.sWidth,
-                            sprite.frameY * sprite.sHeight,
-                            sprite.sWidth,
-                            sprite.sHeight,
-                            e.components.transform.x - xSpeed,
-                            e.components.transform.y - ySpeed,
-                            sprite.dWidth,
-                            sprite.dHeight
-                        )
-                    } catch (error) {
-                        console.log(e, 'Failed to draw: ' + error)
-                    }
+                    ctx.drawImage(
+                        sprite.sprite,
+                        sprite.currentFrame * sprite.sWidth,
+                        sprite.frameY * sprite.sHeight,
+                        sprite.sWidth,
+                        sprite.sHeight,
+                        e.components.transform.x - xSpeed,
+                        e.components.transform.y - ySpeed,
+                        sprite.dWidth,
+                        sprite.dHeight
+                    )
                 }
             }
         })

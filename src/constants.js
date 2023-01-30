@@ -10,6 +10,7 @@ const HEIGHT = 768
 const GRIDSIZE = 15
 const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
+const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 
 // NPC Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";

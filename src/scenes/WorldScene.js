@@ -53,7 +53,7 @@ class WorldScene extends Scene {
         this.monsterStateManager = new MonsterStateManager(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
 
-        this.camera = new Camera(this.player, (GRIDSIZE * GRIDSIZE * BLOCKSIZE))
+        this.camera = new Camera(this.player)
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
 
@@ -72,7 +72,7 @@ class WorldScene extends Scene {
             this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.update(deltaTime)
+            // wthis.collisionSystem.update(deltaTime)
             // temporary spot for this
             if(mouseDown) {
                 this.breakBlock(mouseDown, this.player, this.terrainMap)
@@ -86,7 +86,6 @@ class WorldScene extends Scene {
 
     draw(uiActive, ctx) {
         this.renderSystem.draw(ctx, this.camera)
-        
         this.entityManager.getEntities.forEach(e => {
             if(e.components.boxCollider){
                 let box = e.components.boxCollider
@@ -94,7 +93,6 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         })
-        
         this.hud.draw(uiActive, ctx); // UI ON TOP OF EVERYTHING
         this.containerManager.draw(uiActive, ctx);
     }
@@ -118,6 +116,7 @@ class WorldScene extends Scene {
             this.noiseMap.push(row)
             row = []
         }
+        console.log(this.noiseMap.length, this.noiseMap[0].length)
     }
 
     /**
@@ -126,7 +125,21 @@ class WorldScene extends Scene {
      */
     #generateTerrain() {
         this.terrainMap = []
+        //fill first half of terrainmap matrix with empty air cells
+        for(let i = 0; i < this.noiseMap.length; i++) {
+            let r = []
+            for(let j = 0; j < this.noiseMap.length; j++) {
+                r.push({
+                    tag: 'air',
+                    id: null
+                })
+            }
+            this.terrainMap.push(r)
+        }
+        let sizeSoFar = this.terrainMap[0].length
+        console.log(sizeSoFar)
         this.noiseMap.forEach( (row, y) => {
+            y += sizeSoFar
             let r = []
             row.forEach((val, x) => {
                 let e = this.#createBlock({
@@ -142,6 +155,8 @@ class WorldScene extends Scene {
             })
             this.terrainMap.push(r)
         })
+        console.log(this.terrainMap.length, this.terrainMap[0].length)
+        console.log(this.terrainMap)
     }
 
     /**
@@ -207,7 +222,7 @@ class WorldScene extends Scene {
                     frameX: getRandomInt(3)
                 }));
             default: 
-                return {tag: 'air'}
+                return {tag: 'air', id: null}
         }
     }
 
@@ -222,7 +237,7 @@ class WorldScene extends Scene {
         this.player = this.entityManager.addEntity(new Player({
             sprite: this.playerSprite,
             x: WIDTH_PIXELS * .5,
-            y: -100,
+            y: HEIGHT_PIXELS * .5 - 100,
             sWidth : spriteWidth,
             sHeight: spriteHeight,
             scale: scale
@@ -251,11 +266,12 @@ class WorldScene extends Scene {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
         let scale = 2
+        let offset = BLOCKSIZE * 2
 
         for(let i = 0; i < 2; i++) {
             this.entityManager.addEntity(new Background_0({
                 x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
+                y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
                 maxVelocity: 0,
                 sprite: this.backgroundSurface0,
                 sWidth: surfaceBackWidth,
@@ -265,7 +281,7 @@ class WorldScene extends Scene {
 
             this.entityManager.addEntity(new Background_1({
                 x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
+                y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
                 maxVelocity: 0,
                 sprite: this.backgroundSurface1,
                 sWidth: surfaceBackWidth,
@@ -323,7 +339,7 @@ class WorldScene extends Scene {
             }
             if ( 
                 this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
-                this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap.length-1)].tag === 'air' ||
+                this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap[0].length-1)].tag === 'air' ||
                 this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air') {
                     e.addComponent([
                         new CBoxCollider({
