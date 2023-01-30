@@ -111,17 +111,14 @@ class GameEngine {
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
                 switch (e.code) {
-                    // case "KeyQ":
-                    //     that.uiActive = !that.uiActive;
-                    //     console.log(that.uiActive);
-                    //     break;
                     case "Escape":
                         that.uiActive = false;
-                        // console.log("UI: " + that.uiActive);
+                        break;
+                    case "KeyC":
+                        that.uiActive = !that.uiActive;
                         break;
                     case "Tab":
                         that.uiActive = !that.uiActive;
-                        // console.log("UI: " + that.uiActive);
                         break;
                 }
             }, false);

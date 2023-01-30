@@ -119,9 +119,11 @@ const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
 const BACKGROUND_SURFACE_1 ='./assets/backgrounds/surface_background_1.png'
 
 // TESTING
+const BG = './assets/backgrounds/bg.png'
 const B1 = './assets/sprites/b1.png'
 const B2 = './assets/sprites/b2.png'
 const B3 = './assets/sprites/b3.png'
+const O1 = './assets/overlay/overlaymockup.png'
 
 // arrays to queue using a loop
 const TERRAIN_ASSETS_ARRAY = [
@@ -143,8 +145,10 @@ const TERRAIN_ASSETS_ARRAY = [
     TILES_TUNGSTEN_PATH,
     BACKGROUND_SURFACE_0,
     BACKGROUND_SURFACE_1,
+    BG,
     B1,
     B2,
-    B3
+    B3,
+    O1
 ]
 
