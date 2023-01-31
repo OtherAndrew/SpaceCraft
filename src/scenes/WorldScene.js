@@ -260,7 +260,7 @@ class WorldScene extends Scene {
             if(e.components.lifespan.current <= 0) {
                 terrainMap[mapY][mapX].tag = 'air'
                 terrainMap[mapY][mapX].id = null
-                this.containerManager.addToInventory('player', this.#resizeBlock(e), 1)
+                this.containerManager.addToInventory('player', this.#resizeBlock(e))
             }
         } else if(terrainMap[mapY][mapX].tag.includes('air')) {
 

@@ -284,14 +284,21 @@ class Container {
             this.roundRect(ctx, this.x, this.y, this.fillColor);
         }
         if (this.item) {
-            // center item image
-            let itemImage = ASSET_MANAGER.getAsset(this.item.sprite);
-            let shrunkX = itemImage.width * (0.015 * this.width);
-            let shrunkY = itemImage.height * (0.015 * this.width);
+            let sprite = this.item.components.sprite;
             ctx.save();
             if (this.uncraftable)
                 ctx.globalAlpha = 0.40;
-            ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
+            ctx.drawImage(
+                sprite.sprite,
+                0,
+                0,
+                sprite.sWidth,
+                sprite.sHeight,
+                this.midx - sprite.sWidth / 2,
+                this.midy - sprite.sHeight / 2,
+                sprite.dWidth,
+                sprite.dHeight
+            );
             this.drawStrokedText(ctx, this.x + Math.round(0.2 * this.width), this.y + Math.round(0.8 * this.width));
             ctx.restore();
         }

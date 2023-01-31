@@ -14,11 +14,11 @@ class HUD {
         this.getStartPoint();
 
         // TESTING
-        this.add(new block1());
-        this.add(new block2());
-        this.add(new block1());
-        this.add(new block3());
-        console.log(this.containers);
+        // this.add(new block1());
+        // this.add(new block2());
+        // this.add(new block1());
+        // this.add(new block3());
+        // console.log(this.containers);
         this.player.health = 100;
     };
 
