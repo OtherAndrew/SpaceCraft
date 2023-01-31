@@ -38,7 +38,7 @@ class WorldScene extends Scene {
         //this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
-    update(uiActive, keys, mouseDown, deltaTime) {
+    update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
             // draw stuff last
             this.entityManager.update()
@@ -59,7 +59,7 @@ class WorldScene extends Scene {
             }
         }
         this.craftingMenu.update(uiActive);
-        this.containerManager.update(uiActive, mouseDown);
+        this.containerManager.update(uiActive, mouseDown, mouse);
         this.hud.update(uiActive, keys);
     }
 
@@ -264,20 +264,24 @@ class WorldScene extends Scene {
             }
         } else if(terrainMap[mapY][mapX].tag.includes('air')) {
 
-            //this is where we spawn the selected item from inventory
-            let newBlock = this.entityManager.addEntity(new DirtBlock({
-                sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
-                x: mapX * BLOCKSIZE,
-                y: mapY * BLOCKSIZE,
-                sWidth: 16,
-                sHeight: 16,
-                scale: BLOCKSIZE / 16,
-                frameX: getRandomInt(6),
-                frameY: getRandomInt(2)
-            }))
-            terrainMap[mapY][mapX].tag = newBlock.tag
-            terrainMap[mapY][mapX].id = newBlock.id
-            console.log(newBlock)
+            /*let active = this.containerManager.removeFromPlayer(this.hud.slot);
+            if (active) {*/
+                //this is where we spawn the selected item from inventory
+                let newBlock = this.entityManager.addEntity(/*active*/
+                    new DirtBlock({
+                    sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
+                    x: mapX * BLOCKSIZE,
+                    y: mapY * BLOCKSIZE,
+                    sWidth: 16,
+                    sHeight: 16,
+                    scale: BLOCKSIZE / 16,
+                    frameX: getRandomInt(6),
+                    frameY: getRandomInt(2)
+                }))
+                terrainMap[mapY][mapX].tag = newBlock.tag
+                terrainMap[mapY][mapX].id = newBlock.id
+                console.log(newBlock)
+            /*}*/
         }
     }
 

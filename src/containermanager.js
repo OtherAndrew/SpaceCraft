@@ -82,6 +82,19 @@ class ContainerManager {
         }
     }
 
+    removeFromPlayer(index) {
+        let ent = this.slots[index];
+        if (ent.item) {
+            if (--ent.count) {
+                return structuredClone(ent.item);
+            } else {
+                let item = ent.item;
+                ent.item = null;
+                return item;
+            }
+        }
+    }
+
     // metronome bug
     removeForCrafting(requisite, owner="player") {
         let item = requisite.item;
@@ -146,6 +159,20 @@ class ContainerManager {
                     this.activeInventory[i][c].draw(ctx);
                 }
             }
+            // if (this.hoverText) {
+            //     ctx.save();
+            //     ctx.fillStyle = 'black';
+            //     ctx.font = "bold 15px Helvetica";
+            //     ctx.strokeStyle = 'white';
+            //     ctx.lineWidth = 3;
+            //     ctx.lineJoin="round";
+            //     ctx.miterLimit=2;
+            //     ctx.strokeText(this.hoverText.tag, this.hoverText.x, this.hoverText.y);
+            //     ctx.fillStyle = 'black';
+            //     ctx.lineWidth = 1;
+            //     ctx.fillText(this.hoverText.tag, this.hoverText.x, this.hoverText.y);
+            //     ctx.restore();
+            // }
         } else {
             ctx.save();
             ctx.globalAlpha = 0.7;
@@ -156,12 +183,20 @@ class ContainerManager {
         }
     }
     
-    update(uiActive, click) {
+    update(uiActive, click, mouse) {
         for (let i = 0; i < this.activeInventory.length; i++) {
             for (let j = 0; j < this.activeInventory[i].length; j++) {
                 this.activeInventory[i][j].update();
             }
         }
+        // let check = this.checkHit(mouse);
+        // if (check) {
+        //     if (check.item) {
+        //         this.hoverText = { tag : check.item.tag, x : mouse.x, y : mouse.y};
+        //     } else {
+        //         this.hoverText = { tag : "", x:0, y:0};
+        //     }
+        // }
         if (uiActive) { // ui is active
             let hit = this.checkHit(click); // what was click: container or nothing
             if (hit) {

@@ -107,6 +107,7 @@ class GameEngine {
 
         /* KEY LISTENERS FOR:
          TAB    : INVENTORY
+         C      : CRAFTING (PLACEHOLDER)
          ESC    : EXIT UI */
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
@@ -256,7 +257,7 @@ class GameEngine {
     };
 
     update() {
-        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.clockTick);
+        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.mouse, this.clockTick);
     };
 
     loop() {
