@@ -4,7 +4,7 @@ class PlayerController {
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
         this.acceleration = 1
-        this.gravity = 1.5
+        this.gravity = 0
 
 
         this.direction = 'right';

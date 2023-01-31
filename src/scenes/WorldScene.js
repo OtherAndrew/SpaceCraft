@@ -3,7 +3,6 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities)
     }
 
     /**
@@ -18,19 +17,6 @@ class WorldScene extends Scene {
         this.sporeSprite = assets[SPORE_PATH];
         this.dirtCarverSprite = assets[DIRTCARVER_PATH];
         this.lightJellySprite = assets[LIGHTJELLY_PATH];
-
-        //tiles
-        this.tileDirtSprite = assets[TILES_DIRT_PATH]
-        this.tileStoneSprite = assets[TILES_STONE_PATH]
-        this.tileRubySprite = assets[TILES_RUBY_PATH]
-        this.caveBackground = assets[BACKGROUND_CAVE_PATH]
-
-        //background
-        this.backgroundSurface0 = assets[BACKGROUND_SURFACE_0]
-        this.backgroundSurface1 = assets[BACKGROUND_SURFACE_1]
-
-
-        this.#generateBackgrounds()
 
         this.terrainMap = getTerrain(this.entityManager)
         this.#createEntity()
@@ -49,7 +35,7 @@ class WorldScene extends Scene {
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
+        //this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
     }
 
     update(uiActive, keys, mouseDown, deltaTime) {
@@ -66,7 +52,7 @@ class WorldScene extends Scene {
             // this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.update(deltaTime)
+            // this.collisionSystem.update(deltaTime)
             // temporary spot for this
             if(mouseDown) {
                 this.breakBlock(mouseDown, this.player, this.terrainMap)
@@ -195,34 +181,6 @@ class WorldScene extends Scene {
 
     }
 
-    #generateBackgrounds() {
-        let surfaceBackWidth = 512
-        let surfaceBackHeight = 240
-        let scale = 2
-
-        for(let i = 0; i < 2; i++) {
-            this.entityManager.addEntity(new Background_0({
-                x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
-                maxVelocity: 0,
-                sprite: this.backgroundSurface0,
-                sWidth: surfaceBackWidth,
-                sHeight: surfaceBackHeight,
-                scale: scale
-            }));
-
-            this.entityManager.addEntity(new Background_1({
-                x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + BLOCKSIZE,
-                maxVelocity: 0,
-                sprite: this.backgroundSurface1,
-                sWidth: surfaceBackWidth,
-                sHeight: surfaceBackHeight,
-                scale: scale
-            }));
-        }
-    }
-
     /**
      * This method checks to see what is in the bounds of the view screen. 
      * Entities that are within the view screen are marked as drawable so they can be drawn to the ctx.
@@ -235,7 +193,9 @@ class WorldScene extends Scene {
                 e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
-                    e.isDrawable = true
+                    if(!e.isBroken) {
+                        e.isDrawable = true
+                    }
                     this.#checkIfExposed(e)
                 } else {
                     e.isDrawable = false
@@ -295,15 +255,42 @@ class WorldScene extends Scene {
         if(mapY < 0) return
         console.log(terrainMap[mapY][mapX].tag)
         if(terrainMap[mapY][mapX].tag.includes('tile')) {
-            console.log("inside")
             let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
             e.components.lifespan.current -= 1
-            console.log(e.components.lifespan.current)
             if(e.components.lifespan.current <= 0) {
-                e.destroy()
                 terrainMap[mapY][mapX].tag = 'air'
                 terrainMap[mapY][mapX].id = null
+                this.containerManager.addToInventory('player', this.#resizeBlock(e), 1)
             }
+        } else if(terrainMap[mapY][mapX].tag.includes('air')) {
+
+            //this is where we spawn the selected item from inventory
+            let newBlock = this.entityManager.addEntity(new DirtBlock({
+                sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
+                x: mapX * BLOCKSIZE,
+                y: mapY * BLOCKSIZE,
+                sWidth: 16,
+                sHeight: 16,
+                scale: BLOCKSIZE / 16,
+                frameX: getRandomInt(6),
+                frameY: getRandomInt(2)
+            }))
+            terrainMap[mapY][mapX].tag = newBlock.tag
+            terrainMap[mapY][mapX].id = newBlock.id
+            console.log(newBlock)
         }
+    }
+
+    #resizeBlock(e) {
+        console.log(e.components.sprite)
+        e.components.sprite.dWidth = e.components.sprite.dWidth * .5
+        e.components.sprite.dHeight = e.components.sprite.dHeight * .5
+        e.components.transform.x += BLOCKSIZE * .25
+        e.components.transform.y += BLOCKSIZE * .25
+        e.components.transform.velocityY = 10
+        e.isBroken = true
+        e.isDrawable = false
+        console.log(e)
+        return e
     }
 }
