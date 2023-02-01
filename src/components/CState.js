@@ -18,20 +18,16 @@ class CState {
         // this.input = '';
         // this.direction = 'right';
         // this.grounded = false;
-        this.sprite = {};
-        this.transform = {};
+        this.sprite = null;
+        this.transform = null;
         return this;
     }
 
     setState(state) {
         if (state !== this.currentState) {
             this.currentState = state;
-            if (Object.entries(this.sprite).length > 0) {
-                this.sprite.setAnimation(this.currentState);
-            }
-            if (Object.entries(this.transform).length > 0) {
-                this.transform.setBehavior(this.currentState);
-            }
+            if (this.sprite) this.sprite.setAnimation(this.currentState);
+            if (this.transform) this.transform.setBehavior(this.currentState);
         }
     }
 
