@@ -159,20 +159,21 @@ class ContainerManager {
                     this.activeInventory[i][c].draw(ctx);
                 }
             }
-            // if (this.hoverText) {
-            //     ctx.save();
-            //     ctx.fillStyle = 'black';
-            //     ctx.font = "bold 15px Helvetica";
-            //     ctx.strokeStyle = 'white';
-            //     ctx.lineWidth = 3;
-            //     ctx.lineJoin="round";
-            //     ctx.miterLimit=2;
-            //     ctx.strokeText(this.hoverText.tag, this.hoverText.x, this.hoverText.y);
-            //     ctx.fillStyle = 'black';
-            //     ctx.lineWidth = 1;
-            //     ctx.fillText(this.hoverText.tag, this.hoverText.x, this.hoverText.y);
-            //     ctx.restore();
-            // }
+            if (this.hoverText) {
+                ctx.save();
+                ctx.globalAlpha = 0.75;
+                ctx.fillStyle = 'black';
+                ctx.font = "bold 15px Helvetica";
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 3;
+                ctx.lineJoin="round";
+                ctx.miterLimit=2;
+                ctx.strokeText(this.hoverText.tag, this.hoverText.x, this.hoverText.y);
+                ctx.fillStyle = 'black';
+                ctx.lineWidth = 1;
+                ctx.fillText(this.hoverText.tag, this.hoverText.x, this.hoverText.y);
+                ctx.restore();
+            }
         } else {
             ctx.save();
             ctx.globalAlpha = 0.7;
@@ -189,14 +190,14 @@ class ContainerManager {
                 this.activeInventory[i][j].update();
             }
         }
-        // let check = this.checkHit(mouse);
-        // if (check) {
-        //     if (check.item) {
-        //         this.hoverText = { tag : check.item.tag, x : mouse.x, y : mouse.y};
-        //     } else {
-        //         this.hoverText = { tag : "", x:0, y:0};
-        //     }
-        // }
+        let check = this.checkHit(mouse);
+        if (check) {
+            if (check.item) {
+                this.hoverText = { tag : check.item.tag, x : mouse.x, y : mouse.y};
+            } else {
+                this.hoverText = { tag : "", x:0, y:0};
+            }
+        }
         if (uiActive) { // ui is active
             let hit = this.checkHit(click); // what was click: container or nothing
             if (hit) {
@@ -230,10 +231,11 @@ class ContainerManager {
         if (click) {
             for (let i = 0; i < this.activeInventory.length; i++) {
                 for (let c = 0; c < this.activeInventory[i].length; c++) {
+                    let width = this.activeInventory[i][c].width;
                     if (this.activeInventory[i][c].x <= click.x &&
-                        click.x <= this.activeInventory[i][c].x + 42 &&
+                        click.x <= this.activeInventory[i][c].x + width &&
                         this.activeInventory[i][c].y <= click.y &&
-                        click.y <= this.activeInventory[i][c].y + 42) {
+                        click.y <= this.activeInventory[i][c].y + width) {
                             return this.activeInventory[i][c];
                     }
                 }
