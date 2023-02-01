@@ -48,11 +48,12 @@ class WorldScene extends Scene {
             this.lightjellyManager.update(deltaTime)
             this.camera.update()
             this.renderBox.update()
-            this.renderSystem.update(this.game.clockTick);
             // this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update(deltaTime)
+
+            this.renderSystem.update(this.game.clockTick);
             // temporary spot for this
             if(mouseDown) {
                 this.breakBlock(mouseDown, this.player, this.terrainMap)

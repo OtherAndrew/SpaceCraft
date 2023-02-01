@@ -37,8 +37,8 @@ class Player {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            maxVelocityX: 15,
-            maxVelocityY: 30
+            hasGravity: true,
+            maxVelocityX: 15
         });
         const collider = new CBoxCollider({
             x: props.x,

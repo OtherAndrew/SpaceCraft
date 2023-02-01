@@ -44,7 +44,7 @@ class CollisionSystem {
                if(collisions[e].dir.length > 0) {
                 collisions[e].dir.forEach(dir => {
                     if(dir === 'DOWN') {
-                        player.components.transform.velocitY = 0
+                        player.components.transform.velocityY = -GRAVITY
                         player.components.transform.y = collisions[e].pos.y - player.components.boxCollider.height
                         player.components.rigidBody.isGrounded = true
                     } else if(dir === 'UP') {
