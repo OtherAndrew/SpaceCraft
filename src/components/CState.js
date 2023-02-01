@@ -26,10 +26,10 @@ class CState {
     setState(state) {
         if (state !== this.currentState) {
             this.currentState = state;
-            if (Object.entries(this.sprite).length > 0) {
+            if (Object.keys(this.sprite).length > 0) {
                 this.sprite.setAnimation(this.currentState);
             }
-            if (Object.entries(this.transform).length > 0) {
+            if (Object.keys(this.transform).length > 0) {
                 this.transform.setBehavior(this.currentState);
             }
         }
