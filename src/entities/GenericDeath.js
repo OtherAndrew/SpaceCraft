@@ -1,9 +1,9 @@
 
-class Lightjelly {
+class GenericDeath {
     /**
-     * Initializes lightJelly (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {Image} props.sprite   enemy sprite sheet
+     * Initializes genericDeath vfx (enemy's death particle)
+     * @param {Object} props         vfx position and display properties
+     * @param {Image} props.sprite   vfx sprite sheet
      * @param {number} props.x       X position of starting frame
      * @param {number} props.y       Y position of the starting frame
      * @param {number} props.sWidth  frame width
@@ -13,8 +13,8 @@ class Lightjelly {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'lightjelly';
-        this.name = 'lightjelly';
+        this.tag = 'genericdeath';
+        this.name = 'genericdeath';
         this.components = this.#buildComponents(props);
         return this;
     };
@@ -26,9 +26,9 @@ class Lightjelly {
             scale: props.scale,
             firstFrameX: 0,
             frameY: 0,
-            lastFrameX: 5,
-            fps: 12,
-            padding: 3
+            lastFrameX: 15,
+            fps: 30,
+            padding: 8
         });
         const transform = new CTransform({
             x: props.x,
@@ -55,7 +55,7 @@ class Lightjelly {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,7));
+        aMap.set('idleR', new AnimationProps(0, 0,15));
         // aMap.set('death', new AnimationProps(0, 0,15));
 
     };

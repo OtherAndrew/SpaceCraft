@@ -17,17 +17,22 @@ class WorldScene extends Scene {
         this.sporeSprite = assets[SPORE_PATH];
         this.dirtCarverSprite = assets[DIRTCARVER_PATH];
         this.lightJellySprite = assets[LIGHTJELLY_PATH];
-
+        this.lightBugSprite = assets[LIGHTBUG_PATH];
+        //this.genericDeathSprite = assets[GENERICDEATH_PATH];
         this.terrainMap = getTerrain(this.entityManager)
         this.#createEntity()
         this.#createPlayer()
         this.#createSpore()
         this.#createDirtcarver()
         this.#createLightjelly()
+        this.#createLightbug()
+        //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
         this.sporeManager = new SporeController(this.spore)
-        this.dirtcarverManager = new DirtcarverController(this.dirtcarver)
+        this.dirtcarverManager = new DirtcarverController(this.dirtcarver, this.player)
         this.lightjellyManager = new LightjellyController(this.lightjelly, this.player)
+        this.lightbugManager = new LightbugController(this.lightbug, this.player)
+        //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
         // this.monsterStateManager = new EntityController(this.entity);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
@@ -46,6 +51,8 @@ class WorldScene extends Scene {
             this.sporeManager.update(deltaTime)
             this.dirtcarverManager.update(deltaTime)
             this.lightjellyManager.update(deltaTime)
+            this.lightbugManager.update(deltaTime)
+            //this.genericDeathManager.update(deltaTime)
             this.camera.update()
             this.renderBox.update()
             this.renderSystem.update(this.game.clockTick);
@@ -148,10 +155,10 @@ class WorldScene extends Scene {
         const scale = 0.5;
         this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
             sprite: this.dirtCarverSprite,
-            //controller for spawn point
+            //control spawn point
 
             x: this.player.components.transform.x - 100,
-            y: this.player.components.transform.y - 50,
+            y: this.player.components.transform.y - 250,
             sWidth: spriteWidth,
             sHeight: spriteHeight,
             scale: scale
@@ -174,6 +181,26 @@ class WorldScene extends Scene {
 
             x: this.player.components.transform.x + 300,
             y: this.player.components.transform.y - 300,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+
+    }
+
+    /**
+     *  lightbug spawn condition
+     */
+    #createLightbug() {
+        const spriteWidth = 50;
+        const spriteHeight = 49;
+        const scale = 1;
+        this.lightbug = this.entityManager.addEntity(new Lightbug({
+            sprite: this.lightBugSprite,
+            //controller for spawn point
+
+            x: this.player.components.transform.x + 1200,
+            y: this.player.components.transform.y - 100,
             sWidth: spriteWidth,
             sHeight: spriteHeight,
             scale: scale

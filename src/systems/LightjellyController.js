@@ -1,5 +1,6 @@
 /**
  *  control spore update
+ *  @author Jeep Naarkom
  */
 class LightjellyController {
     constructor(monster, player) {
@@ -22,30 +23,29 @@ class LightjellyController {
      * @param input keyboard input
      * @param tick time slice
      */
-    update(tick) {
+    update(tick) {   //update the state of anim
         //despawn after x range from player position
 
         //default state
         this.state.setState('idleR');
 
-
-        if (this.player.components.transform.y < this.lightjelly.components.transform.y
-            && this.player.components.transform.x < this.lightjelly.components.transform.x) {
+        if (this.player.components.transform.y <= this.lightjelly.components.transform.y
+            && this.player.components.transform.x <= this.lightjelly.components.transform.x) {
             this.lightjelly.components.transform.y -= this.velocity
             this.lightjelly.components.transform.x -= this.velocity
 
-        } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
-            && this.player.components.transform.x < this.lightjelly.components.transform.x) {
+        } else if (this.player.components.transform.y >= this.lightjelly.components.transform.y
+            && this.player.components.transform.x <= this.lightjelly.components.transform.x) {
             this.lightjelly.components.transform.y += this.velocity
             this.lightjelly.components.transform.x -= this.velocity
 
-        } else if (this.player.components.transform.y < this.lightjelly.components.transform.y
-            && this.player.components.transform.x > this.lightjelly.components.transform.x) {
+        } else if (this.player.components.transform.y <= this.lightjelly.components.transform.y
+            && this.player.components.transform.x >= this.lightjelly.components.transform.x) {
             this.lightjelly.components.transform.y -= this.velocity
             this.lightjelly.components.transform.x += this.velocity
 
-        } else if (this.player.components.transform.y > this.lightjelly.components.transform.y
-            && this.player.components.transform.x > this.lightjelly.components.transform.x) {
+        } else if (this.player.components.transform.y >= this.lightjelly.components.transform.y
+            && this.player.components.transform.x >= this.lightjelly.components.transform.x) {
             this.lightjelly.components.transform.y += this.velocity
             this.lightjelly.components.transform.x += this.velocity
         }

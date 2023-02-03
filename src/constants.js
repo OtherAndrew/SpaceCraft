@@ -11,7 +11,7 @@ const GRIDSIZE = 15
 const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 
-const GRAVITY = 9.8
+const GRAVITY = .98
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 
 
@@ -21,7 +21,9 @@ const ENTITY_PATH = "./assets/sprites/entity.png";
 const SPORE_PATH = "./assets/sprites/spore.png";
 const DIRTCARVER_PATH = "./assets/sprites/dirtcarver.png";
 const LIGHTJELLY_PATH = "./assets/sprites/lightjelly.png";
-
+const LIGHTBUG_PATH = "./assets/sprites/lightbug.png";
+const GRAPEBOMB_PATH = "./assets/sprites/grapebomb.png";
+const GENERICDEATH_PATH = "./assets/sprites/smoke.png";
 
 //Tiles
 const TILES_BISMUTH_PATH = './assets/tiles/tilesBismuth.png'
@@ -158,6 +160,9 @@ const TERRAIN_ASSETS_ARRAY = [
     O1,
     SPORE_PATH,
     DIRTCARVER_PATH,
-    LIGHTJELLY_PATH
+    LIGHTJELLY_PATH,
+    LIGHTBUG_PATH,
+    GRAPEBOMB_PATH,
+    GENERICDEATH_PATH
 ]
 
