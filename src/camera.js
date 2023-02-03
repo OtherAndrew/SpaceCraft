@@ -8,11 +8,11 @@ class Camera {
     constructor(target) {
         this.sceneWIDTH = WIDTH * .5
         this.sceneHEIGHT = HEIGHT * .5
-        this.worldWidth = WIDTH_PIXELS,
-        this.worldHeight = HEIGHT_PIXELS,
+        this.worldWidth = WIDTH_PIXELS
+        this.worldHeight = HEIGHT_PIXELS
         this.targetPos = target.components.transform
         this.x = this.targetPos.x - this.sceneWIDTH
-        this.y = this.targetPos.y - this.sceneHEIGHT    
+        this.y = this.targetPos.y - this.sceneHEIGHT
     }
 
     update() {
@@ -20,16 +20,15 @@ class Camera {
             this.x = 0
         } else if(this.targetPos.x + this.sceneWIDTH >= this.worldWidth) {
             this.x = this.worldWidth - WIDTH
-        }
-        else {
+        } else {
             this.x = this.targetPos.x - this.sceneWIDTH
         }
 
         if(this.targetPos.y + this.sceneHEIGHT >= this.worldHeight + BLOCKSIZE) {
             this.y = this.worldHeight - HEIGHT + BLOCKSIZE
-        }
-        else {
+        } else if (Math.abs(this.targetPos.velocityY) > GRAVITY) {
             this.y = this.targetPos.y - this.sceneHEIGHT
         }
+        // console.log ("X: " + this.x + ", Y: " + this.y)
     }
 }

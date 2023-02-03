@@ -12,7 +12,7 @@ class DirtcarverController {
         //this.acceleration = 1
         //this.gravity = .98
         //this.direction = 'right';
-        this.dc.components.rigidBody.isGrounded = false
+        // this.dc.components.rigidBody.isGrounded = false
         this.dc.components.transform.velocityY = .4
         this.velocity = .8
     }

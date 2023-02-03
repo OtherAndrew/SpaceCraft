@@ -4,7 +4,7 @@ class PlayerController {
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
         this.acceleration = 1
-        this.gravity = 1.5
+        // this.gravity = 1.5
 
 
         this.direction = 'right';
@@ -16,16 +16,18 @@ class PlayerController {
      * @param tick time slice
      */
     update(input, tick) {
+        const maxVX = this.pTransform.maxVelocityX;
+        const maxVY = this.pTransform.maxVelocityY;
         if(input['a']) {
-            this.pTransform.velocityX = clamp(this.pTransform.velocityX - this.acceleration, -this.pTransform.maxVelocityX, 0)
-            if (this.player.components.rigidBody.isGrounded) this.pState.setState('walkL');
+            this.pTransform.velocityX = clamp(this.pTransform.velocityX - this.acceleration, - maxVX, 0)
+            if (this.player.components.state.isGrounded) this.pState.setState('walkL');
             this.direction = 'left'
         } else if(input['d']) {
-            this.pTransform.velocityX = clamp(this.pTransform.velocityX + this.acceleration, 0, this.pTransform.maxVelocityX)
-            if (this.player.components.rigidBody.isGrounded) this.pState.setState('walkR');
+            this.pTransform.velocityX = clamp(this.pTransform.velocityX + this.acceleration, 0, maxVX)
+            if (this.player.components.state.isGrounded) this.pState.setState('walkR');
             this.direction = "right"
         } else if(input['s']) { // fast fall
-            this.pTransform.velocityY = clamp(this.pTransform.velocityY + this.acceleration, 0, this.pTransform.maxVelocityY)
+            this.pTransform.velocityY = clamp(this.pTransform.velocityY + this.acceleration, 0, maxVY)
             this.pTransform.velocityX = 0;
             if (this.direction === 'right') this.pState.setState('crouchR');
             else if (this.direction === "left") this.pState.setState('crouchL');
@@ -33,29 +35,29 @@ class PlayerController {
             // this.pTransform.velocityX === 0 ? this.pTransform.velocityX = 0 :
             //     (this.pTransform.velocityX > 0 ? this.pTransform.velocityX -= this.acceleration : this.pTransform.velocityX += this.acceleration)
             this.pTransform.velocityX = 0;
-            if (this.direction === 'right' && this.player.components.rigidBody.isGrounded) this.pState.setState('idleR');
-            else if (this.direction === "left" && this.player.components.rigidBody.isGrounded) this.pState.setState('idleL');
+            if (this.direction === 'right' && this.player.components.state.isGrounded) this.pState.setState('idleR');
+            else if (this.direction === "left" && this.player.components.state.isGrounded) this.pState.setState('idleL');
         }
-        if((input[' ']) && this.player.components.rigidBody.isGrounded) { //jump
-            this.pTransform.velocityY = -25
-            this.player.components.rigidBody.isGrounded = false
+        if((input[' ']) && this.player.components.state.isGrounded) { //jump
+            this.pTransform.velocityY = -(GRAVITY + 20);
+            this.player.components.state.isGrounded = false
             if (this.direction === 'right') this.pState.setState('jumpR');
             else if (this.direction === "left") this.pState.setState('jumpL');
         }
 
         if(input['w']) { // jetpack?
             // this.playerPos.velocityY = clamp(this.playerPos.velocityY - this.speed, -this.playerPos.maxVelocityY, 0)
-            this.player.components.rigidBody.isGrounded = false
-            this.pTransform.velocityY = -15;
+            this.player.components.state.isGrounded = false
+            this.pTransform.velocityY = -(GRAVITY + 10);
             if (this.direction === 'right') this.pState.setState('flyR');
             else if (this.direction === "left") this.pState.setState('flyL');
         }
 
-        if(!this.player.components.rigidBody.isGrounded) {
-            this.pTransform.velocityY += this.gravity
-        } else if(this.player.components.rigidBody.isGrounded) {
-            this.pTransform.velocityY = 0
-        }
+        // if(this.player.components.rigidBody.isGrounded) {
+        //     this.pTransform.velocityY = -GRAVITY
+        // } else if(this.player.components.rigidBody.isGrounded) {
+        //     this.pTransform.velocityY = 0
+        // }
 
         // set animation
         // move hitbox with player

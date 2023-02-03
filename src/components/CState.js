@@ -17,9 +17,9 @@ class CState {
         this.currentState = 'idleR';
         // this.input = '';
         // this.direction = 'right';
-        // this.grounded = false;
-        this.sprite = {};
-        this.behavior = {};
+        this.grounded = false;
+        this.sprite = null;
+        this.transform = null;
         return this;
     }
 
@@ -27,7 +27,7 @@ class CState {
         if (state !== this.currentState) {
             this.currentState = state;
             if (this.sprite) this.sprite.setAnimation(this.currentState);
-            // if (this.behavior) this.behavior.setBehavior(this.currentState);
+            if (this.transform) this.transform.setBehavior(this.currentState);
         }
     }
 

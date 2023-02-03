@@ -40,7 +40,7 @@ class WorldScene extends Scene {
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-        this.collisionSystem = new CollisionSystem(this.entityManager.getEntities);
+        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
     }
 
     update(uiActive, keys, mouseDown, deltaTime) {
@@ -55,11 +55,12 @@ class WorldScene extends Scene {
             //this.genericDeathManager.update(deltaTime)
             this.camera.update()
             this.renderBox.update()
-            this.renderSystem.update(this.game.clockTick);
             // this.monsterStateManager.update(this.game.clockTick)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.update(deltaTime)
+            this.collisionSystem.update()
+
+            this.renderSystem.update(this.game.clockTick);
             // temporary spot for this
             if(mouseDown) {
                 this.breakBlock(mouseDown, this.player, this.terrainMap)
