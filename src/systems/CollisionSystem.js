@@ -20,52 +20,74 @@ class CollisionSystem {
         // console.log(collisionCheckList)
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
 
-        this.entities.forEach(e => {
-            if(e.isDrawable) {
-                if(e.tag === 'player') {
-                    this.entities.forEach(t => {
-                        if(t.isDrawable) {
-                            if(e.id !== t.id) {
-                                if(t.components.boxCollider) {
-                                    if(this.boxCollision(e, t, deltaTime)) {
-                                        if(t.tag.includes('tile')) {
-                                            e.components.boxCollider.collisions[t.tag] = {pos: t.components.boxCollider, dir:this.#checkDirection(e,t)}
-                                        } else {
-                                            e.components.boxCollider.collisions[t.tag] = true
-                                        }
-                                    }
-                                    this.#playerCollisionResolution(e)
+        collideList.forEach(a => {
+            if (a.tag.includes('player') || a.tag.includes('dirtcarver')) {
+                collideList.forEach(b => {
+                    if (a.id !== b.id) {
+                        if (this.boxCollision(a, b)) {
+                            if (b.tag.includes('tile')) {
+                                a.components.boxCollider.collisions[b.tag] = {
+                                    pos: b.components.boxCollider,
+                                    dir: this.#checkDirection(a, b)
                                 }
+                            } else {
+                                a.components.boxCollider.collisions[b.tag] = true;
                             }
+                            this.#collisionResolution(a);
                         }
-                    })
-                }
-                if(e.tag === 'dirtcarver') {
-                    this.entities.forEach(t => {
-                        if(t.isDrawable) {
-                            if(e.id !== t.id) {
-                                if(t.components.boxCollider) {
-                                    if(this.boxCollision(e, t, deltaTime)) {
-                                        if(t.tag.includes('tile')) {
-                                            e.components.boxCollider.collisions[t.tag] = {pos: t.components.boxCollider, dir:this.#checkDirection(e,t)}
-                                        } else {
-                                            e.components.boxCollider.collisions[t.tag] = true
-                                        }
-                                    }
-                                    this.#playerCollisionResolution(e)
-                                }
-                            }
-                        }
-                    })
-                }
+                    }
+                });
             }
 
-        })
+
+        });
+
+        // this.entities.forEach(e => {
+        //     if(e.isDrawable) {
+        //         if(e.tag === 'player') {
+        //             this.entities.forEach(t => {
+        //                 if(t.isDrawable) {
+        //                     if(e.id !== t.id) {
+        //                         if(t.components.boxCollider) {
+        //                             if(this.boxCollision(e, t, deltaTime)) {
+        //                                 if(t.tag.includes('tile')) {
+        //                                     e.components.boxCollider.collisions[t.tag] = {pos: t.components.boxCollider, dir:this.#checkDirection(e,t)}
+        //                                 } else {
+        //                                     e.components.boxCollider.collisions[t.tag] = true
+        //                                 }
+        //                             }
+        //                             this.#collisionResolution(e)
+        //                         }
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //         if(e.tag === 'dirtcarver') {
+        //             this.entities.forEach(t => {
+        //                 if(t.isDrawable) {
+        //                     if(e.id !== t.id) {
+        //                         if(t.components.boxCollider) {
+        //                             if(this.boxCollision(e, t, deltaTime)) {
+        //                                 if(t.tag.includes('tile')) {
+        //                                     e.components.boxCollider.collisions[t.tag] = {pos: t.components.boxCollider, dir:this.#checkDirection(e,t)}
+        //                                 } else {
+        //                                     e.components.boxCollider.collisions[t.tag] = true
+        //                                 }
+        //                             }
+        //                             this.#collisionResolution(e)
+        //                         }
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //     }
+        //
+        // })
 
 
     }
 
-    #playerCollisionResolution(player) {
+    #collisionResolution(player) {
         let collisions = player.components.boxCollider.collisions
         for(let e in collisions) {
             if(e.includes('tile') && collisions[e].dir.length > 0) {
