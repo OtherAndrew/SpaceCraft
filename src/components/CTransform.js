@@ -27,9 +27,11 @@ class CTransform {
                     maxVelocityX = Number.MAX_SAFE_INTEGER, maxVelocityY = Number.MAX_SAFE_INTEGER }) {
         Object.assign(this, {x, y, velocityX, velocityY, rotation, maxVelocityX, maxVelocityY});
         this.name = 'transform'
-        this.collider = {};
+        this.collider = null;
         this.behaviorMap = new Map();
         this.gravity = hasGravity ? GRAVITY : 0;
+        this.lastX = this.x;
+        this.lastY = this.y;
         return this;
     }
 
@@ -48,12 +50,11 @@ class CTransform {
         this.velocityY = clamp(this.velocityY + this.gravity,
             -this.maxVelocityY, this.maxVelocityY);
         console.log ("vX: " + this.velocityX + ", vY: " + this.velocityY)
+        this.lastX = this.x;
+        this.lastY = this.y;
         this.x += this.velocityX * tick * 60
         this.y += (this.velocityY) * tick * 60
-        if (this.collider) {
-            this.collider.x = this.x;
-            this.collider.y = this.y;
-        }
+        if (this.collider) this.collider.update(this.x, this.y);
     }
 
 }

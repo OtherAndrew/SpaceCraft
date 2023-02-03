@@ -1,86 +1,76 @@
 // Variety of ways to check for a collection
 class CollisionSystem {
-    constructor(entities) {
+    constructor(player, entities) {
         this.entities = entities
+        this.player = player
         this.collisions = []
         this.directions = {
-            UP: [-130,-45],
-            DOWN: [45,130],
-            UP_LEFT: [-179,-135],
+            UP: [-135,-45],
+            DOWN: [45,135],
+            UP_LEFT: [-180,-135],
             DOWN_LEFT: [135, 180],
-            RIGHT: [-30,30]
+            UP_RIGHT: [-45, 0],
+            DOWN_RIGHT: [1, 45]
         }
     }
-    update(deltaTime) {
+    update() {
         this.entities.forEach(e => {
-            if(e.isDrawable) {
-                if(e.tag === 'player') {
-                    this.entities.forEach(t => {
-                        if(e.isDrawable) {
-                            if(e.id !== t.id) {
-                                if(t.components.boxCollider) {
-                                    if(this.boxCollision(e, t, deltaTime)) {
-                                        if(t.tag.includes('tile')) {
-                                            e.components.boxCollider.collisions[t.tag] = {pos: t.components.boxCollider, dir:this.#checkDirection(e,t)}
-                                        } else {
-                                            e.components.boxCollider.collisions[t.tag] = true
-                                        }  
-                                    }
-                                    this.#playerCollisionResolution(e)
-                                }
-                            }
+            if(e.isDrawable && this.player.id !== e.id && e.components.boxCollider) {
+                if(this.boxCollision(this.player, e)) {
+                    if(e.tag.includes('tile')) {
+                        this.player.components.boxCollider.collisions[e.tag] = {
+                            pos: e.components.boxCollider,
+                            dir: this.#checkDirection(this.player, e)
                         }
-                    })
+                    } else {
+                        this.player.components.boxCollider.collisions[e.tag] = true
+                    }
                 }
+                this.#playerCollisionResolution(this.player)
             }
-
-        })
+        });
     }
 
     #playerCollisionResolution(player) {
         let collisions = player.components.boxCollider.collisions
         for(let e in collisions) {
-            if(e.includes('tile')) {
-               if(collisions[e].dir.length > 0) {
+            if(e.includes('tile') && collisions[e].dir.length > 0) {
                 collisions[e].dir.forEach(dir => {
                     if(dir === 'DOWN') {
-                        player.components.transform.velocityY = -GRAVITY
-                        player.components.transform.y = collisions[e].pos.y - player.components.boxCollider.height
-                        player.components.rigidBody.isGrounded = true
+                        player.components.transform.velocityY = 0
+                        player.components.transform.y = player.components.transform.lastY
+                        player.components.state.isGrounded = true
                     } else if(dir === 'UP') {
                         player.components.transform.velocityY = 0
-                        player.components.transform.y = collisions[e].pos.y + BLOCKSIZE
-                    } else if(dir === 'RIGHT') {
+                        player.components.transform.y = player.components.transform.lastY
+                    } else if(dir === 'UP_RIGHT' || dir === 'DOWN_RIGHT') {
                         player.components.transform.velocityX = 0
-                        player.components.transform.x = collisions[e].pos.x - player.components.boxCollider.width
+                        player.components.transform.x = player.components.transform.lastX
                     } else if(dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
                         player.components.transform.velocityX = 0
-                        player.components.transform.x = collisions[e].pos.x + BLOCKSIZE
+                        player.components.transform.x = player.components.transform.lastX
                     } else {
-                        player.components.rigidBody.isGrounded = false
+                        player.components.state.isGrounded = false
                     }
-                })
-                collisions[e].dir.length = 0
-               }
+                });
+                collisions[e].dir.length = 0;
             }
         }
     }
 
     //Collision between two Rectangles, does not return direction of collision
-    boxCollision(entityA, entityB, deltaTime) {
+    boxCollision(entityA, entityB) {
 
         let a = entityA.components.boxCollider
         let b = entityB.components.boxCollider
-        let futurePos = {
-            x: a.x + (entityA.components.transform.velocityX * deltaTime),
-            y: a.y + (entityA.components.transform.velocityY * deltaTime)
-        }
-        if(futurePos.x < b.x + b.width &&
-            futurePos.x + a.width > b.x &&
-            futurePos.y < b.y + b.height &&
-            futurePos.y + a.height > b.y) {
-            return true
-        }
+        // let futurePos = {
+        //     x: a.x + (entityA.components.transform.velocityX * deltaTime),
+        //     y: a.y + (entityA.components.transform.velocityY * deltaTime)
+        // }
+        return a.x < b.x + b.width &&
+               a.x + a.width > b.x &&
+               a.y < b.y + b.height &&
+               a.y + a.height > b.y;
     }
 
     /**

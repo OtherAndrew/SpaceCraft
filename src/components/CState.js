@@ -17,7 +17,7 @@ class CState {
         this.currentState = 'idleR';
         // this.input = '';
         // this.direction = 'right';
-        // this.grounded = false;
+        this.grounded = false;
         this.sprite = null;
         this.transform = null;
         return this;

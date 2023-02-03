@@ -19,8 +19,31 @@ class CBoxCollider {
      */
     constructor({ x, y, width, height }) {
         Object.assign(this, { x, y, width, height });
-        this.name = 'boxCollider';
+        this.name = "boxCollider";
         this.collisions = {};
+        this.last = null;
         return this;
+    }
+
+    /**
+     *
+     * @param {CBoxCollider} other
+     * @returns {boolean}
+     */
+    collide(other) {
+        // let futurePos = {
+        //     x: a.x + (entityA.components.transform.velocityX * deltaTime),
+        //     y: a.y + (entityA.components.transform.velocityY * deltaTime)
+        // }
+        return this.x < other.x + other.width &&
+            this.x + this.width > other.x &&
+            this.y < other.y + other.height &&
+            this.y + this.height > other.y;
+    }
+
+    update(x, y) {
+        this.last = this;
+        this.x = x;
+        this.y = y;
     }
 }

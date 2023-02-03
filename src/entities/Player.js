@@ -52,7 +52,7 @@ class Player {
         const state = new CState();
         state.sprite = sprite;
 
-        return [sprite, transform, collider, new CRigidBody(), state];
+        return [sprite, transform, collider, state];
     }
 
     #addAnimations(sprite) {
