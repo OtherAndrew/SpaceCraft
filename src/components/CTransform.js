@@ -49,7 +49,7 @@ class CTransform {
         // this.velocityY += this.gravity;
         this.velocityY = clamp(this.velocityY + this.gravity,
             -this.maxVelocityY, this.maxVelocityY);
-        console.log ("vX: " + this.velocityX + ", vY: " + this.velocityY)
+        // console.log ("vX: " + this.velocityX + ", vY: " + this.velocityY)
         this.lastX = this.x;
         this.lastY = this.y;
         this.x += this.velocityX * tick * 60
