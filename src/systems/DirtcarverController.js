@@ -42,11 +42,11 @@ class DirtcarverController {
         console.log(this.player.components)
             //implement physics if not on the ground, need to check for empty space
 
-        if(!this.dc.components.rigidBody.isGrounded) {
-            this.dc.components.transform.velocityY += GRAVITY
-        } else if(this.dc.components.rigidBody.isGrounded) {
-            this.dc.components.transform.velocityY = 0
-        }
+        // if(!this.dc.components.state.grounded) {
+        //     this.dc.components.transform.velocityY += GRAVITY
+        // } else if(this.dc.components.state.grounded) {
+        //     this.dc.components.transform.velocityY = 0
+        // }
 
         this.dc.components.transform.update(tick);
         // this.pCollider.x = this.pTransform.x

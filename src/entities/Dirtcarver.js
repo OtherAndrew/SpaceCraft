@@ -33,10 +33,9 @@ class Dirtcarver {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
+            hasGravity: true,
             velocityX: 0,
             velocityY: 0,
-            maxVelocityX: 0,
-            maxVelocityY: 0
         });
         const collider = new CBoxCollider({
             x: props.x,
