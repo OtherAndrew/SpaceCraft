@@ -13,7 +13,7 @@ class Spore {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'spore';
+        this.tag = 'spore mob';
         this.name = 'spore';
         this.components = this.#buildComponents(props);
         return this;
@@ -33,10 +33,7 @@ class Spore {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            velocityX: 0,
-            velocityY: 0,
-            maxVelocityX: 0,
-            maxVelocityY: 0
+            hasGravity: true
         });
         const collider = new CBoxCollider({
             x: props.x,
@@ -46,26 +43,27 @@ class Spore {
         });
 
         this.#addAnimations(sprite);
+        this.#addBehaviors(transform);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-
+        state.transform = transform;
         return [sprite, transform, collider, state];
+    }
+
+    update(tick, targetX, targetY) {
+        this.components.state.setState('idleR');
+        this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,7));
-        // aMap.set('idleL', new AnimationProps(1, 0));
-        // aMap.set('walkR', new AnimationProps(0, 1, 11));
-        // aMap.set('walkL', new AnimationProps(0, 2, 11));
-        // aMap.set('jumpR', new AnimationProps(0, 1));
-        // aMap.set('jumpL', new AnimationProps(0, 2));
-        // aMap.set('flyR', new AnimationProps(0, 1));
-        // aMap.set('flyL', new AnimationProps(0, 2));
-        // aMap.set('crouchR', new AnimationProps(5, 1));
-        // aMap.set('crouchL', new AnimationProps(5, 2));
     };
+    #addBehaviors(transform) {
+        const bMap = transform.behaviorMap;
+        bMap.set('idleR', new BehaviorProps(0, 0));
+    }
 
 }
 

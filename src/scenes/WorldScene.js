@@ -22,7 +22,7 @@ class WorldScene extends Scene {
         this.terrainMap = getTerrain(this.entityManager)
         // this.#createEntity()
         this.#createPlayer()
-        // this.#createSpore()
+        this.#createSpore()
         this.#createDirtcarver()
         // this.#createLightjelly()
         this.#createLightbug()
@@ -130,22 +130,22 @@ class WorldScene extends Scene {
     // /**
     //  *  spore
     //  */
-    // #createSpore() {
-    //     const spriteWidth = 138;
-    //     const spriteHeight = 196;
-    //     const scale = 0.5;
-    //     //const test = this.player.transform.x;
-    //     //console.log(test)
-    //     this.spore = this.entityManager.addEntity(new Spore({
-    //         sprite: this.sporeSprite,
-    //         x: this.player.components.transform.x,
-    //         y: this.player.components.transform.y - 50,
-    //         sWidth: spriteWidth,
-    //         sHeight: spriteHeight,
-    //         scale: scale
-    //     }));
-    //
-    // }
+    #createSpore() {
+        const spriteWidth = 138;
+        const spriteHeight = 196;
+        const scale = 0.5;
+        //const test = this.player.transform.x;
+        //console.log(test)
+        this.spore = this.entityManager.addEntity(new Spore({
+            sprite: this.sporeSprite,
+            x: this.player.components.transform.x,
+            y: this.player.components.transform.y - 50,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+
+    }
     //
     // /**
     //  *  dirtcarver spawn condition
@@ -166,6 +166,7 @@ class WorldScene extends Scene {
         }));
 
     }
+    // lightjelly movement logic = lightbug movement logic
     //
     // /**
     //  *  lightjelly spawn condition

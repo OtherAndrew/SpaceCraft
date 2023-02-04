@@ -18,6 +18,7 @@ class CollisionSystem {
         collisionCheckList.push('player')
         collisionCheckList.push('dirtcarver')
         collisionCheckList.push('lightbug')
+        collisionCheckList.push('spore')
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
 
         // mobs.forEach
