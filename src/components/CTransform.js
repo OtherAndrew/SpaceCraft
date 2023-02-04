@@ -41,18 +41,17 @@ class CTransform {
      */
     setBehavior(state) {
         const bProps = this.behaviorMap.get(state);
-        this.velocityX = bProps.velocityX;
-        this.velocityY = bProps.velocityY;
+        console.log(bProps)
+        if (bProps.velocityX) this.velocityX = bProps.velocityX;
+        if (bProps.velocityY) this.velocityY = bProps.velocityY;
+        console.log(this.velocityX + ", " + this.velocityY)
     }
 
     update(tick) {
         this.lastX = this.x;
         this.lastY = this.y;
-        this.velocityY = clamp(this.velocityY + this.gravity,
-                -this.maxVelocityY, this.maxVelocityY);
-        this.velocityX = clamp(this.velocityX,
-                -this.maxVelocityX, this.maxVelocityX);
-        // console.log ("vX: " + this.velocityX + ", vY: " + this.velocityY)
+        this.velocityY = clamp(this.velocityY + this.gravity, -this.maxVelocityY, this.maxVelocityY);
+        this.velocityX = clamp(this.velocityX, -this.maxVelocityX, this.maxVelocityX);
         this.x += this.velocityX * tick * 60;
         this.y += this.velocityY * tick * 60;
         if (this.collider) this.collider.update(this.x, this.y);

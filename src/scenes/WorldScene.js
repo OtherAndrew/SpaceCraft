@@ -23,7 +23,7 @@ class WorldScene extends Scene {
         // this.#createEntity()
         this.#createPlayer()
         // this.#createSpore()
-        // this.#createDirtcarver()
+        this.#createDirtcarver()
         // this.#createLightjelly()
         this.#createLightbug()
         //this.#genericDeath()
@@ -150,22 +150,22 @@ class WorldScene extends Scene {
     // /**
     //  *  dirtcarver spawn condition
     //  */
-    // #createDirtcarver() {
-    //     const spriteWidth = 262;
-    //     const spriteHeight = 84;
-    //     const scale = 0.5;
-    //     this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
-    //         sprite: this.dirtCarverSprite,
-    //         //control spawn point
-    //
-    //         x: this.player.components.transform.x - 100,
-    //         y: this.player.components.transform.y - 250,
-    //         sWidth: spriteWidth,
-    //         sHeight: spriteHeight,
-    //         scale: scale
-    //     }));
-    //
-    // }
+    #createDirtcarver() {
+        const spriteWidth = 262;
+        const spriteHeight = 84;
+        const scale = 0.5;
+        this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
+            sprite: this.dirtCarverSprite,
+            //control spawn point
+
+            x: this.player.components.transform.x - 100,
+            y: this.player.components.transform.y - 250,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale
+        }));
+
+    }
     //
     // /**
     //  *  lightjelly spawn condition

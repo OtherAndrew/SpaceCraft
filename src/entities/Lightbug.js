@@ -64,7 +64,7 @@ class Lightbug {
         //update the state of anim
         //despawn after x range from player position
 
-        console.log("lightbug: x:" + x + ", y: " + y)
+        // console.log("lightbug: x:" + x + ", y: " + y)
         //default state
         this.components.state.setState('idleR');
         const distance = getDistance2(x, y, targetX, targetY);
