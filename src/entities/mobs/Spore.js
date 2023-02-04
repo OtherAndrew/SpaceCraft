@@ -38,8 +38,8 @@ class Spore {
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: props.sWidth * props.scale,
-            height: props.sHeight * props.scale
+            width: sprite.dWidth,
+            height: sprite.dHeight
         });
 
         this.#addAnimations(sprite);

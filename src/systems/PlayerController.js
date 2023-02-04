@@ -14,7 +14,7 @@ class PlayerController {
      * @param tick time slice
      */
     update(input, tick) {
-        let state = this.pState.currentState;
+        let state = this.pSprite.currentState;
 
         if((input[' ']) && this.pState.grounded) { //jump
             this.pState.grounded = false
@@ -47,7 +47,6 @@ class PlayerController {
                 state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
             }
         }
-
         this.pSprite.setAnimation(state);
         this.#updatePlayerTransform(tick);
     }
