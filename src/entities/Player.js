@@ -47,9 +47,9 @@ class Player {
             // width: props.sWidth * props.scale,
             width: BLOCKSIZE,
             // height: props.sHeight * props.scale - BLOCKSIZE * 1.5
-            height: BLOCKSIZE * 1.5,
+            height: BLOCKSIZE * 1.4,
             xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
-            yOffset: props.sHeight * props.scale - BLOCKSIZE * 1.5
+            yOffset: props.sHeight * props.scale - BLOCKSIZE * 1.55
         });
 
         this.#addAnimations(sprite);
