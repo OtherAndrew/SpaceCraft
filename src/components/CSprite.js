@@ -52,23 +52,4 @@ class CSprite {
             this.currentState = state;
         }
     }
-
-    /**
-     * Updates sprite if animated.
-     * @param {number} tick time length
-     */
-    update(tick) {
-        if (this.lastFrameX !== this.firstFrameX) { // has animations
-            if (this.elapsedTime >= this.frameDuration) {
-                if (this.currentFrame === this.lastFrameX) { // reset frame
-                    this.currentFrame = this.firstFrameX;
-                } else {
-                    this.currentFrame++;
-                }
-                this.elapsedTime = 0;
-            } else {
-                this.elapsedTime += tick;
-            }
-        }
-    }
 }

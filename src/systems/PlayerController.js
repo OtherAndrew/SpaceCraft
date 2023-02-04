@@ -3,6 +3,7 @@ class PlayerController {
         this.player = player
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
+        this.pSprite = this.player.components.sprite
         this.acceleration = 1
         this.fastFall = 3;
     }
@@ -47,7 +48,23 @@ class PlayerController {
             }
         }
 
-        this.pState.setState(state);
-        this.pTransform.update(tick);
+        this.pSprite.setAnimation(state);
+        this.#updatePlayerTransform(tick);
+    }
+
+    /**
+     * Update player position.
+     * Player needs to be updated separately from other mobs otherwise movement is jittery.
+     * @param tick
+     */
+    #updatePlayerTransform(tick) {
+        const pt = this.pTransform;
+        pt.lastX = pt.x;
+        pt.lastY = pt.y;
+        pt.velocityY = clamp(pt.velocityY + pt.gravity, -pt.maxVelocityY, pt.maxVelocityY);
+        pt.velocityX = clamp(pt.velocityX, -pt.maxVelocityX, pt.maxVelocityX);
+        pt.x += pt.velocityX * tick * 60;
+        pt.y += pt.velocityY * tick * 60;
+        if (pt.collider) pt.collider.update(pt.x, pt.y);
     }
 }

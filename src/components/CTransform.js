@@ -48,15 +48,4 @@ class CTransform {
             this.currentState = state;
         }
     }
-
-    update(tick) {
-        this.lastX = this.x;
-        this.lastY = this.y;
-        this.velocityY = clamp(this.velocityY + this.gravity, -this.maxVelocityY, this.maxVelocityY);
-        this.velocityX = clamp(this.velocityX, -this.maxVelocityX, this.maxVelocityX);
-        this.x += this.velocityX * tick * 60;
-        this.y += this.velocityY * tick * 60;
-        if (this.collider) this.collider.update(this.x, this.y);
-    }
-
 }

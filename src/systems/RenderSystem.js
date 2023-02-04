@@ -37,10 +37,26 @@ class RenderSystem {
 
     }
 
+    /**
+     * Updates sprite if animated.
+     * @param {number} tick time length
+     */
     update(tick) {
         const drawables = this.entities.filter(e => e.isDrawable)
         drawables.forEach(e => {
-            e.components.sprite.update(tick);
+            const s = e.components.sprite;
+            if (s.lastFrameX !== s.firstFrameX) { // has animations
+                if (s.elapsedTime >= s.frameDuration) {
+                    if (s.currentFrame === s.lastFrameX) { // reset frame
+                        s.currentFrame = s.firstFrameX;
+                    } else {
+                        s.currentFrame++;
+                    }
+                    s.elapsedTime = 0;
+                } else {
+                    s.elapsedTime += tick;
+                }
+            }
         });
     };
 }
