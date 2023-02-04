@@ -78,18 +78,22 @@ class WorldScene extends Scene {
             ctx.putImageData(this.game.screenshot, 0, 0);
         else
             this.renderSystem.draw(ctx, this.camera);
-        
-        // this.entityManager.getEntities.forEach(e => {
-        //     if(e.components.boxCollider){
-        //         let box = e.components.boxCollider
-        //         ctx.fillStyle = 'rgba(200,200,100,.3)'
-        //         ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
-        //     }
-        // });
+
+        // this.drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx);
         this.hud.draw(uiActive, ctx);
+    }
+
+    drawColliders(ctx) {
+        this.entityManager.getEntities.forEach(e => {
+            if (e.components.boxCollider) {
+                let box = e.components.boxCollider
+                ctx.fillStyle = 'rgba(200,200,100,.3)'
+                ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
+            }
+        });
     }
 
     /**
