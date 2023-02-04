@@ -38,7 +38,8 @@ class Player {
             x: props.x,
             y: props.y,
             hasGravity: true,
-            maxVelocityX: 15
+            maxVelocityX: 10,
+            maxVelocityY: 50
         });
         const collider = new CBoxCollider({
             x: props.x,

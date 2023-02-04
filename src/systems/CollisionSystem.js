@@ -17,9 +17,7 @@ class CollisionSystem {
         const collisionCheckList = []
         collisionCheckList.push('player')
         collisionCheckList.push('dirtcarver')
-        // console.log(collisionCheckList)
-
-        // const mobs = player + entities list
+        collisionCheckList.push('lightbug')
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
 
         // mobs.forEach
@@ -45,24 +43,24 @@ class CollisionSystem {
 
     #collisionResolution(entity) {
         let collisions = entity.components.boxCollider.collisions
+        const eTransform = entity.components.transform;
         for(let c in collisions) {
             if(c.includes('tile') && collisions[c].dir.length > 0) {
                 collisions[c].dir.forEach(dir => {
                     if(dir === 'DOWN') {
-                        entity.components.transform.velocityY = 0
-                        entity.components.transform.y = entity.components.transform.lastY
-                        entity.components.state.isGrounded = true
+                        eTransform.velocityY = 0
+                        eTransform.y = eTransform.lastY
+                        entity.components.state.grounded = true
                     } else {
-                        entity.components.state.isGrounded = false
                         if (dir === 'UP') {
-                            entity.components.transform.velocityY = 0
-                            entity.components.transform.y = entity.components.transform.lastY
+                            eTransform.velocityY = 0
+                            eTransform.y = eTransform.lastY
                         } else if (dir === 'UP_RIGHT' || dir === 'DOWN_RIGHT') {
-                            entity.components.transform.velocityX = 0
-                            entity.components.transform.x = entity.components.transform.lastX
+                            eTransform.velocityX = 0
+                            eTransform.x = eTransform.lastX
                         } else if (dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
-                            entity.components.transform.velocityX = 0
-                            entity.components.transform.x = entity.components.transform.lastX
+                            eTransform.velocityX = 0
+                            eTransform.x = eTransform.lastX
                         } else {
 
                         }

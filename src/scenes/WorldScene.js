@@ -20,21 +20,21 @@ class WorldScene extends Scene {
         this.lightBugSprite = assets[LIGHTBUG_PATH];
         //this.genericDeathSprite = assets[GENERICDEATH_PATH];
         this.terrainMap = getTerrain(this.entityManager)
-        this.#createEntity()
+        // this.#createEntity()
         this.#createPlayer()
-        this.#createSpore()
-        this.#createDirtcarver()
-        this.#createLightjelly()
+        // this.#createSpore()
+        // this.#createDirtcarver()
+        // this.#createLightjelly()
         this.#createLightbug()
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
-        this.sporeManager = new SporeController(this.spore)
-        this.dirtcarverManager = new DirtcarverController(this.dirtcarver, this.player)
-        this.lightjellyManager = new LightjellyController(this.lightjelly, this.player)
-        this.lightbugManager = new LightbugController(this.lightbug, this.player)
+        // this.sporeManager = new SporeController(this.spore)
+        // this.dirtcarverManager = new DirtcarverController(this.dirtcarver, this.player)
+        // this.lightjellyManager = new LightjellyController(this.lightjelly, this.player)
+        // this.lightbugManager = new LightbugController(this.lightbug, this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
-        // this.monsterStateManager = new EntityController(this.entity);
+        this.mobController = new EntityController(this.entityManager.getEntities, this.player);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
         this.camera = new Camera(this.player)
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
@@ -48,14 +48,14 @@ class WorldScene extends Scene {
             // draw stuff last
             this.entityManager.update()
             this.playerMovement.update(keys, deltaTime)
-            this.sporeManager.update(deltaTime)
-            this.dirtcarverManager.update(deltaTime)
-            this.lightjellyManager.update(deltaTime)
-            this.lightbugManager.update(deltaTime)
+            // this.sporeManager.update(deltaTime)
+            // this.dirtcarverManager.update(deltaTime)
+            // this.lightjellyManager.update(deltaTime)
+            // this.lightbugManager.update(deltaTime)
             //this.genericDeathManager.update(deltaTime)
             this.camera.update()
             this.renderBox.update()
-            // this.monsterStateManager.update(this.game.clockTick)
+            this.mobController.update(deltaTime)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update()
@@ -108,86 +108,86 @@ class WorldScene extends Scene {
         }));
     }
 
-    /**
-     * A non-player entity for testing purposes
-     */
-    #createEntity() {
-        const spriteWidth = 200;
-        const spriteHeight = 250;
-        const scale = BLOCKSIZE / spriteWidth * 1.5;
-
-        this.entity = this.entityManager.addEntity(new NPC({
-            sprite: this.entitySprite,
-            x: WIDTH / 2,
-            y: HEIGHT / 2,
-            sWidth : spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-    }
-
-
-    /**
-     *  spore
-     */
-    #createSpore() {
-        const spriteWidth = 138;
-        const spriteHeight = 196;
-        const scale = 0.5;
-        //const test = this.player.transform.x;
-        //console.log(test)
-        this.spore = this.entityManager.addEntity(new Spore({
-            sprite: this.sporeSprite,
-            x: this.player.components.transform.x,
-            y: this.player.components.transform.y - 50,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-
-    }
-
-    /**
-     *  dirtcarver spawn condition
-     */
-    #createDirtcarver() {
-        const spriteWidth = 262;
-        const spriteHeight = 84;
-        const scale = 0.5;
-        this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
-            sprite: this.dirtCarverSprite,
-            //control spawn point
-
-            x: this.player.components.transform.x - 100,
-            y: this.player.components.transform.y - 250,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-
-    }
-
-    /**
-     *  lightjelly spawn condition
-     */
-    #createLightjelly() {
-        const spriteWidth = 168;
-        const spriteHeight = 219;
-        const scale = .5;
-        //const test = this.player.transform.x;
-        //console.log(test)
-        this.lightjelly = this.entityManager.addEntity(new Lightjelly({
-            sprite: this.lightJellySprite,
-            //controller for spawn point
-
-            x: this.player.components.transform.x + 300,
-            y: this.player.components.transform.y - 300,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-
-    }
+    // /**
+    //  * A non-player entity for testing purposes
+    //  */
+    // #createEntity() {
+    //     const spriteWidth = 200;
+    //     const spriteHeight = 250;
+    //     const scale = BLOCKSIZE / spriteWidth * 1.5;
+    //
+    //     this.entity = this.entityManager.addEntity(new NPC({
+    //         sprite: this.entitySprite,
+    //         x: WIDTH / 2,
+    //         y: HEIGHT / 2,
+    //         sWidth : spriteWidth,
+    //         sHeight: spriteHeight,
+    //         scale: scale
+    //     }));
+    // }
+    //
+    //
+    // /**
+    //  *  spore
+    //  */
+    // #createSpore() {
+    //     const spriteWidth = 138;
+    //     const spriteHeight = 196;
+    //     const scale = 0.5;
+    //     //const test = this.player.transform.x;
+    //     //console.log(test)
+    //     this.spore = this.entityManager.addEntity(new Spore({
+    //         sprite: this.sporeSprite,
+    //         x: this.player.components.transform.x,
+    //         y: this.player.components.transform.y - 50,
+    //         sWidth: spriteWidth,
+    //         sHeight: spriteHeight,
+    //         scale: scale
+    //     }));
+    //
+    // }
+    //
+    // /**
+    //  *  dirtcarver spawn condition
+    //  */
+    // #createDirtcarver() {
+    //     const spriteWidth = 262;
+    //     const spriteHeight = 84;
+    //     const scale = 0.5;
+    //     this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
+    //         sprite: this.dirtCarverSprite,
+    //         //control spawn point
+    //
+    //         x: this.player.components.transform.x - 100,
+    //         y: this.player.components.transform.y - 250,
+    //         sWidth: spriteWidth,
+    //         sHeight: spriteHeight,
+    //         scale: scale
+    //     }));
+    //
+    // }
+    //
+    // /**
+    //  *  lightjelly spawn condition
+    //  */
+    // #createLightjelly() {
+    //     const spriteWidth = 168;
+    //     const spriteHeight = 219;
+    //     const scale = .5;
+    //     //const test = this.player.transform.x;
+    //     //console.log(test)
+    //     this.lightjelly = this.entityManager.addEntity(new Lightjelly({
+    //         sprite: this.lightJellySprite,
+    //         //controller for spawn point
+    //
+    //         x: this.player.components.transform.x + 300,
+    //         y: this.player.components.transform.y - 300,
+    //         sWidth: spriteWidth,
+    //         sHeight: spriteHeight,
+    //         scale: scale
+    //     }));
+    //
+    // }
 
     /**
      *  lightbug spawn condition

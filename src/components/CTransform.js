@@ -46,14 +46,15 @@ class CTransform {
     }
 
     update(tick) {
-        // this.velocityY += this.gravity;
-        this.velocityY = clamp(this.velocityY + this.gravity,
-            -this.maxVelocityY, this.maxVelocityY);
-        // console.log ("vX: " + this.velocityX + ", vY: " + this.velocityY)
         this.lastX = this.x;
         this.lastY = this.y;
-        this.x += this.velocityX * tick * 60
-        this.y += (this.velocityY) * tick * 60
+        this.velocityY = clamp(this.velocityY + this.gravity,
+                -this.maxVelocityY, this.maxVelocityY);
+        this.velocityX = clamp(this.velocityX,
+                -this.maxVelocityX, this.maxVelocityX);
+        // console.log ("vX: " + this.velocityX + ", vY: " + this.velocityY)
+        this.x += this.velocityX * tick * 60;
+        this.y += this.velocityY * tick * 60;
         if (this.collider) this.collider.update(this.x, this.y);
     }
 
