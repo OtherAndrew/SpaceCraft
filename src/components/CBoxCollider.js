@@ -20,7 +20,7 @@ class CBoxCollider {
      * @constructor
      */
     constructor({ x, y, width, height, xOffset = 0, yOffset = 0 }) {
-        Object.assign(this, { width, height, xOffset, yOffset});
+        Object.assign(this, { width, height, xOffset, yOffset });
 
         this.x = x + this.xOffset;
         this.y = y + this.yOffset
@@ -37,17 +37,17 @@ class CBoxCollider {
         return this;
     }
 
-    /**
-     *
-     * @param {CBoxCollider} other
-     * @returns {boolean}
-     */
-    collide(other) {
-        return this.right > other.left
-            && this.left < other.right
-            && this.top < other.bottom
-            && this.bottom > other.top;
-    }
+    // /**
+    //  *
+    //  * @param {CBoxCollider} other
+    //  * @returns {boolean}
+    //  */
+    // collide(other) {
+    //     return this.right > other.left
+    //         && this.left < other.right
+    //         && this.top < other.bottom
+    //         && this.bottom > other.top;
+    // }
 
     update(x, y) {
         this.last = this;

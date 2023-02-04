@@ -5,15 +5,13 @@ class CollisionSystem {
         this.entities = entities
         this.collisions = []
         this.directions = {
-            UP: [-135,-45],
+            UP: [-135, -45],
             DOWN: [45,135],
-            UP_LEFT: [-180,-135],
-            DOWN_LEFT: [135, 180],
-            UP_RIGHT: [-45, 0],
-            DOWN_RIGHT: [0, 45]
+            LEFT: [135, 225],
+            RIGHT: [-45, 45],
         }
     }
-    update(deltaTime) {
+    update() {
         const collisionCheckList = []
         collisionCheckList.push('player')
         collisionCheckList.push('dirtcarver')
@@ -43,8 +41,10 @@ class CollisionSystem {
     }
 
     #collisionResolution(entity) {
-        let collisions = entity.components.boxCollider.collisions
+        const eCollider = entity.components.boxCollider
         const eTransform = entity.components.transform;
+
+        let collisions = eCollider.collisions
         for(let c in collisions) {
             if(c.includes('tile') && collisions[c].dir.length > 0) {
                 collisions[c].dir.forEach(dir => {
@@ -52,21 +52,21 @@ class CollisionSystem {
                         eTransform.velocityY = 0
                         eTransform.y = eTransform.lastY
                         entity.components.state.grounded = true
-                    } else {
-                        if (dir === 'UP') {
-                            eTransform.velocityY = 0
-                            eTransform.y = eTransform.lastY
-                        } else if (dir === 'UP_RIGHT' || dir === 'DOWN_RIGHT') {
-                            eTransform.velocityX = 0
-                            eTransform.x = eTransform.lastX
-                        } else if (dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
-                            eTransform.velocityX = 0
-                            eTransform.x = eTransform.lastX
-                        } else {
-
-                        }
+                    }
+                    if (dir === 'UP') {
+                        eTransform.velocityY = 0
+                        eTransform.y = eTransform.lastY
+                    }
+                    if (dir === 'RIGHT') {
+                        eTransform.velocityX = 0
+                        eTransform.x = eTransform.lastX
+                    }
+                    if (dir === 'LEFT') {
+                        eTransform.velocityX = 0
+                        eTransform.x = eTransform.lastX
                     }
                 });
+                eCollider.update(eTransform.x, eTransform.y)
                 collisions[c].dir.length = 0;
             }
         }
