@@ -44,8 +44,12 @@ class Player {
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: props.sWidth * props.scale,
-            height: props.sHeight * props.scale
+            // width: props.sWidth * props.scale,
+            width: BLOCKSIZE,
+            // height: props.sHeight * props.scale - BLOCKSIZE * 1.5
+            height: BLOCKSIZE * 1.5,
+            xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
+            yOffset: props.sHeight * props.scale - BLOCKSIZE * 1.5
         });
 
         this.#addAnimations(sprite);

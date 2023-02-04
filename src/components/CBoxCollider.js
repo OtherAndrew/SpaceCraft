@@ -14,11 +14,16 @@ class CBoxCollider {
      * @param {number} y          Y coordinate of collider center
      * @param {number} width      Collider width
      * @param {number} height     Collider height
+     * @param {number} xOffset    X offset for collider
+     * @param {number} yOffset    Y offset for collider
      * @returns {CBoxCollider} The box collider component
      * @constructor
      */
-    constructor({ x, y, width, height }) {
-        Object.assign(this, { x, y, width, height });
+    constructor({ x, y, width, height, xOffset = 0, yOffset = 0 }) {
+        Object.assign(this, { width, height, xOffset, yOffset});
+
+        this.x = x + this.xOffset;
+        this.y = y + this.yOffset
         this.name = "boxCollider";
         this.collisions = {};
 
@@ -28,7 +33,6 @@ class CBoxCollider {
         this.right = this.x + this.width;
 
         this.last = null;
-
 
         return this;
     }
@@ -47,8 +51,8 @@ class CBoxCollider {
 
     update(x, y) {
         this.last = this;
-        this.x = x;
-        this.y = y;
+        this.x = x + this.xOffset;
+        this.y = y + this.yOffset
         this.top = this.y;
         this.bottom = this.y + this.height;
         this.left = this.x;

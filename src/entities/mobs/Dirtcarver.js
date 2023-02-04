@@ -41,6 +41,7 @@ class Dirtcarver {
             y: props.y,
             // width: props.sWidth * props.scale,
             width: BLOCKSIZE, // collision issue with wide entity
+            xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
             height: props.sHeight * props.scale
         });
 
