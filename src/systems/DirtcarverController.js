@@ -39,7 +39,7 @@ class DirtcarverController {
             this.dc.components.transform.x += this.velocity
             this.dc.components.state.setState('walkR');
         }
-        console.log(this.player.components)
+        //console.log(this.player.components)
             //implement physics if not on the ground, need to check for empty space
 
         // if(!this.dc.components.state.grounded) {

@@ -41,6 +41,8 @@ class WorldScene extends Scene {
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
+
+        this.#givePlayerPickAxe()
     }
 
     update(uiActive, keys, mouseDown, deltaTime) {
@@ -63,7 +65,7 @@ class WorldScene extends Scene {
             this.renderSystem.update(this.game.clockTick);
             // temporary spot for this
             if(mouseDown) {
-                this.breakBlock(mouseDown, this.player, this.terrainMap)
+                this.#handleClick(mouseDown, this.player, this.terrainMap)
             }
         }
         this.craftingMenu.update(uiActive);
@@ -273,7 +275,10 @@ class WorldScene extends Scene {
         }
     }
 
-    breakBlock(pos, player, terrainMap) {
+    #handleClick(pos, player, terrainMap) {
+        let selected = this.hud.activeContainer.item
+        if(selected === null) return
+
         let offsetX = player.components.transform.x >= WIDTH/2 ?
                       player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
                       WIDTH_PIXELS - (WIDTH_PIXELS - player.components.transform.x) - WIDTH * .75 :
@@ -282,43 +287,59 @@ class WorldScene extends Scene {
         let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
         if(mapY < 0) return
         console.log(terrainMap[mapY][mapX].tag)
-        if(terrainMap[mapY][mapX].tag.includes('tile')) {
-            let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
-            e.components.lifespan.current -= 1
-            if(e.components.lifespan.current <= 0) {
-                terrainMap[mapY][mapX].tag = 'air'
-                terrainMap[mapY][mapX].id = null
-                this.containerManager.addToInventory('player', this.#resizeBlock(e))
-            }
-        } else if(terrainMap[mapY][mapX].tag.includes('air')) {
 
-            //this is where we spawn the selected item from inventory
-            let newBlock = this.entityManager.addEntity(new DirtBlock({
-                sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
-                x: mapX * BLOCKSIZE,
-                y: mapY * BLOCKSIZE,
-                sWidth: 16,
-                sHeight: 16,
-                scale: BLOCKSIZE / 16,
-                frameX: getRandomInt(6),
-                frameY: getRandomInt(2)
-            }))
-            terrainMap[mapY][mapX].tag = newBlock.tag
-            terrainMap[mapY][mapX].id = newBlock.id
-            console.log(newBlock)
+        if(selected.tag.includes('tile')) {
+            if(terrainMap[mapY][mapX].tag.includes('air')) {
+                terrainMap[mapY][mapX].tag = selected.tag
+                terrainMap[mapY][mapX].id = selected.id
+                let b = this.#resizeBlock(selected, mapX, mapY)
+                this.hud.activeContainer.count--
+            }
+        } else if (selected.tag === 'pickaxe') {
+            if(terrainMap[mapY][mapX].tag.includes('tile')) {
+                let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
+                e.components.lifespan.current -= 1
+                if(e.components.lifespan.current <= 0) {
+                    terrainMap[mapY][mapX].tag = 'air'
+                    terrainMap[mapY][mapX].id = null
+                    this.containerManager.addToInventory('player', this.#resizeBlock(e))
+                }
+            }
         }
     }
 
-    #resizeBlock(e) {
-        console.log(e.components.sprite)
-        e.components.sprite.dWidth = e.components.sprite.dWidth * .5
-        e.components.sprite.dHeight = e.components.sprite.dHeight * .5
-        e.components.transform.x += BLOCKSIZE * .25
-        e.components.transform.y += BLOCKSIZE * .25
-        e.components.transform.velocityY = 10
-        e.isBroken = true
-        e.isDrawable = false
-        console.log(e)
+    #resizeBlock(e, mapX, mapY) {
+        if(e.isBroken) {
+            e.components.sprite.dWidth *= 2
+            e.components.sprite.dHeight *= 2
+            e.components.transform.x = BLOCKSIZE * mapX
+            e.components.transform.y = BLOCKSIZE * mapY
+            e.components.lifespan.current = e.components.lifespan.total 
+            e.isBroken = false
+            e.isDrawable = true
+        } else {
+            e.components.sprite.dWidth *=  .5
+            e.components.sprite.dHeight = e.components.sprite.dHeight * .5
+            e.components.transform.velocityY = 10
+            e.isBroken = true
+            e.isDrawable = false
+        }
+       
         return e
+    }
+
+    #givePlayerPickAxe() {
+        let e = this.entityManager.addEntity({
+            tag: 'pickaxe',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[PICK],
+                    sWidth: BLOCKSIZE,
+                    sHeight: BLOCKSIZE
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
     }
 }

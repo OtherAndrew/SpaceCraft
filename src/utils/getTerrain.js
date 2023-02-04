@@ -149,29 +149,158 @@ const getTerrain = (entityManager) => {
     function generateBackgrounds() {
         let surfaceBackWidth = 512
         let surfaceBackHeight = 240
+        let undergroundWidth = 384
+        let undergroundHeight = 216
         let scale = 2
+        let scaleUnder = 6
         let offset = BLOCKSIZE * 2
 
         for(let i = 0; i < 2; i++) {
-            entityManager.addEntity(new Background_0({
-                x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
-                maxVelocity: 0,
-                sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_0],
-                sWidth: surfaceBackWidth,
-                sHeight: surfaceBackHeight,
-                scale: scale
-            }));
 
-            entityManager.addEntity(new Background_1({
-                x: (surfaceBackWidth * i * scale),
-                y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
-                maxVelocity: 0,
-                sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_1],
-                sWidth: surfaceBackWidth,
-                sHeight: surfaceBackHeight,
-                scale: scale
-            }));
+            entityManager.addEntity({
+                tag: 'background_0',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * scale),
+                        y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_0],
+                        sWidth: surfaceBackWidth,
+                        sHeight: surfaceBackHeight,
+                        scale: scale,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_0',
+                components: [
+                    new CTransform({
+                        x: (1920 * i * 1),
+                        y:  HEIGHT_PIXELS * .5 + (1080 * 1),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[BACKGROUND_DIRT],
+                        sWidth: 960,
+                        sHeight: 540,
+                        scale: 2,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_0',
+                components: [
+                    new CTransform({
+                        x: (undergroundWidth * i * scaleUnder),
+                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_0],
+                        sWidth: undergroundWidth,
+                        sHeight: undergroundHeight,
+                        scale: scaleUnder,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_1',
+                components: [
+                    new CTransform({
+                        x: (surfaceBackWidth * i * scale),
+                        y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + offset,
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_1],
+                        sWidth: surfaceBackWidth,
+                        sHeight: surfaceBackHeight,
+                        scale: scale,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_1',
+                components: [
+                    new CTransform({
+                        x: (undergroundWidth * i * scaleUnder),
+                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_1],
+                        sWidth: undergroundWidth,
+                        sHeight: undergroundHeight,
+                        scale: scaleUnder,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_2',
+                components: [
+                    new CTransform({
+                        x: (undergroundWidth * i * scaleUnder),
+                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_2],
+                        sWidth: undergroundWidth,
+                        sHeight: undergroundHeight,
+                        scale: scaleUnder,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_3',
+                components: [
+                    new CTransform({
+                        x: (undergroundWidth * i * scaleUnder),
+                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_3],
+                        sWidth: undergroundWidth,
+                        sHeight: undergroundHeight,
+                        scale: scaleUnder,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_4',
+                components: [
+                    new CTransform({
+                        x: (undergroundWidth * i * scaleUnder),
+                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_4],
+                        sWidth: undergroundWidth,
+                        sHeight: undergroundHeight,
+                        scale: scaleUnder,
+                    })
+                ]
+            })
+            entityManager.addEntity({
+                tag: 'background_5',
+                components: [
+                    new CTransform({
+                        x: (undergroundWidth * i * scaleUnder),
+                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        maxVelocity: 0
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_5],
+                        sWidth: undergroundWidth,
+                        sHeight: undergroundHeight,
+                        scale: scaleUnder,
+                    })
+                ]
+            })
         }
     }
 

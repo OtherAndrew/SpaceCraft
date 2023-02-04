@@ -10,9 +10,14 @@ const HEIGHT = 768
 const GRIDSIZE = 15
 const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
-
-const GRAVITY = 1
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
+const GRAVITY = 1
+const BACKGROUND_SCROLLING_SPEED_0 = .03
+const BACKGROUND_SCROLLING_SPEED_1 = .05
+const BACKGROUND_SCROLLING_SPEED_2 = .06
+const BACKGROUND_SCROLLING_SPEED_3 = .07
+const BACKGROUND_SCROLLING_SPEED_4 = .08
+const BACKGROUND_SCROLLING_SPEED_5 = .09
 
 
 // NPC Sprite Sheets
@@ -122,9 +127,16 @@ const TILE_RUBY_LIFESPAN = 50
 
 
 //Backgrounds
-const BACKGROUND_CAVE_PATH = './assets/backgrounds/cave_background.png'
 const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
 const BACKGROUND_SURFACE_1 ='./assets/backgrounds/surface_background_1.png'
+const BACKGROUND_DIRT = './assets/backgrounds/background_dirt.png'
+const UNDERGROUND_BACKGROUND_0 = './assets/backgrounds/underground_0.png'
+const UNDERGROUND_BACKGROUND_1 = './assets/backgrounds/underground_1.png'
+const UNDERGROUND_BACKGROUND_2 = './assets/backgrounds/underground_2.png'
+const UNDERGROUND_BACKGROUND_3 = './assets/backgrounds/underground_3.png'
+const UNDERGROUND_BACKGROUND_4 = './assets/backgrounds/underground_4.png'
+const UNDERGROUND_BACKGROUND_5 = './assets/backgrounds/underground_5.png'
+const UNDERGROUND_BACKGROUND_6 = './assets/backgrounds/underground_6.png'
 
 // TESTING
 const BG = './assets/backgrounds/bg.png'
@@ -132,6 +144,7 @@ const B1 = './assets/sprites/b1.png'
 const B2 = './assets/sprites/b2.png'
 const B3 = './assets/sprites/b3.png'
 const O1 = './assets/overlay/overlaymockup.png'
+const PICK = './assets/icons/item_3485.png'
 
 // arrays to queue using a loop
 const TERRAIN_ASSETS_ARRAY = [
@@ -158,11 +171,20 @@ const TERRAIN_ASSETS_ARRAY = [
     B2,
     B3,
     O1,
+    PICK,
     SPORE_PATH,
     DIRTCARVER_PATH,
     LIGHTJELLY_PATH,
     LIGHTBUG_PATH,
     GRAPEBOMB_PATH,
-    GENERICDEATH_PATH
+    GENERICDEATH_PATH,
+    UNDERGROUND_BACKGROUND_0,
+    UNDERGROUND_BACKGROUND_1,
+    UNDERGROUND_BACKGROUND_2,
+    UNDERGROUND_BACKGROUND_3,
+    UNDERGROUND_BACKGROUND_4,
+    UNDERGROUND_BACKGROUND_5,
+    UNDERGROUND_BACKGROUND_6,
+    BACKGROUND_DIRT
 ]
 
