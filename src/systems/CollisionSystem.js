@@ -58,7 +58,7 @@ class CollisionSystem {
                         eTransform.x = eTransform.lastX
                     }
                 });
-                eCollider.update(eTransform.x, eTransform.y)
+                eCollider.setPosition(eTransform.x, eTransform.y)
                 collisions[c].dir.length = 0;
             }
         }

@@ -64,6 +64,6 @@ class PlayerController {
         pt.velocityX = clamp(pt.velocityX, -pt.maxVelocityX, pt.maxVelocityX);
         pt.x += pt.velocityX * tick * 60;
         pt.y += pt.velocityY * tick * 60;
-        if (pt.collider) pt.collider.update(pt.x, pt.y);
+        if (pt.collider) pt.collider.setPosition(pt.x, pt.y);
     }
 }

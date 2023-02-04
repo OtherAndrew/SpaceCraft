@@ -49,7 +49,7 @@ class CBoxCollider {
     //         && this.bottom > other.top;
     // }
 
-    update(x, y) {
+    setPosition(x, y) {
         this.last = this;
         this.x = x + this.xOffset;
         this.y = y + this.yOffset
