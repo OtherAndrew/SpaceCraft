@@ -41,12 +41,13 @@ class Player {
             maxVelocityX: 8,
             maxVelocityY: 50
         });
+        const cWidth = BLOCKSIZE * .8;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: BLOCKSIZE,
+            width: cWidth,
             height: BLOCKSIZE * 1.4,
-            xOffset: sprite.dWidth / 2 - BLOCKSIZE / 2,
+            xOffset: sprite.dWidth / 2 - cWidth / 2,
             yOffset: sprite.dHeight - BLOCKSIZE * 1.55
         });
 
