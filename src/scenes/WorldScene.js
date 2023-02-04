@@ -34,6 +34,7 @@ class WorldScene extends Scene {
         // this.lightbugManager = new LightbugController(this.lightbug, this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
+        this.movementSystem = new MovementSystem(this.entityManager.getEntities)
         this.mobController = new EntityController(this.entityManager.getEntities, this.player);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
         this.camera = new Camera(this.player)
@@ -56,6 +57,7 @@ class WorldScene extends Scene {
             this.camera.update()
             this.renderBox.update()
             this.mobController.update(deltaTime)
+            this.movementSystem.update(deltaTime)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update()

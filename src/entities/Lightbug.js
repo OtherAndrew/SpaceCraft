@@ -80,7 +80,7 @@ class Lightbug {
 
         // Calculate the angle between the monster and player
 
-        this.components.transform.update(tick);
+        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {

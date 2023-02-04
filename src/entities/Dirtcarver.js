@@ -57,7 +57,7 @@ class Dirtcarver {
         const x = this.components.transform.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
-        this.components.transform.update(tick);
+        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {

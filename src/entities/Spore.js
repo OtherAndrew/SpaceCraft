@@ -53,7 +53,7 @@ class Spore {
 
     update(tick, targetX, targetY) {
         this.components.state.setState('idleR');
-        this.components.transform.update(tick);
+        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {
