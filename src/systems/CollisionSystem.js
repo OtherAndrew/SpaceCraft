@@ -48,20 +48,12 @@ class CollisionSystem {
         for(let c in collisions) {
             if(c.includes('tile') && collisions[c].dir.length > 0) {
                 collisions[c].dir.forEach(dir => {
-                    if(dir === 'DOWN') {
+                    if (dir === 'UP' || dir === 'DOWN') {
                         eTransform.velocityY = 0
                         eTransform.y = eTransform.lastY
-                        entity.components.state.grounded = true
+                        if (dir === 'DOWN') entity.components.state.grounded = true
                     }
-                    if (dir === 'UP') {
-                        eTransform.velocityY = 0
-                        eTransform.y = eTransform.lastY
-                    }
-                    if (dir === 'RIGHT') {
-                        eTransform.velocityX = 0
-                        eTransform.x = eTransform.lastX
-                    }
-                    if (dir === 'LEFT') {
+                    if (dir === 'LEFT' || dir === 'RIGHT') {
                         eTransform.velocityX = 0
                         eTransform.x = eTransform.lastX
                     }
