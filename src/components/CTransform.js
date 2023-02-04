@@ -41,10 +41,8 @@ class CTransform {
      */
     setBehavior(state) {
         const bProps = this.behaviorMap.get(state);
-        console.log(bProps)
         if (bProps.velocityX) this.velocityX = bProps.velocityX;
         if (bProps.velocityY) this.velocityY = bProps.velocityY;
-        console.log(this.velocityX + ", " + this.velocityY)
     }
 
     update(tick) {

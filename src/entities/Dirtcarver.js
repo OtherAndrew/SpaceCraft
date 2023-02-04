@@ -57,7 +57,6 @@ class Dirtcarver {
         const x = this.components.transform.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
-        console.log(this.components.transform)
         this.components.transform.update(tick);
     }
 
