@@ -12,7 +12,7 @@ class Lightbug {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'lightbug';
+        this.tag = 'lightbug mob';
         this.name = 'lightbug';
         this.components = this.#buildComponents(props);
         return this;
@@ -35,37 +35,70 @@ class Lightbug {
             y: props.y,
             velocityX: 0,
             velocityY: 0,
-            maxVelocityX: 0,
-            maxVelocityY: 0
+            maxVelocityX: 2.5,
+            maxVelocityY: 2.5
         });
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: props.sWidth * props.scale,
-            height: props.sHeight * props.scale
+            width: sprite.dWidth,
+            height: sprite.dHeight
         });
 
         this.#addAnimations(sprite);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-
         return [sprite, transform, collider, state];
+    }
+
+    update(tick, targetX, targetY) {
+        const velocity = 2.2
+        const offsetX = 0
+        const offsetY = -28
+
+        const x = this.components.transform.x;
+        const y = this.components.transform.y;
+        const transform = this.components.transform;
+
+        //update the state of anim
+        //despawn after x range from player position
+
+        // console.log("lightbug: x:" + x + ", y: " + y)
+        //default state
+        this.components.state.setState('idleR');
+        const distance = getDistance2(x, y, targetX, targetY);
+        if (distance <= 400) {
+            transform.velocityY = targetY + offsetY < y ? -velocity : velocity;
+            transform.velocityX = targetX + offsetX < x ? -velocity : velocity;
+        } else {
+            transform.velocityY = 0;
+            transform.velocityX = 0;
+        }
+        //adding tint
+
+
+        // Calculate the angle between the monster and player
+
+        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0, 7));
-        // aMap.set('idleL', new AnimationProps(0, 1,0));
-        // aMap.set('walkR', new AnimationProps(0, 0, 3));
-        // aMap.set('walkL', new AnimationProps(0, 1, 3));
-        // aMap.set('jumpR', new AnimationProps(0, 1));
-        // aMap.set('jumpL', new AnimationProps(0, 2));
-        // aMap.set('flyR', new AnimationProps(0, 1));
-        // aMap.set('flyL', new AnimationProps(0, 2));
-        // aMap.set('crouchR', new AnimationProps(5, 1));
-        // aMap.set('crouchL', new AnimationProps(5, 2));
     };
 
+    #gettingTint() {
+        let imageData = this.lightbug.components.sprite
+        for (let i = 0; i < imageData.length; i += 4) {
+            // Update the red, green, and blue values
+            imageData.data[i] += 1; // red
+            imageData.data[i + 1] = 0; // green
+            imageData.data[i + 2] = 0; // blue
+        }
+
+        this.lightbug.components.sprite.putImageData(imageData,0,0);
+
+    }
 }
 

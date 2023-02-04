@@ -43,30 +43,13 @@ class CSprite {
      * @param {string} state
      */
     setAnimation(state) {
-        const aProps = this.animationMap.get(state);
-        this.firstFrameX = aProps.firstFrameX;
-        this.currentFrame = this.firstFrameX;
-        this.frameY = aProps.frameY;
-        this.lastFrameX = aProps.lastFrameX;
-        this.currentState = state;
-    }
-
-    /**
-     * Updates sprite if animated.
-     * @param {number} tick time length
-     */
-    update(tick) {
-        if (this.lastFrameX !== this.firstFrameX) { // has animations
-            if (this.elapsedTime >= this.frameDuration) {
-                if (this.currentFrame === this.lastFrameX) { // reset frame
-                    this.currentFrame = this.firstFrameX;
-                } else {
-                    this.currentFrame++;
-                }
-                this.elapsedTime = 0;
-            } else {
-                this.elapsedTime += tick;
-            }
+        if (state !== this.currentState) {
+            const aProps = this.animationMap.get(state);
+            this.firstFrameX = aProps.firstFrameX;
+            this.currentFrame = this.firstFrameX;
+            this.frameY = aProps.frameY;
+            this.lastFrameX = aProps.lastFrameX;
+            this.currentState = state;
         }
     }
 }

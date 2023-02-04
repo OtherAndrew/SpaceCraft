@@ -12,7 +12,7 @@ class Dirtcarver {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'dirtcarver';
+        this.tag = 'dirtcarver mob';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
         return this;
@@ -34,22 +34,31 @@ class Dirtcarver {
             x: props.x,
             y: props.y,
             hasGravity: true,
-            velocityX: 0,
-            velocityY: 0,
+            maxVelocityY: 50
         });
         const collider = new CBoxCollider({
-            x: props.x,
+            x: props.x + props.width / 2,
             y: props.y,
-            width: props.sWidth * props.scale,
-            height: props.sHeight * props.scale
+            // width: props.sWidth * props.scale,
+            width: BLOCKSIZE, // collision issue with wide entity
+            xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
+            height: sprite.dHeight
         });
 
         this.#addAnimations(sprite);
+        this.#addBehaviors(transform);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-
+        state.transform = transform;
         return [sprite, transform, collider, state];
+    }
+
+    update(tick, targetX, targetY) {
+        const x = this.components.transform.x;
+        const state = targetX < x ? "walkL" : "walkR";
+        this.components.state.setState(state);
+        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {
@@ -58,13 +67,14 @@ class Dirtcarver {
         aMap.set('idleL', new AnimationProps(0, 1,0));
         aMap.set('walkR', new AnimationProps(0, 0, 3));
         aMap.set('walkL', new AnimationProps(0, 1, 3));
-        // aMap.set('jumpR', new AnimationProps(0, 1));
-        // aMap.set('jumpL', new AnimationProps(0, 2));
-        // aMap.set('flyR', new AnimationProps(0, 1));
-        // aMap.set('flyL', new AnimationProps(0, 2));
-        // aMap.set('crouchR', new AnimationProps(5, 1));
-        // aMap.set('crouchL', new AnimationProps(5, 2));
     };
+    #addBehaviors(transform) {
+        const bMap = transform.behaviorMap;
+        bMap.set('idleR', new BehaviorProps(0, null));
+        bMap.set('idleL', new BehaviorProps(0, null));
+        bMap.set('walkR', new BehaviorProps(0.8, null));
+        bMap.set('walkL', new BehaviorProps(-0.8, null));
+    }
 
 }
 

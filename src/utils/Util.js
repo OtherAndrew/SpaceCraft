@@ -58,6 +58,10 @@ const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
 
+const getDistance2 = (x1, y1, x2, y2) => {
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+}
+
 /**
  * Returns the angle of p2 from a horizontal line on p1.
  * 

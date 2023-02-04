@@ -5,21 +5,18 @@ class CollisionSystem {
         this.entities = entities
         this.collisions = []
         this.directions = {
-            UP: [-135,-45],
+            UP: [-135, -45],
             DOWN: [45,135],
-            UP_LEFT: [-180,-135],
-            DOWN_LEFT: [135, 180],
-            UP_RIGHT: [-45, 0],
-            DOWN_RIGHT: [0, 45]
+            LEFT: [135, 225],
+            RIGHT: [-45, 45],
         }
     }
-    update(deltaTime) {
+    update() {
         const collisionCheckList = []
         collisionCheckList.push('player')
         collisionCheckList.push('dirtcarver')
-        // console.log(collisionCheckList)
-
-        // const mobs = player + entities list
+        collisionCheckList.push('lightbug')
+        collisionCheckList.push('spore')
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
 
         // mobs.forEach
@@ -44,30 +41,24 @@ class CollisionSystem {
     }
 
     #collisionResolution(entity) {
-        let collisions = entity.components.boxCollider.collisions
+        const eCollider = entity.components.boxCollider
+        const eTransform = entity.components.transform;
+
+        let collisions = eCollider.collisions
         for(let c in collisions) {
             if(c.includes('tile') && collisions[c].dir.length > 0) {
                 collisions[c].dir.forEach(dir => {
-                    if(dir === 'DOWN') {
-                        entity.components.transform.velocityY = 0
-                        entity.components.transform.y = entity.components.transform.lastY
-                        entity.components.state.isGrounded = true
-                    } else {
-                        entity.components.state.isGrounded = false
-                        if (dir === 'UP') {
-                            entity.components.transform.velocityY = 0
-                            entity.components.transform.y = entity.components.transform.lastY
-                        } else if (dir === 'UP_RIGHT' || dir === 'DOWN_RIGHT') {
-                            entity.components.transform.velocityX = 0
-                            entity.components.transform.x = entity.components.transform.lastX
-                        } else if (dir === 'UP_LEFT' || dir === 'DOWN_LEFT') {
-                            entity.components.transform.velocityX = 0
-                            entity.components.transform.x = entity.components.transform.lastX
-                        } else {
-
-                        }
+                    if (dir === 'UP' || dir === 'DOWN') {
+                        eTransform.velocityY = 0
+                        eTransform.y = eTransform.lastY
+                        if (dir === 'DOWN') entity.components.state.grounded = true
+                    }
+                    if (dir === 'LEFT' || dir === 'RIGHT') {
+                        eTransform.velocityX = 0
+                        eTransform.x = eTransform.lastX
                     }
                 });
+                eCollider.setPosition(eTransform.x, eTransform.y)
                 collisions[c].dir.length = 0;
             }
         }

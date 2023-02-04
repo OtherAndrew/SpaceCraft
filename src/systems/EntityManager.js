@@ -98,10 +98,11 @@ class Entity  {
 
     /**
      *
-     * @param {Object} props
-     * @param {string} props.tag
-     * @param {[]} props.components
-     * @param {number} id
+     * @param {Object} props          Entity properties
+     * @param {string} props.tag      Entity tag(s)
+     * @param {[]} props.components   Entity components
+     * @param {function} props.update Entity update function
+     * @param {number} id             Entity ID
      */
     constructor(props, id) {
         this.id = id
@@ -109,9 +110,9 @@ class Entity  {
         this.isDrawable = true
         this.isAlive = true
         this.components = {}
-        if (props.components) {
-            this.addComponent(props.components)
-        }
+        this.update = null;
+        if (props.components) this.addComponent(props.components);
+        if (props.update) this.update = props.update;
     }
 
     /**
@@ -130,6 +131,7 @@ class Entity  {
             this.components[c.name] = c
         });
     }
+
 }
 
 

@@ -7,10 +7,10 @@
 class BehaviorProps {
     /**
      * Initializes BehaviorProps object.
-     * @param {number} velocityX
-     * @param {number} velocityY
+     * @param {number | null} velocityX
+     * @param {number | null} velocityY
      */
-    constructor({velocityX, velocityY}) {
+    constructor(velocityX, velocityY) {
         this.name = 'behaviorProps';
         Object.assign(this, { velocityX, velocityY });
         return this;
