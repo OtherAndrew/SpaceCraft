@@ -32,6 +32,7 @@ class CTransform {
         this.gravity = hasGravity ? GRAVITY : 0;
         this.lastX = this.x;
         this.lastY = this.y;
+        this.currentState = 'idleR'
         return this;
     }
 
@@ -40,9 +41,12 @@ class CTransform {
      * @param {string} state
      */
     setBehavior(state) {
-        const bProps = this.behaviorMap.get(state);
-        if (bProps.velocityX) this.velocityX = bProps.velocityX;
-        if (bProps.velocityY) this.velocityY = bProps.velocityY;
+        if (state !== this.currentState) {
+            const bProps = this.behaviorMap.get(state);
+            if (bProps.velocityX) this.velocityX = bProps.velocityX;
+            if (bProps.velocityY) this.velocityY = bProps.velocityY;
+            this.currentState = state;
+        }
     }
 
     update(tick) {
