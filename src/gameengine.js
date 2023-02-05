@@ -26,10 +26,9 @@ class GameEngine {
         };
     };
 
-    init(ctx, assets) {
+    init(ctx, assets, canvas) {
         this.ctx = ctx;
-        this.terrainDemoScene.init(assets)
-        console.log(assets)
+        this.terrainDemoScene.init(assets, canvas)
         this.startInput();
         this.timer = new Timer();
     };
@@ -256,7 +255,7 @@ class GameEngine {
     };
 
     update() {
-        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.clockTick);
+        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.mouse, this.clockTick);
     };
 
     loop() {

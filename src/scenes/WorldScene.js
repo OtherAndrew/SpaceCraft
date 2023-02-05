@@ -10,7 +10,7 @@ class WorldScene extends Scene {
      * Player and player movement are for testing purposes
      * @param assets
      */
-    init(assets) {
+    init(assets, canvas) {
         // entities
         this.playerSprite = assets[PLAYER_PATH];
         this.entitySprite = assets[ENTITY_PATH];
@@ -42,11 +42,13 @@ class WorldScene extends Scene {
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
+        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
+        this.cursorSystem.init()
 
         this.#givePlayerPickAxe()
     }
 
-    update(uiActive, keys, mouseDown, deltaTime) {
+    update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
             // draw stuff last
             this.entityManager.update()
@@ -70,6 +72,7 @@ class WorldScene extends Scene {
                 this.#handleClick(mouseDown, this.player, this.terrainMap)
             }
         }
+        this.cursorSystem.update(this.#getGridCell(mouse, this.player))
         this.craftingMenu.update(uiActive);
         this.containerManager.update(uiActive, mouseDown);
         this.hud.update(uiActive, keys);
@@ -116,28 +119,6 @@ class WorldScene extends Scene {
         }));
     }
 
-    // /**
-    //  * A non-player entity for testing purposes
-    //  */
-    // #createEntity() {
-    //     const spriteWidth = 200;
-    //     const spriteHeight = 250;
-    //     const scale = BLOCKSIZE / spriteWidth * 1.5;
-    //
-    //     this.entity = this.entityManager.addEntity(new NPC({
-    //         sprite: this.entitySprite,
-    //         x: WIDTH / 2,
-    //         y: HEIGHT / 2,
-    //         sWidth : spriteWidth,
-    //         sHeight: spriteHeight,
-    //         scale: scale
-    //     }));
-    // }
-    //
-    //
-    // /**
-    //  *  spore
-    //  */
     #createSpore() {
         const spriteWidth = 138;
         const spriteHeight = 196;
@@ -285,14 +266,9 @@ class WorldScene extends Scene {
     #handleClick(pos, player, terrainMap) {
         let selected = this.hud.activeContainer.item
         if(selected === null) return
-
-        let offsetX = player.components.transform.x >= WIDTH/2 ?
-                      player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
-                      WIDTH_PIXELS - (WIDTH_PIXELS - player.components.transform.x) - WIDTH * .75 :
-                      (player.components.transform.x - WIDTH/2) : 0
-        let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
-        let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
-        if(mapY < 0) return
+        let coords = this.#getGridCell(pos, player)
+        let mapY = coords.y
+        let mapX = coords.x
         console.log(terrainMap[mapY][mapX].tag)
 
         if(selected.tag.includes('tile')) {
@@ -312,6 +288,20 @@ class WorldScene extends Scene {
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))
                 }
             }
+        }
+    }
+    #getGridCell(pos, player) {
+        if(pos === null) return null
+        let offsetX = player.components.transform.x >= WIDTH/2 ?
+                      player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
+                      WIDTH_PIXELS - (WIDTH_PIXELS - player.components.transform.x) - WIDTH * .75 :
+                      (player.components.transform.x - WIDTH/2) : 0
+        let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
+        let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
+        //if(mapY < 0) return mapY
+        return {
+            x: mapX,
+            y: mapY
         }
     }
 

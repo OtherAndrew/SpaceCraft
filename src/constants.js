@@ -138,6 +138,9 @@ const UNDERGROUND_BACKGROUND_4 = './assets/backgrounds/underground_4.png'
 const UNDERGROUND_BACKGROUND_5 = './assets/backgrounds/underground_5.png'
 const UNDERGROUND_BACKGROUND_6 = './assets/backgrounds/underground_6.png'
 
+//Cursors
+const PICK_CURSOR = './assets/cursors/pickCursor.cur'
+
 // TESTING
 const BG = './assets/backgrounds/bg.png'
 const B1 = './assets/sprites/b1.png'
@@ -185,6 +188,7 @@ const TERRAIN_ASSETS_ARRAY = [
     UNDERGROUND_BACKGROUND_4,
     UNDERGROUND_BACKGROUND_5,
     UNDERGROUND_BACKGROUND_6,
-    BACKGROUND_DIRT
+    BACKGROUND_DIRT,
+    PICK_CURSOR
 ]
 
