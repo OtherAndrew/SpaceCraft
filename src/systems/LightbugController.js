@@ -65,16 +65,5 @@ class LightbugController {
 
     }
 
-    #gettingTint() {
-        let imageData = this.lightbug.components.sprite
-        for (let i = 0; i < imageData.length; i += 4) {
-            // Update the red, green, and blue values
-            imageData.data[i] += 1; // red
-            imageData.data[i + 1] = 0; // green
-            imageData.data[i + 2] = 0; // blue
-        }
 
-        this.lightbug.components.sprite.putImageData(imageData,0,0);
-
-    }
 }

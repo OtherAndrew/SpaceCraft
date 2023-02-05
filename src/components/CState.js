@@ -16,8 +16,8 @@ class CState {
         this.name = "state";
         this.currentState = 'idleR';
         // this.input = '';
-        // this.direction = 'right';
-        this.grounded = false;
+        this.direction = 'right';
+        this.grounded = true;
         this.sprite = null;
         this.transform = null;
         return this;
@@ -30,50 +30,4 @@ class CState {
             if (this.transform) this.transform.setBehavior(this.currentState);
         }
     }
-
-
-    // update() {
-    //     switch (this.input) {
-    //         case 'a':
-    //             if (this.direction === "left") {
-    //                 if (this.grounded) {
-    //                     this.sprite.setAnimation("walkL");
-    //                 } else {
-    //                     this.sprite.setAnimation("jumpL");
-    //                 }
-    //             } else if (this.direction === "right") {
-    //                 console.log("Something went wrong (input a)");
-    //             }
-    //             break;
-    //         case 'd':
-    //             if (this.direction === "left") {
-    //                 console.log("Something went wrong (input d)")
-    //             } else if (this.direction === "right") {
-    //                 if (this.grounded) {
-    //                     this.sprite.setAnimation("walkR");
-    //                 } else {
-    //                     this.sprite.setAnimation("jumpR");
-    //                 }
-    //             }
-    //             break;
-    //         case '':
-    //             if (this.direction === "left") {
-    //                 if (this.grounded) {
-    //                     this.sprite.setAnimation("idleL");
-    //                 } else {
-    //                     this.sprite.setAnimation("jumpL");
-    //                 }
-    //             } else if (this.direction === "right") {
-    //                 if (this.grounded) {
-    //                     this.sprite.setAnimation("idleR");
-    //                 } else {
-    //                     this.sprite.setAnimation("jumpR");
-    //                 }
-    //             }
-    //             break;
-    //         default:
-    //             console.log("Invalid input");
-    //     }
-    //
-    // }
 }

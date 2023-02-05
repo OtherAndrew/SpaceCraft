@@ -6,7 +6,6 @@
     <title>MFV - Engine Test</title>
   
     <script type="text/javascript" src="src/systems/AssetManager.js"></script>
-    <script type="text/javascript" src="src/entities/blueprints.js"></script>
     <script type="text/javascript" src="src/utils/Timer.js"></script>
     <script type="text/javascript" src="src/gameengine.js"></script>
     <script type="text/javascript" src="src/scenes/Scene.js"></script>
@@ -14,17 +13,17 @@
     <script type="text/javascript" src="src/utils/Util.js"></script>
     <script type="text/javascript" src="src/utils/getTerrain.js"></script>
     <script type="text/javascript" src="src/utils/AnimationProps.js"></script>
+    <script type="text/javascript" src="src/utils/BehaviorProps.js"></script>
     <script type="text/javascript" src="src/userinterface.js"></script>
     <script type="text/javascript" src="src/containermanager.js"></script>
     <script type="text/javascript" src="src/menus.js"></script>
 
 <!--    entities-->
     <script type="text/javascript" src="./src/entities/Player.js"></script>
-    <script type="text/javascript" src="./src/entities/NPC.js"></script>
-    <script type="text/javascript" src="src/entities/Spore.js"></script>
-    <script type="text/javascript" src="src/entities/Dirtcarver.js"></script>
+    <script type="text/javascript" src="src/entities/mobs/Spore.js"></script>
+    <script type="text/javascript" src="src/entities/mobs/Dirtcarver.js"></script>
     <script type="text/javascript" src="src/entities/Lightjelly.js"></script>
-    <script type="text/javascript" src="src/entities/Lightbug.js"></script>
+    <script type="text/javascript" src="src/entities/mobs/Lightbug.js"></script>
     <script type="text/javascript" src="src/entities/Grapebomb.js"></script>
     <script type="text/javascript" src="./src/entities/environment/Block.js"></script>
     <script type="text/javascript" src="./src/entities/environment/Background_0.js"></script>
@@ -34,7 +33,6 @@
     <script type="text/javascript" src="./src/entities/environment/blocks/RubyBlock.js"></script>
 <!--    components-->
     <script type="text/javascript" src="./src/components/CBoxCollider.js"></script>
-    <script type="text/javascript" src="./src/components/CInput.js"></script>
     <script type="text/javascript" src="./src/components/CSprite.js"></script>
     <script type="text/javascript" src="./src/components/CTransform.js"></script>
     <script type="text/javascript" src="./src/components/CLifespan.js"></script>
@@ -42,14 +40,15 @@
 
 <!--    systems-->
     <script type="text/javascript" src="./src/systems/CollisionSystem.js"></script>
+    <script type="text/javascript" src="./src/systems/MovementSystem.js"></script>
     <script type="text/javascript" src="./src/systems/PlayerCollisionResolution.js"></script>
     <script type="text/javascript" src="src/systems/PlayerController.js"></script>
-    <script type="text/javascript" src="src/systems/SporeController.js"></script>
-    <script type="text/javascript" src="src/systems/DirtcarverController.js"></script>
-    <script type="text/javascript" src="src/systems/LightjellyController.js"></script>
-    <script type="text/javascript" src="src/systems/LightbugController.js"></script>
-    <script type="text/javascript" src="src/systems/GrapebombController.js"></script>
-<!--    <script type="text/javascript" src="src/systems/EntityController.js"></script>-->
+<!--    <script type="text/javascript" src="src/systems/SporeController.js"></script>-->
+<!--    <script type="text/javascript" src="src/systems/DirtcarverController.js"></script>-->
+<!--    <script type="text/javascript" src="src/systems/LightjellyController.js"></script>-->
+<!--    <script type="text/javascript" src="src/systems/LightbugController.js"></script>-->
+<!--    <script type="text/javascript" src="src/systems/GrapebombController.js"></script>-->
+    <script type="text/javascript" src="src/systems/EntityController.js"></script>
     <script type="text/javascript" src="./src/systems/RenderSystem.js"></script>
     <script type="text/javascript" src="src/systems/EntityManager.js"></script>
     <script type="text/javascript" src="./src/RenderBox.js"></script>

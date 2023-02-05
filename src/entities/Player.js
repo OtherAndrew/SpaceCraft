@@ -38,13 +38,17 @@ class Player {
             x: props.x,
             y: props.y,
             hasGravity: true,
-            maxVelocityX: 15
+            maxVelocityX: 8,
+            maxVelocityY: 50
         });
+        const cWidth = BLOCKSIZE * .8;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: props.sWidth * props.scale,
-            height: props.sHeight * props.scale
+            width: cWidth,
+            height: BLOCKSIZE * 1.35,
+            xOffset: (sprite.dWidth - cWidth) / 2,
+            yOffset: BLOCKSIZE * .4
         });
 
         this.#addAnimations(sprite);
