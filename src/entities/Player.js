@@ -47,8 +47,7 @@ class Player {
             y: props.y,
             width: cWidth,
             height: BLOCKSIZE * 1.35,
-            xOffset: sprite.dWidth / 2 - cWidth / 2,
-            // yOffset: sprite.dHeight - BLOCKSIZE * 1.55
+            xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: BLOCKSIZE * .4
         });
 
