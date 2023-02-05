@@ -7,7 +7,7 @@ const getTerrain = (entityManager) => {
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = [
-            'ruby',
+            'stone',
             'stone',
             'stone',
             'stone',
@@ -85,6 +85,7 @@ const getTerrain = (entityManager) => {
     function createBlock(props) {
         switch(blockValues[props.value]) {
             case 'dirt':
+                let chance = Math.random()
                 if(props.y < (50 * BLOCKSIZE) && props.recurse) {
                     props.value = Math.round(Math.random() + 3.7)
                     props.recurse = false
@@ -123,21 +124,6 @@ const getTerrain = (entityManager) => {
                     scale: BLOCKSIZE / 16,
                     frameX: getRandomInt(6),
                     frameY: getRandomInt(2)
-                }));
-            case 'ruby':
-                if(props.y < (120 * BLOCKSIZE)) {
-                    props.value = Math.round(Math.random() + .4)
-                    props.recurse = false
-                    return createBlock(props)
-                }
-                return entityManager.addEntity(new RubyBlock({
-                    sprite: ASSET_MANAGER.cache[TILES_RUBY_PATH],
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(3)
                 }));
             default: 
                 return {tag: 'air', id: null}
