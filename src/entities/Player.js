@@ -46,9 +46,10 @@ class Player {
             x: props.x,
             y: props.y,
             width: cWidth,
-            height: BLOCKSIZE * 1.4,
+            height: BLOCKSIZE * 1.35,
             xOffset: sprite.dWidth / 2 - cWidth / 2,
-            yOffset: sprite.dHeight - BLOCKSIZE * 1.55
+            // yOffset: sprite.dHeight - BLOCKSIZE * 1.55
+            yOffset: BLOCKSIZE * .4
         });
 
         this.#addAnimations(sprite);
