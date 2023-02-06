@@ -63,7 +63,7 @@ class WorldScene extends Scene {
         this.hud.update(uiActive, keys);
     }
 
-    draw(uiActive, ctx) {
+    draw(uiActive, ctx, mouse) {
         if (uiActive)
             ctx.putImageData(this.game.screenshot, 0, 0);
         else
@@ -78,7 +78,7 @@ class WorldScene extends Scene {
         // });
 
         // this.craftingMenu.draw(uiActive);
-        this.containerManager.draw(uiActive, ctx);
+        this.containerManager.draw(uiActive, ctx, mouse);
         this.hud.draw(uiActive, ctx);
     }
 
@@ -264,24 +264,81 @@ class WorldScene extends Scene {
             }
         } else if(terrainMap[mapY][mapX].tag.includes('air')) {
 
-            /*let active = this.containerManager.removeFromPlayer(this.hud.slot);
-            if (active) {*/
-                //this is where we spawn the selected item from inventory
-                let newBlock = this.entityManager.addEntity(/*active*/
-                    new DirtBlock({
-                    sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
-                    x: mapX * BLOCKSIZE,
-                    y: mapY * BLOCKSIZE,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }))
-                terrainMap[mapY][mapX].tag = newBlock.tag
-                terrainMap[mapY][mapX].id = newBlock.id
-                console.log(newBlock)
-            /*}*/
+            // let active = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
+            // if (active) {
+            //     //this is where we spawn the selected item from inventory
+            //     this.entityManager.readdEntity(this.#rezBlock(active, mapX, mapY))
+            //     terrainMap[mapY][mapX].tag = active.tag
+            //     terrainMap[mapY][mapX].id = active.id
+            // }
+
+            let active = this.containerManager.removeFromPlayer(this.hud.slot);
+            if (active) {
+                let newBlock;
+                switch (true) {
+                    case active.includes("dirt"):
+                        newBlock = this.entityManager.addEntity(
+                            new DirtBlock({
+                                sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
+                                x: mapX * BLOCKSIZE,
+                                y: mapY * BLOCKSIZE,
+                                sWidth: 16,
+                                sHeight: 16,
+                                scale: BLOCKSIZE / 16,
+                                frameX: getRandomInt(6),
+                                frameY: getRandomInt(2)
+                            }))
+                        break;
+                    case active.includes("stone"):
+                        newBlock = this.entityManager.addEntity(
+                            new StoneBlock({
+                                sprite: ASSET_MANAGER.cache[TILES_STONE_PATH],
+                                x: mapX * BLOCKSIZE,
+                                y: mapY * BLOCKSIZE,
+                                sWidth: 16,
+                                sHeight: 16,
+                                scale: BLOCKSIZE / 16,
+                                frameX: getRandomInt(6),
+                                frameY: getRandomInt(2)
+                            }))
+                        break;
+                    case active.includes("ruby"):
+                        newBlock = this.entityManager.addEntity(
+                            new RubyBlock({
+                                sprite: ASSET_MANAGER.cache[TILES_RUBY_PATH],
+                                x: mapX * BLOCKSIZE,
+                                y: mapY * BLOCKSIZE,
+                                sWidth: 16,
+                                sHeight: 16,
+                                scale: BLOCKSIZE / 16,
+                                frameX: getRandomInt(3)
+                            }))
+                        break;
+                }
+                if (newBlock) {
+                    terrainMap[mapY][mapX].tag = newBlock.tag
+                    terrainMap[mapY][mapX].id = newBlock.id
+                    console.log(newBlock)
+                }
+            }
+            
+            // if (active) {
+            //     //this is where we spawn the selected item from inventory
+            //     let newBlock = this.entityManager.addEntity(
+            //         new DirtBlock({
+            //         sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
+            //         x: mapX * BLOCKSIZE,
+            //         y: mapY * BLOCKSIZE,
+            //         sWidth: 16,
+            //         sHeight: 16,
+            //         scale: BLOCKSIZE / 16,
+            //         frameX: getRandomInt(6),
+            //         frameY: getRandomInt(2)
+            //     }));
+            //     terrainMap[mapY][mapX].tag = newBlock.tag;
+            //     terrainMap[mapY][mapX].id = newBlock.id;
+            //     console.log(newBlock);
+            // }
         }
     }
 
@@ -294,7 +351,24 @@ class WorldScene extends Scene {
         e.components.transform.velocityY = 10
         e.isBroken = true
         e.isDrawable = false
-        console.log(e)
+        // console.log(e)
+        return e
+    }
+
+    #rezBlock(e, mapX, mapY) {
+        console.log(e.components.sprite)
+        e.components.sprite.dWidth = e.components.sprite.dWidth * 2
+        e.components.sprite.dHeight = e.components.sprite.dHeight * 2
+        e.components.transform.x -= BLOCKSIZE * .25 // ???
+        e.components.transform.y -= BLOCKSIZE * .25 // ???
+        e.components.transform.velocityY = 0 // ???
+        e.isBroken = false
+        e.isDrawable = true
+        e.components.boxCollider.x = mapX * BLOCKSIZE
+        e.components.boxCollider.y = mapY * BLOCKSIZE
+        e.components.transform.x = mapX * BLOCKSIZE
+        e.components.transform.y = mapY * BLOCKSIZE
+        // console.log(e)
         return e
     }
 }

@@ -35,6 +35,13 @@ class EntityManager {
         return e
     }
 
+    readdEntity(entity) {
+        entity.id = this.totalEntities++
+        this.toAddEntities.push(entity)
+    }
+
+
+
     /**
      * @returns the entity list
      */
