@@ -222,10 +222,8 @@ class ContainerManager {
         if (uiActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check) {
-                    if (check.item) this.hoverText = check.item.tag;
-                    else this.hoverText = null;
-                }
+                if (check && check.item) this.hoverText = check.item.tag;
+                else this.hoverText = null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique
                 if (click.w === 1) { // left click
