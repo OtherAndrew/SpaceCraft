@@ -11,7 +11,7 @@ class HUD {
 
         this.containers = this.cm.getInventory("player");
         this.activeContainer = this.containers[0];
-        this.getStartPoint();
+        this.refreshActiveInfo();
 
         // TESTING
         // this.add(new block1());
@@ -27,9 +27,10 @@ class HUD {
         this.cm.addToInventory("player", entity);
     };
 
-    getStartPoint() {
+    refreshActiveInfo() {
         this.x = this.activeContainer.x;
         this.y = this.activeContainer.y;
+        this.slot = this.activeContainer.slot;
     }
 
     draw(uiActive, ctx) {
@@ -58,7 +59,7 @@ class HUD {
             ctx.beginPath();
             ctx.lineWidth = 3;
             ctx.strokeStyle = "yellow";
-            this.getStartPoint();
+            this.refreshActiveInfo();
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();

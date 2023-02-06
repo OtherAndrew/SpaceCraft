@@ -74,11 +74,11 @@ class WorldScene extends Scene {
         }
         this.cursorSystem.update(this.#getGridCell(mouse, this.player))
         this.craftingMenu.update(uiActive);
-        this.containerManager.update(uiActive, mouseDown);
+        this.containerManager.update(uiActive, mouseDown, mouse);
         this.hud.update(uiActive, keys);
     }
 
-    draw(uiActive, ctx) {
+    draw(uiActive, ctx, mouse) {
         if (uiActive)
             ctx.putImageData(this.game.screenshot, 0, 0);
         else
@@ -87,7 +87,7 @@ class WorldScene extends Scene {
         // this.drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
-        this.containerManager.draw(uiActive, ctx);
+        this.containerManager.draw(uiActive, ctx, mouse);
         this.hud.draw(uiActive, ctx);
     }
 
@@ -311,7 +311,7 @@ class WorldScene extends Scene {
             e.components.sprite.dHeight *= 2
             e.components.transform.x = BLOCKSIZE * mapX
             e.components.transform.y = BLOCKSIZE * mapY
-            e.components.lifespan.current = e.components.lifespan.total 
+            e.components.lifespan.current = e.components.lifespan.total
             e.isBroken = false
             e.isDrawable = true
         } else {
@@ -321,7 +321,7 @@ class WorldScene extends Scene {
             e.isBroken = true
             e.isDrawable = false
         }
-       
+
         return e
     }
 
