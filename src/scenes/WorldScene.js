@@ -64,13 +64,12 @@ class WorldScene extends Scene {
             // update Y first for ledges
             this.movementSystem.updatePlayerY(deltaTime)
             this.movementSystem.updateMobY(deltaTime)
-            this.collisionSystem.updateTileY()
+            this.collisionSystem.resolveTileY()
             this.movementSystem.updatePlayerX(deltaTime)
             this.movementSystem.updateMobX(deltaTime)
-            this.collisionSystem.updateTileX()
+            this.collisionSystem.resolveTileX()
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            // this.collisionSystem.update()
             // draw
             this.camera.update()
             this.renderSystem.update(deltaTime);

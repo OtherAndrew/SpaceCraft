@@ -6,7 +6,10 @@ class CollisionSystem {
         this.mobCollisionList = ["player", "mob"];
     }
 
-    updateTileY() {
+    /**
+     * Checks for and resolves Y collisions between mobs and tiles.
+     */
+    resolveTileY() {
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
         collideList.forEach(a => {
             if (this.mobCollisionList.some(mob => a.tag.includes(mob))) {
@@ -28,7 +31,10 @@ class CollisionSystem {
         });
     }
 
-    updateTileX() {
+    /**
+     * Checks for and resolves X collisions between mobs and tiles.
+     */
+    resolveTileX() {
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
         collideList.forEach(a => {
             if (this.mobCollisionList.some(mob => a.tag.includes(mob))) {

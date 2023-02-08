@@ -42,6 +42,11 @@ class CBoxCollider {
         return this;
     }
 
+    /**
+     * Sets collider position.
+     * @param x
+     * @param y
+     */
     setPosition(x, y) {
         this.last = {
             top: this.top,
@@ -50,7 +55,7 @@ class CBoxCollider {
             right: this.right
         };
         this.x = x + this.xOffset;
-        this.y = y + this.yOffset
+        this.y = y + this.yOffset;
         this.top = this.y;
         this.bottom = this.y + this.height;
         this.left = this.x;
