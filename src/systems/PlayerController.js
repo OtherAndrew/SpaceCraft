@@ -17,7 +17,7 @@ class PlayerController {
 
         if ((input[' ']) && this.pState.grounded) { //jump
             this.pState.grounded = false
-            this.pTransform.velocityY = -(GRAVITY + 20);
+            this.pTransform.velocityY = -(GRAVITY + 15);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
