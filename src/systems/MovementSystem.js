@@ -1,5 +1,8 @@
 /**
- * Movement updating for non-player entities.
+ * Updates movement for all movable entities.
+ *
+ * @author Andrew Nguyen
+ * @version 2/8/23
  */
 class MovementSystem {
     constructor(entities, player) {
@@ -8,40 +11,26 @@ class MovementSystem {
     }
 
     /**
-     * Update player X position.
-     * Player needs to be updated separately from other mobs otherwise movement is jittery.
+     * Update X position.
      * @param tick
      */
-    updatePlayerX(tick) {
-        this.#moveEntityX(this.player, tick)
-    }
-
-    /**
-     * Update player Y position.
-     * Player needs to be updated separately from other mobs otherwise movement is jittery.
-     * @param tick
-     */
-    updatePlayerY(tick) {
-        this.#moveEntityY(this.player, tick)
-    }
-
-    /**
-     * Update mob X position.
-     * @param tick
-     */
-    updateMobX(tick) {
+    updateX(tick) {
+        // Player needs to be updated separately from other mobs otherwise movement is jittery.
+        this.#moveEntityX(this.player, tick);
         const mobs = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
         mobs.forEach(e => this.#moveEntityX(e, tick));
-    };
+    }
 
     /**
-     * Update mob Y position.
+     * Update Y position.
      * @param tick
      */
-    updateMobY(tick) {
+    updateY(tick) {
+        // Player needs to be updated separately from other mobs otherwise movement is jittery.
+        this.#moveEntityY(this.player, tick);
         const mobs = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
         mobs.forEach(e => this.#moveEntityY(e, tick));
-    };
+    }
 
     /**
      * Update entity X position.
