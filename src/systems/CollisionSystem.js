@@ -7,6 +7,27 @@ class CollisionSystem {
     }
 
     /**
+     * Checks for and resolves X collisions between mobs and tiles.
+     */
+    resolveTileX() {
+        const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+        collideList.forEach(a => {
+            if (this.mobCollisionList.some(mob => a.tag.includes(mob))) {
+                const tileList = collideList.filter(e => e.tag.includes('tile'));
+                tileList.forEach(b => {
+                    if (this.#checkCollision(a, b) && a.id !== b.id) {
+                        const aTransform = a.components.transform;
+                        const aCollider = a.components.boxCollider;
+                        aTransform.velocityX = 0
+                        aTransform.x = aTransform.last.x
+                        aCollider.setPosition(aTransform.x, aTransform.y)
+                    }
+                });
+            }
+        });
+    }
+
+    /**
      * Checks for and resolves Y collisions between mobs and tiles.
      */
     resolveTileY() {
@@ -24,27 +45,6 @@ class CollisionSystem {
                         if (aCollider.bottom > bCollider.top && aCollider.last.bottom <= bCollider.top) {
                             a.components.state.grounded = true;
                         }
-                        aCollider.setPosition(aTransform.x, aTransform.y)
-                    }
-                });
-            }
-        });
-    }
-
-    /**
-     * Checks for and resolves X collisions between mobs and tiles.
-     */
-    resolveTileX() {
-        const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        collideList.forEach(a => {
-            if (this.mobCollisionList.some(mob => a.tag.includes(mob))) {
-                const tileList = collideList.filter(e => e.tag.includes('tile'));
-                tileList.forEach(b => {
-                    if (this.#checkCollision(a, b) && a.id !== b.id) {
-                        const aTransform = a.components.transform;
-                        const aCollider = a.components.boxCollider;
-                        aTransform.velocityX = 0
-                        aTransform.x = aTransform.last.x
                         aCollider.setPosition(aTransform.x, aTransform.y)
                     }
                 });
