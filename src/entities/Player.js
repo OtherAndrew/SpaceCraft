@@ -38,7 +38,7 @@ class Player {
             x: props.x,
             y: props.y,
             hasGravity: true,
-            maxVelocityX: 8,
+            maxVelocityX: 6,
             maxVelocityY: BLOCKSIZE
             // maxVelocityY: 300
         });
