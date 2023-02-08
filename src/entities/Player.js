@@ -39,7 +39,8 @@ class Player {
             y: props.y,
             hasGravity: true,
             maxVelocityX: 8,
-            maxVelocityY: 50
+            maxVelocityY: BLOCKSIZE
+            // maxVelocityY: 300
         });
         const cWidth = BLOCKSIZE * .7;
         const collider = new CBoxCollider({
@@ -73,8 +74,4 @@ class Player {
         aMap.set('crouchL', new AnimationProps(5, 2));
     };
 
-    #addBehaviors(transform) {
-        const bMap = transform.behaviorMap;
-        // bMap.set();
-    }
 }

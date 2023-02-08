@@ -39,9 +39,9 @@ class Dirtcarver {
         const collider = new CBoxCollider({
             x: props.x + props.width / 2,
             y: props.y,
-            // width: props.sWidth * props.scale,
-            width: BLOCKSIZE, // collision issue with wide entity
-            xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
+            width: sprite.dWidth,
+            // width: BLOCKSIZE, // collision issue with wide entity
+            // xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
             height: sprite.dHeight
         });
 
@@ -58,7 +58,6 @@ class Dirtcarver {
         const x = this.components.transform.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
-        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {
