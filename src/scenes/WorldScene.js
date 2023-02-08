@@ -52,7 +52,6 @@ class WorldScene extends Scene {
         if (!uiActive) {
             // get input
             this.playerMovement.update(keys)
-            this.movementSystem.updatePlayer(deltaTime)
             // update state
             this.entityManager.update()
             // this.sporeManager.update(deltaTime)
@@ -62,13 +61,16 @@ class WorldScene extends Scene {
             //this.genericDeathManager.update(deltaTime)
             this.renderBox.update()
             this.mobController.update(deltaTime)
-            this.movementSystem.updateMobs(deltaTime)
+            this.movementSystem.updatePlayerX(deltaTime)
+            this.movementSystem.updatePlayerY(deltaTime)
+            this.movementSystem.updateMobX(deltaTime)
+            this.movementSystem.updateMobY(deltaTime)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update()
             // draw
             this.camera.update()
-            this.renderSystem.update(this.game.clockTick);
+            this.renderSystem.update(deltaTime);
             // temporary spot for this
             if(mouseDown) {
                 this.#handleClick(mouseDown, this.player, this.terrainMap)
