@@ -11,33 +11,31 @@ class PlayerController {
     /**
      * Updates player state, animation, and position
      * @param input keyboard input
-     * @param tick time slice
      */
     update(input) {
         let state = this.pSprite.currentState;
 
-        if((input[' ']) && this.pState.grounded) { //jump
+        if ((input[' ']) && this.pState.grounded) { //jump
             this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + 20);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
-        if(input['w']) { // jetpack?
+        if (input['w']) { // jetpack?
             this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + 10);
             state = this.pState.direction === 'right' ? 'flyR' : 'flyL';
         }
 
-        if(input['a']) {
-            // this.pTransform.velocityX = clamp(this.pTransform.velocityX - this.acceleration, - maxVX, 0)
+        if (input['a']) {
             this.pTransform.velocityX -= this.acceleration;
             this.pState.direction = 'left'
             state = this.pState.grounded ? 'walkL' : 'flyL';
-        } else if(input['d']) {
+        } else if (input['d']) {
             this.pTransform.velocityX += this.acceleration;
             this.pState.direction = "right"
             state = this.pState.grounded ? 'walkR' : 'flyR';
-        } else if(input['s']) { // fast fall
+        } else if (input['s']) { // fast fall
             this.pTransform.velocityY += this.fastFall
             this.pTransform.velocityX = 0;
             state = this.pState.direction === 'right' ? 'crouchR' : 'crouchL';
@@ -48,18 +46,5 @@ class PlayerController {
             }
         }
         this.pSprite.setAnimation(state);
-        // this.#updatePlayerTransform(tick);
-    }
-
-
-    #updatePlayerTransform(tick) {
-        const pt = this.pTransform;
-        pt.lastX = pt.x;
-        pt.lastY = pt.y;
-        pt.velocityY = clamp(pt.velocityY + pt.gravity, -pt.maxVelocityY, pt.maxVelocityY);
-        pt.velocityX = clamp(pt.velocityX, -pt.maxVelocityX, pt.maxVelocityX);
-        pt.x += pt.velocityX * tick * 60;
-        pt.y += pt.velocityY * tick * 60;
-        if (pt.collider) pt.collider.setPosition(pt.x, pt.y);
     }
 }

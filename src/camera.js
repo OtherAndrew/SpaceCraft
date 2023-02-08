@@ -27,9 +27,6 @@ class Camera {
         if(this.targetPos.y + this.sceneHEIGHT >= this.worldHeight + BLOCKSIZE) {
             this.y = this.worldHeight - HEIGHT + BLOCKSIZE
         }
-        // else if (Math.abs(this.targetPos.velocityY) > GRAVITY) {
         this.y = this.targetPos.y - this.sceneHEIGHT;
-        // }
-        // console.log ("X: " + this.x + ", Y: " + this.y)
     }
 }

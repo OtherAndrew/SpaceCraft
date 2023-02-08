@@ -8,7 +8,7 @@ class MovementSystem {
     }
 
     /**
-     * Update player position.
+     * Update player X position.
      * Player needs to be updated separately from other mobs otherwise movement is jittery.
      * @param tick
      */
@@ -17,7 +17,7 @@ class MovementSystem {
     }
 
     /**
-     * Update player position.
+     * Update player Y position.
      * Player needs to be updated separately from other mobs otherwise movement is jittery.
      * @param tick
      */
@@ -26,54 +26,44 @@ class MovementSystem {
     }
 
     /**
-     * Update mob position.
+     * Update mob X position.
      * @param tick
      */
     updateMobX(tick) {
         const mobs = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
-        mobs.forEach(e => {
-            // const t = e.components.transform;
-            // t.lastX = t.x;
-            // t.lastY = t.y;
-            // t.velocityY = clamp(t.velocityY + t.gravity, -t.maxVelocityY, t.maxVelocityY);
-            // t.velocityX = clamp(t.velocityX, -t.maxVelocityX, t.maxVelocityX);
-            // t.x += t.velocityX * tick * 60;
-            // t.y += t.velocityY * tick * 60;
-            // if (t.collider) t.collider.setPosition(t.x, t.y);
-            this.#moveEntityX(e, tick)
-        });
+        mobs.forEach(e => this.#moveEntityX(e, tick));
     };
 
     /**
-     * Update mob position.
+     * Update mob Y position.
      * @param tick
      */
     updateMobY(tick) {
         const mobs = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
-        mobs.forEach(e => {
-            // const t = e.components.transform;
-            // t.lastX = t.x;
-            // t.lastY = t.y;
-            // t.velocityY = clamp(t.velocityY + t.gravity, -t.maxVelocityY, t.maxVelocityY);
-            // t.velocityX = clamp(t.velocityX, -t.maxVelocityX, t.maxVelocityX);
-            // t.x += t.velocityX * tick * 60;
-            // t.y += t.velocityY * tick * 60;
-            // if (t.collider) t.collider.setPosition(t.x, t.y);
-            this.#moveEntityY(e, tick)
-        });
+        mobs.forEach(e => this.#moveEntityY(e, tick));
     };
 
+    /**
+     * Update entity X position.
+     * @param entity The entity.
+     * @param tick   Time slice.
+     */
     #moveEntityX(entity, tick) {
         const t = entity.components.transform;
-        t.lastX = t.x;
+        t.last.x = t.x;
         t.velocityX = clamp(t.velocityX, -t.maxVelocityX, t.maxVelocityX);
         t.x += t.velocityX * tick * 60;
         if (t.collider) t.collider.setPosition(t.x, t.y);
     }
 
+    /**
+     * Update entity Y position.
+     * @param entity The entity.
+     * @param tick   Time slice.
+     */
     #moveEntityY(entity, tick) {
         const t = entity.components.transform;
-        t.lastY = t.y;
+        t.last.y = t.y;
         t.velocityY = clamp(t.velocityY + t.gravity, -t.maxVelocityY, t.maxVelocityY);
         t.y += t.velocityY * tick * 60;
         if (t.collider) t.collider.setPosition(t.x, t.y);

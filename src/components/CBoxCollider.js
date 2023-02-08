@@ -32,25 +32,23 @@ class CBoxCollider {
         this.left = this.x;
         this.right = this.x + this.width;
 
-        this.last = null;
+        this.last = {
+            top: this.top,
+            bottom: this.bottom,
+            left: this.left,
+            right: this.right
+        };
 
         return this;
     }
 
-    // /**
-    //  *
-    //  * @param {CBoxCollider} other
-    //  * @returns {boolean}
-    //  */
-    // collide(other) {
-    //     return this.right > other.left
-    //         && this.left < other.right
-    //         && this.top < other.bottom
-    //         && this.bottom > other.top;
-    // }
-
     setPosition(x, y) {
-        this.last = this;
+        this.last = {
+            top: this.top,
+            bottom: this.bottom,
+            left: this.left,
+            right: this.right
+        };
         this.x = x + this.xOffset;
         this.y = y + this.yOffset
         this.top = this.y;

@@ -30,8 +30,10 @@ class CTransform {
         this.collider = null;
         this.behaviorMap = new Map();
         this.gravity = hasGravity ? GRAVITY : 0;
-        this.lastX = this.x;
-        this.lastY = this.y;
+        this.last = {
+            x: this.x,
+            y: this.y
+        }
         this.currentState = 'idleR'
         return this;
     }
