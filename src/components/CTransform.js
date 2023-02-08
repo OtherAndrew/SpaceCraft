@@ -24,7 +24,7 @@ class CTransform {
     constructor({ x = 0, y = 0, hasGravity = false,
                     velocityX = 0, velocityY = 0,
                     rotation = 0,
-                    maxVelocityX = Number.MAX_SAFE_INTEGER, maxVelocityY = Number.MAX_SAFE_INTEGER }) {
+                    maxVelocityX = BLOCKSIZE, maxVelocityY = BLOCKSIZE }) {
         Object.assign(this, {x, y, velocityX, velocityY, rotation, maxVelocityX, maxVelocityY});
         this.name = 'transform'
         this.collider = null;

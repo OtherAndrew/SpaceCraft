@@ -241,7 +241,8 @@ class GameEngine {
 
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.fillStyle = 'rgb(159,109,50)'
+        // this.ctx.fillStyle = 'rgb(159,109,50)'
+        this.ctx.fillStyle = '#222222'
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
         this.terrainDemoScene.draw(this.uiActive, this.ctx, this.mouse)
         if(this.currentTime > 1) {
@@ -252,8 +253,9 @@ class GameEngine {
             this.currentTime += this.clockTick
             this.renderedFrames++
         }
-        this.ctx. textAlign = 'left'
-        this.ctx.font = '15px Helvetica'
+        this.ctx.fillStyle = "white";
+        this.ctx.textAlign = 'left'
+        this.ctx.font = 'bold 15px Helvetica'
         this.ctx.fillText(`FPS: ${this.frames}`, 10,20)
     };
 

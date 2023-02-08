@@ -62,6 +62,7 @@ class WorldScene extends Scene {
             this.renderBox.update()
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            this.collisionSystem.refresh()
 
             this.mobController.update(deltaTime)
             //https://gamedev.stackexchange.com/a/71123

@@ -1,21 +1,29 @@
 // Variety of ways to check for a collection
 class CollisionSystem {
     constructor(player, entities) {
-        this.player = player
-        this.entities = entities
+        this.player = player;
+        this.entities = entities;
+        this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
         this.tileCollisionCheck = ["player", "mob"];
         this.playerAttackCheck = ["playerAttack"];
         this.mobAttackCheck = ["mob", "mobAttack"];
     }
 
     /**
+     * Refreshes collide check list.
+     */
+    refresh() {
+        this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+    }
+
+    /**
      * Checks for and resolves X collisions between mobs and tiles.
      */
     resolveTileX() {
-        const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        collideList.forEach(a => {
+        // const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+        this.collideList.forEach(a => {
             if (this.tileCollisionCheck.some(e => a.tag.includes(e))) {
-                const tileList = collideList.filter(e => e.tag.includes('tile'));
+                const tileList = this.collideList.filter(e => e.tag.includes('tile'));
                 tileList.forEach(b => {
                     if (this.#checkCollision(a, b) && a.id !== b.id) {
                         const aTransform = a.components.transform;
@@ -33,10 +41,10 @@ class CollisionSystem {
      * Checks for and resolves Y collisions between mobs and tiles.
      */
     resolveTileY() {
-        const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        collideList.forEach(a => {
+        // const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+        this.collideList.forEach(a => {
             if (this.tileCollisionCheck.some(e => a.tag.includes(e))) {
-                const tileList = collideList.filter(e => e.tag.includes('tile'));
+                const tileList = this.collideList.filter(e => e.tag.includes('tile'));
                 tileList.forEach(b => {
                     if (this.#checkCollision(a, b) && a.id !== b.id) {
                         const aTransform = a.components.transform;
