@@ -3,7 +3,9 @@ class CollisionSystem {
     constructor(player, entities) {
         this.player = player
         this.entities = entities
-        this.mobCollisionList = ["player", "mob"];
+        this.tileCollisionCheck = ["player", "mob"];
+        this.playerAttackCheck = ["playerAttack"];
+        this.mobAttackCheck = ["mob", "mobAttack"];
     }
 
     /**
@@ -12,7 +14,7 @@ class CollisionSystem {
     resolveTileX() {
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
         collideList.forEach(a => {
-            if (this.mobCollisionList.some(mob => a.tag.includes(mob))) {
+            if (this.tileCollisionCheck.some(e => a.tag.includes(e))) {
                 const tileList = collideList.filter(e => e.tag.includes('tile'));
                 tileList.forEach(b => {
                     if (this.#checkCollision(a, b) && a.id !== b.id) {
@@ -33,7 +35,7 @@ class CollisionSystem {
     resolveTileY() {
         const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
         collideList.forEach(a => {
-            if (this.mobCollisionList.some(mob => a.tag.includes(mob))) {
+            if (this.tileCollisionCheck.some(e => a.tag.includes(e))) {
                 const tileList = collideList.filter(e => e.tag.includes('tile'));
                 tileList.forEach(b => {
                     if (this.#checkCollision(a, b) && a.id !== b.id) {
@@ -51,6 +53,9 @@ class CollisionSystem {
             }
         });
     }
+
+    // resolve player attack
+    // resolve mob attack
 
     /**
      * Checks for collision between 2 entities with box colliders.
