@@ -13,7 +13,7 @@ class PlayerController {
      * @param input keyboard input
      * @param tick time slice
      */
-    update(input, tick) {
+    update(input) {
         let state = this.pSprite.currentState;
 
         if((input[' ']) && this.pState.grounded) { //jump
@@ -48,14 +48,10 @@ class PlayerController {
             }
         }
         this.pSprite.setAnimation(state);
-        this.#updatePlayerTransform(tick);
+        // this.#updatePlayerTransform(tick);
     }
 
-    /**
-     * Update player position.
-     * Player needs to be updated separately from other mobs otherwise movement is jittery.
-     * @param tick
-     */
+
     #updatePlayerTransform(tick) {
         const pt = this.pTransform;
         pt.lastX = pt.x;

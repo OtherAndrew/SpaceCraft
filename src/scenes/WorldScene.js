@@ -34,7 +34,7 @@ class WorldScene extends Scene {
         // this.lightbugManager = new LightbugController(this.lightbug, this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
-        this.movementSystem = new MovementSystem(this.entityManager.getEntities)
+        this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player)
         this.mobController = new EntityController(this.entityManager.getEntities, this.player);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
         this.camera = new Camera(this.player)
@@ -50,22 +50,24 @@ class WorldScene extends Scene {
 
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
-            // draw stuff last
+            // get input
+            this.playerMovement.update(keys)
+            this.movementSystem.updatePlayer(deltaTime)
+            // update state
             this.entityManager.update()
-            this.playerMovement.update(keys, deltaTime)
             // this.sporeManager.update(deltaTime)
             // this.dirtcarverManager.update(deltaTime)
             // this.lightjellyManager.update(deltaTime)
             // this.lightbugManager.update(deltaTime)
             //this.genericDeathManager.update(deltaTime)
-            this.camera.update()
             this.renderBox.update()
             this.mobController.update(deltaTime)
-            this.movementSystem.update(deltaTime)
+            this.movementSystem.updateMobs(deltaTime)
             this.#updateTileState()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update()
-
+            // draw
+            this.camera.update()
             this.renderSystem.update(this.game.clockTick);
             // temporary spot for this
             if(mouseDown) {
