@@ -7,7 +7,7 @@ class EntityController {
     }
 
     update(tick) {
-        const updateList = this.entities.filter(e => e.tag.includes('mob'));
+        const updateList = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
         // console.log(updateList)
         updateList.forEach(e => {
             e.update(tick, this.playerPosition.x, this.playerPosition.y);

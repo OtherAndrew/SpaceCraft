@@ -110,11 +110,14 @@ class CollisionSystem {
             this.mobList.forEach(mob => {
                if (this.#checkCollision(p, mob)) {
                    // damage mob
+                   mob.components["stats"].currentHealth -= p.components["stats"].damage;
+                   p.destroy();
                }
             });
             this.tileList.forEach(tile => {
                if (this.#checkCollision(p, tile)) {
                    // remove projectile
+                   p.destroy();
                }
             });
         });

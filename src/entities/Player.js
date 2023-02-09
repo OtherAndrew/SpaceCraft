@@ -27,6 +27,11 @@ class Player {
     };
 
     #buildComponents(props) {
+        const stats = new CStats({
+            damage: 1,
+            maxHealth: 100,
+            speed: 6
+        });
         const sprite = new CSprite({
             sprite: props.sprite,
             sWidth: props.sWidth,
@@ -38,7 +43,7 @@ class Player {
             x: props.x,
             y: props.y,
             hasGravity: true,
-            maxVelocityX: 6,
+            maxVelocityX: stats.speed,
             maxVelocityY: BLOCKSIZE
             // maxVelocityY: 300
         });
@@ -57,7 +62,7 @@ class Player {
         const state = new CState();
         state.sprite = sprite;
 
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     #addAnimations(sprite) {

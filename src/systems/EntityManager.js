@@ -134,9 +134,15 @@ class Entity  {
      * @param {[]} components
      */
     addComponent(components) {
-        components.forEach(c => {
-            this.components[c.name] = c
-        });
+        components.forEach(c => this.components[c.name] = c);
+    }
+
+    /**
+     * Removes component.
+     * @param {string} name Name of component to remove.
+     */
+    removeComponent(name) {
+        this.components = this.components.filter(c => c.name !== name);
     }
 
 }
