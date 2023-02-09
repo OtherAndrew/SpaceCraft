@@ -5,10 +5,8 @@ class CollisionSystem {
         this.entities = entities;
 
         this.collideList = null;
-        this.mobList = null;
+        this.tileCollideList = null;
         this.tileList = null;
-
-        // extras
         this.playerAttackList = null;
         this.mobAttackList = null;
         this.projectileList = null;
@@ -21,30 +19,22 @@ class CollisionSystem {
      */
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        this.mobList = this.collideList.filter(e => {
-            e.tag.includes("player")
-            || e.tag.includes("mob")
-        });
+        this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
-
-        // extras
+        this.tileCollideList = this.collideList.filter(e => e.tag.includes("player")
+                                                         || e.tag.includes("mob"));
         this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
-        this.mobAttackList = this.collideList.filter(e => {
-            e.tag.includes("enemy")
-            || e.tag.includes("enemyAttack")
-        });
-        this.projectileList = this.collideList.filter(e => {
-            e.tag.includes("playerAttack")
-            || e.tag.includes("enemyAttack")
-            // e.tag.includes("projectile")?
-        });
+        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
+                                                       || e.tag.includes("enemyAttack"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("playerAttack")
+                                                        || e.tag.includes("enemyAttack"));
     }
 
     /**
      * Checks for and resolves X collisions between mobs and tiles.
      */
     resolveTileX() {
-        this.mobList.forEach(mob => {
+        this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
                 if (this.#checkCollision(mob, tile)) {
                     const mTransform = mob.components.transform;
@@ -61,7 +51,7 @@ class CollisionSystem {
      * Checks for and resolves Y collisions between mobs and tiles.
      */
     resolveTileY() {
-        this.mobList.forEach(mob => {
+        this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
                 if (this.#checkCollision(mob, tile)) {
                     const mTransform = mob.components.transform;
@@ -78,7 +68,7 @@ class CollisionSystem {
         });
     }
 
-    // draft
+    // resolve player attack
     resolvePlayerAttack() {
         this.playerAttackList.forEach(atk => {
            this.mobList.forEach(mob => {
@@ -89,7 +79,6 @@ class CollisionSystem {
         });
     }
 
-    // draft
     resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
             if (this.#checkCollision(atk, this.player)) {
@@ -103,12 +92,11 @@ class CollisionSystem {
         });
     }
 
-    // draft
     resolveProjectiles() {
         this.projectileList.forEach(p => {
-            // if (this.#checkCollision(p, this.player)) {
-            //     // damage player
-            // }
+            if (this.#checkCollision(p, this.player)) {
+                // damage player
+            }
             this.mobList.forEach(mob => {
                if (this.#checkCollision(p, mob)) {
                    // damage mob
