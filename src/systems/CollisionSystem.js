@@ -3,37 +3,47 @@ class CollisionSystem {
     constructor(player, entities) {
         this.player = player;
         this.entities = entities;
-        this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        this.tileCollisionCheck = ["player", "mob"];
-        this.playerAttackCheck = ["playerAttack"];
-        this.mobAttackCheck = ["mob", "mobAttack"];
+
+        this.collideList = null;
+        this.tileCollideList = null;
+        this.tileList = null;
+        this.playerAttackList = null;
+        this.mobAttackList = null;
+        this.projectileList = null;
+
+        this.refresh();
     }
 
     /**
-     * Refreshes collide check list.
+     * Refreshes collide check lists.
      */
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+        this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
+        this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
+        this.tileCollideList = this.collideList.filter(e => e.tag.includes("player")
+                                                         || e.tag.includes("mob"));
+        this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
+        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
+                                                       || e.tag.includes("enemyAttack"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("playerAttack")
+                                                        || e.tag.includes("enemyAttack"));
     }
 
     /**
      * Checks for and resolves X collisions between mobs and tiles.
      */
     resolveTileX() {
-        // const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        this.collideList.forEach(a => {
-            if (this.tileCollisionCheck.some(e => a.tag.includes(e))) {
-                const tileList = this.collideList.filter(e => e.tag.includes('tile'));
-                tileList.forEach(b => {
-                    if (this.#checkCollision(a, b) && a.id !== b.id) {
-                        const aTransform = a.components.transform;
-                        const aCollider = a.components.boxCollider;
-                        aTransform.velocityX = 0
-                        aTransform.x = aTransform.last.x
-                        aCollider.setPosition(aTransform.x, aTransform.y)
-                    }
-                });
-            }
+        this.tileCollideList.forEach(mob => {
+            this.tileList.forEach(tile => {
+                if (this.#checkCollision(mob, tile)) {
+                    const mTransform = mob.components.transform;
+                    const mCollider = mob.components.boxCollider;
+                    mTransform.velocityX = 0
+                    mTransform.x = mTransform.last.x
+                    mCollider.setPosition(mTransform.x, mTransform.y)
+                }
+            });
         });
     }
 
@@ -41,29 +51,64 @@ class CollisionSystem {
      * Checks for and resolves Y collisions between mobs and tiles.
      */
     resolveTileY() {
-        // const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        this.collideList.forEach(a => {
-            if (this.tileCollisionCheck.some(e => a.tag.includes(e))) {
-                const tileList = this.collideList.filter(e => e.tag.includes('tile'));
-                tileList.forEach(b => {
-                    if (this.#checkCollision(a, b) && a.id !== b.id) {
-                        const aTransform = a.components.transform;
-                        const aCollider = a.components.boxCollider;
-                        const bCollider = b.components.boxCollider;
-                        aTransform.velocityY = 0
-                        aTransform.y = aTransform.last.y
-                        if (aCollider.bottom > bCollider.top && aCollider.last.bottom <= bCollider.top) {
-                            a.components.state.grounded = true;
-                        }
-                        aCollider.setPosition(aTransform.x, aTransform.y)
+        this.tileCollideList.forEach(mob => {
+            this.tileList.forEach(tile => {
+                if (this.#checkCollision(mob, tile)) {
+                    const mTransform = mob.components.transform;
+                    const mCollider = mob.components.boxCollider;
+                    const tCollider = tile.components.boxCollider;
+                    mTransform.velocityY = 0
+                    mTransform.y = mTransform.last.y
+                    if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
+                        mob.components.state.grounded = true;
                     }
-                });
-            }
+                    mCollider.setPosition(mTransform.x, mTransform.y)
+                }
+            });
         });
     }
 
     // resolve player attack
-    // resolve mob attack
+    resolvePlayerAttack() {
+        this.playerAttackList.forEach(atk => {
+           this.mobList.forEach(mob => {
+               if (this.#checkCollision(atk, mob)) {
+                   // handle attack
+               }
+           });
+        });
+    }
+
+    resolveMobAttack() {
+        this.mobAttackList.forEach(atk => {
+            if (this.#checkCollision(atk, this.player)) {
+                // handle attack
+            }
+            this.tileList.forEach(tile => {
+               if (this.#checkCollision(atk, tile) && atk.tag.includes("enemyAttack")) {
+                   // remove
+               }
+            });
+        });
+    }
+
+    resolveProjectiles() {
+        this.projectileList.forEach(p => {
+            if (this.#checkCollision(p, this.player)) {
+                // damage player
+            }
+            this.mobList.forEach(mob => {
+               if (this.#checkCollision(p, mob)) {
+                   // damage mob
+               }
+            });
+            this.tileList.forEach(tile => {
+               if (this.#checkCollision(p, tile)) {
+                   // remove projectile
+               }
+            });
+        });
+    }
 
     /**
      * Checks for collision between 2 entities with box colliders.
