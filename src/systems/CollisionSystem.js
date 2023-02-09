@@ -1,4 +1,9 @@
-// Variety of ways to check for a collection
+/**
+ * Checks for and resolves collisions between entities.
+ *
+ * @author Mario Flores Vences
+ * @author Andrew Nguyen
+ */
 class CollisionSystem {
     constructor(player, entities) {
         this.player = player;
@@ -7,6 +12,7 @@ class CollisionSystem {
         this.collideList = null;
         this.mobList = null;
         this.tileList = null;
+        //extras
         this.playerAttackList = null;
         this.mobAttackList = null;
         this.projectileList = null;
@@ -16,13 +22,15 @@ class CollisionSystem {
 
     /**
      * Refreshes collide check lists.
+     * Call this before resolving.
      */
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        // this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
-        this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
         this.mobList = this.collideList.filter(e => e.tag.includes("player")
                                                  || e.tag.includes("mob"));
+        this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
+
+        // extras
         this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
         this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
                                                        || e.tag.includes("enemyAttack"));
@@ -68,7 +76,7 @@ class CollisionSystem {
         });
     }
 
-    // resolve player attack
+    //draft
     resolvePlayerAttack() {
         this.playerAttackList.forEach(atk => {
            this.mobList.forEach(mob => {
@@ -79,6 +87,7 @@ class CollisionSystem {
         });
     }
 
+    //draft
     resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
             if (this.#checkCollision(atk, this.player)) {
@@ -92,6 +101,7 @@ class CollisionSystem {
         });
     }
 
+    //draft
     resolveProjectiles() {
         this.projectileList.forEach(p => {
             // if (this.#checkCollision(p, this.player)) {
