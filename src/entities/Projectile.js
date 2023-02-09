@@ -32,8 +32,8 @@ class Projectile {
             y: props.y,
             hasGravity: props.hasGravity,
             rotation: props.angle,
-            velocityX: Math.cos(props.angle) * props.speed,
-            velocityY: Math.sin(props.angle) * props.speed
+            velocityX: Math.cos(props.angle) * props.speed, // + player vx
+            velocityY: Math.sin(props.angle) * props.speed // + player vy
         });
         // const cWidth = BLOCKSIZE * .25;
         // const cHeight = BLOCKSIZE * .25
