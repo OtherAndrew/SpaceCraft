@@ -10,12 +10,8 @@ class Player {
     /**
      * Initializes new Player
      * @param {Object} props         Player position and display properties
-     * @param {Image} props.sprite   Player sprite sheet
      * @param {number} props.x       X position on canvas to draw player sprite
      * @param {number} props.y       Y position on canvas to draw player sprite
-     * @param {number} props.sWidth  Width of player sprite on sprite sheet
-     * @param {number} props.sHeight Height of player sprite on sprite sheet
-     * @param {number} props.scale   Scale factor to apply to player sprite, 1 by default
      * @returns {Object}             The player properties.
      * @constructor
      */
@@ -32,11 +28,12 @@ class Player {
             maxHealth: 100,
             speed: 6
         });
+        const spriteWidth = 200;
         const sprite = new CSprite({
-            sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sprite: ASSET_MANAGER.getAsset(PLAYER_PATH),
+            sWidth: spriteWidth,
+            sHeight: 250,
+            scale: BLOCKSIZE * 1.5 / spriteWidth,
             fps: 30
         });
         const transform = new CTransform({

@@ -2,12 +2,8 @@ class Dirtcarver {
     /**
      * Initializes Dirtcarver (enemy)
      * @param {Object} props         enemy position and display properties
-     * @param {Image} props.sprite   enemy sprite sheet
      * @param {number} props.x       X position of starting frame
      * @param {number} props.y       Y position of the starting frame
-     * @param {number} props.sWidth  frame width
-     * @param {number} props.sHeight frame height
-     * @param {number} props.scale   frame scale
      * @returns {Object}             return enemy
      * @constructor
      */
@@ -19,11 +15,14 @@ class Dirtcarver {
     };
 
     #buildComponents(props) {
+        const spriteWidth = 262;
+        const spriteHeight = 84;
+        const scale = 0.5;
         const sprite = new CSprite({
-            sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sprite: ASSET_MANAGER.getAsset(DIRTCARVER_PATH),
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 3,
@@ -36,12 +35,12 @@ class Dirtcarver {
             hasGravity: true,
             maxVelocityY: 50
         });
+        const cWidth = 3 * BLOCKSIZE;
         const collider = new CBoxCollider({
             x: props.x + props.width / 2,
             y: props.y,
-            width: sprite.dWidth,
-            // width: BLOCKSIZE, // collision issue with wide entity
-            // xOffset: props.sWidth * props.scale / 2 - BLOCKSIZE / 2,
+            width: cWidth,
+            xOffset: (sprite.dWidth - cWidth) / 2,
             height: sprite.dHeight
         });
 

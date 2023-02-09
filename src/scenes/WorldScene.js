@@ -12,7 +12,7 @@ class WorldScene extends Scene {
      */
     init(assets, canvas) {
         // entities
-        this.playerSprite = assets[PLAYER_PATH];
+        // this.playerSprite = assets[PLAYER_PATH];
         this.entitySprite = assets[ENTITY_PATH];
         this.sporeSprite = assets[SPORE_PATH];
         this.dirtCarverSprite = assets[DIRTCARVER_PATH];
@@ -114,17 +114,9 @@ class WorldScene extends Scene {
      * A player entity for testing purposes
      */
     #createPlayer() {
-        const spriteWidth = 200;
-        const spriteHeight = 250;
-        const scale = BLOCKSIZE / spriteWidth * 1.5;
-
         this.player = this.entityManager.addEntity(new Player({
-            sprite: this.playerSprite,
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - 100,
-            sWidth : spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
         }));
     }
 
@@ -132,8 +124,6 @@ class WorldScene extends Scene {
         const spriteWidth = 138;
         const spriteHeight = 196;
         const scale = 0.5;
-        //const test = this.player.transform.x;
-        //console.log(test)
         this.spore = this.entityManager.addEntity(new Spore({
             sprite: this.sporeSprite,
             x: this.player.components.transform.x,
@@ -149,20 +139,10 @@ class WorldScene extends Scene {
     //  *  dirtcarver spawn condition
     //  */
     #createDirtcarver() {
-        const spriteWidth = 262;
-        const spriteHeight = 84;
-        const scale = 0.5;
         this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
-            sprite: this.dirtCarverSprite,
-            //control spawn point
-
             x: this.player.components.transform.x - 100,
             y: this.player.components.transform.y - 250,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
         }));
-
     }
     // lightjelly movement logic = lightbug movement logic
     //
