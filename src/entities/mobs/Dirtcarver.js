@@ -2,8 +2,8 @@ class Dirtcarver {
     /**
      * Initializes Dirtcarver (enemy)
      * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
+     * @param {number} props.x       X position of monster spawn
+     * @param {number} props.y       Y position of monster spawn
      * @returns {Object}             return enemy
      * @constructor
      */
@@ -15,14 +15,14 @@ class Dirtcarver {
     };
 
     #buildComponents(props) {
-        const spriteWidth = 262;
-        const spriteHeight = 84;
-        const scale = 0.5;
+        const stats = new CStats({
+            speed: 0.8
+        });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(DIRTCARVER_PATH),
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale,
+            sWidth: 262,
+            sHeight: 84,
+            scale: 0.5,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 3,
@@ -33,7 +33,6 @@ class Dirtcarver {
             x: props.x,
             y: props.y,
             hasGravity: true,
-            maxVelocityY: 50
         });
         const cWidth = 3 * BLOCKSIZE;
         const collider = new CBoxCollider({
@@ -45,12 +44,12 @@ class Dirtcarver {
         });
 
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform);
+        this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
         state.transform = transform;
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     update(tick, targetX, targetY) {
@@ -66,12 +65,12 @@ class Dirtcarver {
         aMap.set('walkR', new AnimationProps(0, 0, 3));
         aMap.set('walkL', new AnimationProps(0, 1, 3));
     };
-    #addBehaviors(transform) {
+    #addBehaviors(transform, stats) {
         const bMap = transform.behaviorMap;
         bMap.set('idleR', new BehaviorProps(0, null));
         bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('walkR', new BehaviorProps(0.8, null));
-        bMap.set('walkL', new BehaviorProps(-0.8, null));
+        bMap.set('walkR', new BehaviorProps(stats.speed, null));
+        bMap.set('walkL', new BehaviorProps(-stats.speed, null));
     }
 
 }

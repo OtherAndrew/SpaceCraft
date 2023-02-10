@@ -121,16 +121,9 @@ class WorldScene extends Scene {
     }
 
     #createSpore() {
-        const spriteWidth = 138;
-        const spriteHeight = 196;
-        const scale = 0.5;
         this.spore = this.entityManager.addEntity(new Spore({
-            sprite: this.sporeSprite,
             x: this.player.components.transform.x,
             y: this.player.components.transform.y - 50,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
         }));
 
     }
