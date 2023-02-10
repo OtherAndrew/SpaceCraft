@@ -1,5 +1,3 @@
-
-
 /**
  * Constants that are used across the game.
  */
@@ -19,7 +17,6 @@ const BACKGROUND_SCROLLING_SPEED_3 = .07
 const BACKGROUND_SCROLLING_SPEED_4 = .08
 const BACKGROUND_SCROLLING_SPEED_5 = .09
 
-
 // NPC Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";
 const ENTITY_PATH = "./assets/sprites/entity.png";
@@ -35,18 +32,18 @@ const TILES_BISMUTH_PATH = './assets/tiles/tilesBismuth.png'
 const TILES_COAL_PATH = './assets/tiles/tilesCoal.png'
 const TILES_COBALT_PATH = './assets/tiles/tilesCobalt.png'
 const TILES_COPPER_PATH = './assets/tiles/tilesCopper.png'
+const TILES_DIRT_PATH = './assets/tiles/tilesDirt.png'
 const TILES_FERRITE_PATH = './assets/tiles/tilesFerrite.png'
 const TILES_GOLD_PATH = './assets/tiles/tilesGold.png'
 const TILES_IRON_PATH = './assets/tiles/tilesIron.png'
 const TILES_PARAFFIN_PATH = './assets/tiles/tilesParaffin.png'
+const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
 const TILES_SAND_PATH = './assets/tiles/tilesSand.png'
 const TILES_SILICA_PATH = './assets/tiles/tilesSilica.png'
+const TILES_STONE_PATH = './assets/tiles/tilesStone.png'
 const TILES_TIN_PATH = './assets/tiles/tilesTin.png'
 const TILES_TITANITE_PATH = './assets/tiles/tilesTitanite.png'
 const TILES_TUNGSTEN_PATH = './assets/tiles/tilesTungsten.png'
-const TILES_DIRT_PATH = './assets/tiles/tilesDirt.png'
-const TILES_STONE_PATH = './assets/tiles/tilesStone.png'
-const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
 
 const BISMUTH_GEN_STATS = {
     yMin: 0,
@@ -119,17 +116,10 @@ const RUBY_GEN_STATS = {
     rate: 0.0
 }
 
-
 //Tiles Lifespan numbers
-const TILE_DIRT_LIFESPAN = 20
-const TILE_STONE_LIFESPAN = 30
-const TILE_RUBY_LIFESPAN = 50
-
-const TERRAIN_LIFE = {
-    TILE_DIRT_LIFESPAN,
-    TILE_STONE_LIFESPAN,
-    TILE_RUBY_LIFESPAN
-}
+const TILE_LIFESPAN_DIRT = 20
+const TILE_LIFESPAN_STONE = 30
+const TILE_LIFESPAN_RUBY = 50
 
 //Backgrounds
 const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
@@ -153,48 +143,6 @@ const B2 = './assets/sprites/b2.png'
 const B3 = './assets/sprites/b3.png'
 const O1 = './assets/overlay/overlaymockup.png'
 const PICK = './assets/icons/item_3485.png'
-
-const TERRAIN_ASSETS = {
-    TILES_BISMUTH_PATH,
-    TILES_COAL_PATH,
-    TILES_COBALT_PATH,
-    TILES_COPPER_PATH,
-    TILES_DIRT_PATH,
-    TILES_FERRITE_PATH,
-    TILES_GOLD_PATH,
-    TILES_IRON_PATH,
-    TILES_PARAFFIN_PATH,
-    TILES_RUBY_PATH,
-    TILES_SAND_PATH,
-    TILES_SILICA_PATH,
-    TILES_STONE_PATH,
-    TILES_TIN_PATH,
-    TILES_TITANITE_PATH,
-    TILES_TUNGSTEN_PATH,
-    BACKGROUND_SURFACE_0,
-    BACKGROUND_SURFACE_1,
-    BG,
-    B1,
-    B2,
-    B3,
-    O1,
-    PICK,
-    SPORE_PATH,
-    DIRTCARVER_PATH,
-    LIGHTJELLY_PATH,
-    LIGHTBUG_PATH,
-    GRAPEBOMB_PATH,
-    GENERICDEATH_PATH,
-    UNDERGROUND_BACKGROUND_0,
-    UNDERGROUND_BACKGROUND_1,
-    UNDERGROUND_BACKGROUND_2,
-    UNDERGROUND_BACKGROUND_3,
-    UNDERGROUND_BACKGROUND_4,
-    UNDERGROUND_BACKGROUND_5,
-    UNDERGROUND_BACKGROUND_6,
-    BACKGROUND_DIRT,
-    PICK_CURSOR
-}
 
 // arrays to queue using a loop
 const TERRAIN_ASSETS_ARRAY = [
@@ -239,3 +187,27 @@ const TERRAIN_ASSETS_ARRAY = [
     PICK_CURSOR
 ]
 
+const TILE_LIFESPAN = {
+    DIRT    :   20,
+    RUBY    :   50,
+    STONE   :   30
+}
+
+const TILE_PATH = {
+    BISMUTH	    :	'./assets/tiles/tilesBismuth.png',
+    COAL	    :	'./assets/tiles/tilesCoal.png',
+    COBALT	    :	'./assets/tiles/tilesCobalt.png',
+    COPPER	    :	'./assets/tiles/tilesCopper.png',
+    DIRT	    :	'./assets/tiles/tilesDirt.png',
+    FERRITE	    :	'./assets/tiles/tilesFerrite.png',
+    GOLD	    :	'./assets/tiles/tilesGold.png',
+    IRON	    :	'./assets/tiles/tilesIron.png',
+    PARAFFIN	:	'./assets/tiles/tilesParaffin.png',
+    RUBY	    :	'./assets/tiles/tilesRuby.png',
+    SAND	    :	'./assets/tiles/tilesSand.png',
+    SILICA	    :	'./assets/tiles/tilesSilica.png',
+    STONE	    :	'./assets/tiles/tilesStone.png',
+    TIN	        :	'./assets/tiles/tilesTin.png',
+    TITANITE	:	'./assets/tiles/tilesTitanite.png',
+    TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',
+}

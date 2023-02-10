@@ -53,14 +53,12 @@ class BlockFactory {
     }
 
     create(tag, x, y) {
-        let id = tag.toUpperCase().replace(" TILE", "");
-        let path = TERRAIN_ASSETS["TILES_" + id + "_PATH"];
-        let lifespan = TERRAIN_LIFE["TILE_" + id + "_LIFESPAN"];
+        let id = tag.toUpperCase().replace("TILE_", "");
         return this.em.addEntity(
             new Block({
                 tag: tag,
-                sprite: ASSET_MANAGER.cache[path],
-                lifespan: [lifespan],
+                sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
+                lifespan: TILE_LIFESPAN[id],
                 x: x * BLOCKSIZE,
                 y: y * BLOCKSIZE,
                 sWidth: 16,
