@@ -48,6 +48,10 @@ const TILES_DIRT_PATH = './assets/tiles/tilesDirt.png'
 const TILES_STONE_PATH = './assets/tiles/tilesStone.png'
 const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
 
+//Projectiles
+const PROJECTILE_ORB_PATH = './assets/projectiles/orb.png'
+const PROJECTILE_laser_PATH = './assets/projectiles/laser.png'
+
 const BISMUTH_GEN_STATS = {
     yMin: 0,
     yMax: 0,
@@ -151,6 +155,7 @@ const PICK = './assets/icons/item_3485.png'
 
 // arrays to queue using a loop
 const TERRAIN_ASSETS_ARRAY = [
+    PLAYER_PATH,
     TILES_BISMUTH_PATH,
     TILES_COAL_PATH,
     TILES_COBALT_PATH,
@@ -189,6 +194,7 @@ const TERRAIN_ASSETS_ARRAY = [
     UNDERGROUND_BACKGROUND_5,
     UNDERGROUND_BACKGROUND_6,
     BACKGROUND_DIRT,
-    PICK_CURSOR
+    PICK_CURSOR,
+    PROJECTILE_ORB_PATH
 ]
 

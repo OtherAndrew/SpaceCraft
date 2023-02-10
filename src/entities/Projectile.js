@@ -6,6 +6,8 @@ class Projectile {
      * @param {number} props.damage
      * @param {number} props.angle
      * @param {number} props.speed
+     * @param {number} props.originVX
+     * @param {number} props.originVY
      * @param {boolean} props.hasGravity
      * @return {Projectile}
      */
@@ -19,21 +21,21 @@ class Projectile {
     #buildComponents(props) {
         const stats = new CStats({
             damage: props.damage,
-            speed: props.speed
+            speed: props.speed,
+            invincible: true
         });
         const sprite = new CSprite({
-            sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_ORB_PATH),
+            sWidth: 16,
+            sHeight: 16,
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: props.hasGravity,
+            hasGravity: props.hasGravity || false,
             rotation: props.angle,
-            velocityX: Math.cos(props.angle) * props.speed, // + player vx
-            velocityY: Math.sin(props.angle) * props.speed // + player vy
+            velocityX: Math.cos(props.angle) * props.speed + props.originVX || 0,
+            velocityY: Math.sin(props.angle) * props.speed + props.originVY || 0
         });
         // const cWidth = BLOCKSIZE * .25;
         // const cHeight = BLOCKSIZE * .25
