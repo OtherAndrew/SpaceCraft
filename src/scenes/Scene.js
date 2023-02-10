@@ -7,6 +7,7 @@
 class Scene {
     constructor() {
         this.entityManager = new EntityManager()
+        this.blockFactory = new BlockFactory(this.entityManager);
         this.containerManager = new ContainerManager();
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
     }

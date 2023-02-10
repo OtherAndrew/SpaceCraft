@@ -34,13 +34,41 @@ const Block = function(props) {
                 sWidth: props.sWidth,
                 sHeight: props.sHeight,
                 scale: props.scale,
-                startFrameX: props.frameX || 0,
-                frameY: props.frameY || 0
+                firstFrameX: props.frameX,
+                frameY: props.frameY
             }),
-            new CProperties({
-                isCollectable: false
-            })
+            new CLifespan(props.lifespan)
         ]
     };
 }
 Block.prototype.name = 'block';
+
+
+/**
+ * Creates a block blueprint with corresponding sprite path and lifespan.
+ */
+class BlockFactory {
+    constructor(entityManager) {
+        this.em = entityManager;
+    }
+
+    create(tag, x, y) {
+        let id = tag.toUpperCase().replace(" TILE", "");
+        let path = TERRAIN_ASSETS["TILES_" + id + "_PATH"];
+        let lifespan = TERRAIN_LIFE["TILE_" + id + "_LIFESPAN"];
+        return this.em.addEntity(
+            new Block({
+                tag: tag,
+                sprite: ASSET_MANAGER.cache[path],
+                lifespan: [lifespan],
+                x: x * BLOCKSIZE,
+                y: y * BLOCKSIZE,
+                sWidth: 16,
+                sHeight: 16,
+                scale: BLOCKSIZE / 16,
+                frameX: getRandomInt(6),
+                frameY: getRandomInt(2)
+            })
+        );
+    }
+}

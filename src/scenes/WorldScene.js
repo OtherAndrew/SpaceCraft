@@ -144,7 +144,7 @@ class WorldScene extends Scene {
                         height: BLOCKSIZE
                     })
                 ])
-                e.tag = e.tag + " ground"
+                // e.tag = e.tag + " ground"
             }
             if (
                 this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
@@ -172,48 +172,8 @@ class WorldScene extends Scene {
 
         if(selected.tag.includes('tile')) {
             if(terrainMap[mapY][mapX].tag.includes('air')) {
-                let active = this.containerManager.removeFromPlayer(this.hud.slot);
-                let newBlock;
-                switch (true) {
-                    case active.includes("dirt"):
-                        newBlock = this.entityManager.addEntity(
-                            new DirtBlock({
-                                sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
-                                x: mapX * BLOCKSIZE,
-                                y: mapY * BLOCKSIZE,
-                                sWidth: 16,
-                                sHeight: 16,
-                                scale: BLOCKSIZE / 16,
-                                frameX: getRandomInt(6),
-                                frameY: getRandomInt(2)
-                            }))
-                        break;
-                    case active.includes("stone"):
-                        newBlock = this.entityManager.addEntity(
-                            new StoneBlock({
-                                sprite: ASSET_MANAGER.cache[TILES_STONE_PATH],
-                                x: mapX * BLOCKSIZE,
-                                y: mapY * BLOCKSIZE,
-                                sWidth: 16,
-                                sHeight: 16,
-                                scale: BLOCKSIZE / 16,
-                                frameX: getRandomInt(6),
-                                frameY: getRandomInt(2)
-                            }))
-                        break;
-                    case active.includes("ruby"):
-                        newBlock = this.entityManager.addEntity(
-                            new RubyBlock({
-                                sprite: ASSET_MANAGER.cache[TILES_RUBY_PATH],
-                                x: mapX * BLOCKSIZE,
-                                y: mapY * BLOCKSIZE,
-                                sWidth: 16,
-                                sHeight: 16,
-                                scale: BLOCKSIZE / 16,
-                                frameX: getRandomInt(3)
-                            }))
-                        break;
-                }
+                let tag = this.containerManager.removeFromPlayer(this.hud.slot);
+                let newBlock = this.blockFactory.create(tag, mapX, mapY);
                 if (newBlock) {
                     terrainMap[mapY][mapX].tag = newBlock.tag
                     terrainMap[mapY][mapX].id = newBlock.id
