@@ -5,13 +5,16 @@ class MobFactory {
     }
 
     build(mob, x, y) {
+        let out = null;
         switch (mob) {
-            case 'spore': this.entityManager.addEntity(new Spore({ x: x, y: y })); break;
-            case 'dirtcarver': this.entityManager.addEntity(new Dirtcarver({ x: x, y: y })); break;
-            case 'lightbug': this.entityManager.addEntity(new Lightbug({ x: x, y: y })); break;
-            case 'lightjelly': this.entityManager.addEntity(new Lightjelly({ x: x, y: y })); break;
+            case 'player': out = this.entityManager.addEntity(new Player({ x: x, y: y })); break;
+            case 'spore': out = this.entityManager.addEntity(new Spore({ x: x, y: y })); break;
+            case 'dirtcarver': out = this.entityManager.addEntity(new Dirtcarver({ x: x, y: y })); break;
+            case 'lightbug': out = this.entityManager.addEntity(new Lightbug({ x: x, y: y })); break;
+            case 'lightjelly': out = this.entityManager.addEntity(new Lightjelly({ x: x, y: y })); break;
             default: console.log(`Invalid mob name: ${mob}.`);
         }
+        return out;
     }
 
     #buildSpore(x, y) {

@@ -17,7 +17,7 @@ class WorldScene extends Scene {
         this.mobFactory = new MobFactory(this.entityManager);
 
         // this.#createEntity()
-        this.#createPlayer()
+        this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
         this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
         this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
@@ -81,14 +81,14 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        // this.drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
         this.hud.draw(uiActive, ctx);
     }
 
-    drawColliders(ctx) {
+    #drawColliders(ctx) {
         this.entityManager.getEntities.forEach(e => {
             if (e.components.boxCollider) {
                 let box = e.components.boxCollider
@@ -96,69 +96,6 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         });
-    }
-
-    /**
-     * A player entity for testing purposes
-     */
-    #createPlayer() {
-        this.player = this.entityManager.addEntity(new Player({
-            x: WIDTH_PIXELS * .5,
-            y: HEIGHT_PIXELS * .5 - 100,
-        }));
-    }
-
-    #createSpore() {
-        this.spore = this.entityManager.addEntity(new Spore({
-            x: this.player.components.transform.x,
-            y: this.player.components.transform.y - 50,
-        }));
-
-    }
-    //
-    // /**
-    //  *  dirtcarver spawn condition
-    //  */
-    #createDirtcarver() {
-        this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
-            x: this.player.components.transform.x - 100,
-            y: this.player.components.transform.y - 250,
-        }));
-    }
-    // lightjelly movement logic = lightbug movement logic
-    //
-    // /**
-    //  *  lightjelly spawn condition
-    //  */
-    // #createLightjelly() {
-    //     const spriteWidth = 168;
-    //     const spriteHeight = 219;
-    //     const scale = .5;
-    //     //const test = this.player.transform.x;
-    //     //console.log(test)
-    //     this.lightjelly = this.entityManager.addEntity(new Lightjelly({
-    //         sprite: this.lightJellySprite,
-    //         //controller for spawn point
-    //
-    //         x: this.player.components.transform.x + 300,
-    //         y: this.player.components.transform.y - 300,
-    //         sWidth: spriteWidth,
-    //         sHeight: spriteHeight,
-    //         scale: scale
-    //     }));
-    //
-    // }
-
-    /**
-     *  lightbug spawn condition
-     */
-    #createLightbug() {
-        this.lightbug = this.entityManager.addEntity(new Lightbug({
-            //controller for spawn point
-            x: this.player.components.transform.x + 1200,
-            y: this.player.components.transform.y - 100,
-        }));
-
     }
 
     /**
