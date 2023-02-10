@@ -5,17 +5,25 @@ class CStats {
         this.defenseMod = 1;
         this.damageMod = 1;
         this.name = "stats"
+        this.elapsedTime = 0;
+        this.regenCooldown = 5;
         return this;
     }
 
     applyDamage(damage) {
         if (!this.invincible) {
             this.currentHealth -= damage * this.defenseMod;
+            this.elapsedTime = 0;
         }
     }
 
     heal(amount) {
         this.currentHealth = clamp(this.currentHealth + amount, 0, this.maxHealth);
+    }
+
+    canRegen(tick) {
+        this.elapsedTime += tick;
+        return this.elapsedTime >= this.regenCooldown;
     }
 
     doDamage() {

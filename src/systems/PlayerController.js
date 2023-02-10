@@ -6,13 +6,18 @@ class PlayerController {
         this.pSprite = this.player.components.sprite
         this.acceleration = 1
         this.fastFall = 3;
+
+        this.jetpackTime = 0;
+        this.jetpackDuration = 2;
+        this.elapsedTime = 0;
+        this.jetpackCooldown = 5;
     }
 
     /**
      * Updates player state, animation, and position
      * @param input keyboard input
      */
-    update(input) {
+    update(input, tick) {
         let state = this.pSprite.currentState;
 
         if ((input[' ']) && this.pState.grounded) { //jump
@@ -22,9 +27,14 @@ class PlayerController {
         }
 
         if (input['w']) { // jetpack?
-            this.pState.grounded = false
-            this.pTransform.velocityY = -(GRAVITY + 10);
-            state = this.pState.direction === 'right' ? 'flyR' : 'flyL';
+            if (this.jetpackTime < this.jetpackDuration) {
+                this.pState.grounded = false
+                this.pTransform.velocityY = -(GRAVITY + 10);
+                this.jetpackTime += tick;
+                state = this.pState.direction === 'right' ? 'flyR' : 'flyL';
+            } else {
+                state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
+            }
         }
 
         if (input['a']) {
@@ -42,6 +52,12 @@ class PlayerController {
         } else { // no input
             this.pTransform.velocityX = 0;
             if (this.pState.grounded) {
+                if (this.elapsedTime >= this.jetpackCooldown) {
+                    this.elapsedTime = 0;
+                    this.jetpackTime = 0;
+                } else {
+                    this.elapsedTime += tick;
+                }
                 state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
             }
         }

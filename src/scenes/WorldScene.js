@@ -43,7 +43,7 @@ class WorldScene extends Scene {
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
             // get input
-            this.playerMovement.update(keys)
+            this.playerMovement.update(keys, deltaTime)
             // update state
             this.entityManager.update()
             //this.genericDeathManager.update(deltaTime)
