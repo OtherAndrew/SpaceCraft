@@ -10,82 +10,149 @@ const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
-const BACKGROUND_SCROLLING_SPEED_0 = .03
-const BACKGROUND_SCROLLING_SPEED_1 = .05
-const BACKGROUND_SCROLLING_SPEED_2 = .06
-const BACKGROUND_SCROLLING_SPEED_3 = .07
-const BACKGROUND_SCROLLING_SPEED_4 = .08
-const BACKGROUND_SCROLLING_SPEED_5 = .09
 
-const BISMUTH_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 3.0
-}
-const COAL_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 7.0
-}
-const COBALT_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 3.0
-}
-const COPPER_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 7.0
-}
-const FERRITE_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 3.0
-}
-const GOLD_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 6.0
-}
-const IRON_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 7.0
-}
-const PARAFFIN_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 3.0
-}
-const SAND_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 15.0
-}
-const SILICA_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 5.0
-}
-const TIN_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 2.5
-}
-const TITANITE_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 1.5
-}
-const TUNGSTEN_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 3.0
-}
-const RUBY_GEN_STATS = {
-    yMin: 0,
-    yMax: 0,
-    rate: 0.0
+// const BISMUTH_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const COAL_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 7.0
+// }
+// const COBALT_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const COPPER_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 7.0
+// }
+// const FERRITE_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const GOLD_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 6.0
+// }
+// const IRON_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 7.0
+// }
+// const PARAFFIN_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const SAND_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 15.0
+// }
+// const SILICA_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 5.0
+// }
+// const TIN_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 2.5
+// }
+// const TITANITE_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 1.5
+// }
+// const TUNGSTEN_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const RUBY_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 0.0
+// }
+
+const GENSTATS = {
+    BISMUTH	    :	{   
+                        yMin: 0, 
+                        yMax: 0, 
+                        rate: 3.0
+                    },
+    COAL	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 7.0
+    				},
+    COBALT	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 3.0
+    				},
+    COPPER	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 7.0
+    				},
+    FERRITE	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 3.0
+    				},
+    GOLD	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 6.0
+    				},
+    IRON	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 7.0
+    				},
+    PARAFFIN	:	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 3.0
+    				},
+    RUBY	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 0.0
+    				},
+    SAND	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 15.0
+                    },
+    SILICA	    :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 5.0
+                    },
+    TIN	        :	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 2.5
+                    },
+    TITANITE	:	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 1.5
+                    },
+    TUNGSTEN	:	{
+    					yMin: 0,
+    					yMax: 0,
+    					rate: 3.0
+                    }
 }
 
 const BG_PATH = {
@@ -100,6 +167,25 @@ const BG_PATH = {
     UNDERGROUND_5	:	'./assets/backgrounds/underground_5.png',
     UNDERGROUND_6	:	'./assets/backgrounds/underground_6.png'
 }
+
+const BG_SCROLL = {
+    SPEED_0 :	.03,
+    SPEED_1	:	.05,
+    SPEED_2	:	.06,
+    SPEED_3	:	.07,
+    SPEED_4	:	.08,
+    SPEED_5	:	.09
+}
+
+// ALT SOLUTION
+// const BG_SCROLL = {
+//     BACKGROUND_0    :	.03,
+//     BACKGROUND_1	:	.05,
+//     BACKGROUND_2	:	.06,
+//     BACKGROUND_3	:	.07,
+//     BACKGROUND_4	:	.08,
+//     BACKGROUND_5	:	.09
+// }
 
 const CHAR_PATH = {
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
@@ -121,7 +207,6 @@ const OVERLAY_PATH = {
     INVENTORY   :   './assets/overlay/inventory.png',
     VIGNETTE    :   './assets/overlay/vignette.png'
 }
-
 
 const TEST_PATH = {
     // FOR TEST ASSETS
