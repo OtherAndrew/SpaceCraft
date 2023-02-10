@@ -17,7 +17,8 @@ class MovementSystem {
     updateX(tick) {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityX(this.player, tick);
-        const mobs = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
+        const mobs = this.entities.filter(e => e.isDrawable
+            && (e.tag.includes('mob') || e.tag.includes('projectile')));
         mobs.forEach(e => this.#moveEntityX(e, tick));
     }
 
@@ -28,7 +29,8 @@ class MovementSystem {
     updateY(tick) {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityY(this.player, tick);
-        const mobs = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
+        const mobs = this.entities.filter(e => e.isDrawable
+            && (e.tag.includes('mob') || e.tag.includes('projectile')));
         mobs.forEach(e => this.#moveEntityY(e, tick));
     }
 

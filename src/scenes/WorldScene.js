@@ -37,7 +37,9 @@ class WorldScene extends Scene {
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
 
+        this.projectileManager = new ProjectileManager(this.entityManager)
         this.#givePlayerPickAxe()
+        this.#givePlayerGun()
     }
 
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
@@ -60,6 +62,7 @@ class WorldScene extends Scene {
             this.movementSystem.updateX(deltaTime)
             this.collisionSystem.resolveTileX()
 
+            this.collisionSystem.resolveProjectiles()
 
             // draw
             this.camera.update()
@@ -81,7 +84,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
@@ -190,6 +193,8 @@ class WorldScene extends Scene {
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))
                 }
             }
+        } else if (selected.tag === 'gun') {
+            this.projectileManager.shoot(pos, BLOCKSIZE / 4, false, this.player)
         }
     }
     #getGridCell(pos, player) {
@@ -233,6 +238,21 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[PICK],
+                    sWidth: BLOCKSIZE,
+                    sHeight: BLOCKSIZE
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerGun() {
+        let e = this.entityManager.addEntity({
+            tag: 'gun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[GUN],
                     sWidth: BLOCKSIZE,
                     sHeight: BLOCKSIZE
                 }),

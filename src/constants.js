@@ -157,6 +157,7 @@ const B2 = './assets/sprites/b2.png'
 const B3 = './assets/sprites/b3.png'
 const O1 = './assets/overlay/overlaymockup.png'
 const PICK = './assets/icons/item_3485.png'
+const GUN = "./assets/icons/item_1782.png"
 
 const TERRAIN_ASSETS = {
     TILES_BISMUTH_PATH,
@@ -242,6 +243,8 @@ const TERRAIN_ASSETS_ARRAY = [
     UNDERGROUND_BACKGROUND_6,
     BACKGROUND_DIRT,
     PICK_CURSOR,
-    PROJECTILE_ORB_PATH
+    PROJECTILE_ORB_PATH,
+    PROJECTILE_LASER_PATH,
+    GUN
 ]
 
