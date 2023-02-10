@@ -38,6 +38,7 @@ class WorldScene extends Scene {
         this.cursorSystem.init()
 
         this.projectileManager = new ProjectileManager(this.entityManager)
+        this.damageSystem = new DamageSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
     }
@@ -63,6 +64,7 @@ class WorldScene extends Scene {
             this.collisionSystem.resolveTileX()
 
             this.collisionSystem.resolveProjectiles()
+            this.damageSystem.update();
 
             // draw
             this.camera.update()
