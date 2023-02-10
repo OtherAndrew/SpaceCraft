@@ -50,7 +50,7 @@ const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
 
 //Projectiles
 const PROJECTILE_ORB_PATH = './assets/projectiles/orb.png'
-const PROJECTILE_laser_PATH = './assets/projectiles/laser.png'
+const PROJECTILE_LASER_PATH = './assets/projectiles/laser.png'
 
 const BISMUTH_GEN_STATS = {
     yMin: 0,

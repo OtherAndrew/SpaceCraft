@@ -12,6 +12,9 @@ class DamageSystem {
             if (e.components["stats"].currentHealth <= 0) {
                 e.destroy();
             }
+            // if (e.components["stats"].canRegen()) {
+            //     e.components.heal(1);
+            // }
         });
     }
 }

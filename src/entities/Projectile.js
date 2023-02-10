@@ -28,6 +28,7 @@ class Projectile {
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_ORB_PATH),
             sWidth: 16,
             sHeight: 16,
+            scale: BLOCKSIZE * 0.5 / 16
         });
         const transform = new CTransform({
             x: props.x,

@@ -25,7 +25,7 @@ class CollisionSystem {
      * Call this before resolving.
      */
     refresh() {
-        this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+        this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
         this.mobList = this.collideList.filter(e => e.tag.includes("player")
                                                  || e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
@@ -45,8 +45,8 @@ class CollisionSystem {
         this.mobList.forEach(mob => {
             this.tileList.forEach(tile => {
                 if (this.#checkCollision(mob, tile)) {
-                    const mTransform = mob.components.transform;
-                    const mCollider = mob.components.boxCollider;
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
                     mTransform.velocityX = 0
                     mTransform.x = mTransform.last.x
                     mCollider.setPosition(mTransform.x, mTransform.y)
@@ -62,9 +62,9 @@ class CollisionSystem {
         this.mobList.forEach(mob => {
             this.tileList.forEach(tile => {
                 if (this.#checkCollision(mob, tile)) {
-                    const mTransform = mob.components.transform;
-                    const mCollider = mob.components.boxCollider;
-                    const tCollider = tile.components.boxCollider;
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
+                    const tCollider = tile.components["boxCollider"];
                     mTransform.velocityY = 0
                     mTransform.y = mTransform.last.y
                     if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
@@ -130,8 +130,8 @@ class CollisionSystem {
      * @returns {boolean} If entities are colliding.
      */
     #checkCollision(entityA, entityB) {
-        const a = entityA.components.boxCollider;
-        const b = entityB.components.boxCollider;
+        const a = entityA.components["boxCollider"];
+        const b = entityB.components["boxCollider"];
         return a.right > b.left
             && a.left < b.right
             && a.top < b.bottom
