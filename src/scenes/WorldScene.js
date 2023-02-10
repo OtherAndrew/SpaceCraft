@@ -12,12 +12,6 @@ class WorldScene extends Scene {
      */
     init(assets, canvas) {
         // entities
-        // this.playerSprite = assets[PLAYER_PATH];
-        this.entitySprite = assets[ENTITY_PATH];
-        this.sporeSprite = assets[SPORE_PATH];
-        this.dirtCarverSprite = assets[DIRTCARVER_PATH];
-        this.lightJellySprite = assets[LIGHTJELLY_PATH];
-        this.lightBugSprite = assets[LIGHTBUG_PATH];
         //this.genericDeathSprite = assets[GENERICDEATH_PATH];
         this.terrainMap = getTerrain(this.entityManager)
         // this.#createEntity()
@@ -28,10 +22,6 @@ class WorldScene extends Scene {
         this.#createLightbug()
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
-        // this.sporeManager = new SporeController(this.spore)
-        // this.dirtcarverManager = new DirtcarverController(this.dirtcarver, this.player)
-        // this.lightjellyManager = new LightjellyController(this.lightjelly, this.player)
-        // this.lightbugManager = new LightbugController(this.lightbug, this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player)
@@ -54,10 +44,6 @@ class WorldScene extends Scene {
             this.playerMovement.update(keys)
             // update state
             this.entityManager.update()
-            // this.sporeManager.update(deltaTime)
-            // this.dirtcarverManager.update(deltaTime)
-            // this.lightjellyManager.update(deltaTime)
-            // this.lightbugManager.update(deltaTime)
             //this.genericDeathManager.update(deltaTime)
             this.renderBox.update()
             this.#updateTileState()
@@ -166,7 +152,6 @@ class WorldScene extends Scene {
      */
     #createLightbug() {
         this.lightbug = this.entityManager.addEntity(new Lightbug({
-            sprite: this.lightBugSprite,
             //controller for spawn point
             x: this.player.components.transform.x + 1200,
             y: this.player.components.transform.y - 100,
