@@ -19,11 +19,14 @@ class Lightbug {
     };
 
     #buildComponents(props) {
+        const spriteWidth = 50;
+        const spriteHeight = 49;
+        const scale = 1;
         const sprite = new CSprite({
             sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sWidth: spriteWidth,
+            sHeight: spriteHeight,
+            scale: scale,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 7,
@@ -33,8 +36,6 @@ class Lightbug {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            velocityX: 0,
-            velocityY: 0,
             maxVelocityX: 2.5,
             maxVelocityY: 2.5
         });

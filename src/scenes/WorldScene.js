@@ -172,18 +172,11 @@ class WorldScene extends Scene {
      *  lightbug spawn condition
      */
     #createLightbug() {
-        const spriteWidth = 50;
-        const spriteHeight = 49;
-        const scale = 1;
         this.lightbug = this.entityManager.addEntity(new Lightbug({
             sprite: this.lightBugSprite,
             //controller for spawn point
-
             x: this.player.components.transform.x + 1200,
             y: this.player.components.transform.y - 100,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
         }));
 
     }
