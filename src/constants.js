@@ -138,9 +138,6 @@ const PICK_CURSOR = './assets/cursors/pickCursor.cur'
 
 // TESTING
 const BG = './assets/overlay/vignette.png'
-const B1 = './assets/sprites/b1.png'
-const B2 = './assets/sprites/b2.png'
-const B3 = './assets/sprites/b3.png'
 const O1 = './assets/overlay/inventory.png'
 const PICK = './assets/icons/item_3485.png'
 
@@ -165,9 +162,6 @@ const TERRAIN_ASSETS_ARRAY = [
     BACKGROUND_SURFACE_0,
     BACKGROUND_SURFACE_1,
     BG,
-    B1,
-    B2,
-    B3,
     O1,
     PICK,
     SPORE_PATH,
@@ -213,6 +207,11 @@ const TILE_PATH = {
 }
 
 const OVERLAY_PATH = {
-    VIGNETTE    :   './assets/overlay/vignette.png',
-    INVENTORY   :   './assets/overlay/inventory.png'
+    INVENTORY   :   './assets/overlay/inventory.png',
+    VIGNETTE    :   './assets/overlay/vignette.png'
+}
+
+const PATHS = {
+    OVERLAYS    :   OVERLAY_PATH,
+    TILES       :   TILE_PATH
 }

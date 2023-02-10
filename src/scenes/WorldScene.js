@@ -173,7 +173,7 @@ class WorldScene extends Scene {
         if(selected.tag.includes('tile')) {
             if(terrainMap[mapY][mapX].tag.includes('air')) {
                 let tag = this.containerManager.removeFromPlayer(this.hud.slot);
-                let newBlock = this.blockFactory.create(tag, mapX, mapY);
+                let newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, BLOCKSIZE));
                 if (newBlock) {
                     terrainMap[mapY][mapX].tag = newBlock.tag
                     terrainMap[mapY][mapX].id = newBlock.id

@@ -95,16 +95,7 @@ const getTerrain = (entityManager) => {
                     props.recurse = false
                     return createBlock(props)
                 }
-                return entityManager.addEntity(new DirtBlock({
-                    sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }));
+                return entityManager.addEntity(generateBlock('tile_dirt', props.x, props.y));
             case 'stone':
                 if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
                     props.value = Math.round(Math.random() + 3)
@@ -115,16 +106,7 @@ const getTerrain = (entityManager) => {
                     props.recurse = false
                     return createBlock(props)
                 }
-                return entityManager.addEntity(new StoneBlock({
-                    sprite: ASSET_MANAGER.cache[TILES_STONE_PATH],
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }));
+                return entityManager.addEntity(generateBlock('tile_stone', props.x, props.y));
             default: 
                 return {tag: 'air', id: null}
         }

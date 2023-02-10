@@ -47,26 +47,18 @@ Block.prototype.name = 'block';
 /**
  * Creates a block blueprint with corresponding sprite path and lifespan.
  */
-class BlockFactory {
-    constructor(entityManager) {
-        this.em = entityManager;
-    }
-
-    create(tag, x, y) {
-        let id = tag.toUpperCase().replace("TILE_", "");
-        return this.em.addEntity(
-            new Block({
-                tag: tag,
-                sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-                lifespan: TILE_LIFE[id],
-                x: x * BLOCKSIZE,
-                y: y * BLOCKSIZE,
-                sWidth: 16,
-                sHeight: 16,
-                scale: BLOCKSIZE / 16,
-                frameX: getRandomInt(6),
-                frameY: getRandomInt(2)
-            })
-        );
-    }
+const generateBlock = (tag, x, y, multiplier=1) => {
+    let id = tag.toUpperCase().replace("TILE_", "");
+    return new Block({
+        tag: tag,
+        sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
+        lifespan: TILE_LIFE[id],
+        x: x * multiplier,
+        y: y * multiplier,
+        sWidth: 16,
+        sHeight: 16,
+        scale: BLOCKSIZE / 16,
+        frameX: getRandomInt(6),
+        frameY: getRandomInt(2)
+    });
 }
