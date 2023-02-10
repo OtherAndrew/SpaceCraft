@@ -245,3 +245,16 @@ const PATHS = {
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH
 }
+
+const CONSTANTS = {
+    BGS         :   BG_PATH,
+    BGSCROLLS   :   BG_SCROLL,
+    CHARS       :   CHAR_PATH,
+    LIVES       :   TILE_LIFE,
+    MISCS       :   MISC_PATH,
+    OVERLAYS    :   OVERLAY_PATH,
+    TESTS       :   TEST_PATH,
+    TILES       :   TILE_PATH
+}
+
+for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant]);

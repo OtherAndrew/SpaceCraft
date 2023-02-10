@@ -1,4 +1,3 @@
-
 const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 
