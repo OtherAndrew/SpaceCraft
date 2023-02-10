@@ -185,7 +185,8 @@ class ContainerManager {
 
     draw(uiActive, ctx, mouse) {
         if (uiActive) {
-            ctx.drawImage(ASSET_MANAGER.getAsset('./assets/backgrounds/bg.png'), 0, 0);
+            ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.INVENTORY), 0, 0);
+            ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.VIGNETTE), 0, 0);
             for (let i = 0; i < this.activeInventory.length; i++) {
                 for (let c = 0; c < this.activeInventory[i].length; c++) this.activeInventory[i][c].draw(ctx);
             }

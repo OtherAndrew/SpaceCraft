@@ -58,7 +58,7 @@ class BlockFactory {
             new Block({
                 tag: tag,
                 sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-                lifespan: TILE_LIFESPAN[id],
+                lifespan: TILE_LIFE[id],
                 x: x * BLOCKSIZE,
                 y: y * BLOCKSIZE,
                 sWidth: 16,

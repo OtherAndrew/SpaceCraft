@@ -35,7 +35,7 @@ const RubyBlock = function(props) {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CLifespan(TILE_LIFESPAN_RUBY)
+            new CLifespan(TILE_LIFE_RUBY)
         ]
     };
 }

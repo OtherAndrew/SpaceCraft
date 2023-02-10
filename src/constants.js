@@ -117,9 +117,9 @@ const RUBY_GEN_STATS = {
 }
 
 //Tiles Lifespan numbers
-const TILE_LIFESPAN_DIRT = 20
-const TILE_LIFESPAN_STONE = 30
-const TILE_LIFESPAN_RUBY = 50
+const TILE_LIFE_DIRT = 20
+const TILE_LIFE_RUBY = 50
+const TILE_LIFE_STONE = 30
 
 //Backgrounds
 const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
@@ -137,11 +137,11 @@ const UNDERGROUND_BACKGROUND_6 = './assets/backgrounds/underground_6.png'
 const PICK_CURSOR = './assets/cursors/pickCursor.cur'
 
 // TESTING
-const BG = './assets/backgrounds/bg.png'
+const BG = './assets/overlay/vignette.png'
 const B1 = './assets/sprites/b1.png'
 const B2 = './assets/sprites/b2.png'
 const B3 = './assets/sprites/b3.png'
-const O1 = './assets/overlay/overlaymockup.png'
+const O1 = './assets/overlay/inventory.png'
 const PICK = './assets/icons/item_3485.png'
 
 // arrays to queue using a loop
@@ -187,7 +187,7 @@ const TERRAIN_ASSETS_ARRAY = [
     PICK_CURSOR
 ]
 
-const TILE_LIFESPAN = {
+const TILE_LIFE = {
     DIRT    :   20,
     RUBY    :   50,
     STONE   :   30
@@ -210,4 +210,9 @@ const TILE_PATH = {
     TIN	        :	'./assets/tiles/tilesTin.png',
     TITANITE	:	'./assets/tiles/tilesTitanite.png',
     TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',
+}
+
+const OVERLAY_PATH = {
+    VIGNETTE    :   './assets/overlay/vignette.png',
+    INVENTORY   :   './assets/overlay/inventory.png'
 }

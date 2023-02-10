@@ -35,7 +35,7 @@ const StoneBlock = function(props) {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CLifespan(TILE_LIFESPAN_STONE)
+            new CLifespan(TILE_LIFE_STONE)
         ]
     };
 }
