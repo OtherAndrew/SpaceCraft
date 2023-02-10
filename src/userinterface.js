@@ -78,38 +78,38 @@ class HUD {
     }
 }
 // TESTING
-class Block {
-    constructor() {
-        this.sprite = null;
-        this.width = 32;
-        this.height = 32;
-    };
-
-    draw(ctx, x, y) {
-        ctx.drawImage(ASSET_MANAGER.getAsset(this.sprite), x, y);
-    };
-}
-
-class block1 extends Block {
-    constructor() {
-        super();
-        this.tag = "rock";
-        this.sprite = "./assets/sprites/b1.png";
-    };
-}
-
-class block2 extends Block {
-    constructor() {
-        super();
-        this.tag = "sand";
-        this.sprite = "./assets/sprites/b2.png";
-    };
-}
-
-class block3 extends Block {
-    constructor() {
-        super();
-        this.tag = "dirt";
-        this.sprite = "./assets/sprites/b3.png";
-    };
-}
+// class Block {
+//     constructor() {
+//         this.sprite = null;
+//         this.width = 32;
+//         this.height = 32;
+//     };
+//
+//     draw(ctx, x, y) {
+//         ctx.drawImage(ASSET_MANAGER.getAsset(this.sprite), x, y);
+//     };
+// }
+//
+// class block1 extends Block {
+//     constructor() {
+//         super();
+//         this.tag = "rock";
+//         this.sprite = "./assets/sprites/b1.png";
+//     };
+// }
+//
+// class block2 extends Block {
+//     constructor() {
+//         super();
+//         this.tag = "sand";
+//         this.sprite = "./assets/sprites/b2.png";
+//     };
+// }
+//
+// class block3 extends Block {
+//     constructor() {
+//         super();
+//         this.tag = "dirt";
+//         this.sprite = "./assets/sprites/b3.png";
+//     };
+// }
