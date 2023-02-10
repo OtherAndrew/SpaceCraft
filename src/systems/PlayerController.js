@@ -52,15 +52,19 @@ class PlayerController {
         } else { // no input
             this.pTransform.velocityX = 0;
             if (this.pState.grounded) {
-                if (this.elapsedTime >= this.jetpackCooldown) {
-                    this.elapsedTime = 0;
-                    this.jetpackTime = 0;
-                } else {
-                    this.elapsedTime += tick;
-                }
                 state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
             }
         }
+
+        if (this.pState.grounded) {
+            if (this.elapsedTime >= this.jetpackCooldown) {
+                this.elapsedTime = 0;
+                this.jetpackTime = 0;
+            } else {
+                this.elapsedTime += tick;
+            }
+        }
+
         this.pSprite.setAnimation(state);
     }
 }
