@@ -17,34 +17,6 @@ const BACKGROUND_SCROLLING_SPEED_3 = .07
 const BACKGROUND_SCROLLING_SPEED_4 = .08
 const BACKGROUND_SCROLLING_SPEED_5 = .09
 
-// NPC Sprite Sheets
-const PLAYER_PATH = "./assets/sprites/player.png";
-const ENTITY_PATH = "./assets/sprites/entity.png";
-const SPORE_PATH = "./assets/sprites/spore.png";
-const DIRTCARVER_PATH = "./assets/sprites/dirtcarver.png";
-const LIGHTJELLY_PATH = "./assets/sprites/lightjelly.png";
-const LIGHTBUG_PATH = "./assets/sprites/lightbug.png";
-const GRAPEBOMB_PATH = "./assets/sprites/grapebomb.png";
-const GENERICDEATH_PATH = "./assets/sprites/smoke.png";
-
-//Tiles
-const TILES_BISMUTH_PATH = './assets/tiles/tilesBismuth.png'
-const TILES_COAL_PATH = './assets/tiles/tilesCoal.png'
-const TILES_COBALT_PATH = './assets/tiles/tilesCobalt.png'
-const TILES_COPPER_PATH = './assets/tiles/tilesCopper.png'
-const TILES_DIRT_PATH = './assets/tiles/tilesDirt.png'
-const TILES_FERRITE_PATH = './assets/tiles/tilesFerrite.png'
-const TILES_GOLD_PATH = './assets/tiles/tilesGold.png'
-const TILES_IRON_PATH = './assets/tiles/tilesIron.png'
-const TILES_PARAFFIN_PATH = './assets/tiles/tilesParaffin.png'
-const TILES_RUBY_PATH = './assets/tiles/tilesRuby.png'
-const TILES_SAND_PATH = './assets/tiles/tilesSand.png'
-const TILES_SILICA_PATH = './assets/tiles/tilesSilica.png'
-const TILES_STONE_PATH = './assets/tiles/tilesStone.png'
-const TILES_TIN_PATH = './assets/tiles/tilesTin.png'
-const TILES_TITANITE_PATH = './assets/tiles/tilesTitanite.png'
-const TILES_TUNGSTEN_PATH = './assets/tiles/tilesTungsten.png'
-
 const BISMUTH_GEN_STATS = {
     yMin: 0,
     yMax: 0,
@@ -116,70 +88,44 @@ const RUBY_GEN_STATS = {
     rate: 0.0
 }
 
-//Tiles Lifespan numbers
-const TILE_LIFE_DIRT = 20
-const TILE_LIFE_RUBY = 50
-const TILE_LIFE_STONE = 30
+const BG_PATH = {
+    DIRT	        :	'./assets/backgrounds/background_dirt.png',
+    SURFACE_0       :   './assets/backgrounds/surface_background_0.png',
+    SURFACE_1       :   './assets/backgrounds/surface_background_1.png',
+    UNDERGROUND_0	:	'./assets/backgrounds/underground_0.png',
+    UNDERGROUND_1	:	'./assets/backgrounds/underground_1.png',
+    UNDERGROUND_2	:	'./assets/backgrounds/underground_2.png',
+    UNDERGROUND_3	:	'./assets/backgrounds/underground_3.png',
+    UNDERGROUND_4	:	'./assets/backgrounds/underground_4.png',
+    UNDERGROUND_5	:	'./assets/backgrounds/underground_5.png',
+    UNDERGROUND_6	:	'./assets/backgrounds/underground_6.png'
+}
 
-//Backgrounds
-const BACKGROUND_SURFACE_0 ='./assets/backgrounds/surface_background_0.png'
-const BACKGROUND_SURFACE_1 ='./assets/backgrounds/surface_background_1.png'
-const BACKGROUND_DIRT = './assets/backgrounds/background_dirt.png'
-const UNDERGROUND_BACKGROUND_0 = './assets/backgrounds/underground_0.png'
-const UNDERGROUND_BACKGROUND_1 = './assets/backgrounds/underground_1.png'
-const UNDERGROUND_BACKGROUND_2 = './assets/backgrounds/underground_2.png'
-const UNDERGROUND_BACKGROUND_3 = './assets/backgrounds/underground_3.png'
-const UNDERGROUND_BACKGROUND_4 = './assets/backgrounds/underground_4.png'
-const UNDERGROUND_BACKGROUND_5 = './assets/backgrounds/underground_5.png'
-const UNDERGROUND_BACKGROUND_6 = './assets/backgrounds/underground_6.png'
+const CHAR_PATH = {
+    DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
+    ENTITY      :	'./assets/sprites/entity.png',
+    GRAPEBOMB   :	'./assets/sprites/grapebomb.png',
+    LIGHTBUG    :	'./assets/sprites/lightbug.png',
+    LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
+    PLAYER      :	'./assets/sprites/player.png',
+    SPORE       :	'./assets/sprites/spore.png'
+}
 
-//Cursors
-const PICK_CURSOR = './assets/cursors/pickCursor.cur'
+const MISC_PATH = {
+    GENERICDEATH	:	'./assets/sprites/smoke.png',
+    PICK	        :	'./assets/icons/item_3485.png',
+    PICK_CURSOR	    :	'./assets/cursors/pickCursor.cur'
+}
 
-// TESTING
-const BG = './assets/overlay/vignette.png'
-const O1 = './assets/overlay/inventory.png'
-const PICK = './assets/icons/item_3485.png'
+const OVERLAY_PATH = {
+    INVENTORY   :   './assets/overlay/inventory.png',
+    VIGNETTE    :   './assets/overlay/vignette.png'
+}
 
-// arrays to queue using a loop
-const TERRAIN_ASSETS_ARRAY = [
-    TILES_BISMUTH_PATH,
-    TILES_COAL_PATH,
-    TILES_COBALT_PATH,
-    TILES_COPPER_PATH,
-    TILES_DIRT_PATH,
-    TILES_FERRITE_PATH,
-    TILES_GOLD_PATH,
-    TILES_IRON_PATH,
-    TILES_PARAFFIN_PATH,
-    TILES_RUBY_PATH,
-    TILES_SAND_PATH,
-    TILES_SILICA_PATH,
-    TILES_STONE_PATH,
-    TILES_TIN_PATH,
-    TILES_TITANITE_PATH,
-    TILES_TUNGSTEN_PATH,
-    BACKGROUND_SURFACE_0,
-    BACKGROUND_SURFACE_1,
-    BG,
-    O1,
-    PICK,
-    SPORE_PATH,
-    DIRTCARVER_PATH,
-    LIGHTJELLY_PATH,
-    LIGHTBUG_PATH,
-    GRAPEBOMB_PATH,
-    GENERICDEATH_PATH,
-    UNDERGROUND_BACKGROUND_0,
-    UNDERGROUND_BACKGROUND_1,
-    UNDERGROUND_BACKGROUND_2,
-    UNDERGROUND_BACKGROUND_3,
-    UNDERGROUND_BACKGROUND_4,
-    UNDERGROUND_BACKGROUND_5,
-    UNDERGROUND_BACKGROUND_6,
-    BACKGROUND_DIRT,
-    PICK_CURSOR
-]
+
+const TEST_PATH = {
+    // FOR TEST ASSETS
+}
 
 const TILE_LIFE = {
     DIRT    :   20,
@@ -206,12 +152,11 @@ const TILE_PATH = {
     TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',
 }
 
-const OVERLAY_PATH = {
-    INVENTORY   :   './assets/overlay/inventory.png',
-    VIGNETTE    :   './assets/overlay/vignette.png'
-}
-
 const PATHS = {
+    BGS         :   BG_PATH,
+    CHARS       :   CHAR_PATH,
+    MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH
 }

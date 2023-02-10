@@ -19,7 +19,7 @@ class Lightjelly {
             speed: 1
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(LIGHTJELLY_PATH),
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.LIGHTJELLY),
             sWidth: 168,
             sHeight: 219,
             scale: 0.5,

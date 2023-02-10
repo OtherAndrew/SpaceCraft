@@ -134,7 +134,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_0],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.SURFACE_0],
                         sWidth: surfaceBackWidth,
                         sHeight: surfaceBackHeight,
                         scale: scale,
@@ -150,7 +150,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[BACKGROUND_DIRT],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.DIRT],
                         sWidth: 960,
                         sHeight: 540,
                         scale: 2,
@@ -166,7 +166,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_0],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_0],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -182,7 +182,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_1],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.SURFACE_1],
                         sWidth: surfaceBackWidth,
                         sHeight: surfaceBackHeight,
                         scale: scale,
@@ -198,7 +198,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_1],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_1],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -214,7 +214,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_2],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_2],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -230,7 +230,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_3],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_3],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -246,7 +246,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_4],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_4],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -262,7 +262,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_5],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_5],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,

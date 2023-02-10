@@ -232,7 +232,7 @@ class WorldScene extends Scene {
             tag: 'pickaxe',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[PICK],
+                    sprite: ASSET_MANAGER.cache[MISC_PATH.PICK],
                     sWidth: BLOCKSIZE,
                     sHeight: BLOCKSIZE
                 }),

@@ -9,7 +9,7 @@ class CursorSystem {
     }
 
     init() {
-        this.cursorList[PICK_CURSOR] = `url(${PICK_CURSOR}), none`
+        this.cursorList[MISC_PATH.PICK_CURSOR] = `url(${MISC_PATH.PICK_CURSOR}), none`
     }
     update(pos) {
         if(pos) {
@@ -17,7 +17,7 @@ class CursorSystem {
             if(selected) {
                 let tag = this.terrainMap[pos.y][pos.x].tag
                 if(tag.includes('tile') && selected.tag === 'pickaxe') {
-                    this.cursor.cursor = this.cursorList[PICK_CURSOR]
+                    this.cursor.cursor = this.cursorList[MISC_PATH.PICK_CURSOR]
                 } else {
                     this.cursor.cursor = "pointer"
                 }

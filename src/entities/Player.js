@@ -30,7 +30,7 @@ class Player {
         });
         const spriteWidth = 200;
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(PLAYER_PATH),
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.PLAYER),
             sWidth: spriteWidth,
             sHeight: 250,
             scale: BLOCKSIZE * 1.5 / spriteWidth,

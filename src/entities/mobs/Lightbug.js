@@ -20,7 +20,7 @@ class Lightbug {
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(LIGHTBUG_PATH),
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.LIGHTBUG),
             sWidth: 50,
             sHeight: 49,
             scale: 1,

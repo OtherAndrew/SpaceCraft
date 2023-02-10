@@ -16,7 +16,7 @@ class Spore {
     };
     #buildComponents(props) {
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(SPORE_PATH),
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.SPORE),
             sWidth: 138,
             sHeight: 196,
             scale: 0.5,
