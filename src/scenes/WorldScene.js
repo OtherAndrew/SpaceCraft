@@ -14,12 +14,17 @@ class WorldScene extends Scene {
         // entities
         //this.genericDeathSprite = assets[GENERICDEATH_PATH];
         this.terrainMap = getTerrain(this.entityManager)
+        this.mobFactory = new MobFactory(this.entityManager);
+
         // this.#createEntity()
         this.#createPlayer()
-        this.#createSpore()
-        this.#createDirtcarver()
+        // this.#createSpore()
+        this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
+        // this.#createDirtcarver()
+        this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
         // this.#createLightjelly()
-        this.#createLightbug()
+        // this.#createLightbug()
+        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100,);
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)

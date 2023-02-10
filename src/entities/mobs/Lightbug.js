@@ -63,8 +63,10 @@ class Lightbug {
         const distance = getDistance2(x, y, targetX, targetY);
         const angle = getAngle2(x + offsetX, y + offsetY, targetX, targetY);
         if (distance <= 400) {
-            transform.velocityX = Math.cos(angle) * velocity;
-            transform.velocityY = Math.sin(angle) * velocity;
+            // transform.velocityX = Math.cos(angle) * velocity;
+            // transform.velocityY = Math.sin(angle) * velocity;
+            transform.velocityY = targetY + offsetY < y ? -velocity : velocity;
+            transform.velocityX = targetX + offsetX < x ? -velocity : velocity;
         } else {
             transform.velocityX = 0;
             transform.velocityY = 0;
