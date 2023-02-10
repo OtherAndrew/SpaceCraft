@@ -18,13 +18,10 @@ class WorldScene extends Scene {
 
         // this.#createEntity()
         this.#createPlayer()
-        // this.#createSpore()
         this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
-        // this.#createDirtcarver()
         this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
-        // this.#createLightjelly()
-        // this.#createLightbug()
-        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100,);
+        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
+        this.mobFactory.build('lightjelly', this.player.components.transform.x + 300, this.player.components.transform.y - 300);
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
