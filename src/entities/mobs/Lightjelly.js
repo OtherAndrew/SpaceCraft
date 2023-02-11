@@ -33,18 +33,18 @@ class Lightjelly {
             x: props.x,
             y: props.y
         });
-        const collider = new CBoxCollider({
-            x: props.x,
-            y: props.y,
-            width: sprite.dWidth,
-            height: sprite.dHeight
-        });
+        // const collider = new CBoxCollider({
+        //     x: props.x,
+        //     y: props.y,
+        //     width: sprite.dWidth,
+        //     height: sprite.dHeight
+        // });
         this.#addAnimations(sprite);
-        transform.collider = collider
+        // transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
 
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, state];
     }
 
     #addAnimations(sprite) {
@@ -63,7 +63,7 @@ class Lightjelly {
 
         const distance = getDistance2(x, y, targetX, targetY);
         const angle = getAngle2(x, y, targetX, targetY);
-        if (distance <= 500) {
+        if (distance <= 1500) {
             // transform.velocityX = Math.cos(angle) * velocity;
             // transform.velocityY = Math.sin(angle) * velocity;
             transform.velocityY = targetY < y ? -velocity : velocity;

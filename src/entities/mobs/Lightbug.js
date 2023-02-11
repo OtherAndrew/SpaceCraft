@@ -58,7 +58,6 @@ class Lightbug {
         const y = this.components.transform.y;
         const transform = this.components.transform;
 
-
         //despawn after x range from player position
 
         const distance = getDistance2(x, y, targetX, targetY);
