@@ -10,6 +10,7 @@ class CollisionSystem {
         this.entities = entities;
 
         this.collideList = null;
+        this.tileCollideList = null;
         this.mobList = null;
         this.tileList = null;
         //extras
@@ -25,8 +26,8 @@ class CollisionSystem {
      * Call this before resolving.
      */
     refresh() {
-        this.collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
-        this.mobList = this.collideList.filter(e => e.tag.includes("player")
+        this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
+        this.tileCollideList = this.collideList.filter(e => e.tag.includes("player")
                                                  || e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
 
@@ -34,19 +35,20 @@ class CollisionSystem {
         this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
         this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
                                                        || e.tag.includes("enemyAttack"));
-        this.projectileList = this.collideList.filter(e => e.tag.includes("playerAttack")
-                                                        || e.tag.includes("enemyAttack"));
+
+        this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("bullet"));
     }
 
     /**
      * Checks for and resolves X collisions between mobs and tiles.
      */
     resolveTileX() {
-        this.mobList.forEach(mob => {
+        this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
                 if (this.#checkCollision(mob, tile)) {
-                    const mTransform = mob.components.transform;
-                    const mCollider = mob.components.boxCollider;
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
                     mTransform.velocityX = 0
                     mTransform.x = mTransform.last.x
                     mCollider.setPosition(mTransform.x, mTransform.y)
@@ -59,12 +61,12 @@ class CollisionSystem {
      * Checks for and resolves Y collisions between mobs and tiles.
      */
     resolveTileY() {
-        this.mobList.forEach(mob => {
+        this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
                 if (this.#checkCollision(mob, tile)) {
-                    const mTransform = mob.components.transform;
-                    const mCollider = mob.components.boxCollider;
-                    const tCollider = tile.components.boxCollider;
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
+                    const tCollider = tile.components["boxCollider"];
                     mTransform.velocityY = 0
                     mTransform.y = mTransform.last.y
                     if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
@@ -79,7 +81,7 @@ class CollisionSystem {
     //draft
     resolvePlayerAttack() {
         this.playerAttackList.forEach(atk => {
-           this.mobList.forEach(mob => {
+           this.tileCollideList.forEach(mob => {
                if (this.#checkCollision(atk, mob)) {
                    // handle attack
                }
@@ -110,7 +112,9 @@ class CollisionSystem {
             this.mobList.forEach(mob => {
                if (this.#checkCollision(p, mob)) {
                    // damage mob
-                   mob.components["stats"].currentHealth -= p.components["stats"].damage;
+                   mob.components["stats"].applyDamage(p.components["stats"].damage);
+                   mob.components["transform"].x = mob.components["transform"].last.x;
+                   mob.components["transform"].y = mob.components["transform"].last.y;
                    p.destroy();
                }
             });
@@ -130,8 +134,8 @@ class CollisionSystem {
      * @returns {boolean} If entities are colliding.
      */
     #checkCollision(entityA, entityB) {
-        const a = entityA.components.boxCollider;
-        const b = entityB.components.boxCollider;
+        const a = entityA.components["boxCollider"];
+        const b = entityB.components["boxCollider"];
         return a.right > b.left
             && a.left < b.right
             && a.top < b.bottom

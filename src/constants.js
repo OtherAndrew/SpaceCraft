@@ -83,9 +83,9 @@ const GRAVITY = 1
 // }
 
 const GENSTATS = {
-    BISMUTH	    :	{   
-                        yMin: 0, 
-                        yMax: 0, 
+    BISMUTH	    :	{
+                        yMin: 0,
+                        yMax: 0,
                         rate: 3.0
                     },
     COAL	    :	{
@@ -199,8 +199,11 @@ const CHAR_PATH = {
 
 const MISC_PATH = {
     GENERICDEATH	:	'./assets/sprites/smoke.png',
+    GUN             :   './assets/icons/item_1782.png',
     PICK	        :	'./assets/icons/item_3485.png',
-    PICK_CURSOR	    :	'./assets/cursors/pickCursor.cur'
+    PICK_CURSOR	    :	'./assets/cursors/pickCursor.cur',
+    PROJECTILE_ORB  : './assets/projectiles/orb.png',
+    PROJECTILE_LASER: './assets/projectiles/laser.png'
 }
 
 const OVERLAY_PATH = {

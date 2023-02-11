@@ -40,13 +40,17 @@ class WorldScene extends Scene {
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
 
+        this.projectileManager = new ProjectileManager(this.entityManager)
+        this.damageSystem = new DamageSystem(this.entityManager.getEntities)
+        this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
+        this.#givePlayerGun()
     }
 
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
             // get input
-            this.playerMovement.update(keys)
+            this.playerMovement.update(keys, deltaTime)
             // update state
             this.entityManager.update()
             //this.genericDeathManager.update(deltaTime)
@@ -63,6 +67,9 @@ class WorldScene extends Scene {
             this.movementSystem.updateX(deltaTime)
             this.collisionSystem.resolveTileX()
 
+            this.collisionSystem.resolveProjectiles()
+            this.damageSystem.update();
+            this.durationSystem.update(deltaTime)
 
             // draw
             this.camera.update()
@@ -193,6 +200,8 @@ class WorldScene extends Scene {
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))
                 }
             }
+        } else if (selected.tag === 'gun') {
+            this.projectileManager.shoot(pos, this.player)
         }
     }
     #getGridCell(pos, player) {
@@ -236,6 +245,21 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[MISC_PATH.PICK],
+                    sWidth: BLOCKSIZE,
+                    sHeight: BLOCKSIZE
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerGun() {
+        let e = this.entityManager.addEntity({
+            tag: 'gun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[GUN],
                     sWidth: BLOCKSIZE,
                     sHeight: BLOCKSIZE
                 }),

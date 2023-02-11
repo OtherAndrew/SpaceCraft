@@ -15,6 +15,9 @@ class Spore {
         return this;
     };
     #buildComponents(props) {
+        const stats = new CStats({
+
+        });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.SPORE),
             sWidth: 138,
@@ -44,7 +47,7 @@ class Spore {
         const state = new CState();
         state.sprite = sprite;
         state.transform = transform;
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     update(tick, targetX, targetY) {
