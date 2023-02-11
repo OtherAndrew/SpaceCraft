@@ -16,6 +16,7 @@ class Grapebomb {
         return this;
     };
     #buildComponents(props) {
+        const stats = new CStats({});
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
             sWidth: 236,
@@ -46,7 +47,7 @@ class Grapebomb {
         const state = new CState();
         state.sprite = sprite;
         state.transform = transform;
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     update(tick, targetX, targetY) {

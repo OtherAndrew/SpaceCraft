@@ -259,7 +259,7 @@ class WorldScene extends Scene {
             tag: 'gun',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[GUN],
+                    sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
                     sWidth: BLOCKSIZE,
                     sHeight: BLOCKSIZE
                 }),

@@ -58,7 +58,7 @@ class Projectile {
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(PROJECTILE_ORB_PATH),
+            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_ORB),
             sWidth: 16,
             sHeight: 16,
             scale: 1,
