@@ -5,19 +5,19 @@ class ProjectileManager {
     }
 
     shoot(targetPos, originEntity) {
+        const midPoint = {
+            x: WIDTH * .5,
+            y: HEIGHT * .5
+        }
         const oStats = originEntity.components['stats'];
         const oTransform = originEntity.components["transform"];
         const oCollider = originEntity.components["boxCollider"]
-        const angle = getAngle2(oTransform.x, oTransform.y, targetPos.x, targetPos.y)
 
-        const directionVector = normalize(oTransform, targetPos)
+        const directionVector = normalize(midPoint, targetPos)
         const vX = directionVector.x * BLOCKSIZE / 6;
         const vY = directionVector.y * BLOCKSIZE / 6;
-
-        console.log(angle)
         const p = new Projectile({
             damage: oStats.damage,
-            angle: angle,
             speed: BLOCKSIZE / 6,
             x: oCollider.x + oCollider.width / 2 - 8,
             y: oCollider.y + oCollider.height / 2 - 8,
