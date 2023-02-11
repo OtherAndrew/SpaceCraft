@@ -39,7 +39,7 @@ class Player {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: true,
+            hasGravity: false,
             maxVelocityX: stats.speed,
             maxVelocityY: BLOCKSIZE
             // maxVelocityY: 300
