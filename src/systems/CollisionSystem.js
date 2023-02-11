@@ -113,6 +113,8 @@ class CollisionSystem {
                if (this.#checkCollision(p, mob)) {
                    // damage mob
                    mob.components["stats"].applyDamage(p.components["stats"].damage);
+                   mob.components["transform"].x = mob.components["transform"].last.x;
+                   mob.components["transform"].y = mob.components["transform"].last.y;
                    p.destroy();
                }
             });

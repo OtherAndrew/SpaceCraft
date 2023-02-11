@@ -4,20 +4,21 @@ class ProjectileManager {
         this.entityManager = entityManager;
     }
 
-    shoot(targetPos, speed, hasGravity, originEntity) {
+    shoot(targetPos, originEntity) {
         const oStats = originEntity.components['stats'];
         const oTransform = originEntity.components["transform"];
+        const oCollider = originEntity.components["boxCollider"]
         const angle = getAngle2(oTransform.x, oTransform.y, targetPos.x, targetPos.y)
         console.log(angle)
         const p = new Projectile({
             damage: oStats.damage,
             angle: angle,
-            speed: speed,
-            x: oTransform.x,
-            y: oTransform.y,
+            speed: BLOCKSIZE / 6,
+            x: oCollider.x + oCollider.width / 2 - 8,
+            y: oCollider.y + oCollider.height / 2 - 8,
             originVX: oTransform.velocityX,
             originVY: oTransform.velocityY,
-            hasGravity: hasGravity
+            hasGravity: false
         });
         return this.entityManager.addEntity(p);
     }
@@ -53,7 +54,7 @@ class Projectile {
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_ORB_PATH),
             sWidth: 16,
             sHeight: 16,
-            scale: BLOCKSIZE * 0.5 / 16,
+            scale: 1,
             firstFrameX: 8
         });
         const transform = new CTransform({

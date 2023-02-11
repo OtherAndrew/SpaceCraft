@@ -198,7 +198,7 @@ class WorldScene extends Scene {
                 }
             }
         } else if (selected.tag === 'gun') {
-            this.projectileManager.shoot(pos, BLOCKSIZE / 6, false, this.player)
+            this.projectileManager.shoot(pos, this.player)
         }
     }
     #getGridCell(pos, player) {
