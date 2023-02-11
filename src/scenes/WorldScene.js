@@ -39,6 +39,7 @@ class WorldScene extends Scene {
 
         this.projectileManager = new ProjectileManager(this.entityManager)
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
+        this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
     }
@@ -65,6 +66,7 @@ class WorldScene extends Scene {
 
             this.collisionSystem.resolveProjectiles()
             this.damageSystem.update();
+            this.durationSystem.update(deltaTime)
 
             // draw
             this.camera.update()
@@ -86,7 +88,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
@@ -196,7 +198,7 @@ class WorldScene extends Scene {
                 }
             }
         } else if (selected.tag === 'gun') {
-            this.projectileManager.shoot(pos, BLOCKSIZE / 4, false, this.player)
+            this.projectileManager.shoot(pos, BLOCKSIZE / 6, false, this.player)
         }
     }
     #getGridCell(pos, player) {

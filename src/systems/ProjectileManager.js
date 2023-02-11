@@ -53,7 +53,8 @@ class Projectile {
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_ORB_PATH),
             sWidth: 16,
             sHeight: 16,
-            scale: BLOCKSIZE * 0.5 / 16
+            scale: BLOCKSIZE * 0.5 / 16,
+            firstFrameX: 8
         });
         const transform = new CTransform({
             x: props.x,
@@ -73,8 +74,9 @@ class Projectile {
             // xOffset: (sprite.dWidth - cWidth) / 2,
             // yOffset: (sprite.dHeight - cHeight) / 2,
         });
+        const duration = new CDuration(5);
         transform.collider = collider
-        return [stats, sprite, transform, collider];
+        return [stats, sprite, transform, collider, duration];
     }
 }
 

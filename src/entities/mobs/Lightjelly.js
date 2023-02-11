@@ -16,7 +16,8 @@ class Lightjelly {
     };
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 1
+            speed: 1,
+            maxHealth: 50
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(LIGHTJELLY_PATH),

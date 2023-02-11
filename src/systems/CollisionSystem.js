@@ -119,7 +119,7 @@ class CollisionSystem {
             this.tileList.forEach(tile => {
                if (this.#checkCollision(p, tile)) {
                    // remove projectile
-                   p.destroy();
+                   // p.destroy();
                }
             });
         });
