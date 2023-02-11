@@ -1,4 +1,5 @@
 class Lightbug {
+
     /**
      * Initializes Lightbug (enemy)
      * @param {Object} props         enemy position and display properties
