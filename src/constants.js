@@ -209,7 +209,8 @@ const MISC_PATH = {
 
 const OVERLAY_PATH = {
     INVENTORY   :   './assets/overlay/inventory.png',
-    VIGNETTE    :   './assets/overlay/vignette.png'
+    VIGNETTE    :   './assets/overlay/vignette.png',
+    FOV         :   './assets/overlay/fov.png'
 }
 
 const TEST_PATH = {
@@ -247,7 +248,7 @@ const PATHS = {
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
     TESTS       :   TEST_PATH,
-    TILES       :   TILE_PATH
+    TILES       :   TILE_PATH,
 }
 
 const CONSTANTS = {

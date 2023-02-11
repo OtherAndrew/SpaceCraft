@@ -15,14 +15,14 @@ class WorldImages {
                     y: this.player.components.transform.y
                 }),
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[FOV_SPRITE],
+                    sprite: ASSET_MANAGER.cache[OVERLAY_PATH.FOV],
                     sWidth: WIDTH,
                     sHeight: HEIGHT,
                     scale: 1,
                     firstFrameX: 0,
                     frameY: 0,
-                    lastFrameX: 2,
-                    fps: 6,
+                    lastFrameX: 0,
+                    fps: 1,
                 })
             ]
         })
@@ -35,13 +35,11 @@ class WorldImages {
         let playerPos = this.player.components.transform
         if(playerPos.y >= this.darkLevel) {
             this.fov.isDrawable = true
-            this.fov.components.transform.x = this.player.components.transform.x
-            this.fov.components.transform.y = this.player.components.transform.y
+            this.fov.components.transform.x = this.player.components.transform.x - WIDTH * .5
+            this.fov.components.transform.y = this.player.components.transform.y - HEIGHT * .5
             this.fov.components.sprite.setAnimation('zoomIn')
         } else {
             this.fov.isDrawable = false
         }
-        console.log(this.darkLevel, this.fov.components.transform.x, this.fov.components.transform.y)   
-        console.log(this.fov)
     }
 }
