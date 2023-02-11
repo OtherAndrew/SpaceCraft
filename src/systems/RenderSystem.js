@@ -23,6 +23,10 @@ class RenderSystem {
                     xSpeed = camera.x * BACKGROUND_SCROLLING_SPEED_4
                 }else if(e.tag === 'background_5') {
                     xSpeed = camera.x * BACKGROUND_SCROLLING_SPEED_5
+                } else if(e.tag === 'fov') {
+                    console.log(e)
+                    ctx.drawImage(sprite.sprite, 0, 0)
+                    return
                 }
 
                 try {

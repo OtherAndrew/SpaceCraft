@@ -44,6 +44,8 @@ class WorldScene extends Scene {
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
+        this.worldImages = new WorldImages(this.player)
+        this.worldImages.init(this.entityManager)
 
         this.#givePlayerPickAxe()
     }
@@ -63,6 +65,7 @@ class WorldScene extends Scene {
             this.mobController.update(deltaTime)
             this.movementSystem.update(deltaTime)
             this.#updateTileState()
+            this.worldImages.update()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.update()
 
@@ -84,7 +87,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        // this.drawColliders(ctx);
+        //this.drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx);
@@ -245,12 +248,13 @@ class WorldScene extends Scene {
                         height: BLOCKSIZE
                     })
                 ])
-                e.tag = e.tag + " ground"
+                e.tag = e.tag + " ground exposed"
             }
             if (
                 this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
                 this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap[0].length-1)].tag === 'air' ||
-                this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air') {
+                this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air' ||
+                this.terrainMap[clamp(posY-1, 0, this.terrainMap.length-1)][posX].tag === 'air') {
                     e.addComponent([
                         new CBoxCollider({
                             x: e.components.transform.x,
@@ -259,6 +263,10 @@ class WorldScene extends Scene {
                             height: BLOCKSIZE
                         })
                     ])
+                    e.tag = e.tag + " ground exposed"
+                } else {
+                    e.tag = e.tag.replace("exposed", "")
+                    delete e.components.boxCollider
                 }
         }
     }

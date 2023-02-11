@@ -19,6 +19,9 @@ const BACKGROUND_SCROLLING_SPEED_3 = .07
 const BACKGROUND_SCROLLING_SPEED_4 = .08
 const BACKGROUND_SCROLLING_SPEED_5 = .09
 
+//Misc
+const FOV_SPRITE = './assets/overlay/fov.png'
+
 
 // NPC Sprite Sheets
 const PLAYER_PATH = "./assets/sprites/player.png";
@@ -189,6 +192,7 @@ const TERRAIN_ASSETS_ARRAY = [
     UNDERGROUND_BACKGROUND_5,
     UNDERGROUND_BACKGROUND_6,
     BACKGROUND_DIRT,
-    PICK_CURSOR
+    PICK_CURSOR,
+    FOV_SPRITE
 ]
 
