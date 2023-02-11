@@ -58,7 +58,6 @@ class WorldScene extends Scene {
             //this.genericDeathManager.update(deltaTime)
             this.renderBox.update()
             this.#updateTileState()
-            this.worldImages.update()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.refresh()
 
@@ -70,6 +69,8 @@ class WorldScene extends Scene {
             this.movementSystem.updateX(deltaTime)
             this.collisionSystem.resolveTileX()
 
+            this.worldImages.update()
+            
             this.collisionSystem.resolveProjectiles()
             this.damageSystem.update();
             this.durationSystem.update(deltaTime)
