@@ -1,114 +1,145 @@
-// Variety of ways to check for a collection
+/**
+ * Checks for and resolves collisions between entities.
+ *
+ * @author Mario Flores Vences
+ * @author Andrew Nguyen
+ */
 class CollisionSystem {
     constructor(player, entities) {
-        this.player = player
-        this.entities = entities
-        this.collisions = []
-        this.directions = {
-            UP: [-135, -45],
-            DOWN: [45,135],
-            LEFT: [135, 225],
-            RIGHT: [-45, 45],
-        }
-    }
-    update() {
-        const collisionCheckList = []
-        collisionCheckList.push('player')
-        collisionCheckList.push('dirtcarver')
-        collisionCheckList.push('lightbug')
-        collisionCheckList.push('spore')
-        const collideList = this.entities.filter(e => e.isDrawable && e.components.boxCollider);
+        this.player = player;
+        this.entities = entities;
 
-        // mobs.forEach
-        collideList.forEach(a => {
-            // if (a.tag.includes('player') || a.tag.includes('dirtcarver')) {
-            if (collisionCheckList.some(mob => a.tag.includes(mob))) {
-                collideList.forEach(b => {
-                    if (this.#boxCollision(a, b) && a.id !== b.id) {
-                        if (b.tag.includes('tile')) {
-                            a.components.boxCollider.collisions[b.tag] = {
-                                pos: b.components.boxCollider,
-                                dir: this.#checkDirection(a, b)
-                            }
-                        } else {
-                            a.components.boxCollider.collisions[b.tag] = true;
-                        }
-                        this.#collisionResolution(a);
-                    }
-                });
-            }
+        this.collideList = null;
+        this.tileCollideList = null;
+        this.mobList = null;
+        this.tileList = null;
+        //extras
+        this.playerAttackList = null;
+        this.mobAttackList = null;
+        this.projectileList = null;
+
+        this.refresh();
+    }
+
+    /**
+     * Refreshes collide check lists.
+     * Call this before resolving.
+     */
+    refresh() {
+        this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
+        this.tileCollideList = this.collideList.filter(e => e.tag.includes("player")
+                                                 || e.tag.includes("mob"));
+        this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
+
+        // extras
+        this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
+        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
+                                                       || e.tag.includes("enemyAttack"));
+
+        this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("bullet"));
+    }
+
+    /**
+     * Checks for and resolves X collisions between mobs and tiles.
+     */
+    resolveTileX() {
+        this.tileCollideList.forEach(mob => {
+            this.tileList.forEach(tile => {
+                if (this.#checkCollision(mob, tile)) {
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
+                    mTransform.velocityX = 0
+                    mTransform.x = mTransform.last.x
+                    mCollider.setPosition(mTransform.x, mTransform.y)
+                }
+            });
         });
     }
 
-    #collisionResolution(entity) {
-        const eCollider = entity.components.boxCollider
-        const eTransform = entity.components.transform;
-
-        let collisions = eCollider.collisions
-        for(let c in collisions) {
-            if(c.includes('tile') && collisions[c].dir.length > 0) {
-                collisions[c].dir.forEach(dir => {
-                    if (dir === 'UP' || dir === 'DOWN') {
-                        eTransform.velocityY = 0
-                        eTransform.y = eTransform.lastY
-                        if (dir === 'DOWN') entity.components.state.grounded = true
+    /**
+     * Checks for and resolves Y collisions between mobs and tiles.
+     */
+    resolveTileY() {
+        this.tileCollideList.forEach(mob => {
+            this.tileList.forEach(tile => {
+                if (this.#checkCollision(mob, tile)) {
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
+                    const tCollider = tile.components["boxCollider"];
+                    mTransform.velocityY = 0
+                    mTransform.y = mTransform.last.y
+                    if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
+                        mob.components.state.grounded = true;
                     }
-                    if (dir === 'LEFT' || dir === 'RIGHT') {
-                        eTransform.velocityX = 0
-                        eTransform.x = eTransform.lastX
-                    }
-                });
-                eCollider.setPosition(eTransform.x, eTransform.y)
-                collisions[c].dir.length = 0;
-            }
-        }
+                    mCollider.setPosition(mTransform.x, mTransform.y)
+                }
+            });
+        });
     }
 
-    //Collision between two Rectangles, does not return direction of collision
-    #boxCollision(entityA, entityB) {
+    //draft
+    resolvePlayerAttack() {
+        this.playerAttackList.forEach(atk => {
+           this.tileCollideList.forEach(mob => {
+               if (this.#checkCollision(atk, mob)) {
+                   // handle attack
+               }
+           });
+        });
+    }
 
-        let a = entityA.components.boxCollider
-        let b = entityB.components.boxCollider
-        // let futurePos = {
-        //     x: a.x + (entityA.components.transform.velocityX * deltaTime),
-        //     y: a.y + (entityA.components.transform.velocityY * deltaTime)
-        // }
+    //draft
+    resolveMobAttack() {
+        this.mobAttackList.forEach(atk => {
+            if (this.#checkCollision(atk, this.player)) {
+                // handle attack
+            }
+            this.tileList.forEach(tile => {
+               if (this.#checkCollision(atk, tile) && atk.tag.includes("enemyAttack")) {
+                   // remove
+               }
+            });
+        });
+    }
+
+    //draft
+    resolveProjectiles() {
+        this.projectileList.forEach(p => {
+            // if (this.#checkCollision(p, this.player)) {
+            //     // damage player
+            // }
+            this.mobList.forEach(mob => {
+               if (this.#checkCollision(p, mob)) {
+                   // damage mob
+                   mob.components["stats"].applyDamage(p.components["stats"].damage);
+                   mob.components["transform"].x = mob.components["transform"].last.x;
+                   mob.components["transform"].y = mob.components["transform"].last.y;
+                   p.destroy();
+               }
+            });
+            this.tileList.forEach(tile => {
+               if (this.#checkCollision(p, tile)) {
+                   // remove projectile
+                   p.destroy();
+               }
+            });
+        });
+    }
+
+    /**
+     * Checks for collision between 2 entities with box colliders.
+     * @param entityA     First entity.
+     * @param entityB     Second entity.
+     * @returns {boolean} If entities are colliding.
+     */
+    #checkCollision(entityA, entityB) {
+        const a = entityA.components["boxCollider"];
+        const b = entityB.components["boxCollider"];
         return a.right > b.left
             && a.left < b.right
             && a.top < b.bottom
             && a.bottom > b.top;
     }
 
-    /**
-     * Checks which side the collision occurs.
-     * entityA is the player.
-     * @param {Entity} entityA 
-     * @param {Entity} entityB 
-     * @return {Array} of directions
-     */
-    #checkDirection(entityA, entityB) {
-        let a = entityA.components.boxCollider
-        let b = entityB.components.boxCollider
-        let midPointA = {
-            x: a.x + (a.width * .5),
-            y: a.y + (a.height * .5)
-        }
-        let midPointB = {
-            x: b.x + (b.width * .5),
-            y: b.y + (b.height * .5)
-        }
-        let degree = getDirection(midPointA, midPointB)
-        let result = []
-        for(let dir in this.directions) {
-            if(isBetween(degree, this.directions[dir][0], this.directions[dir][1])) {
-                result.push(dir)
-            }
-        }
-       return result
-    }
-
-    // Checks if point is within a rectangle
-    pointInRect = (point, rect) => {
-        return (point.x >= rect.x && point.y >= rect.y && point.x < rect.x + rect.width && point.y < rect.y + rect.height)
-    }
 }

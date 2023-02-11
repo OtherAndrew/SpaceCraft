@@ -3,12 +3,8 @@ class Spore {
     /**
      * Initializes Spore (enemy)
      * @param {Object} props         enemy position and display properties
-     * @param {Image} props.sprite   enemy sprite sheet
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
-     * @param {number} props.sWidth  frame width
-     * @param {number} props.sHeight frame height
-     * @param {number} props.scale   frame scale
+     * @param {number} props.x       X position of monster spawn
+     * @param {number} props.y       Y position of monster spawn
      * @returns {Object}             return enemy
      * @constructor
      */
@@ -19,11 +15,14 @@ class Spore {
         return this;
     };
     #buildComponents(props) {
+        const stats = new CStats({
+
+        });
         const sprite = new CSprite({
-            sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.SPORE),
+            sWidth: 138,
+            sHeight: 196,
+            scale: 0.5,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 7,
@@ -48,7 +47,7 @@ class Spore {
         const state = new CState();
         state.sprite = sprite;
         state.transform = transform;
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     update(tick, targetX, targetY) {

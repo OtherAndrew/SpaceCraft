@@ -1,13 +1,11 @@
-
 const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 
-TERRAIN_ASSETS_ARRAY.forEach(asset => {
-	ASSET_MANAGER.queueDownload(asset)
-})
-
-ASSET_MANAGER.queueDownload(PLAYER_PATH);
-ASSET_MANAGER.queueDownload(ENTITY_PATH);
+for (const category in PATHS) {
+	for (const asset in PATHS[category]) {
+		ASSET_MANAGER.queueDownload(PATHS[category][asset])
+	}
+}
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

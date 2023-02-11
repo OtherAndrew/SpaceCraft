@@ -95,16 +95,7 @@ const getTerrain = (entityManager) => {
                     props.recurse = false
                     return createBlock(props)
                 }
-                return entityManager.addEntity(new DirtBlock({
-                    sprite: ASSET_MANAGER.cache[TILES_DIRT_PATH],
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }));
+                return entityManager.addEntity(generateBlock('tile_dirt', props.x, props.y));
             case 'stone':
                 if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
                     props.value = Math.round(Math.random() + 3)
@@ -115,16 +106,7 @@ const getTerrain = (entityManager) => {
                     props.recurse = false
                     return createBlock(props)
                 }
-                return entityManager.addEntity(new StoneBlock({
-                    sprite: ASSET_MANAGER.cache[TILES_STONE_PATH],
-                    x: props.x,
-                    y: props.y,
-                    sWidth: 16,
-                    sHeight: 16,
-                    scale: BLOCKSIZE / 16,
-                    frameX: getRandomInt(6),
-                    frameY: getRandomInt(2)
-                }));
+                return entityManager.addEntity(generateBlock('tile_stone', props.x, props.y));
             default: 
                 return {tag: 'air', id: null}
         }
@@ -152,7 +134,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_0],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.SURFACE_0],
                         sWidth: surfaceBackWidth,
                         sHeight: surfaceBackHeight,
                         scale: scale,
@@ -168,7 +150,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[BACKGROUND_DIRT],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.DIRT],
                         sWidth: 960,
                         sHeight: 540,
                         scale: 2,
@@ -184,7 +166,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_0],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_0],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -200,7 +182,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[BACKGROUND_SURFACE_1],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.SURFACE_1],
                         sWidth: surfaceBackWidth,
                         sHeight: surfaceBackHeight,
                         scale: scale,
@@ -216,7 +198,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_1],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_1],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -232,7 +214,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_2],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_2],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -248,7 +230,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_3],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_3],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -264,7 +246,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_4],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_4],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -280,7 +262,7 @@ const getTerrain = (entityManager) => {
                         maxVelocity: 0
                     }),
                     new CSprite({
-                        sprite: ASSET_MANAGER.cache[UNDERGROUND_BACKGROUND_5],
+                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_5],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,

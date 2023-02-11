@@ -34,13 +34,31 @@ const Block = function(props) {
                 sWidth: props.sWidth,
                 sHeight: props.sHeight,
                 scale: props.scale,
-                startFrameX: props.frameX || 0,
-                frameY: props.frameY || 0
+                firstFrameX: props.frameX,
+                frameY: props.frameY
             }),
-            new CProperties({
-                isCollectable: false
-            })
+            new CLifespan(props.lifespan)
         ]
     };
 }
 Block.prototype.name = 'block';
+
+
+/**
+ * Creates a block blueprint with corresponding sprite path and lifespan.
+ */
+const generateBlock = (tag, x, y, multiplier=1) => {
+    let id = tag.toUpperCase().replace("TILE_", "");
+    return new Block({
+        tag: tag,
+        sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
+        lifespan: TILE_LIFE[id],
+        x: x * multiplier,
+        y: y * multiplier,
+        sWidth: 16,
+        sHeight: 16,
+        scale: BLOCKSIZE / 16,
+        frameX: getRandomInt(6),
+        frameY: getRandomInt(2)
+    });
+}

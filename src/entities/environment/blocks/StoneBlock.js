@@ -21,7 +21,7 @@
  */
 const StoneBlock = function(props) {
     return {
-        tag: 'stone tile',
+        tag: 'tile_stone',
         components: [
             new CTransform({
                 x: props.x,
@@ -35,7 +35,7 @@ const StoneBlock = function(props) {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CLifespan(TILE_STONE_LIFESPAN)
+            new CLifespan(TILE_LIFE_STONE)
         ]
     };
 }

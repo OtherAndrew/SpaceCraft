@@ -10,12 +10,8 @@ class Player {
     /**
      * Initializes new Player
      * @param {Object} props         Player position and display properties
-     * @param {Image} props.sprite   Player sprite sheet
      * @param {number} props.x       X position on canvas to draw player sprite
      * @param {number} props.y       Y position on canvas to draw player sprite
-     * @param {number} props.sWidth  Width of player sprite on sprite sheet
-     * @param {number} props.sHeight Height of player sprite on sprite sheet
-     * @param {number} props.scale   Scale factor to apply to player sprite, 1 by default
      * @returns {Object}             The player properties.
      * @constructor
      */
@@ -27,21 +23,28 @@ class Player {
     };
 
     #buildComponents(props) {
+        const stats = new CStats({
+            damage: 1,
+            maxHealth: 100,
+            speed: 6
+        });
+        const spriteWidth = 200;
         const sprite = new CSprite({
-            sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.PLAYER),
+            sWidth: spriteWidth,
+            sHeight: 250,
+            scale: BLOCKSIZE * 1.5 / spriteWidth,
             fps: 30
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y,
             hasGravity: true,
-            maxVelocityX: 8,
-            maxVelocityY: 50
+            maxVelocityX: stats.speed,
+            maxVelocityY: BLOCKSIZE
+            // maxVelocityY: 300
         });
-        const cWidth = BLOCKSIZE * .8;
+        const cWidth = BLOCKSIZE * .75;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
@@ -56,7 +59,7 @@ class Player {
         const state = new CState();
         state.sprite = sprite;
 
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     #addAnimations(sprite) {
@@ -73,8 +76,4 @@ class Player {
         aMap.set('crouchL', new AnimationProps(5, 2));
     };
 
-    #addBehaviors(transform) {
-        const bMap = transform.behaviorMap;
-        // bMap.set();
-    }
 }

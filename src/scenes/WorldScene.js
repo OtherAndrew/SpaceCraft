@@ -12,29 +12,24 @@ class WorldScene extends Scene {
      */
     init(assets, canvas) {
         // entities
-        this.playerSprite = assets[PLAYER_PATH];
-        this.entitySprite = assets[ENTITY_PATH];
-        this.sporeSprite = assets[SPORE_PATH];
-        this.dirtCarverSprite = assets[DIRTCARVER_PATH];
-        this.lightJellySprite = assets[LIGHTJELLY_PATH];
-        this.lightBugSprite = assets[LIGHTBUG_PATH];
         //this.genericDeathSprite = assets[GENERICDEATH_PATH];
         this.terrainMap = getTerrain(this.entityManager)
+        this.mobFactory = new MobFactory(this.entityManager);
+
         // this.#createEntity()
-        this.#createPlayer()
-        this.#createSpore()
-        this.#createDirtcarver()
-        // this.#createLightjelly()
-        this.#createLightbug()
+        this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
+        this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
+        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
+        this.mobFactory.build('lightjelly', this.player.components.transform.x + 300, this.player.components.transform.y - 300);
+        this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
+        this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
+
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
-        // this.sporeManager = new SporeController(this.spore)
-        // this.dirtcarverManager = new DirtcarverController(this.dirtcarver, this.player)
-        // this.lightjellyManager = new LightjellyController(this.lightjelly, this.player)
-        // this.lightbugManager = new LightbugController(this.lightbug, this.player)
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
-        this.movementSystem = new MovementSystem(this.entityManager.getEntities)
+        this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player)
         this.mobController = new EntityController(this.entityManager.getEntities, this.player);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
         this.camera = new Camera(this.player)
@@ -47,29 +42,41 @@ class WorldScene extends Scene {
         this.worldImages = new WorldImages(this.player)
         this.worldImages.init(this.entityManager)
 
+        this.projectileManager = new ProjectileManager(this.entityManager)
+        this.damageSystem = new DamageSystem(this.entityManager.getEntities)
+        this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
+        this.#givePlayerGun()
     }
 
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
-            // draw stuff last
-            this.entityManager.update()
+            // get input
             this.playerMovement.update(keys, deltaTime)
-            // this.sporeManager.update(deltaTime)
-            // this.dirtcarverManager.update(deltaTime)
-            // this.lightjellyManager.update(deltaTime)
-            // this.lightbugManager.update(deltaTime)
+            // update state
+            this.entityManager.update()
             //this.genericDeathManager.update(deltaTime)
-            this.camera.update()
             this.renderBox.update()
-            this.mobController.update(deltaTime)
-            this.movementSystem.update(deltaTime)
             this.#updateTileState()
             this.worldImages.update()
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.update()
+            this.collisionSystem.refresh()
 
-            this.renderSystem.update(this.game.clockTick);
+            this.mobController.update(deltaTime)
+            //https://gamedev.stackexchange.com/a/71123
+            // update Y first for ledges
+            this.movementSystem.updateY(deltaTime)
+            this.collisionSystem.resolveTileY()
+            this.movementSystem.updateX(deltaTime)
+            this.collisionSystem.resolveTileX()
+
+            this.collisionSystem.resolveProjectiles()
+            this.damageSystem.update();
+            this.durationSystem.update(deltaTime)
+
+            // draw
+            this.camera.update()
+            this.renderSystem.update(deltaTime);
             // temporary spot for this
             if(mouseDown) {
                 this.#handleClick(mouseDown, this.player, this.terrainMap)
@@ -77,24 +84,24 @@ class WorldScene extends Scene {
         }
         this.cursorSystem.update(this.#getGridCell(mouse, this.player))
         this.craftingMenu.update(uiActive);
-        this.containerManager.update(uiActive, mouseDown);
+        this.containerManager.update(uiActive, mouseDown, mouse);
         this.hud.update(uiActive, keys);
     }
 
-    draw(uiActive, ctx) {
+    draw(uiActive, ctx, mouse) {
         if (uiActive)
             ctx.putImageData(this.game.screenshot, 0, 0);
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        //this.drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
-        this.containerManager.draw(uiActive, ctx);
+        this.containerManager.draw(uiActive, ctx, mouse);
         this.hud.draw(uiActive, ctx);
     }
 
-    drawColliders(ctx) {
+    #drawColliders(ctx) {
         this.entityManager.getEntities.forEach(e => {
             if (e.components.boxCollider) {
                 let box = e.components.boxCollider
@@ -102,104 +109,6 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         });
-    }
-
-    /**
-     * A player entity for testing purposes
-     */
-    #createPlayer() {
-        const spriteWidth = 200;
-        const spriteHeight = 250;
-        const scale = BLOCKSIZE / spriteWidth * 1.5;
-
-        this.player = this.entityManager.addEntity(new Player({
-            sprite: this.playerSprite,
-            x: WIDTH_PIXELS * .5,
-            y: HEIGHT_PIXELS * .5 - 100,
-            sWidth : spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-    }
-
-    #createSpore() {
-        const spriteWidth = 138;
-        const spriteHeight = 196;
-        const scale = 0.5;
-        //const test = this.player.transform.x;
-        //console.log(test)
-        this.spore = this.entityManager.addEntity(new Spore({
-            sprite: this.sporeSprite,
-            x: this.player.components.transform.x,
-            y: this.player.components.transform.y - 50,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-
-    }
-    //
-    // /**
-    //  *  dirtcarver spawn condition
-    //  */
-    #createDirtcarver() {
-        const spriteWidth = 262;
-        const spriteHeight = 84;
-        const scale = 0.5;
-        this.dirtcarver = this.entityManager.addEntity(new Dirtcarver({
-            sprite: this.dirtCarverSprite,
-            //control spawn point
-
-            x: this.player.components.transform.x - 100,
-            y: this.player.components.transform.y - 250,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-
-    }
-    // lightjelly movement logic = lightbug movement logic
-    //
-    // /**
-    //  *  lightjelly spawn condition
-    //  */
-    // #createLightjelly() {
-    //     const spriteWidth = 168;
-    //     const spriteHeight = 219;
-    //     const scale = .5;
-    //     //const test = this.player.transform.x;
-    //     //console.log(test)
-    //     this.lightjelly = this.entityManager.addEntity(new Lightjelly({
-    //         sprite: this.lightJellySprite,
-    //         //controller for spawn point
-    //
-    //         x: this.player.components.transform.x + 300,
-    //         y: this.player.components.transform.y - 300,
-    //         sWidth: spriteWidth,
-    //         sHeight: spriteHeight,
-    //         scale: scale
-    //     }));
-    //
-    // }
-
-    /**
-     *  lightbug spawn condition
-     */
-    #createLightbug() {
-        const spriteWidth = 50;
-        const spriteHeight = 49;
-        const scale = 1;
-        this.lightbug = this.entityManager.addEntity(new Lightbug({
-            sprite: this.lightBugSprite,
-            //controller for spawn point
-
-            x: this.player.components.transform.x + 1200,
-            y: this.player.components.transform.y - 100,
-            sWidth: spriteWidth,
-            sHeight: spriteHeight,
-            scale: scale
-        }));
-
     }
 
     /**
@@ -248,7 +157,7 @@ class WorldScene extends Scene {
                         height: BLOCKSIZE
                     })
                 ])
-                e.tag = e.tag + " ground exposed"
+                // e.tag = e.tag + " ground"
             }
             if (
                 this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
@@ -281,10 +190,13 @@ class WorldScene extends Scene {
 
         if(selected.tag.includes('tile')) {
             if(terrainMap[mapY][mapX].tag.includes('air')) {
-                terrainMap[mapY][mapX].tag = selected.tag
-                terrainMap[mapY][mapX].id = selected.id
-                let b = this.#resizeBlock(selected, mapX, mapY)
-                this.hud.activeContainer.count--
+                let tag = this.containerManager.removeFromPlayer(this.hud.slot);
+                let newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, BLOCKSIZE));
+                if (newBlock) {
+                    terrainMap[mapY][mapX].tag = newBlock.tag
+                    terrainMap[mapY][mapX].id = newBlock.id
+                    console.log(newBlock)
+                }
             }
         } else if (selected.tag === 'pickaxe') {
             if(terrainMap[mapY][mapX].tag.includes('tile')) {
@@ -296,6 +208,8 @@ class WorldScene extends Scene {
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))
                 }
             }
+        } else if (selected.tag === 'gun') {
+            this.projectileManager.shoot(pos, this.player)
         }
     }
     #getGridCell(pos, player) {
@@ -319,7 +233,7 @@ class WorldScene extends Scene {
             e.components.sprite.dHeight *= 2
             e.components.transform.x = BLOCKSIZE * mapX
             e.components.transform.y = BLOCKSIZE * mapY
-            e.components.lifespan.current = e.components.lifespan.total 
+            e.components.lifespan.current = e.components.lifespan.total
             e.isBroken = false
             e.isDrawable = true
         } else {
@@ -329,7 +243,7 @@ class WorldScene extends Scene {
             e.isBroken = true
             e.isDrawable = false
         }
-       
+
         return e
     }
 
@@ -338,7 +252,22 @@ class WorldScene extends Scene {
             tag: 'pickaxe',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[PICK],
+                    sprite: ASSET_MANAGER.cache[MISC_PATH.PICK],
+                    sWidth: BLOCKSIZE,
+                    sHeight: BLOCKSIZE
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerGun() {
+        let e = this.entityManager.addEntity({
+            tag: 'gun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
                     sWidth: BLOCKSIZE,
                     sHeight: BLOCKSIZE
                 }),

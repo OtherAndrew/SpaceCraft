@@ -21,7 +21,7 @@
  */
 const DirtBlock = function(props) {
     return {
-        tag: 'dirt tile',
+        tag: 'tile_dirt',
         components: [
             new CTransform({
                 x: props.x,
@@ -35,7 +35,7 @@ const DirtBlock = function(props) {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CLifespan(TILE_DIRT_LIFESPAN)
+            new CLifespan(TILE_LIFE_DIRT)
         ]
     };
 }

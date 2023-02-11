@@ -1,13 +1,10 @@
 class Lightbug {
+
     /**
      * Initializes Lightbug (enemy)
      * @param {Object} props         enemy position and display properties
-     * @param {Image} props.sprite   enemy sprite sheet
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
-     * @param {number} props.sWidth  frame width
-     * @param {number} props.sHeight frame height
-     * @param {number} props.scale   frame scale
+     * @param {number} props.x       X position of monster spawn
+     * @param {number} props.y       Y position of monster spawn
      * @returns {Object}             return enemy
      * @constructor
      */
@@ -19,11 +16,15 @@ class Lightbug {
     };
 
     #buildComponents(props) {
+        const stats = new CStats({
+            speed: 2.2,
+            // invincible: true
+        });
         const sprite = new CSprite({
-            sprite: props.sprite,
-            sWidth: props.sWidth,
-            sHeight: props.sHeight,
-            scale: props.scale,
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.LIGHTBUG),
+            sWidth: 50,
+            sHeight: 49,
+            scale: 1,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 7,
@@ -33,10 +34,6 @@ class Lightbug {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            velocityX: 0,
-            velocityY: 0,
-            maxVelocityX: 2.5,
-            maxVelocityY: 2.5
         });
         const collider = new CBoxCollider({
             x: props.x,
@@ -49,11 +46,11 @@ class Lightbug {
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-        return [sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     update(tick, targetX, targetY) {
-        const velocity = 2.2
+        const velocity = this.components["stats"].speed;
         const offsetX = 0
         const offsetY = -28
 
@@ -61,26 +58,20 @@ class Lightbug {
         const y = this.components.transform.y;
         const transform = this.components.transform;
 
-        //update the state of anim
         //despawn after x range from player position
 
-        // console.log("lightbug: x:" + x + ", y: " + y)
-        //default state
-        this.components.state.setState('idleR');
         const distance = getDistance2(x, y, targetX, targetY);
+        const angle = getAngle2(x + offsetX, y + offsetY, targetX, targetY);
         if (distance <= 400) {
+            // transform.velocityX = Math.cos(angle) * velocity;
+            // transform.velocityY = Math.sin(angle) * velocity;
             transform.velocityY = targetY + offsetY < y ? -velocity : velocity;
             transform.velocityX = targetX + offsetX < x ? -velocity : velocity;
         } else {
-            transform.velocityY = 0;
             transform.velocityX = 0;
+            transform.velocityY = 0;
         }
         //adding tint
-
-
-        // Calculate the angle between the monster and player
-
-        // this.components.transform.update(tick);
     }
 
     #addAnimations(sprite) {

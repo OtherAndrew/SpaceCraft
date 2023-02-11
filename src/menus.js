@@ -57,18 +57,19 @@ class CraftMenu {
     }
 
     update(uiActive) {
-        // if (uiActive) {
-        //     for (let i = 2; i < this.cm.activeInventory.length; i++) {
-        //         if (this.recipes.includes(this.cm.activeInventory[i][0].owner)) {
-        //             this.cm.activeInventory[i][0].uncraftable = !this.cm.checkSufficient(this.cm.activeInventory[i]);
-        //         }
-        //         for (let j = 1; j < this.cm.activeInventory[i].length; j++) {
-        //             let playerCount = this.cm.playerCounts.get(this.cm.activeInventory[i][j].item.tag);
-        //             this.cm.activeInventory[i][j].playerCount = playerCount;
-        //             this.cm.activeInventory[i][j].insufficient = playerCount < this.cm.activeInventory[i][j].count;
-        //         }
-        //     }
-        // }
+        if (uiActive) {
+            let actives = this.cm.activeInventory;
+            for (let i = 2; i < actives.length; i++) {
+                if (this.recipes.includes(actives[i][0].owner)) {
+                    actives[i][0].uncraftable = !this.cm.checkSufficient(actives[i]);
+                }
+                for (let j = 1; j < actives[i].length; j++) {
+                    let playerCount = this.cm.playerCounts.get(actives[i][j].item.tag);
+                    actives[i][j].playerCount = playerCount;
+                    actives[i][j].insufficient = playerCount < actives[i][j].count;
+                }
+            }
+        }
     }
 }
 

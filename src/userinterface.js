@@ -11,7 +11,7 @@ class HUD {
 
         this.containers = this.cm.getInventory("player");
         this.activeContainer = this.containers[0];
-        this.getStartPoint();
+        this.refreshActiveInfo();
 
         // TESTING
         // this.add(new block1());
@@ -27,9 +27,10 @@ class HUD {
         this.cm.addToInventory("player", entity);
     };
 
-    getStartPoint() {
+    refreshActiveInfo() {
         this.x = this.activeContainer.x;
         this.y = this.activeContainer.y;
+        this.slot = this.activeContainer.slot;
     }
 
     draw(uiActive, ctx) {
@@ -58,12 +59,10 @@ class HUD {
             ctx.beginPath();
             ctx.lineWidth = 3;
             ctx.strokeStyle = "yellow";
-            this.getStartPoint();
+            this.refreshActiveInfo();
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();
-        } else {
-            ctx.drawImage(ASSET_MANAGER.getAsset("./assets/overlay/overlaymockup.png"), 0, 0);
         }
     }
 
@@ -77,38 +76,38 @@ class HUD {
     }
 }
 // TESTING
-class Block {
-    constructor() {
-        this.sprite = null;
-        this.width = 32;
-        this.height = 32;
-    };
-
-    draw(ctx, x, y) {
-        ctx.drawImage(ASSET_MANAGER.getAsset(this.sprite), x, y);
-    };
-}
-
-class block1 extends Block {
-    constructor() {
-        super();
-        this.tag = "rock";
-        this.sprite = "./assets/sprites/b1.png";
-    };
-}
-
-class block2 extends Block {
-    constructor() {
-        super();
-        this.tag = "sand";
-        this.sprite = "./assets/sprites/b2.png";
-    };
-}
-
-class block3 extends Block {
-    constructor() {
-        super();
-        this.tag = "dirt";
-        this.sprite = "./assets/sprites/b3.png";
-    };
-}
+// class Block {
+//     constructor() {
+//         this.sprite = null;
+//         this.width = 32;
+//         this.height = 32;
+//     };
+//
+//     draw(ctx, x, y) {
+//         ctx.drawImage(ASSET_MANAGER.getAsset(this.sprite), x, y);
+//     };
+// }
+//
+// class block1 extends Block {
+//     constructor() {
+//         super();
+//         this.tag = "rock";
+//         this.sprite = "./assets/sprites/b1.png";
+//     };
+// }
+//
+// class block2 extends Block {
+//     constructor() {
+//         super();
+//         this.tag = "sand";
+//         this.sprite = "./assets/sprites/b2.png";
+//     };
+// }
+//
+// class block3 extends Block {
+//     constructor() {
+//         super();
+//         this.tag = "dirt";
+//         this.sprite = "./assets/sprites/b3.png";
+//     };
+// }

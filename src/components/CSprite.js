@@ -30,13 +30,19 @@ class CSprite {
         this.name = 'sprite';
         this.currentFrame = this.firstFrameX;
         this.frameDuration = 1 / fps;
-        this.dWidth = this.sWidth * scale;
-        this.dHeight = this.sHeight * scale;
+        this.dWidth = this.sWidth;
+        this.dHeight = this.sHeight;
+        this.setScale(scale);
         this.elapsedTime = 0;
         this.currentState = 'idleR';
         this.animationMap = new Map();
         return this;
     };
+
+    setScale(scale) {
+        this.dWidth = this.sWidth * scale;
+        this.dHeight = this.sHeight * scale;
+    }
 
     /**
      * Sets sprite animation properties.
