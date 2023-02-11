@@ -37,7 +37,7 @@ class CollisionSystem {
                                                        || e.tag.includes("enemyAttack"));
 
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
-        this.projectileList = this.collideList.filter(e => e.tag.includes("projectile"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("bullet"));
     }
 
     /**
@@ -119,7 +119,7 @@ class CollisionSystem {
             this.tileList.forEach(tile => {
                if (this.#checkCollision(p, tile)) {
                    // remove projectile
-                   // p.destroy();
+                   p.destroy();
                }
             });
         });

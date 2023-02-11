@@ -15,8 +15,8 @@ class ProjectileManager {
             speed: speed,
             x: oTransform.x,
             y: oTransform.y,
-            // originVX: oTransform.velocityX,
-            // originVY: oTransform.velocityY,
+            originVX: oTransform.velocityX,
+            originVY: oTransform.velocityY,
             hasGravity: hasGravity
         });
         return this.entityManager.addEntity(p);
@@ -37,7 +37,7 @@ class Projectile {
      * @return {Projectile}
      */
     constructor(props) {
-        this.tag = 'projectile';
+        this.tag = 'bullet';
         this.name = 'projectile';
         this.components = this.#buildComponents(props);
         return this;
@@ -61,8 +61,8 @@ class Projectile {
             y: props.y,
             hasGravity: props.hasGravity || false,
             // rotation: props.angle,
-            velocityX: Math.cos(props.angle) * props.speed,
-            velocityY: Math.sin(props.angle) * props.speed
+            velocityX: Math.cos(props.angle) * props.speed + props.originVX,
+            velocityY: Math.sin(props.angle) * props.speed + props.originVY
         });
         // const cWidth = BLOCKSIZE * .25;
         // const cHeight = BLOCKSIZE * .25

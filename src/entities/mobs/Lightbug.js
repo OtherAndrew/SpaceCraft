@@ -17,7 +17,7 @@ class Lightbug {
     #buildComponents(props) {
         const stats = new CStats({
             speed: 2.2,
-            invincible: true
+            // invincible: true
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(LIGHTBUG_PATH),
