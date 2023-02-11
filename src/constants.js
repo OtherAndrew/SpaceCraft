@@ -199,6 +199,7 @@ const CHAR_PATH = {
 }
 
 const MISC_PATH = {
+    CROSSHAIR_CURSOR:  './assets/cursors/Crosshairs_Red.png',
     GENERICDEATH	:	'./assets/sprites/smoke.png',
     GUN             :   './assets/icons/item_1782.png',
     PICK	        :	'./assets/icons/item_3485.png',

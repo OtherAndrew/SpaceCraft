@@ -14,8 +14,9 @@ class ProjectileManager {
         const oCollider = originEntity.components["boxCollider"]
 
         const directionVector = normalize(midPoint, targetPos)
-        const vX = directionVector.x * BLOCKSIZE / 2;
-        const vY = directionVector.y * BLOCKSIZE / 2;
+        const speed = BLOCKSIZE / 2
+        const vX = directionVector.x * speed;
+        const vY = directionVector.y * speed;
         const p = new Projectile({
             damage: oStats.damage,
             x: oCollider.x + oCollider.width / 2 - 8,
