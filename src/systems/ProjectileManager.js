@@ -9,6 +9,11 @@ class ProjectileManager {
         const oTransform = originEntity.components["transform"];
         const oCollider = originEntity.components["boxCollider"]
         const angle = getAngle2(oTransform.x, oTransform.y, targetPos.x, targetPos.y)
+
+        const directionVector = normalize(oTransform, targetPos)
+        const vX = directionVector.x * BLOCKSIZE / 6;
+        const vY = directionVector.y * BLOCKSIZE / 6;
+
         console.log(angle)
         const p = new Projectile({
             damage: oStats.damage,
@@ -16,6 +21,8 @@ class ProjectileManager {
             speed: BLOCKSIZE / 6,
             x: oCollider.x + oCollider.width / 2 - 8,
             y: oCollider.y + oCollider.height / 2 - 8,
+            velocityX: vX,
+            velocityY: vY,
             originVX: oTransform.velocityX,
             originVY: oTransform.velocityY,
             hasGravity: false
@@ -62,8 +69,8 @@ class Projectile {
             y: props.y,
             hasGravity: props.hasGravity || false,
             // rotation: props.angle,
-            velocityX: Math.cos(props.angle) * props.speed + props.originVX,
-            velocityY: Math.sin(props.angle) * props.speed + props.originVY
+            velocityX: props.velocityX + props.originVX,
+            velocityY: props.velocityY + props.originVY
         });
         // const cWidth = BLOCKSIZE * .25;
         // const cHeight = BLOCKSIZE * .25
