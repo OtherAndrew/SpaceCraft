@@ -13,6 +13,7 @@ class MobFactory {
             case 'lightbug': out = this.entityManager.addEntity(new Lightbug({ x: x, y: y })); break;
             case 'lightjelly': out = this.entityManager.addEntity(new Lightjelly({ x: x, y: y })); break;
             case 'grapebomb': out = this.entityManager.addEntity(new Grapebomb({ x: x, y: y })); break;
+            case 'wormtank': out = this.entityManager.addEntity(new Wormtank({ x: x, y: y })); break;
 
             default: console.log(`Invalid mob name: ${mob}.`);
         }
