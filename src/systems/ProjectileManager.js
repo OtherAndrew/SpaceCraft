@@ -14,11 +14,10 @@ class ProjectileManager {
         const oCollider = originEntity.components["boxCollider"]
 
         const directionVector = normalize(midPoint, targetPos)
-        const vX = directionVector.x * BLOCKSIZE / 6;
-        const vY = directionVector.y * BLOCKSIZE / 6;
+        const vX = directionVector.x * BLOCKSIZE / 2;
+        const vY = directionVector.y * BLOCKSIZE / 2;
         const p = new Projectile({
             damage: oStats.damage,
-            speed: BLOCKSIZE / 6,
             x: oCollider.x + oCollider.width / 2 - 8,
             y: oCollider.y + oCollider.height / 2 - 8,
             velocityX: vX,
@@ -70,7 +69,9 @@ class Projectile {
             hasGravity: props.hasGravity || false,
             // rotation: props.angle,
             velocityX: props.velocityX + props.originVX,
-            velocityY: props.velocityY + props.originVY
+            velocityY: props.velocityY + props.originVY,
+            maxVelocityX: 300,
+            maxVelocityY: 300,
         });
         // const cWidth = BLOCKSIZE * .25;
         // const cHeight = BLOCKSIZE * .25

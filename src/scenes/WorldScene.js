@@ -80,7 +80,7 @@ class WorldScene extends Scene {
             this.renderSystem.update(deltaTime);
             // temporary spot for this
             if(mouseDown) {
-                this.#handleClick(mouseDown, this.player, this.terrainMap)
+                this.#handleClick(mouse, this.player, this.terrainMap)
             }
         }
         this.cursorSystem.update(this.#getGridCell(mouse, this.player))
