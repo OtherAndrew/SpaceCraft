@@ -28,7 +28,7 @@ class CollisionSystem {
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
         this.tileCollideList = this.collideList.filter(e => e.tag.includes("player")
-                                                 || e.tag.includes("mob"));
+                || (e.tag.includes("mob") && !e.tag.includes("ghost")));
         this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
 
         // extras
@@ -103,7 +103,9 @@ class CollisionSystem {
         });
     }
 
-    //draft
+    /**
+     * Resolves projectile collisions.
+     */
     resolveProjectiles() {
         this.projectileList.forEach(p => {
             // if (this.#checkCollision(p, this.player)) {
@@ -112,7 +114,7 @@ class CollisionSystem {
             this.mobList.forEach(mob => {
                if (this.#checkCollision(p, mob)) {
                    // damage mob
-                   mob.components["stats"].applyDamage(p.components["stats"].damage);
+                   mob.components["stats"].applyDamage(p.components["stats"].doDamage());
                    mob.components["transform"].x = mob.components["transform"].last.x;
                    mob.components["transform"].y = mob.components["transform"].last.y;
                    p.destroy();

@@ -9,7 +9,7 @@ class Lightjelly {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'lightjelly mob enemy';
+        this.tag = 'lightjelly mob enemy ghost';
         this.name = 'lightjelly';
         this.components = this.#buildComponents(props);
         return this;
@@ -34,18 +34,18 @@ class Lightjelly {
             x: props.x,
             y: props.y
         });
-        // const collider = new CBoxCollider({
-        //     x: props.x,
-        //     y: props.y,
-        //     width: sprite.dWidth,
-        //     height: sprite.dHeight
-        // });
+        const collider = new CBoxCollider({
+            x: props.x,
+            y: props.y,
+            width: sprite.dWidth,
+            height: sprite.dHeight
+        });
         this.#addAnimations(sprite);
-        // transform.collider = collider
+        transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
 
-        return [stats, sprite, transform, state];
+        return [stats, sprite, transform, collider, state];
     }
 
     #addAnimations(sprite) {
