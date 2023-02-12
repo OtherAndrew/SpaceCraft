@@ -173,10 +173,10 @@ class WorldScene extends Scene {
                             height: BLOCKSIZE
                         })
                     ])
-                    e.tag = e.tag + " ground exposed"
+                    e.tag = e.tag + " exposed"
                 } else {
                     e.tag = e.tag.replace("exposed", "")
-                    delete e.components.boxCollider
+                    delete e.components["boxCollider"]
                 }
         }
     }
@@ -215,12 +215,13 @@ class WorldScene extends Scene {
     }
     #getGridCell(pos, player) {
         if(pos === null) return null
-        let offsetX = player.components.transform.x >= WIDTH/2 ?
-                      player.components.transform.x >= WIDTH_PIXELS - WIDTH/2 ?
-                      WIDTH_PIXELS - (WIDTH_PIXELS - player.components.transform.x) - WIDTH * .75 :
-                      (player.components.transform.x - WIDTH/2) : 0
+        const pCollider = player.components["boxCollider"]
+        let offsetX = pCollider.center.x >= WIDTH/2 ?
+                      pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
+                      WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
+                      (pCollider.center.x - WIDTH/2) : 0
         let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
-        let mapY = Math.floor((pos.y + (player.components.transform.y - HEIGHT/2))/BLOCKSIZE)
+        let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
         //if(mapY < 0) return mapY
         return {
             x: mapX,
