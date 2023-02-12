@@ -95,7 +95,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
@@ -185,8 +185,8 @@ class WorldScene extends Scene {
         let selected = this.hud.activeContainer.item
         if(selected === null) return
         let coords = this.#getGridCell(pos, player)
-        let mapY = coords.y
-        let mapX = coords.x
+        let mapY = coords.y || 0;
+        let mapX = coords.x || 0
         console.log(terrainMap[mapY][mapX].tag)
 
         if(selected.tag.includes('tile')) {
@@ -210,7 +210,7 @@ class WorldScene extends Scene {
                 }
             }
         } else if (selected.tag === 'gun') {
-            this.projectileManager.shoot(pos, player)
+            this.projectileManager.shoot({x: pos.x + 25/2, y: pos.y + 25/2}, player)
         }
     }
     #getGridCell(pos, player) {

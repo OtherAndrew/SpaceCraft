@@ -10,33 +10,26 @@ class ProjectileManager {
             y: HEIGHT * .5
         }
         const oStats = originEntity.components['stats'];
-        const oTransform = originEntity.components["transform"];
-        const oCollider = originEntity.components["boxCollider"]
-
+        // const oTransform = originEntity.components["transform"];
+        const oCollider = originEntity.components["boxCollider"];
         const directionVector = normalize(midPoint, targetPos)
-        const speed = BLOCKSIZE / 2
-        const projectileVelocity = {
-            x: directionVector.x * speed + oTransform.velocityX,
-            y: directionVector.y * speed + oTransform.velocityY
-        }
-        // const vX = directionVector.x * speed + oTransform.velocityX;
-        // const vY = directionVector.y * speed + oTransform.velocityY;
         const projectileOrigin = {
-            x: oCollider.x + oCollider.width / 2,
-            y: oCollider.y + oCollider.height / 2
+            x: oCollider.x + oCollider.width * 0.5,
+            y: oCollider.y + oCollider.height * 0.5
         }
 
         //switch bullet, fire, spore, arcing, etc.
 
-        const p = new Projectile({
+        let p = new Projectile({
+            tag: 'bullet',
             damage: oStats.damage,
-            x: projectileOrigin.x, // center
-            y: projectileOrigin.y, //center
-            velocityX: projectileVelocity.x,
-            velocityY: projectileVelocity.y,
-            hasGravity: false,
-            duration: 5
+            speed: BLOCKSIZE * 0.5,
+            dVector: directionVector,
+            origin: projectileOrigin,
+            duration: 5,
+            hasGravity: false
         });
+
         return this.entityManager.addEntity(p);
     }
 }
@@ -46,11 +39,12 @@ class Projectile {
     /**
      *
      * @param {Object} props
+     * @param {string} props.tag
      * @param {number} props.damage
-     * @param {number} props.angle
      * @param {number} props.speed
-     * @param {number} props.originVX
-     * @param {number} props.originVY
+     * @param {{number, number}} props.dVector
+     * @param {{number, number}} props.origin
+     * @param {number} props.duration
      * @param {boolean} props.hasGravity
      * @return {Projectile}
      */
@@ -64,6 +58,7 @@ class Projectile {
     #buildComponents(props) {
         const stats = new CStats({
             damage: props.damage,
+            speed: props.speed,
             invincible: true
         });
         const sprite = new CSprite({
@@ -74,12 +69,14 @@ class Projectile {
             firstFrameX: 8
         });
         const transform = new CTransform({
-            x: props.x - sprite.dWidth / 2,
-            y: props.y - sprite.dHeight / 2,
+            x: props.origin.x - sprite.dWidth / 2,
+            y: props.origin.y - sprite.dHeight / 2,
             hasGravity: props.hasGravity,
             // rotation: props.angle,
-            velocityX: props.velocityX,
-            velocityY: props.velocityY,
+            // velocityX: props.velocityX,
+            // velocityY: props.velocityY,
+            velocityX: props.dVector.x * stats.speed,
+            velocityY: props.dVector.y * stats.speed,
             maxVelocityX: 300,
             maxVelocityY: 300,
         });

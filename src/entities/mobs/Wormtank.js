@@ -16,7 +16,8 @@ class Wormtank {
 
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 0.5
+            speed: 0.5,
+            maxHealth: 300
         });
         const sprite = new CSprite({
                 sprite: ASSET_MANAGER.getAsset(CHAR_PATH.WORMTANK),
@@ -36,7 +37,7 @@ class Wormtank {
         });
         const cWidth = 1.25 * BLOCKSIZE;
         const collider = new CBoxCollider({
-            x: props.x + props.width / 2,
+            x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
