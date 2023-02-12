@@ -14,8 +14,12 @@ class ProjectileManager {
         const oCollider = originEntity.components["boxCollider"];
         const directionVector = normalize(midPoint, targetPos)
         const projectileOrigin = {
-            x: oCollider.x + oCollider.width / 2,
-            y: oCollider.y + oCollider.height / 3
+            x: oCollider.x + oCollider.width / 2 ,//+ directionVector.x * 30,
+            y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
+        }
+        if (originEntity.tag.includes('player')) {
+            projectileOrigin.x += directionVector.x * 30
+            projectileOrigin.y += directionVector.y * 30
         }
 
         //switch bullet, fire, spore, arcing, etc.
@@ -24,6 +28,7 @@ class ProjectileManager {
             case 'bullet':
                 p = new Projectile({
                     tag: 'bullet',
+                    sprite: this.bulletSprite(),
                     damage: oStats.damage,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
@@ -32,20 +37,21 @@ class ProjectileManager {
                     hasGravity: false
                 });
                 break;
-            case 'super':
-                p = new Projectile({
-                    tag: 'superbullet',
-                    damage: 9001,
-                    speed: BLOCKSIZE * 0.1,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 5,
-                    hasGravity: false
-                });
-                break;
+            // case 'super':
+            //     p = new Projectile({
+            //         tag: 'superbullet',
+            //         damage: 9001,
+            //         speed: BLOCKSIZE * 0.1,
+            //         dVector: directionVector,
+            //         origin: projectileOrigin,
+            //         duration: 5,
+            //         hasGravity: false
+            //     });
+            //     break;
             case 'fire':
                 p = new Projectile({
                     tag: 'firebullet',
+                    sprite: this.fireSprite(),
                     damage: 0.15,
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
@@ -62,6 +68,30 @@ class ProjectileManager {
 
         return this.entityManager.addEntity(p);
     }
+
+
+    bulletSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_ORB),
+            sWidth: 16,
+            sHeight: 16,
+            scale: 1,
+            firstFrameX: 8
+        });
+    }
+
+    fireSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_FIRE),
+            sWidth: 8,
+            sHeight: 12,
+            scale: 2,
+            firstFrameX: 0,
+            lastFrameX: 4,
+            fps: 30
+        });
+    }
+
 }
 
 class Projectile {
@@ -91,7 +121,7 @@ class Projectile {
             speed: props.speed,
             invincible: true
         });
-        const sprite = props.tag.includes('fire') ? this.fireSprite() : this.bulletSprite(props);
+        const sprite = props.sprite;
         const transform = new CTransform({
             x: props.origin.x - sprite.dWidth / 2,
             y: props.origin.y - sprite.dHeight / 2,
@@ -119,27 +149,6 @@ class Projectile {
         return [stats, sprite, transform, collider, duration];
     }
 
-    bulletSprite(props) {
-        return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_ORB),
-            sWidth: 16,
-            sHeight: 16,
-            scale: props.tag.includes('superbullet') ? 2.5 : 1,
-            firstFrameX: props.tag.includes('superbullet') ? 1 : 8
-        });
-    }
-
-    fireSprite() {
-        return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_FIRE),
-            sWidth: 8,
-            sHeight: 12,
-            scale: 2,
-            firstFrameX: 0,
-            lastFrameX: 4,
-            fps: 30
-        })
-    }
 }
 
 //damage, angle, speed, hasGravity
