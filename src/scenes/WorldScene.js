@@ -43,6 +43,7 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
+        this.#givePlayerFlamethrower()
     }
 
     spawnTestEntities() {
@@ -219,6 +220,8 @@ class WorldScene extends Scene {
             }
         } else if (selected.tag === 'gun') {
             this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+        } else if (selected.tag === 'flamethrower') {
+            this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
         }
     }
     #getGridCell(pos, player) {
@@ -278,6 +281,21 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
+                    sWidth: BLOCKSIZE,
+                    sHeight: BLOCKSIZE
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerFlamethrower() {
+        let e = this.entityManager.addEntity({
+            tag: 'flamethrower',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[MISC_PATH.FLAMETHROWER],
                     sWidth: BLOCKSIZE,
                     sHeight: BLOCKSIZE
                 }),

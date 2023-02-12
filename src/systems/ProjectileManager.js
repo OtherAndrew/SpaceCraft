@@ -14,18 +14,20 @@ class ProjectileManager {
         const oCollider = originEntity.components["boxCollider"];
         const directionVector = normalize(midPoint, targetPos)
         const projectileOrigin = {
-            x: oCollider.x + oCollider.width / 2 ,//+ directionVector.x * 30,
+            x: oCollider.center.x ,//+ directionVector.x * 30,
             y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
         }
-        if (originEntity.tag.includes('player')) {
-            projectileOrigin.x += directionVector.x * 30
-            projectileOrigin.y += directionVector.y * 30
-        }
+        // if (originEntity.tag.includes('player')) {
+        //     projectileOrigin.x += directionVector.x * 25
+        //     projectileOrigin.y += directionVector.y * 25
+        // }
 
         //switch bullet, fire, spore, arcing, etc.
         let p;
         switch (type) {
             case 'bullet':
+                projectileOrigin.x += directionVector.x * 15
+                projectileOrigin.y += directionVector.y * 15
                 p = new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(),
@@ -49,6 +51,8 @@ class ProjectileManager {
             //     });
             //     break;
             case 'fire':
+                projectileOrigin.x += directionVector.x * 25
+                projectileOrigin.y += directionVector.y * 25
                 p = new Projectile({
                     tag: 'firebullet',
                     sprite: this.fireSprite(),

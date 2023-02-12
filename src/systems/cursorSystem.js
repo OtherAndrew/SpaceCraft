@@ -19,7 +19,7 @@ class CursorSystem {
                 let tag = this.terrainMap[pos.y][pos.x].tag
                 if(tag.includes('tile') && selected.tag === 'pickaxe') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.PICK_CURSOR]
-                } else if (selected.tag === 'gun') {
+                } else if (selected.tag === 'gun' || selected.tag === 'flamethrower') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CROSSHAIR_CURSOR]
                 } else {
                     this.cursor.cursor = "pointer"
