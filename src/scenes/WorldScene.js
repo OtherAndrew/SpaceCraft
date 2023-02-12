@@ -24,6 +24,8 @@ class WorldScene extends Scene {
         this.mobFactory.build('lightjelly', this.player.components.transform.x + 300, this.player.components.transform.y - 300);
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
+        this.mobFactory.build('mossamber', this.player.components.transform.x -400, this.player.components.transform.y - 200);
+        this.mobFactory.build('rocket', this.player.components.transform.x -750, this.player.components.transform.y - 200);
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
