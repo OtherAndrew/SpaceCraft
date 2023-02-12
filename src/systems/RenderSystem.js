@@ -58,7 +58,7 @@ class RenderSystem {
      * @param {number} tick time length
      */
     update(tick) {
-        const drawables = this.entities.filter(e => e.isDrawable)
+        const drawables = this.entities.filter(e => e.isDrawable && e.components.sprite)
         drawables.forEach(e => {
             const s = e.components.sprite;
             if (s.lastFrameX !== s.firstFrameX) { // has animations
