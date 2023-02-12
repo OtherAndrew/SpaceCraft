@@ -7,7 +7,7 @@ class RenderBox {
         this.y = 0
     }
     update() {
-        this.x = Math.ceil(this.player.components.transform.x / this.blockSize)
-        this.y = Math.ceil(this.player.components.transform.y / this.blockSize)
+        this.x = Math.ceil(this.player.components['boxCollider'].center.x / this.blockSize)
+        this.y = Math.ceil(this.player.components['boxCollider'].center.y / this.blockSize)
     }
 }
