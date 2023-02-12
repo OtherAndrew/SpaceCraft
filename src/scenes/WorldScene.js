@@ -281,8 +281,8 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
-                    sWidth: BLOCKSIZE,
-                    sHeight: BLOCKSIZE
+                    sWidth: 32,
+                    sHeight: 32
                 }),
                 new CTransform(this.player.components.transform.x, this.player.components.transform.y)
             ]
@@ -296,8 +296,8 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[MISC_PATH.FLAMETHROWER],
-                    sWidth: BLOCKSIZE,
-                    sHeight: BLOCKSIZE
+                    sWidth: 32,
+                    sHeight: 32
                 }),
                 new CTransform(this.player.components.transform.x, this.player.components.transform.y)
             ]

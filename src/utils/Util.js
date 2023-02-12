@@ -98,13 +98,6 @@ const isBetween = (num, min, max) => {
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
 /**
- * Returns a random integer between 0 (inclusive) and `max` (exclusive).
- * @param {Number} max
- * @returns {Number} A random integer between 0 (inclusive) and `max` (exclusive).
- */
-const getRandomInt = (max) =>  Math.floor(Math.random() * max);
-
-/**
  * Normalizes a vector between two points.
  * @param {x: Number, y: Number} vect1 starting point
  * @param {x: Number, y: Number} vect2 end point
@@ -116,4 +109,12 @@ const normalize = (p1, p2) => {
         x: (p2.x - p1.x)/d,
         y: (p2.y - p1.y)/d
     }
+}
+
+const randomSpread = (spread) => {
+    return randomNumber(-spread/2, spread/2);
+}
+
+const randomNumber = (min, max) => {
+    return Math.random() * (max - min) + min;
 }

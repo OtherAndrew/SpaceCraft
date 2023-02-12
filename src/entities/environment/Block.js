@@ -58,7 +58,7 @@ const generateBlock = (tag, x, y, multiplier=1) => {
         sWidth: 16,
         sHeight: 16,
         scale: BLOCKSIZE / 16,
-        frameX: getRandomInt(6),
-        frameY: getRandomInt(2)
+        frameX: randomInt(6),
+        frameY: randomInt(2)
     });
 }

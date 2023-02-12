@@ -15,7 +15,8 @@ class ProjectileManager {
         const directionVector = normalize(midPoint, targetPos)
         const projectileOrigin = {
             x: oCollider.center.x ,//+ directionVector.x * 30,
-            y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
+            // y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
+            y: oCollider.center.y
         }
         // if (originEntity.tag.includes('player')) {
         //     projectileOrigin.x += directionVector.x * 25
@@ -26,17 +27,18 @@ class ProjectileManager {
         let p;
         switch (type) {
             case 'bullet':
-                projectileOrigin.x += directionVector.x * 15
-                projectileOrigin.y += directionVector.y * 15
+                projectileOrigin.x += directionVector.x * 20
+                projectileOrigin.y += directionVector.y * 20
                 p = new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(),
-                    damage: oStats.damage,
-                    speed: BLOCKSIZE * 0.5,
+                    damage: 1,
+                    speed: BLOCKSIZE * 0.33,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 5,
-                    hasGravity: false
+                    hasGravity: false,
+                    spread: 0
                 });
                 break;
             // case 'super':
@@ -56,14 +58,13 @@ class ProjectileManager {
                 p = new Projectile({
                     tag: 'firebullet',
                     sprite: this.fireSprite(),
-                    damage: 0.15,
+                    damage: 0.1,
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 1.5,
                     hasGravity: false,
-                    sWidth: 8,
-                    sHeight: 12
+                    spread: 0.5
                 });
                 break;
             default: console.log(`Invalid projectile type: ${type}.`);
@@ -94,7 +95,7 @@ class ProjectileManager {
             lastFrameX: 4,
             fps: 30
         });
-        sprite.currentFrame = getRandomInt(sprite.lastFrameX);
+        sprite.currentFrame = randomInt(sprite.lastFrameX);
         return sprite;
     }
 
@@ -135,8 +136,8 @@ class Projectile {
             // rotation: props.angle,
             // velocityX: props.velocityX,
             // velocityY: props.velocityY,
-            velocityX: props.dVector.x * stats.speed,
-            velocityY: props.dVector.y * stats.speed,
+            velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
+            velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
             maxVelocityX: 300,
             maxVelocityY: 300,
         });
