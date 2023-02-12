@@ -112,11 +112,18 @@ class CollisionSystem {
             //     // damage player
             // }
             this.mobList.forEach(mob => {
-               if (this.#checkCollision(p, mob)) {
+               if (this.#checkCollision(p, mob) && !mob.tag.includes('ignore')) {
                    // damage mob
                    mob.components["stats"].applyDamage(p.components["stats"].doDamage());
-                   mob.components["transform"].x = mob.components["transform"].last.x;
-                   mob.components["transform"].y = mob.components["transform"].last.y;
+                   // freeze mob in place when hit
+                   const mTransform = mob.components["transform"];
+                   mTransform.velocityY = 0
+                   mTransform.x = mTransform.last.x;
+                   if (!mTransform.gravity) {
+                       mTransform.velocityY = 0
+                       mTransform.y = mTransform.last.y;
+                   }
+                   mob.components["boxCollider"].setPosition(mTransform.x, mTransform.y)
                    if (!p.tag.includes("fire")) p.destroy();
                }
             });

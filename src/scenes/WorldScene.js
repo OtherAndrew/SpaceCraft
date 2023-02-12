@@ -218,7 +218,7 @@ class WorldScene extends Scene {
                 }
             }
         } else if (selected.tag === 'gun') {
-            this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
         }
     }
     #getGridCell(pos, player) {

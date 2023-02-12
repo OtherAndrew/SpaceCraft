@@ -9,7 +9,7 @@ class Lightbug {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'lightbug mob';
+        this.tag = 'lightbug mob ignore';
         this.name = 'lightbug';
         this.components = this.#buildComponents(props);
         return this;

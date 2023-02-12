@@ -9,14 +9,14 @@ class Rocket {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'rocket mob';
+        this.tag = 'rocket mob ignore';
         this.name = 'rocket';
         this.components = this.#buildComponents(props);
         return this;
     };
     #buildComponents(props) {
         const stats = new CStats({
-
+            invincible: true
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.ROCKET),
