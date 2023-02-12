@@ -1,7 +1,7 @@
 
-class Spore {
+class Rocket {
     /**
-     * Initializes Spore (enemy)
+     * Initializes rocket (enemy)
      * @param {Object} props         enemy position and display properties
      * @param {number} props.x       X position of monster spawn
      * @param {number} props.y       Y position of monster spawn
@@ -9,8 +9,8 @@ class Spore {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'spore mob';
-        this.name = 'spore';
+        this.tag = 'rocket mob';
+        this.name = 'rocket';
         this.components = this.#buildComponents(props);
         return this;
     };
@@ -19,15 +19,15 @@ class Spore {
 
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.SPORE),
-            sWidth: 138,
-            sHeight: 196,
-            scale: 0.5,
+            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.ROCKET),
+            sWidth: 221,
+            sHeight: 304,
+            scale: 1,
             firstFrameX: 0,
             frameY: 0,
-            lastFrameX: 7,
-            fps: 4,
-            padding: 3
+            lastFrameX: 0,
+            fps: 1,
+            padding: 1
         });
         const transform = new CTransform({
             x: props.x,
@@ -57,7 +57,7 @@ class Spore {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,7));
+        aMap.set('idleR', new AnimationProps(0, 0,0));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;

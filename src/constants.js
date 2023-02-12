@@ -195,7 +195,9 @@ const CHAR_PATH = {
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     PLAYER      :	'./assets/sprites/player.png',
     SPORE       :	'./assets/sprites/spore.png',
-    WORMTANK    :	'./assets/sprites/wormtank.png'
+    WORMTANK    :	'./assets/sprites/wormtank.png',
+    ROCKET    :	'./assets/sprites/rocket.png',
+    MOSSAMBER    :	'./assets/sprites/mossamber.png'
 }
 
 const MISC_PATH = {
