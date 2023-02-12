@@ -271,9 +271,79 @@ const getTerrain = (entityManager) => {
             })
         }
     }
+    function generateBorders() {
+        // left border collider
+        entityManager.addEntity({
+            tag: 'tile',
+            components: [
+                new CTransform({
+                    x: 0,
+                    y: 0
+                }),
+                new CBoxCollider({
+                    x: 0,
+                    y: 0,
+                    width: WIDTH * .5,
+                    height: HEIGHT_PIXELS
+                })
+            ]
+        })
+
+        // right border collider
+        entityManager.addEntity({
+            tag: 'tile',
+            components: [
+                new CTransform({
+                    x: WIDTH_PIXELS - (WIDTH * .5),
+                    y: 0
+                }),
+                new CBoxCollider({
+                    x: WIDTH_PIXELS - (WIDTH * .5),
+                    y: 0,
+                    width: WIDTH * .5,
+                    height: HEIGHT_PIXELS
+                })
+            ]
+        })
+
+        // bottom border
+        entityManager.addEntity({
+            tag: 'tile',
+            components: [
+                new CTransform({
+                    x: 0,
+                    y: HEIGHT_PIXELS - (HEIGHT * .5)
+                }),
+                new CBoxCollider({
+                    x: 0,
+                    y: HEIGHT_PIXELS - (HEIGHT * .5),
+                    width: WIDTH_PIXELS,
+                    height: HEIGHT * .5
+                })
+            ]
+        })
+
+        //top
+        entityManager.addEntity({
+            tag: 'tile',
+            components: [
+                new CTransform({
+                    x: 0,
+                    y: 0
+                }),
+                new CBoxCollider({
+                    x: 0,
+                    y: 0,
+                    width: WIDTH_PIXELS,
+                    height: HEIGHT * .5
+                })
+            ]
+        })
+    }
 
     generateBackgrounds()
     generateNoiseMap()
     generateTerrain()
+    generateBorders()
     return terrainMap
 }
