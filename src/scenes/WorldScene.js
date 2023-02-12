@@ -95,7 +95,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
@@ -210,7 +210,7 @@ class WorldScene extends Scene {
                 }
             }
         } else if (selected.tag === 'gun') {
-            this.projectileManager.shoot({x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
         }
     }
     #getGridCell(pos, player) {

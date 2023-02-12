@@ -204,6 +204,7 @@ const MISC_PATH = {
     GUN             :   './assets/icons/item_1782.png',
     PICK	        :	'./assets/icons/item_3485.png',
     PICK_CURSOR	    :	'./assets/cursors/pickCursor.cur',
+    PROJECTILE_FIRE :   './assets/projectiles/fire.png',
     PROJECTILE_ORB  : './assets/projectiles/orb.png',
     PROJECTILE_LASER: './assets/projectiles/laser.png'
 }

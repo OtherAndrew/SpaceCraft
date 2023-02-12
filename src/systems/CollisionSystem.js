@@ -117,7 +117,7 @@ class CollisionSystem {
                    mob.components["stats"].applyDamage(p.components["stats"].doDamage());
                    mob.components["transform"].x = mob.components["transform"].last.x;
                    mob.components["transform"].y = mob.components["transform"].last.y;
-                   p.destroy();
+                   if (!p.tag.includes("fire")) p.destroy();
                }
             });
             this.tileList.forEach(tile => {
