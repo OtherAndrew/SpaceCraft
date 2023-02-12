@@ -103,7 +103,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
