@@ -103,7 +103,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
@@ -150,7 +150,7 @@ class WorldScene extends Scene {
      */
     #checkIfExposed(e) {
         
-        if(e.components.boxCollider) return
+        // if(e.components.boxCollider) return
 
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
@@ -165,27 +165,26 @@ class WorldScene extends Scene {
                         width: BLOCKSIZE,
                         height: BLOCKSIZE
                     })
-                ])
+                ]);
                 // e.tag = e.tag + " ground"
             }
-            if (
-                this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air' ||
-                this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap[0].length-1)].tag === 'air' ||
-                this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air' ||
-                this.terrainMap[clamp(posY-1, 0, this.terrainMap.length-1)][posX].tag === 'air') {
-                    e.addComponent([
-                        new CBoxCollider({
-                            x: e.components.transform.x,
-                            y: e.components.transform.y,
-                            width: BLOCKSIZE,
-                            height: BLOCKSIZE
-                        })
-                    ])
-                    // e.tag = e.tag + " exposed"
-                } else {
-                    // e.tag = e.tag.replace("exposed", "")
-                    delete e.components["boxCollider"]
-                }
+            if (this.terrainMap[posY][clamp(posX-1, 0, posX)].tag === 'air'
+                    || this.terrainMap[posY][clamp(posX+1, 0, this.terrainMap[0].length-1)].tag === 'air'
+                    || this.terrainMap[clamp(posY+1, 0, this.terrainMap.length-1)][posX].tag === 'air'
+                    || this.terrainMap[clamp(posY-1, 0, this.terrainMap.length-1)][posX].tag === 'air') {
+                e.addComponent([
+                    new CBoxCollider({
+                        x: e.components.transform.x,
+                        y: e.components.transform.y,
+                        width: BLOCKSIZE,
+                        height: BLOCKSIZE
+                    })
+                ]);
+                // e.tag = e.tag + " exposed"
+            } else {
+                // e.tag = e.tag.replace("exposed", "")
+                delete e.components["boxCollider"];
+            }
         }
     }
 
