@@ -15,17 +15,27 @@ class ProjectileManager {
 
         const directionVector = normalize(midPoint, targetPos)
         const speed = BLOCKSIZE / 2
-        const vX = directionVector.x * speed;
-        const vY = directionVector.y * speed;
+        const projectileVelocity = {
+            x: directionVector.x * speed + oTransform.velocityX,
+            y: directionVector.y * speed + oTransform.velocityY
+        }
+        // const vX = directionVector.x * speed + oTransform.velocityX;
+        // const vY = directionVector.y * speed + oTransform.velocityY;
+        const projectileOrigin = {
+            x: oCollider.x + oCollider.width / 2,
+            y: oCollider.y + oCollider.height / 2
+        }
+
+        //switch bullet, fire, spore, arcing, etc.
+
         const p = new Projectile({
             damage: oStats.damage,
-            x: oCollider.x + oCollider.width / 2 - 8,
-            y: oCollider.y + oCollider.height / 2 - 8,
-            velocityX: vX,
-            velocityY: vY,
-            originVX: oTransform.velocityX,
-            originVY: oTransform.velocityY,
-            hasGravity: false
+            x: projectileOrigin.x, // center
+            y: projectileOrigin.y, //center
+            velocityX: projectileVelocity.x,
+            velocityY: projectileVelocity.y,
+            hasGravity: false,
+            duration: 5
         });
         return this.entityManager.addEntity(p);
     }
@@ -54,7 +64,6 @@ class Projectile {
     #buildComponents(props) {
         const stats = new CStats({
             damage: props.damage,
-            speed: props.speed,
             invincible: true
         });
         const sprite = new CSprite({
@@ -65,12 +74,12 @@ class Projectile {
             firstFrameX: 8
         });
         const transform = new CTransform({
-            x: props.x,
-            y: props.y,
-            hasGravity: props.hasGravity || false,
+            x: props.x - sprite.dWidth / 2,
+            y: props.y - sprite.dHeight / 2,
+            hasGravity: props.hasGravity,
             // rotation: props.angle,
-            velocityX: props.velocityX + props.originVX,
-            velocityY: props.velocityY + props.originVY,
+            velocityX: props.velocityX,
+            velocityY: props.velocityY,
             maxVelocityX: 300,
             maxVelocityY: 300,
         });
@@ -84,7 +93,7 @@ class Projectile {
             // xOffset: (sprite.dWidth - cWidth) / 2,
             // yOffset: (sprite.dHeight - cHeight) / 2,
         });
-        const duration = new CDuration(5);
+        const duration = new CDuration(props.duration);
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }
