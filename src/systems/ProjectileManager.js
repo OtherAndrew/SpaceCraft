@@ -51,8 +51,8 @@ class ProjectileManager {
             //     });
             //     break;
             case 'fire':
-                projectileOrigin.x += directionVector.x * 25
-                projectileOrigin.y += directionVector.y * 25
+                projectileOrigin.x += directionVector.x * 30
+                projectileOrigin.y += directionVector.y * 30
                 p = new Projectile({
                     tag: 'firebullet',
                     sprite: this.fireSprite(),
@@ -85,7 +85,7 @@ class ProjectileManager {
     }
 
     fireSprite() {
-        return new CSprite({
+        const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_FIRE),
             sWidth: 8,
             sHeight: 12,
@@ -94,6 +94,8 @@ class ProjectileManager {
             lastFrameX: 4,
             fps: 30
         });
+        sprite.currentFrame = getRandomInt(sprite.lastFrameX);
+        return sprite;
     }
 
 }
