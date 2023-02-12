@@ -3,7 +3,6 @@
  *
  * @author Andrew Nguyen
  * @version 1/20/23
- * @todo When using this instead of dedicated typed blocks, fails to render,
  */
 
 /**

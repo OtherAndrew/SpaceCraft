@@ -9,32 +9,40 @@ class CraftMenu {
         this.y = 30;
 
         // this.cm.createInventory("table1", this.x, this.y, 1, 3, "pink", "recipe");
-        // this.cm.addToInventory("table1", new block1());
-        // this.cm.addToInventory("table1", new block2());
-        // this.cm.addToInventory("table1", new block3(), 2);
+        // this.cm.addToInventory("table1", new Entity(generateBlock('tile_ruby', 0, 0), 0));
+        // this.cm.addToInventory("table1", new Entity(generateBlock('tile_dirt', 0, 0), 0));
+        // this.cm.addToInventory("table1", new Entity(generateBlock('tile_stone', 0, 0), 0), 2);
         // this.cm.activateInventory("table1");
         // this.recipes.push("table1");
-        //
+
+        this.cm.createInventory("table1", this.x, this.y, 1, 3, "pink", "recipe");
+        this.cm.addToInventory("table1", new Entity(generateBlock('tile_ruby', 0, 0), 0));
+        this.cm.addToInventory("table1", new Entity(generateBlock('tile_dirt', 0, 0), 0));
+        this.cm.addToInventory("table1", new Entity(generateBlock('tile_stone', 0, 0), 0));
+        this.cm.activateInventory("table1");
+        this.recipes.push("table1");
+
+
         // this.cm.createInventory("table2", this.x, this.y + 54, 1, 2, "pink", "recipe");
         // this.cm.addToInventory("table2", new block2());
         // this.cm.addToInventory("table2", new block3());
         // this.cm.activateInventory("table2");
         // this.recipes.push("table2");
-        //
+
         // this.cm.createInventory("furnace1", this.x, this.y + 54 * 2, 1, 2, "red", "recipe");
         // this.cm.addToInventory("furnace1", new block3());
         // this.cm.addToInventory("furnace1", new block1());
         // this.cm.activateInventory("furnace1");
         // this.recipes.push("furnace1");
-        //
-        // for (const entry in this.recipes) {
-        //     let recipe = this.recipes[entry];
-        //     if (recipe.includes("table")) {
-        //         this.denoteRecipe(recipe, "green");
-        //     } else if (recipe.includes("furnace")) {
-        //         this.denoteRecipe(recipe, "grey");
-        //     }
-        // }
+
+        for (const entry in this.recipes) {
+            let recipe = this.recipes[entry];
+            if (recipe.includes("table")) {
+                this.denoteRecipe(recipe, "green");
+            } else if (recipe.includes("furnace")) {
+                this.denoteRecipe(recipe, "grey");
+            }
+        }
     }
 
     denoteRecipe(owner, color) {
@@ -49,7 +57,9 @@ class CraftMenu {
         product.calculateMiddle();
 
         for (let i = 1; i < recipe.length; i++) {
+            console.log(this.cm.playerCounts)
             recipe[i].playerCount = this.cm.playerCounts.get(recipe[i].item.tag);
+            console.log(recipe[i].item.tag + " : " + recipe[i].playerCount)
             recipe[i].update = function() {
                 this.displayText = recipe[i].playerCount + "/" + this.count;
             }
@@ -65,8 +75,13 @@ class CraftMenu {
                 }
                 for (let j = 1; j < actives[i].length; j++) {
                     let playerCount = this.cm.playerCounts.get(actives[i][j].item.tag);
-                    actives[i][j].playerCount = playerCount;
-                    actives[i][j].insufficient = playerCount < actives[i][j].count;
+                    if (playerCount) {
+                        actives[i][j].playerCount = playerCount;
+                        actives[i][j].insufficient = playerCount < actives[i][j].count;
+                    } else {
+                        actives[i][j].playerCount = 0;
+                        actives[i][j].insufficient = true;
+                    }
                 }
             }
         }
