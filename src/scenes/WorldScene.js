@@ -18,14 +18,8 @@ class WorldScene extends Scene {
 
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
-        this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
-        this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
-        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
-        this.mobFactory.build('lightjelly', this.player.components.transform.x + 300, this.player.components.transform.y - 300);
-        this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
-        this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
-        this.mobFactory.build('mossamber', this.player.components.transform.x -400, this.player.components.transform.y - 200);
-        this.mobFactory.build('rocket', this.player.components.transform.x -750, this.player.components.transform.y - 200);
+
+        this.spawnTestEntities();
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
@@ -49,6 +43,17 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
+    }
+
+    spawnTestEntities() {
+        this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
+        this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
+        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
+        this.mobFactory.build('lightjelly', this.player.components.transform.x + 300, this.player.components.transform.y - 300);
+        this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
+        this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
+        this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
+        this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
     }
 
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
@@ -175,9 +180,9 @@ class WorldScene extends Scene {
                             height: BLOCKSIZE
                         })
                     ])
-                    e.tag = e.tag + " exposed"
+                    // e.tag = e.tag + " exposed"
                 } else {
-                    e.tag = e.tag.replace("exposed", "")
+                    // e.tag = e.tag.replace("exposed", "")
                     delete e.components["boxCollider"]
                 }
         }
@@ -208,6 +213,7 @@ class WorldScene extends Scene {
                 if(e.components.lifespan.current <= 0) {
                     terrainMap[mapY][mapX].tag = 'air'
                     terrainMap[mapY][mapX].id = null
+                    delete e.components["boxCollider"]
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))
                 }
             }
