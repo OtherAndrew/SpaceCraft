@@ -31,12 +31,16 @@ class CBoxCollider {
         this.bottom = this.y + this.height;
         this.left = this.x;
         this.right = this.x + this.width;
-
+        this.center = {
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
+        }
         this.last = {
             top: this.top,
             bottom: this.bottom,
             left: this.left,
-            right: this.right
+            right: this.right,
+            center: this.center
         };
 
         return this;
@@ -52,7 +56,8 @@ class CBoxCollider {
             top: this.top,
             bottom: this.bottom,
             left: this.left,
-            right: this.right
+            right: this.right,
+            center: this.center
         };
         this.x = x + this.xOffset;
         this.y = y + this.yOffset;
@@ -60,5 +65,9 @@ class CBoxCollider {
         this.bottom = this.y + this.height;
         this.left = this.x;
         this.right = this.x + this.width;
+        this.center = {
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
+        }
     }
 }
