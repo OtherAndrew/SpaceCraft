@@ -64,7 +64,7 @@ class ProjectileManager {
                     origin: projectileOrigin,
                     duration: 1.5,
                     hasGravity: false,
-                    spread: 0.5
+                    spread: 1/3
                 });
                 break;
             default: console.log(`Invalid projectile type: ${type}.`);
