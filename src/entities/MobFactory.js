@@ -15,6 +15,7 @@ class MobFactory {
             case 'grapebomb': out = this.entityManager.addEntity(new Grapebomb({ x: x, y: y })); break;
             case 'wormtank': out = this.entityManager.addEntity(new Wormtank({ x: x, y: y })); break;
             case 'mossamber': out = this.entityManager.addEntity(new Mossamber({ x: x, y: y })); break;
+            case 'bloodsucker': out = this.entityManager.addEntity(new Bloodsucker({ x: x, y: y })); break;
             case 'rocket': out = this.entityManager.addEntity(new Rocket({ x: x, y: y })); break;
             default: console.log(`Invalid mob name: ${mob}.`);
         }
@@ -41,6 +42,10 @@ class MobFactory {
         return new Grapebomb({ x: x, y: y });
     }
     #buildRocket(x, y) {
+        return new Grapebomb({ x: x, y: y });
+    }
+
+    #buildBloodsucker(x, y) {
         return new Grapebomb({ x: x, y: y });
     }
 }
