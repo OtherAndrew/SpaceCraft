@@ -9,8 +9,9 @@ class CursorSystem {
     }
 
     init() {
-        this.cursorList[MISC_PATH.PICK_CURSOR] = `url(${MISC_PATH.PICK_CURSOR}), none`
-        this.cursorList[MISC_PATH.CROSSHAIR_CURSOR] = `url(${MISC_PATH.CROSSHAIR_CURSOR}), none`
+        this.cursorList[MISC_PATH.CURSOR_PICK] = `url(${MISC_PATH.CURSOR_PICK}), none`
+        this.cursorList[MISC_PATH.CURSOR_CROSSHAIR] = `url(${MISC_PATH.CURSOR_CROSSHAIR}), none`
+        this.cursorList[MISC_PATH.CURSOR_HAND] = `url(${MISC_PATH.CURSOR_HAND}), none`
     }
     update(pos) {
         if(pos) {
@@ -18,14 +19,14 @@ class CursorSystem {
             if(selected) {
                 // let tag = this.terrainMap[pos.y][pos.x].tag
                 if(/*tag.includes('tile') &&*/ selected.tag === 'pickaxe') {
-                    this.cursor.cursor = this.cursorList[MISC_PATH.PICK_CURSOR]
+                    this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
                 } else if (selected.tag === 'gun' || selected.tag === 'flamethrower') {
-                    this.cursor.cursor = this.cursorList[MISC_PATH.CROSSHAIR_CURSOR]
+                    this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]
                 } else {
-                    this.cursor.cursor = "pointer"
+                    this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_HAND]
                 }
             } else {
-                this.cursor.cursor = "pointer"
+                this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_HAND]
             }
         }
         
