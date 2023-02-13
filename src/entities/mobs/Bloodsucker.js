@@ -20,7 +20,7 @@ class Bloodsucker {
             maxHealth: 70
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.BLOODSUCKER),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSUCKER],
             sWidth: 166,
             sHeight: 162,
             scale: 0.5,

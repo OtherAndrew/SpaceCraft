@@ -180,6 +180,9 @@ class WorldScene extends Scene {
 
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
+        console.log("GridCellsX : " + coords.x)
+        console.log("GridCellsY : " + coords.y)
+        console.log(pos.t)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
@@ -188,13 +191,12 @@ class WorldScene extends Scene {
         if (active) {
             if(active.tag.includes('tile')) {
                 if(selected.tag.includes('air')) {
-                    let tag = this.containerManager.removeFromPlayer(this.hud.slot);
+                    let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
                     let newBlock;
-                    if (active.tag.includes('craft')) {
-                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY))
-                    } else {
+                    if (active.tag.includes('craft')) 
+                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY, 'worldgen'));
+                    else 
                         newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
-                    }
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
@@ -203,7 +205,7 @@ class WorldScene extends Scene {
                 }
             } else if (active.tag === 'pickaxe') {
                 if(selected.tag.includes('tile')) {
-                    let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
+                    let e = this.entityManager.getEntity(selected.id)
                     e.components.lifespan.current -= 1
                     if(e.components.lifespan.current <= 0) {
                         selected.tag = 'air'

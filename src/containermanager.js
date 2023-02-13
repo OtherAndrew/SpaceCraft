@@ -173,9 +173,7 @@ class ContainerManager {
 
     loadInventory(tag) {
         for (const owner in this.owners) {
-            if (owner.includes(tag)) {
-                this.activeInventory.push(this.owners[owner]);
-            }
+            if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
         }
     }
     

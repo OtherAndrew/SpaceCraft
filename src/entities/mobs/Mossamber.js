@@ -19,7 +19,7 @@ class Mossamber {
 
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.MOSSAMBER),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
             sWidth: 141,
             sHeight: 159,
             scale: .7,

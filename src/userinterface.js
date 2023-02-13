@@ -13,7 +13,7 @@ class HUD {
         this.activeContainer = this.containers[0];
         this.refreshActiveInfo();
 
-        this.add(new Entity(generateCrafter('tile_craft_table', 0, 0), 0));
+        this.add(new Entity(generateCrafter('tile_craft_table', 0, 0, 'craftgen'), 0));
         
         this.player.health = 100;
     };
@@ -26,7 +26,6 @@ class HUD {
     refreshActiveInfo() {
         this.x = this.activeContainer.x;
         this.y = this.activeContainer.y;
-        this.slot = this.activeContainer.slot;
     }
 
     draw(uiActive, ctx) {

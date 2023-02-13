@@ -19,7 +19,7 @@ class Rocket {
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.ROCKET),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.ROCKET],
             sWidth: 221,
             sHeight: 295,
             scale: 1,

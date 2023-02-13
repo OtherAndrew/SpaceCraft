@@ -120,7 +120,7 @@ const randomNumber = (min, max) => {
 }
 
 const cleanTag = (tag) => {
-    let index = tag.lastIndexOf('_') + 1
-    if (index !== -1) return tag.slice(index);
+    let index = tag.lastIndexOf('_');
+    if (index !== -1) return tag.slice(index + 1);
     return tag;
 }

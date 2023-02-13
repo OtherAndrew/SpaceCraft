@@ -127,15 +127,19 @@ const Crafter = function(props) {
 }
 Crafter.prototype.name = 'crafter';
 
-const generateCrafter = (tag, x, y) => {
+const generateCrafter = (tag, x, y, mode) => {
     let id = cleanTag(tag).toUpperCase();
     let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
+    let tempX = x * BLOCKSIZE, tempY = y * BLOCKSIZE;
+    if (mode === 'worldgen') {
+
+    }
     return new Crafter({
         tag: tag,
         sprite: image,
         lifespan: 20,
-        x: x * BLOCKSIZE,
-        y: y * BLOCKSIZE,
+        x: tempX,
+        y: tempY,
         sWidth: image.width,
         sHeight: image.height
     });
