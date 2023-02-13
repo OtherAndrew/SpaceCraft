@@ -35,8 +35,8 @@ class WorldScene extends Scene {
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
-        this.worldImages = new WorldImages(this.player)
-        this.worldImages.init(this.entityManager)
+        //this.worldImages = new WorldImages(this.player)
+        //this.worldImages.init(this.entityManager)
 
         this.projectileManager = new ProjectileManager(this.entityManager)
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
@@ -73,11 +73,11 @@ class WorldScene extends Scene {
             //https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
             this.movementSystem.updateY(deltaTime)
-            this.collisionSystem.resolveTileY()
+            //this.collisionSystem.resolveTileY()
             this.movementSystem.updateX(deltaTime)
-            this.collisionSystem.resolveTileX()
+            //this.collisionSystem.resolveTileX()
 
-            this.worldImages.update()
+            //this.worldImages.update()
             
             this.collisionSystem.resolveProjectiles()
             this.damageSystem.update();

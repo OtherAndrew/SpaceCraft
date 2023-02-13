@@ -6,8 +6,23 @@ const getTerrain = (entityManager) => {
     let terrainMap = []
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
-    let blockValues = [
+    let blockValues = {
+        FIRST_FIFTEEN: [
+            'coal',
             'stone',
+            'stone',
+            'stone',
+            'stone',
+            'stone',
+            'dirt',
+            'dirt',
+            'dirt',
+            'dirt',
+            'dirt'
+        ],
+        SECOND_FIFTEEN: [
+            'copper',
+            'coal',
             'stone',
             'stone',
             'stone',
@@ -16,8 +31,10 @@ const getTerrain = (entityManager) => {
             'null',
             'null',
             'null',
-            'null',
+            'null'
         ]
+    }
+    let firstFifteenBlocks = 241
 
         /**
      * Private class function. Generates a (2*gridSize) * (2*gridSize) matrix of perlin noise values
@@ -64,8 +81,8 @@ const getTerrain = (entityManager) => {
                 let e = createBlock({
                     x: x * BLOCKSIZE,
                     y: y * BLOCKSIZE,
-                    value: val,
-                    recurse: true
+                    row: y,
+                    value: val
                 })
                 r.push({
                     tag: e.tag,
@@ -83,33 +100,16 @@ const getTerrain = (entityManager) => {
      * @returns 
      */
     function createBlock(props) {
-        switch(blockValues[props.value]) {
-            case 'dirt':
-                let chance = Math.random()
-                if(props.y < (50 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + 3.7)
-                    props.recurse = false
-                    return createBlock(props)
-                } else if (props.y > (120 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + 2.7)
-                    props.recurse = false
-                    return createBlock(props)
-                }
-                return entityManager.addEntity(generateBlock('tile_dirt', props.x, props.y));
-            case 'stone':
-                if(props.y > (6 * BLOCKSIZE) && props.y < (120 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + 3)
-                    props.recurse = false
-                    return createBlock(props)
-                } else if(props.y > (120 * BLOCKSIZE) && props.recurse) {
-                    props.value = Math.round(Math.random() + .4)
-                    props.recurse = false
-                    return createBlock(props)
-                }
-                return entityManager.addEntity(generateBlock('tile_stone', props.x, props.y));
-            default: 
-                return {tag: 'air', id: null}
+        let value = clamp(props.value, 0, 10)
+        let block = 'tile_'
+        if (props.row < firstFifteenBlocks) {
+            block += blockValues.FIRST_FIFTEEN[value]
+        } else {
+            let val = blockValues.SECOND_FIFTEEN[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
         }
+        return entityManager.addEntity(generateBlock(block, props.x, props.y));
     }
 
 
