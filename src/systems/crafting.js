@@ -105,7 +105,7 @@ const Crafter = function(props) {
         components: [
             new CTransform({
                 x: props.x,
-                y: props.y,
+                y: props.y
             }),
             new CSprite({
                 sprite: props.sprite,
@@ -115,25 +115,16 @@ const Crafter = function(props) {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CBoxCollider({
-               x: props.x,
-               y: props.y,
-               width: props.sWidth,
-               height: props.sHeight
-            }),
             new CLifespan(props.lifespan)
         ]
     };
 }
 Crafter.prototype.name = 'crafter';
 
-const generateCrafter = (tag, x, y, mode) => {
+const generateCrafter = (tag, x, y) => {
     let id = cleanTag(tag).toUpperCase();
     let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
     let tempX = x * BLOCKSIZE, tempY = y * BLOCKSIZE;
-    if (mode === 'worldgen') {
-
-    }
     return new Crafter({
         tag: tag,
         sprite: image,
@@ -141,6 +132,6 @@ const generateCrafter = (tag, x, y, mode) => {
         x: tempX,
         y: tempY,
         sWidth: image.width,
-        sHeight: image.height
+        sHeight: image.height,
     });
 }

@@ -12,7 +12,6 @@ class Lightjelly {
         this.tag = 'lightjelly mob enemy ghost';
         this.name = 'lightjelly';
         this.components = this.#buildComponents(props);
-        return this;
     };
     #buildComponents(props) {
         const stats = new CStats({

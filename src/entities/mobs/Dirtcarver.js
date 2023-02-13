@@ -11,7 +11,6 @@ class Dirtcarver {
         this.tag = 'dirtcarver mob';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
-        return this;
     };
 
     #buildComponents(props) {

@@ -12,8 +12,8 @@ class Rocket {
         this.tag = 'rocket mob ignore';
         this.name = 'rocket';
         this.components = this.#buildComponents(props);
-        return this;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({
             invincible: true

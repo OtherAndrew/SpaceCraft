@@ -179,7 +179,7 @@ const BG_SCROLL = {
 
 // ALT SOLUTION
 // const BG_SCROLL = {
-//     BACKGROUND_0    :	.03,
+//     BACKGROUND_0    :   .03,
 //     BACKGROUND_1	:	.05,
 //     BACKGROUND_2	:	.06,
 //     BACKGROUND_3	:	.07,
@@ -196,25 +196,27 @@ const CHAR_PATH = {
     PLAYER      :	'./assets/sprites/player.png',
     SPORE       :	'./assets/sprites/spore.png',
     WORMTANK    :	'./assets/sprites/wormtank.png',
-    ROCKET    :	'./assets/sprites/rocket.png',
-    MOSSAMBER    :	'./assets/sprites/mossamber.png',
-    BLOODSUCKER    :	'./assets/sprites/bloodsucker.png'
+    ROCKET      :	'./assets/sprites/rocket.png',
+    MOSSAMBER   :	'./assets/sprites/mossamber.png',
+    BLOODSUCKER :	'./assets/sprites/bloodsucker.png'
 }
 
 const CRAFT_PATH = {
-    TABLE :   './assets/icons/item_2631.png'
+    ANVIL   :   './assets/icons/anvil.png',
+    FURNACE :   './assets/icons/furnace.png',
+    TABLE   :   './assets/icons/table.png'
 }
 
 const MISC_PATH = {
-    CROSSHAIR_CURSOR:  './assets/cursors/Crosshairs_Red.png',
-    GENERICDEATH	:	'./assets/sprites/smoke.png',
-    FLAMETHROWER    :   './assets/items/flamethrower.png',
-    GUN             :   './assets/items/coilgun.png',
-    PICK	        :	'./assets/icons/item_3485.png',
-    PICK_CURSOR	    :	'./assets/cursors/pickCursor.cur',
-    PROJECTILE_FIRE :   './assets/projectiles/fire.png',
-    PROJECTILE_ORB  : './assets/projectiles/orb.png',
-    PROJECTILE_LASER: './assets/projectiles/laser.png'
+    CROSSHAIR_CURSOR    :  './assets/cursors/Crosshairs_Red.png',
+    GENERICDEATH	    :	'./assets/sprites/smoke.png',
+    FLAMETHROWER        :   './assets/items/flamethrower.png',
+    GUN                 :   './assets/items/coilgun.png',
+    PICK	            :	'./assets/icons/item_3485.png',
+    PICK_CURSOR	        :	'./assets/cursors/pickCursor.cur',
+    PROJECTILE_FIRE     :   './assets/projectiles/fire.png',
+    PROJECTILE_ORB      :   './assets/projectiles/orb.png',
+    PROJECTILE_LASER    :   './assets/projectiles/laser.png'
 }
 
 const OVERLAY_PATH = {

@@ -13,8 +13,10 @@ class HUD {
         this.activeContainer = this.containers[0];
         this.refreshActiveInfo();
 
-        this.add(new Entity(generateCrafter('tile_craft_table', 0, 0, 'craftgen'), 0));
-        
+        // TESTING
+        this.add(new Entity(generateCrafter('craft_table', 0, 0), 0));
+        this.add(new Entity(generateCrafter('craft_furnace', 0, 0), 0));
+        this.add(new Entity(generateCrafter('craft_anvil', 0, 0), 0));
         this.player.health = 100;
     };
 
@@ -70,39 +72,3 @@ class HUD {
         }
     }
 }
-// TESTING
-// class Block {
-//     constructor() {
-//         this.sprite = null;
-//         this.width = 32;
-//         this.height = 32;
-//     };
-//
-//     draw(ctx, x, y) {
-//         ctx.drawImage(ASSET_MANAGER.getAsset(this.sprite), x, y);
-//     };
-// }
-//
-// class block1 extends Block {
-//     constructor() {
-//         super();
-//         this.tag = "rock";
-//         this.sprite = "./assets/sprites/b1.png";
-//     };
-// }
-//
-// class block2 extends Block {
-//     constructor() {
-//         super();
-//         this.tag = "sand";
-//         this.sprite = "./assets/sprites/b2.png";
-//     };
-// }
-//
-// class block3 extends Block {
-//     constructor() {
-//         super();
-//         this.tag = "dirt";
-//         this.sprite = "./assets/sprites/b3.png";
-//     };
-// }

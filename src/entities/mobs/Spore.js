@@ -12,7 +12,6 @@ class Spore {
         this.tag = 'spore mob';
         this.name = 'spore';
         this.components = this.#buildComponents(props);
-        return this;
     };
     #buildComponents(props) {
         const stats = new CStats({

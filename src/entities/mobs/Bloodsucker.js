@@ -12,8 +12,8 @@ class Bloodsucker {
         this.tag = 'bloodsucker mob';
         this.name = 'bloodsucker';
         this.components = this.#buildComponents(props);
-        return this;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({
             speed: 3,

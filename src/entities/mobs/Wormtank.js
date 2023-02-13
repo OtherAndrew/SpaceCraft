@@ -11,7 +11,6 @@ class Wormtank {
         this.tag = 'wormtank mob';
         this.name = 'wormtank';
         this.components = this.#buildComponents(props);
-        return this;
     };
 
     #buildComponents(props) {

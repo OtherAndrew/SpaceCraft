@@ -13,8 +13,8 @@ class Grapebomb {
         this.name = 'grapebomb';
         this.scale = 0.3;
         this.components = this.#buildComponents(props);
-        return this;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({});
         const sprite = new CSprite({

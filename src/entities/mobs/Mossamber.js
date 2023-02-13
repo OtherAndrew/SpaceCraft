@@ -12,8 +12,8 @@ class Mossamber {
         this.tag = 'mossamber mob';
         this.name = 'mossamber';
         this.components = this.#buildComponents(props);
-        return this;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({
 

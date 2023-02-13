@@ -12,7 +12,6 @@ class Lightbug {
         this.tag = 'lightbug mob ignore';
         this.name = 'lightbug';
         this.components = this.#buildComponents(props);
-        return this;
     };
 
     #buildComponents(props) {
