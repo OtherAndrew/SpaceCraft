@@ -75,9 +75,9 @@ class WorldScene extends Scene {
             //https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
             this.movementSystem.updateY(deltaTime)
-            //this.collisionSystem.resolveTileY()
+            this.collisionSystem.resolveTileY()
             this.movementSystem.updateX(deltaTime)
-            //this.collisionSystem.resolveTileX()
+            this.collisionSystem.resolveTileX()
 
             //this.worldImages.update()
             
@@ -183,7 +183,7 @@ class WorldScene extends Scene {
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
-        console.log(terrainMap[mapY][mapX].tag)
+        console.log(selected.tag)
         let active = this.hud.activeContainer.item;
         if (active) {
             if(active.tag.includes('tile')) {

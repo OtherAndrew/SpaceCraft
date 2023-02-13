@@ -131,14 +131,16 @@ const Crafter = function(props) {
 Crafter.prototype.name = 'crafter';
 
 const generateCrafter = (tag, x, y) => {
-    let id = tag.toUpperCase().replace("TILE_", "").replace("CRAFT_","");
+    let index = tag.lastIndexOf('_') + 1
+    let id = tag.slice(index).toUpperCase();
+    let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
     return new Crafter({
         tag: tag,
-        sprite: ASSET_MANAGER.cache[CRAFT_PATH[id]],
+        sprite: image,
         lifespan: 20,
         x: x * BLOCKSIZE,
         y: y * BLOCKSIZE,
-        sWidth: 32,
-        sHeight: 18
+        sWidth: image.width,
+        sHeight: image.height
     });
 }

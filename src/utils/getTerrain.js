@@ -237,7 +237,7 @@ const getTerrain = (entityManager) => {
             if(val === 'null') return {tag: 'air', id: null}
             block += val
         }
-        return entityManager.addEntity(generateBlock(block, props.x, props.y));
+        return entityManager.addEntity(generateBlock(block, props.x, props.y, 'terraingen'));
     }
 
 
