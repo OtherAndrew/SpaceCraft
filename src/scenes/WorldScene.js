@@ -210,9 +210,9 @@ class WorldScene extends Scene {
                         delete e.components["boxCollider"]
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))}
                 }
-            } else if (selected.tag === 'gun') {
+            } else if (active.tag === 'gun') {
                 this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
-            } else if (selected.tag === 'flamethrower') {
+            } else if (active.tag === 'flamethrower') {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
         } else if (selected.tag.includes('craft')) {
