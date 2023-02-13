@@ -7,34 +7,134 @@ const getTerrain = (entityManager) => {
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = {
-        FIRST_FIFTEEN: [
+        FIRST: [
+            'copper',
+            'coal',
             'coal',
             'stone',
             'stone',
-            'stone',
-            'stone',
-            'stone',
-            'dirt',
+            'sand',
+            'sand',
             'dirt',
             'dirt',
             'dirt',
             'dirt'
         ],
-        SECOND_FIFTEEN: [
+        SECOND: [
+            'cobalt',
+            'copper',
             'copper',
             'coal',
             'stone',
             'stone',
-            'stone',
             'dirt',
+            'dirt',
+            'null',
+            'null',
+            'null'
+        ],
+        THIRD: [
+            'iron',
+            'silica',
+            'cobalt',
+            'copper',
+            'stone',
+            'stone',
             'dirt',
             'null',
             'null',
             'null',
             'null'
+        ],
+        FOURTH: [
+            'bismuth',
+            'tin',
+            'iron',
+            'silica',
+            'stone',
+            'stone',
+            'null',
+            'null',
+            'null',
+            'null',
+            'null'
+        ],
+        FIFTH: [
+            'tungsten',
+            'bismuth',
+            'tin',
+            'iron',
+            'stone',
+            'stone',
+            'null',
+            'null',
+            'null',
+            'null',
+            'null'
+        ],
+        SIXTH: [
+            'titanite',
+            'tungsten',
+            'tin',
+            'coal',
+            'stone',
+            'stone',
+            'null',
+            'null',
+            'null',
+            'null',
+            'null'
+        ],
+        SEVENTH: [
+            'gold',
+            'titanite',
+            'iron',
+            'ferrite',
+            'stone',
+            'stone',
+            'null',
+            'null',
+            'null',
+            'null',
+            'null'
+        ],
+        EIGHT: [
+            'titanite',
+            'ruby',
+            'tungsten',
+            'coal',
+            'stone',
+            'stone',
+            'null',
+            'null',
+            'null',
+            'null',
+            'null'
+        ],
+        NINTH: [
+            'gold',
+            'paraffin',
+            'silica',
+            'titanite',
+            'stone',
+            'stone',
+            'null',
+            'null',
+            'null',
+            'null',
+            'null'
         ]
+
     }
-    let firstFifteenBlocks = 241
+    let firstChunk = 251
+    let secondChunk = 226
+    let thirdChunk = 301
+    let fourthChunk = 326
+    let fifthChunk = 351
+    let sixthChunk = 376
+    let seventhChunk = 401
+    let eighthChunk = 426
+    let ninthChunk = 451
 
         /**
      * Private class function. Generates a (2*gridSize) * (2*gridSize) matrix of perlin noise values
@@ -102,10 +202,38 @@ const getTerrain = (entityManager) => {
     function createBlock(props) {
         let value = clamp(props.value, 0, 10)
         let block = 'tile_'
-        if (props.row < firstFifteenBlocks) {
-            block += blockValues.FIRST_FIFTEEN[value]
-        } else {
-            let val = blockValues.SECOND_FIFTEEN[value]
+        if (props.row < firstChunk) {
+            block += blockValues.FIRST[value]
+        } else if (props.row < secondChunk) {
+            let val = blockValues.SECOND[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < thirdChunk) {
+            let val = blockValues.THIRD[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < fourthChunk) {
+            let val = blockValues.FOURTH[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < fifthChunk) {
+            let val = blockValues.FIFTH[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < sixthChunk) {
+            let val = blockValues.SIXTH[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < seventhChunk) {
+            let val = blockValues.SEVENTH[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < eighthChunk) {
+            let val = blockValues.EIGHT[value]
+            if(val === 'null') return {tag: 'air', id: null}
+            block += val
+        } else if (props.row < ninthChunk) {
+            let val = blockValues.NINTH[value]
             if(val === 'null') return {tag: 'air', id: null}
             block += val
         }

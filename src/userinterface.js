@@ -13,12 +13,8 @@ class HUD {
         this.activeContainer = this.containers[0];
         this.refreshActiveInfo();
 
-        // TESTING
-        // this.add(new block1());
-        // this.add(new block2());
-        // this.add(new block1());
-        // this.add(new block3());
-        // console.log(this.containers);
+        this.add(new Entity(generateCrafter('tile_craft_table', 0, 0), 0));
+        
         this.player.health = 100;
     };
 

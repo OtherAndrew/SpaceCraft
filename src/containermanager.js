@@ -63,14 +63,14 @@ class ContainerManager {
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 inventory[i].count += count;
-                this.addPlayerCount(item, count);
+                if(owner === 'player') this.addPlayerCount(item, count);
                 return 0;
             } else if (firstNull === undefined && inventory[i].item == null) firstNull = inventory[i];
         }
         if (firstNull) {
             firstNull.item = item;
             firstNull.count = count;
-            this.addPlayerCount(item, count);
+            if(owner === 'player') this.addPlayerCount(item, count);
             return 1;
         } else return -1;
     }
@@ -107,15 +107,7 @@ class ContainerManager {
     removeFromPlayer(index) {
         let ent = this.slots[index];
         if (ent.item) {
-            // if (--ent.count) {
-            //     return structuredClone(ent.item);
-            // } else {
-            //     let item = ent.item;
-            //     ent.item = null;
-            //     return item;
-            // }
             let active = ent.item.tag;
-            // this.playerCounts.set(ent.item.tag, this.playerCounts.get(ent.item.tag) - 1);
             this.minusPlayerCount(ent.item, 1)
             if (!--ent.count) this.clearContainer(ent);
             return active;
@@ -139,16 +131,17 @@ class ContainerManager {
             }
         }
         if (owner === "player") this.minusPlayerCount(item, requisite.count)
-            // this.playerCounts.set(item.tag, this.playerCounts.get(item.tag) - requisite.count);
     }
 
     swapViaContainer(swapContainer) {
+        // TODO: ACCOUNT FOR TRASH CAN AND OUT OF PLAYER INVENTORY
         if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
             && swapContainer.item.tag === this.selectedContainer.item.tag) { // stack if same
             swapContainer.count = swapContainer.count + this.selectedContainer.count;
             this.clearContainer(this.selectedContainer)
         } else if (!swapContainer.owner && this.selectedContainer.item) { // trashcan (need check for selling?)
-            swapContainer.item = this.selectedContainer.item;
+            // TODO address count of previous item in trashcan
+            swapContainer.item = this.selectedContainer.item; 
             swapContainer.count = this.selectedContainer.count;
             this.clearContainer(this.selectedContainer)
         } else { // swap
@@ -178,19 +171,23 @@ class ContainerManager {
         console.log(this.owners[owner]);
     }
 
+    loadInventory(tag) {
+        for (const owner in this.owners) {
+            if (owner.includes(tag)) {
+                this.activeInventory.push(this.owners[owner]);
+            }
+        }
+    }
+    
     // no inventory is being drawn to the screen
-    deactivateInventory() {
+    unloadInventory() {
         this.activeInventory.length = 2;
     }
 
     draw(uiActive, ctx, mouse) {
         if (uiActive) {
             ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.INVENTORY), 0, 0);
-            // ctx.drawImage(ASSET_MANAGER.getAsset(PATHS.OVERLAYS.INVENTORY), 0, 0);
-            
-            // ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.VIGNETTE), 0, 0);
-            ctx.drawImage(ASSET_MANAGER.getAsset(PATHS.OVERLAYS.VIGNETTE), 0, 0);
-            
+            ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.VIGNETTE), 0, 0);
             for (let i = 0; i < this.activeInventory.length; i++) {
                 for (let c = 0; c < this.activeInventory[i].length; c++) this.activeInventory[i][c].draw(ctx);
             }
@@ -385,11 +382,8 @@ class Container {
     }
 
     draw(ctx) {
-        if (this.selected) {
-            this.roundRect(ctx, this.x, this.y, "orange");
-        } else {
-            this.roundRect(ctx, this.x, this.y, this.fillColor);
-        }
+        if (this.selected) this.roundRect(ctx, this.x, this.y, "orange"); 
+        else this.roundRect(ctx, this.x, this.y, this.fillColor);
         if (this.item) {
             let sprite = this.item.components.sprite;
             ctx.save();
@@ -403,8 +397,8 @@ class Container {
                 sprite.sHeight,
                 this.midx - sprite.sWidth / 2,
                 this.midy - sprite.sHeight / 2,
-                sprite.dWidth,
-                sprite.dHeight
+                sprite.sWidth,
+                sprite.sHeight
             );
             
             // testing

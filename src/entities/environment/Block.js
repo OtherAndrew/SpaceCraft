@@ -3,7 +3,6 @@
  *
  * @author Andrew Nguyen
  * @version 1/20/23
- * @todo When using this instead of dedicated typed blocks, fails to render,
  */
 
 /**
@@ -43,21 +42,38 @@ const Block = function(props) {
 }
 Block.prototype.name = 'block';
 
-
 /**
  * Creates a block blueprint with corresponding sprite path and lifespan.
+ * @param tag   tag of block
+ * @param x     x-coord
+ * @param y     y-coord
+ * @param mode  the mode the function should behave as
+ * @returns {{components: (CTransform|CSprite|CLifespan)[], tag: string}}   Block blueprint
  */
-const generateBlock = (tag, x, y, multiplier=1) => {
+const generateBlock = (tag, x, y, mode) => {
     let id = tag.toUpperCase().replace("TILE_", "");
+    let tempX = x;
+    let tempY = y;
+    let tempScale = BLOCKSIZE / 16;
+    switch (mode) {
+        case 'terraingen':
+            break;
+        case 'craftgen':
+            tempScale /= tempScale;
+        case 'worldgen':
+            tempX *= BLOCKSIZE;
+            tempY *= BLOCKSIZE;
+            break;
+    }
     return new Block({
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
         lifespan: TILE_LIFE[id],
-        x: x * multiplier,
-        y: y * multiplier,
+        x: tempX,
+        y: tempY,
         sWidth: 16,
         sHeight: 16,
-        scale: BLOCKSIZE / 16,
+        scale: tempScale,
         frameX: randomInt(6),
         frameY: randomInt(2)
     });

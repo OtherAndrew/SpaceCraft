@@ -21,7 +21,7 @@ class Rocket {
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.ROCKET),
             sWidth: 221,
-            sHeight: 304,
+            sHeight: 295,
             scale: 1,
             firstFrameX: 0,
             frameY: 0,
@@ -30,14 +30,16 @@ class Rocket {
             padding: 1
         });
         const transform = new CTransform({
-            x: props.x,
+            x: props.x + 20,
             y: props.y,
             hasGravity: true
         });
+        const cWidth = 3 * BLOCKSIZE;
         const collider = new CBoxCollider({
-            x: props.x,
+            x: props.x + props.width / 2,
             y: props.y,
-            width: sprite.dWidth,
+            width: cWidth,
+            xOffset: (sprite.dWidth - cWidth) / 2,
             height: sprite.dHeight
         });
 

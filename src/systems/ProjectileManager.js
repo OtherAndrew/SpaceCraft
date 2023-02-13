@@ -36,22 +36,11 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.33,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 5,
+                    duration: 2,
                     hasGravity: false,
                     spread: 0
                 });
                 break;
-            // case 'super':
-            //     p = new Projectile({
-            //         tag: 'superbullet',
-            //         damage: 9001,
-            //         speed: BLOCKSIZE * 0.1,
-            //         dVector: directionVector,
-            //         origin: projectileOrigin,
-            //         duration: 5,
-            //         hasGravity: false
-            //     });
-            //     break;
             case 'fire':
                 projectileOrigin.x += directionVector.x * 30
                 projectileOrigin.y += directionVector.y * 30
@@ -62,15 +51,28 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 1.5,
+                    duration: 1.25,
                     hasGravity: false,
                     spread: 1/3
                 });
                 break;
+            case 'arc':
+                projectileOrigin.x += directionVector.x * 20
+                projectileOrigin.y += directionVector.y * 20
+                p = new Projectile({
+                    tag: 'bullet',
+                    sprite: this.bulletSprite(),
+                    damage: 1,
+                    speed: BLOCKSIZE * 0.7,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 2,
+                    hasGravity: true,
+                    spread: 0
+                });
+                break;
             default: console.log(`Invalid projectile type: ${type}.`);
         }
-
-
         return this.entityManager.addEntity(p);
     }
 
@@ -134,22 +136,16 @@ class Projectile {
             y: props.origin.y - sprite.dHeight / 2,
             hasGravity: props.hasGravity,
             // rotation: props.angle,
-            // velocityX: props.velocityX,
-            // velocityY: props.velocityY,
             velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
             velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
             maxVelocityX: 300,
             maxVelocityY: 300,
         });
-        // const cWidth = BLOCKSIZE * .25;
-        // const cHeight = BLOCKSIZE * .25
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: sprite.dWidth,
             height: sprite.dHeight,
-            // xOffset: (sprite.dWidth - cWidth) / 2,
-            // yOffset: (sprite.dHeight - cHeight) / 2,
         });
         const duration = new CDuration(props.duration);
         transform.collider = collider

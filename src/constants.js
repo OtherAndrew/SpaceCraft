@@ -197,7 +197,12 @@ const CHAR_PATH = {
     SPORE       :	'./assets/sprites/spore.png',
     WORMTANK    :	'./assets/sprites/wormtank.png',
     ROCKET    :	'./assets/sprites/rocket.png',
-    MOSSAMBER    :	'./assets/sprites/mossamber.png'
+    MOSSAMBER    :	'./assets/sprites/mossamber.png',
+    BLOODSUCKER    :	'./assets/sprites/bloodsucker.png'
+}
+
+const CRAFT_PATH = {
+    TABLE :   './assets/icons/item_2631.png'
 }
 
 const MISC_PATH = {
@@ -229,27 +234,28 @@ const TILE_LIFE = {
 }
 
 const TILE_PATH = {
-    BISMUTH	    :	'./assets/tiles/tilesBismuth.png',
-    COAL	    :	'./assets/tiles/tilesCoal.png',
-    COBALT	    :	'./assets/tiles/tilesCobalt.png',
-    COPPER	    :	'./assets/tiles/tilesCopper.png',
-    DIRT	    :	'./assets/tiles/tilesDirt.png',
-    FERRITE	    :	'./assets/tiles/tilesFerrite.png',
-    GOLD	    :	'./assets/tiles/tilesGold.png',
-    IRON	    :	'./assets/tiles/tilesIron.png',
+    BISMUTH	    :	'./assets/tiles/tilesBismuth.png', //-------------------
+    COAL	    :	'./assets/tiles/tilesCoal.png', //-------------------
+    COBALT	    :	'./assets/tiles/tilesCobalt.png', //-------------------
+    COPPER	    :	'./assets/tiles/tilesCopper.png',//-------------------
+    DIRT	    :	'./assets/tiles/tilesDirt.png', //-------------------
+    FERRITE	    :	'./assets/tiles/tilesFerrite.png', //-------------------
+    GOLD	    :	'./assets/tiles/tilesGold.png', //-------------------
+    IRON	    :	'./assets/tiles/tilesIron.png', //-------------------
     PARAFFIN	:	'./assets/tiles/tilesParaffin.png',
     RUBY	    :	'./assets/tiles/tilesRuby.png',
-    SAND	    :	'./assets/tiles/tilesSand.png',
-    SILICA	    :	'./assets/tiles/tilesSilica.png',
-    STONE	    :	'./assets/tiles/tilesStone.png',
-    TIN	        :	'./assets/tiles/tilesTin.png',
-    TITANITE	:	'./assets/tiles/tilesTitanite.png',
-    TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',
+    SAND	    :	'./assets/tiles/tilesSand.png', //-------------------
+    SILICA	    :	'./assets/tiles/tilesSilica.png', //-------------------
+    STONE	    :	'./assets/tiles/tilesStone.png', //-------------------
+    TIN	        :	'./assets/tiles/tilesTin.png', //-------------------
+    TITANITE	:	'./assets/tiles/tilesTitanite.png', //-------------------
+    TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',  //-------------------
 }
 
 const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
+    CRAFTS      :   CRAFT_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
     TESTS       :   TEST_PATH,
@@ -260,6 +266,7 @@ const CONSTANTS = {
     BGS         :   BG_PATH,
     BGSCROLLS   :   BG_SCROLL,
     CHARS       :   CHAR_PATH,
+    CRAFTS      :   CRAFT_PATH,
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
@@ -267,4 +274,4 @@ const CONSTANTS = {
     TILES       :   TILE_PATH
 }
 
-for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant]);
+for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])
