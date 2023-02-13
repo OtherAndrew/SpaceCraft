@@ -134,6 +134,7 @@ class ContainerManager {
     }
 
     swapViaContainer(swapContainer) {
+        // TODO: ACCOUNT FOR TRASH CAN AND OUT OF PLAYER INVENTORY
         if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
             && swapContainer.item.tag === this.selectedContainer.item.tag) { // stack if same
             swapContainer.count = swapContainer.count + this.selectedContainer.count;
@@ -170,8 +171,16 @@ class ContainerManager {
         console.log(this.owners[owner]);
     }
 
+    loadInventory(tag) {
+        for (const owner in this.owners) {
+            if (owner.includes(tag)) {
+                this.activeInventory.push(this.owners[owner]);
+            }
+        }
+    }
+    
     // no inventory is being drawn to the screen
-    deactivateInventory() {
+    unloadInventory() {
         this.activeInventory.length = 2;
     }
 
@@ -388,8 +397,8 @@ class Container {
                 sprite.sHeight,
                 this.midx - sprite.sWidth / 2,
                 this.midy - sprite.sHeight / 2,
-                sprite.dWidth,
-                sprite.dHeight
+                sprite.sWidth,
+                sprite.sHeight
             );
             
             // testing

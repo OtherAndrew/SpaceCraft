@@ -17,7 +17,7 @@ class GameEngine {
         this.mouseDown = null;
         this.mouse = null;
         this.wheel = null;
-        this.uiActive = false;
+        this.menuActive = false;
         this.keys = {};
 
         // Options and the Details
@@ -107,30 +107,30 @@ class GameEngine {
         });
 
         /* KEY LISTENERS FOR:
-         TAB    : INVENTORY
-         C      : CRAFTING (PLACEHOLDER)
+         TAB    : INVENTORY/CRAFTING
          ESC    : EXIT UI */
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
                 switch (e.code) {
                     case "Escape":
-                        that.uiActive = false;
-                        break;
-                    case "KeyC":
-                        that.uiActive = !that.uiActive;
+                        that.menuActive = false;
                         break;
                     case "Tab":
-                        that.uiActive = !that.uiActive;
-                        if (that.uiActive) {
-                            that.screenshot = that.ctx.getImageData(0,0,1024,768);
-                            that.blur(this.screenshot, 2, 1);
-                        }
+                        this.activateMenu();
                         break;
                 }
             }, false);
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
+
+    activateMenu() {
+        this.menuActive = !this.menuActive;
+        if (this.menuActive) {
+            this.screenshot = this.ctx.getImageData(0,0,1024,768);
+            this.blur(this.screenshot, 2, 1);
+        }
+    }
 
     // credit: https://gist.github.com/tieleman/6028023
     blur(imageData, radius, quality) {
@@ -244,7 +244,7 @@ class GameEngine {
         // this.ctx.fillStyle = 'rgb(159,109,50)'
         this.ctx.fillStyle = '#222222'
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-        this.terrainDemoScene.draw(this.uiActive, this.ctx, this.mouse)
+        this.terrainDemoScene.draw(this.menuActive, this.ctx, this.mouse)
         if(this.currentTime > 1) {
             this.currentTime = 0
             this.frames = this.renderedFrames
@@ -260,7 +260,7 @@ class GameEngine {
     };
 
     update() {
-        this.terrainDemoScene.update(this.uiActive, this.keys, this.mouseDown, this.mouse, this.clockTick);
+        this.terrainDemoScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.clockTick);
     };
 
     loop() {

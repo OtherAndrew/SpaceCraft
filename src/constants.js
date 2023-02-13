@@ -198,7 +198,7 @@ const CHAR_PATH = {
 }
 
 const CRAFT_PATH = {
-    FURNACE :   './assets/icons/item_2631.png'
+    TABLE :   './assets/icons/item_2631.png'
 }
 
 const MISC_PATH = {

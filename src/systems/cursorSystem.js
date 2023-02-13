@@ -15,8 +15,8 @@ class CursorSystem {
         if(pos) {
             let selected = this.playerHud.activeContainer.item
             if(selected) {
-                let tag = this.terrainMap[pos.y][pos.x].tag
-                if(tag.includes('tile') && selected.tag === 'pickaxe') {
+                // let tag = this.terrainMap[pos.y][pos.x].tag
+                if(/*tag.includes('tile') &&*/ selected.tag === 'pickaxe') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.PICK_CURSOR]
                 } else {
                     this.cursor.cursor = "pointer"
