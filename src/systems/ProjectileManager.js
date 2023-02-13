@@ -51,7 +51,7 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 1.25,
+                    duration: 1,
                     hasGravity: false,
                     spread: 1/3
                 });

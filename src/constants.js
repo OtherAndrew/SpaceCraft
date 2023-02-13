@@ -213,7 +213,7 @@ const MISC_PATH = {
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
     GENERICDEATH	    :	'./assets/sprites/smoke.png',
     FLAMETHROWER        :   './assets/items/flamethrower.png',
-    GUN                 :   './assets/items/coilgun.png',
+    GUN                 :   './assets/items/laser_pistol.png',
     PICK	            :	'./assets/icons/item_3485.png',
     PROJECTILE_FIRE     :   './assets/projectiles/fire.png',
     PROJECTILE_ORB      :   './assets/projectiles/orb.png',
