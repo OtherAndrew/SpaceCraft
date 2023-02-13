@@ -51,8 +51,7 @@ Block.prototype.name = 'block';
  * @returns {{components: (CTransform|CSprite|CLifespan)[], tag: string}}   Block blueprint
  */
 const generateBlock = (tag, x, y, mode) => {
-    let index = tag.lastIndexOf('_') + 1
-    let id = tag.slice(index).toUpperCase();
+    let id = cleanTag(tag).toUpperCase();
     let tempX = x;
     let tempY = y;
     let tempScale = BLOCKSIZE / 16;

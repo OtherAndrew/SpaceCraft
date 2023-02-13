@@ -118,3 +118,9 @@ const randomSpread = (spread) => {
 const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
 }
+
+const cleanTag = (tag) => {
+    let index = tag.lastIndexOf('_') + 1
+    if (index !== -1) return tag.slice(index);
+    return tag;
+}

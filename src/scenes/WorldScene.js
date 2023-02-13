@@ -217,8 +217,7 @@ class WorldScene extends Scene {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
         } else if (selected.tag.includes('craft')) {
-            let tag = selected.tag.replace('tile_craft_', '');
-            this.containerManager.loadInventory(tag);
+            this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
     }
