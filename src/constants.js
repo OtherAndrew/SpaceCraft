@@ -200,6 +200,10 @@ const CHAR_PATH = {
     MOSSAMBER    :	'./assets/sprites/mossamber.png'
 }
 
+const CRAFT_PATH = {
+    TABLE :   './assets/icons/item_2631.png'
+}
+
 const MISC_PATH = {
     CROSSHAIR_CURSOR:  './assets/cursors/Crosshairs_Red.png',
     GENERICDEATH	:	'./assets/sprites/smoke.png',
@@ -250,6 +254,7 @@ const TILE_PATH = {
 const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
+    CRAFTS      :   CRAFT_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
     TESTS       :   TEST_PATH,
@@ -260,6 +265,7 @@ const CONSTANTS = {
     BGS         :   BG_PATH,
     BGSCROLLS   :   BG_SCROLL,
     CHARS       :   CHAR_PATH,
+    CRAFTS      :   CRAFT_PATH,
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
@@ -267,4 +273,4 @@ const CONSTANTS = {
     TILES       :   TILE_PATH
 }
 
-for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant]);
+for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])

@@ -59,6 +59,7 @@ class WorldScene extends Scene {
 
     update(uiActive, keys, mouseDown, mouse, deltaTime) {
         if (!uiActive) {
+            this.containerManager.unloadInventory();
             // get input
             this.playerMovement.update(keys, deltaTime)
             // update state
@@ -103,7 +104,7 @@ class WorldScene extends Scene {
         else
             this.renderSystem.draw(ctx, this.camera);
 
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         // this.craftingMenu.draw(uiActive);
         this.containerManager.draw(uiActive, ctx, mouse);
@@ -145,7 +146,7 @@ class WorldScene extends Scene {
 
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
-     * A player will be able to collide with a exposed block, so they must be given colliders.
+     * A player will be able to collide with an exposed block, so they must be given colliders.
      * @param {Entity} e
      */
     #checkIfExposed(e) {
@@ -177,40 +178,50 @@ class WorldScene extends Scene {
     }
 
     #handleClick(pos, player, terrainMap) {
-        let selected = this.hud.activeContainer.item
-        if(selected === null) return
         let coords = this.#getGridCell(pos, player)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
+        let selected = terrainMap[mapY][mapX];
         console.log(terrainMap[mapY][mapX].tag)
-
-        if(selected.tag.includes('tile')) {
-            if(terrainMap[mapY][mapX].tag.includes('air')) {
-                let tag = this.containerManager.removeFromPlayer(this.hud.slot);
-                let newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, BLOCKSIZE));
-                if (newBlock) {
-                    terrainMap[mapY][mapX].tag = newBlock.tag
-                    terrainMap[mapY][mapX].id = newBlock.id
-                    console.log(newBlock)
+        let active = this.hud.activeContainer.item;
+        if (active) {
+            if(active.tag.includes('tile')) {
+                if(selected.tag.includes('air')) {
+                    let tag = this.containerManager.removeFromPlayer(this.hud.slot);
+                    let newBlock;
+                    if (active.tag.includes('craft')) {
+                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY))
+                    } else {
+                        newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+                    }
+                    if (newBlock) {
+                        selected.tag = newBlock.tag
+                        selected.id = newBlock.id
+                        console.log(newBlock)
+                    }
                 }
-            }
-        } else if (selected.tag === 'pickaxe') {
-            if(terrainMap[mapY][mapX].tag.includes('tile')) {
-                let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
-                e.components.lifespan.current -= 1
-                if(e.components.lifespan.current <= 0) {
-                    terrainMap[mapY][mapX].tag = 'air'
-                    terrainMap[mapY][mapX].id = null
-                    delete e.components["boxCollider"]
-                    this.containerManager.addToInventory('player', this.#resizeBlock(e))
+            } else if (active.tag === 'pickaxe') {
+                if(selected.tag.includes('tile')) {
+                    let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
+                    e.components.lifespan.current -= 1
+                    if(e.components.lifespan.current <= 0) {
+                        selected.tag = 'air'
+                        selected.id = null
+                        delete e.components["boxCollider"]
+                    this.containerManager.addToInventory('player', this.#resizeBlock(e))}
                 }
+            } else if (selected.tag === 'gun') {
+                this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            } else if (selected.tag === 'flamethrower') {
+                this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
-        } else if (selected.tag === 'gun') {
-            this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
-        } else if (selected.tag === 'flamethrower') {
-            this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+        } else if (selected.tag.includes('craft')) {
+            let tag = selected.tag.replace('tile_craft_', '');
+            this.containerManager.loadInventory(tag);
+            this.game.activateMenu();
         }
     }
+    
     #getGridCell(pos, player) {
         if(pos === null) return null
         const pCollider = player.components["boxCollider"]
@@ -229,10 +240,10 @@ class WorldScene extends Scene {
 
     #resizeBlock(e, mapX, mapY) {
         if(e.isBroken) {
-            e.components.sprite.dWidth *= 2
-            e.components.sprite.dHeight *= 2
-            e.components.transform.x = BLOCKSIZE * mapX
-            e.components.transform.y = BLOCKSIZE * mapY
+            // e.components.sprite.dWidth *= 2
+            // e.components.sprite.dHeight *= 2
+            // e.components.transform.x = BLOCKSIZE * mapX
+            // e.components.transform.y = BLOCKSIZE * mapY
             e.components.lifespan.current = e.components.lifespan.total
             e.isBroken = false
             e.isDrawable = true
