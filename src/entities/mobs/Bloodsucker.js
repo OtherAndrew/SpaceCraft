@@ -83,8 +83,6 @@ class Bloodsucker {
         // const angle = getAngle2(x, y, targetX, targetY);
         if (distance <= 870) {
 
-            // transform.velocityX = Math.cos(angle) * velocity;
-            // transform.velocityY = Math.sin(angle) * velocity;
             transform.velocityY = targetY < y ? -velocity : velocity;
             transform.velocityX = targetX < x ? -velocity : velocity;
         } else {
@@ -95,4 +93,16 @@ class Bloodsucker {
         this.components.state.setState(state);
     }
 
+    #direction(x1,y1,x2,y2) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const length = getDistance2(x1, y1, x2, y2);
+        return [dx/length, dy/length];
+    }
+
+    #moveCloser(mover, target, blocksize) {
+        const [x,y] = mover;
+        const [dx,dy] = target;
+        return [x + dx * blocksize, y + dy * blocksize];
+    }
 }
