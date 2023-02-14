@@ -36,7 +36,12 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.33,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 2,
+                    // 0.75 = (100% center to edge horizontal
+                    // 0.55 = (75% center to edge horizontal
+                    // 0.48 = (66% center to edge horizontal
+                    // 0.35 = (50% center to edge horizontal
+                    // 0.20 = (33% center to edge horizontal
+                    duration: 0.2,
                     hasGravity: false,
                     spread: 0
                 });
@@ -53,7 +58,7 @@ class ProjectileManager {
                     origin: projectileOrigin,
                     duration: 1,
                     hasGravity: false,
-                    spread: 1/3
+                    spread: 0.33
                 });
                 break;
             case 'arc':
