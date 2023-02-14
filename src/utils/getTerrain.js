@@ -11,12 +11,12 @@ const getTerrain = (entityManager) => {
             'copper',
             'coal',
             'coal',
-            'stone',
+            'null',
             'stone',
             'sand',
             'sand',
             'dirt',
-            'dirt',
+            'null',
             'dirt',
             'dirt'
         ],
@@ -203,6 +203,8 @@ const getTerrain = (entityManager) => {
         let value = clamp(props.value, 0, 10)
         let block = 'tile_'
         if (props.row < firstChunk) {
+            let val = blockValues.FIRST[value]
+            if(val === 'null') return {tag: 'air', id: null}
             block += blockValues.FIRST[value]
         } else if (props.row < secondChunk) {
             let val = blockValues.SECOND[value]
@@ -232,11 +234,12 @@ const getTerrain = (entityManager) => {
             let val = blockValues.EIGHT[value]
             if(val === 'null') return {tag: 'air', id: null}
             block += val
-        } else if (props.row < ninthChunk) {
+        } else  {
             let val = blockValues.NINTH[value]
             if(val === 'null') return {tag: 'air', id: null}
             block += val
         }
+        console.log(block, props.value)
         return entityManager.addEntity(generateBlock(block, props.x, props.y));
     }
 

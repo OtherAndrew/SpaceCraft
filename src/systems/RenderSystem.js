@@ -32,22 +32,17 @@ class RenderSystem {
                 // }else if(e.tag === 'background_5') {
                 //     xSpeed = camera.x * BACKGROUND_SCROLLING_SPEED_5
                 // }
-                
-                try {
-                    ctx.drawImage(
-                        sprite.sprite,
-                        sprite.currentFrame * (sprite.sWidth + sprite.padding),
-                        sprite.frameY * (sprite.sHeight + sprite.padding),
-                        sprite.sWidth,
-                        sprite.sHeight,
-                        e.components.transform.x - xSpeed,
-                        e.components.transform.y - ySpeed,
-                        sprite.dWidth,
-                        sprite.dHeight
-                    )
-                } catch (error) {
-                    console.log(e, 'Failed to draw: ' + error)
-                }
+                ctx.drawImage(
+                    sprite.sprite,
+                    sprite.currentFrame * (sprite.sWidth + sprite.padding),
+                    sprite.frameY * (sprite.sHeight + sprite.padding),
+                    sprite.sWidth,
+                    sprite.sHeight,
+                    e.components.transform.x - xSpeed,
+                    e.components.transform.y - ySpeed,
+                    sprite.dWidth,
+                    sprite.dHeight
+                )
             }
         })
 
