@@ -11,7 +11,6 @@ class Dirtcarver {
         this.tag = 'dirtcarver mob';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
-        return this;
     };
 
     #buildComponents(props) {
@@ -19,7 +18,7 @@ class Dirtcarver {
             speed: 0.8
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.DIRTCARVER),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.DIRTCARVER],
             sWidth: 262,
             sHeight: 84,
             scale: 0.5,

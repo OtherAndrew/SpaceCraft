@@ -18,6 +18,8 @@ class WorldScene extends Scene {
 
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.rocket =
+            this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
         this.spawnTestEntities();
 
@@ -35,8 +37,8 @@ class WorldScene extends Scene {
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
-        //this.worldImages = new WorldImages(this.player)
-        //this.worldImages.init(this.entityManager)
+        // this.worldImages = new WorldImages(this.player)
+        // this.worldImages.init(this.entityManager)
 
         this.projectileManager = new ProjectileManager(this.entityManager)
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
@@ -54,12 +56,24 @@ class WorldScene extends Scene {
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.mobFactory.build('bloodsucker', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
     }
 
-    update(uiActive, keys, mouseDown, mouse, deltaTime) {
-        if (!uiActive) {
+    update(menuActive, keys, mouseDown, mouse, deltaTime) {
+        if (!menuActive) {
+            // console.log(this.player)
+            if (this.rocket.components["state"].currentState === 'win') {
+                this.camera.setTarget(this.rocket)
+                const temp = this.player
+                this.player = this.rocket
+                temp.destroy()
+                console.log("win")
+            }
+            if (!this.player.isAlive) {
+                // this.init()
+                console.log("game over")
+                return
+            }
             this.containerManager.unloadInventory();
             // get input
             this.playerMovement.update(keys, deltaTime)
@@ -75,12 +89,12 @@ class WorldScene extends Scene {
             //https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
             this.movementSystem.updateY(deltaTime)
-            //this.collisionSystem.resolveTileY()
+            this.collisionSystem.resolveTileY()
             this.movementSystem.updateX(deltaTime)
-            //this.collisionSystem.resolveTileX()
+            this.collisionSystem.resolveTileX()
 
             //this.worldImages.update()
-            
+            this.collisionSystem.resolveMobAttack()
             this.collisionSystem.resolveProjectiles()
             this.damageSystem.update();
             this.durationSystem.update(deltaTime)
@@ -94,22 +108,19 @@ class WorldScene extends Scene {
             }
         }
         this.cursorSystem.update(this.#getGridCell(mouse, this.player))
-        this.craftingMenu.update(uiActive);
-        this.containerManager.update(uiActive, mouseDown, mouse);
-        this.hud.update(uiActive, keys);
+        this.craftingMenu.update(menuActive);
+        this.containerManager.update(menuActive, mouseDown, mouse);
+        this.hud.update(menuActive, keys);
     }
 
-    draw(uiActive, ctx, mouse) {
-        if (uiActive)
-            ctx.putImageData(this.game.screenshot, 0, 0);
-        else
-            this.renderSystem.draw(ctx, this.camera);
+    draw(menuActive, ctx, mouse) {
+        if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
+        else this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
-        // this.craftingMenu.draw(uiActive);
-        this.containerManager.draw(uiActive, ctx, mouse);
-        this.hud.draw(uiActive, ctx);
+        this.containerManager.draw(menuActive, ctx, mouse);
+        this.hud.draw(menuActive, ctx);
     }
 
     #drawColliders(ctx) {
@@ -171,30 +182,32 @@ class WorldScene extends Scene {
 
     #isExposed(posY, posX) {
         return posY === 0
-               || this.terrainMap[clamp(posY-1,0,posY)][posX].tag === 'air'
-               || this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag === 'air'
-               || this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag === 'air'
-               || this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag === 'air'
-               || this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag === 'air';
+               || /air|craft/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
+               || /air|craft/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
+               || /air|craft/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
+               || /air|craft/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
+               || /air|craft/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
     }
 
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
+        console.log("GridCellsX : " + coords.x)
+        console.log("GridCellsY : " + coords.y)
+        console.log(pos.t)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
-        console.log(terrainMap[mapY][mapX].tag)
+        console.log(selected.tag)
         let active = this.hud.activeContainer.item;
         if (active) {
-            if(active.tag.includes('tile')) {
+            if(/tile|craft/.test(active.tag)) {
                 if(selected.tag.includes('air')) {
-                    let tag = this.containerManager.removeFromPlayer(this.hud.slot);
+                    let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
                     let newBlock;
-                    if (active.tag.includes('craft')) {
-                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY))
-                    } else {
+                    if (active.tag.includes('craft')) 
+                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
+                    else 
                         newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
-                    }
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
@@ -202,8 +215,8 @@ class WorldScene extends Scene {
                     }
                 }
             } else if (active.tag === 'pickaxe') {
-                if(selected.tag.includes('tile')) {
-                    let e = this.entityManager.getEntity(terrainMap[mapY][mapX].id)
+                if(/tile|craft/.test(selected.tag)) {
+                    let e = this.entityManager.getEntity(selected.id)
                     e.components.lifespan.current -= 1
                     if(e.components.lifespan.current <= 0) {
                         selected.tag = 'air'
@@ -217,8 +230,7 @@ class WorldScene extends Scene {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
         } else if (selected.tag.includes('craft')) {
-            let tag = selected.tag.replace('tile_craft_', '');
-            this.containerManager.loadInventory(tag);
+            this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
     }
@@ -279,7 +291,7 @@ class WorldScene extends Scene {
             tag: 'gun',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_PISTOL],
                     sWidth: 32,
                     sHeight: 32
                 }),
@@ -294,7 +306,7 @@ class WorldScene extends Scene {
             tag: 'flamethrower',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.FLAMETHROWER],
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.FLAMETHROWER],
                     sWidth: 32,
                     sHeight: 32
                 }),

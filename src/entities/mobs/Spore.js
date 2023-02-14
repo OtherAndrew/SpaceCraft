@@ -12,14 +12,13 @@ class Spore {
         this.tag = 'spore mob';
         this.name = 'spore';
         this.components = this.#buildComponents(props);
-        return this;
     };
     #buildComponents(props) {
         const stats = new CStats({
 
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.SPORE),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
             sWidth: 138,
             sHeight: 196,
             scale: 0.5,

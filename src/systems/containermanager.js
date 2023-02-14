@@ -173,9 +173,7 @@ class ContainerManager {
 
     loadInventory(tag) {
         for (const owner in this.owners) {
-            if (owner.includes(tag)) {
-                this.activeInventory.push(this.owners[owner]);
-            }
+            if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
         }
     }
     
@@ -224,7 +222,7 @@ class ContainerManager {
         if (uiActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check && check.item) this.hoverText = check.item.tag;
+                if (check && check.item) this.hoverText = cleanTag(check.item.tag);
                 else this.hoverText = null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique

@@ -59,14 +59,14 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
-            this.mouse = getXandY(e);
+            this.mouse = getXYTW(e);
         });
 
         this.ctx.canvas.addEventListener("click", e => {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
             }
-            this.click = getXandY(e);
+            this.click = getXYTW(e);
         });
 
         this.ctx.canvas.addEventListener('mousedown', e => {
@@ -79,7 +79,7 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener('mouseup', e => {
             if (this.options.debugging) {
-                console.log("MouseUp", getXandY(e));
+                console.log("MouseUp", getXYTW(e));
             }
             this.mouseDown = null
         })

@@ -12,7 +12,6 @@ class Lightjelly {
         this.tag = 'lightjelly mob enemy ghost';
         this.name = 'lightjelly';
         this.components = this.#buildComponents(props);
-        return this;
     };
     #buildComponents(props) {
         const stats = new CStats({
@@ -20,7 +19,7 @@ class Lightjelly {
             maxHealth: 50
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.LIGHTJELLY),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTJELLY],
             sWidth: 168,
             sHeight: 219,
             scale: 0.5,

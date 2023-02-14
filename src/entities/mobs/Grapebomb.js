@@ -13,12 +13,12 @@ class Grapebomb {
         this.name = 'grapebomb';
         this.scale = 0.3;
         this.components = this.#buildComponents(props);
-        return this;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({});
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.GRAPEBOMB],
             sWidth: 236,
             sHeight: 193,
             scale: this.scale,

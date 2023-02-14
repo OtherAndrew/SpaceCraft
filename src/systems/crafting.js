@@ -8,23 +8,20 @@ class CraftMenu {
         this.y = 30;
         this.spacer = 54;
 
-        this.cm.createInventory('table1', this.x, this.y, 1, 3, 'pink', 'recipe');
+        this.cm.createInventory('table1', this.x, this.y + this.spacer * this.recipes.length, 1, 3, 'pink', 'recipe');
         this.cm.addToInventory('table1', new Entity(generateBlock('tile_ruby', 0, 0, 'craftgen'), 0));
         this.cm.addToInventory('table1', new Entity(generateBlock('tile_dirt', 0, 0, 'craftgen'), 0));
         this.cm.addToInventory('table1', new Entity(generateBlock('tile_stone', 0, 0, 'craftgen'), 0), 2);
-        // this.cm.activateInventory('table1');
         this.recipes.push('table1');
 
         this.cm.createInventory('table2', this.x, this.y + this.spacer * this.recipes.length, 1, 2, 'pink', 'recipe');
         this.cm.addToInventory('table2', new Entity(generateBlock('tile_dirt', 0, 0, 'craftgen'), 0));
         this.cm.addToInventory('table2', new Entity(generateBlock('tile_stone', 0, 0, 'craftgen'), 0));
-        // this.cm.activateInventory('table2');
         this.recipes.push('table2');
 
         this.cm.createInventory('table3', this.x, this.y + this.spacer * this.recipes.length, 1, 2, 'pink', 'recipe');
         this.cm.addToInventory('table3', new Entity(generateBlock('tile_stone', 0, 0, 'craftgen'), 0));
         this.cm.addToInventory('table3', new Entity(generateBlock('tile_dirt', 0, 0, 'craftgen'), 0));
-        // this.cm.activateInventory('table3');
         this.recipes.push('table3');
 
         for (const entry in this.recipes) {
@@ -108,7 +105,7 @@ const Crafter = function(props) {
         components: [
             new CTransform({
                 x: props.x,
-                y: props.y,
+                y: props.y
             }),
             new CSprite({
                 sprite: props.sprite,
@@ -118,12 +115,6 @@ const Crafter = function(props) {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CBoxCollider({
-               x: props.x,
-               y: props.y,
-               width: props.sWidth,
-               height: props.sHeight
-            }),
             new CLifespan(props.lifespan)
         ]
     };
@@ -131,14 +122,16 @@ const Crafter = function(props) {
 Crafter.prototype.name = 'crafter';
 
 const generateCrafter = (tag, x, y) => {
-    let id = tag.toUpperCase().replace("TILE_", "").replace("CRAFT_","");
+    let id = cleanTag(tag).toUpperCase();
+    let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
+    let tempX = x * BLOCKSIZE, tempY = y * BLOCKSIZE;
     return new Crafter({
         tag: tag,
-        sprite: ASSET_MANAGER.cache[CRAFT_PATH[id]],
+        sprite: image,
         lifespan: 20,
-        x: x * BLOCKSIZE,
-        y: y * BLOCKSIZE,
-        sWidth: 32,
-        sHeight: 18
+        x: tempX,
+        y: tempY,
+        sWidth: image.width,
+        sHeight: image.height,
     });
 }

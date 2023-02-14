@@ -51,7 +51,7 @@ Block.prototype.name = 'block';
  * @returns {{components: (CTransform|CSprite|CLifespan)[], tag: string}}   Block blueprint
  */
 const generateBlock = (tag, x, y, mode) => {
-    let id = tag.toUpperCase().replace("TILE_", "");
+    let id = cleanTag(tag).toUpperCase();
     let tempX = x;
     let tempY = y;
     let tempScale = BLOCKSIZE / 16;
@@ -68,7 +68,7 @@ const generateBlock = (tag, x, y, mode) => {
     return new Block({
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-        lifespan: TILE_LIFE[id],
+        lifespan: TILE_LIFE[id] || 30,
         x: tempX,
         y: tempY,
         sWidth: 16,

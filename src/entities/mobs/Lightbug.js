@@ -12,7 +12,6 @@ class Lightbug {
         this.tag = 'lightbug mob ignore';
         this.name = 'lightbug';
         this.components = this.#buildComponents(props);
-        return this;
     };
 
     #buildComponents(props) {
@@ -21,7 +20,7 @@ class Lightbug {
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.LIGHTBUG),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTBUG],
             sWidth: 50,
             sHeight: 49,
             scale: 1,

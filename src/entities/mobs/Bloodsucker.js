@@ -9,18 +9,19 @@ class Bloodsucker {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'bloodsucker mob';
+        this.tag = 'bloodsucker mob enemy';
         this.name = 'bloodsucker';
         this.components = this.#buildComponents(props);
-        return this;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({
+            damage: 1,
             speed: 3,
             maxHealth: 70
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.BLOODSUCKER),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSUCKER],
             sWidth: 166,
             sHeight: 162,
             scale: 0.5,

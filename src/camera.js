@@ -15,6 +15,12 @@ class Camera {
         this.y = this.targetPos.center.y + this.targetPos.height / 2 - this.sceneHEIGHT
     }
 
+    setTarget(target) {
+        this.targetPos = target.components["boxCollider"]
+        this.x = this.targetPos.center.x - this.sceneWIDTH
+        this.y = this.targetPos.center.y + this.targetPos.height / 2 - this.sceneHEIGHT
+    }
+
     update() {
         if (this.targetPos.left - this.sceneWIDTH <= 0) {
             this.x = 0

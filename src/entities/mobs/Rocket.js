@@ -12,14 +12,16 @@ class Rocket {
         this.tag = 'rocket mob ignore';
         this.name = 'rocket';
         this.components = this.#buildComponents(props);
-        return this;
+        this.takeOff = false;
     };
+    
     #buildComponents(props) {
         const stats = new CStats({
+            speed: 2,
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(CHAR_PATH.ROCKET),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.ROCKET],
             sWidth: 221,
             sHeight: 295,
             scale: 1,
@@ -53,17 +55,48 @@ class Rocket {
     }
 
     update(tick, targetX, targetY) {
+        let velocity = this.components["stats"].speed;
         this.components.state.setState('idleR');
-        // this.components.transform.update(tick);
+        let x = this.components.transform.x;
+        let y = this.components.transform.y;
+        const transform = this.components.transform;
+        const distance = getDistance2(x, y, targetX, targetY);
+        const angle = getAngle2(x, y, targetX, targetY);
+        // console.log("rocketX", x, "rocketY", y);
+        // console.log("playerX", targetX, "playerY", targetY);
+        // console.log("distance", distance);
+        // console.log("takeoff", this.takeOff);
+        if (distance <= 300 && !this.takeOff) {  //add inventory check here for the win condition
+
+            //remove the player from the game
+            //display win condition message and end credit
+            
+            // transform.y -= 30;
+            this.components.transform.gravity = 0;
+            this.takeOff = true;
+            this.components.state.setState('win');
+
+        // } else if (this.takeOff) {
+        //
+        //     transform.velocityY = -(GRAVITY + 50);
+
+        } else {
+            // transform.velocityX = 0;
+            // transform.velocityY = 0;
+        }
+        // console.log("hasgravity", this.components.transform.hasGravity);
+
     }
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,0));
+        aMap.set('win', new AnimationProps(0, 0,0));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
         bMap.set('idleR', new BehaviorProps(0, 0));
+        bMap.set('win', new BehaviorProps(0, -5));
     }
 
 }

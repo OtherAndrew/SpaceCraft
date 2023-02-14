@@ -11,7 +11,6 @@ class Wormtank {
         this.tag = 'wormtank mob';
         this.name = 'wormtank';
         this.components = this.#buildComponents(props);
-        return this;
     };
 
     #buildComponents(props) {
@@ -20,7 +19,7 @@ class Wormtank {
             maxHealth: 300
         });
         const sprite = new CSprite({
-                sprite: ASSET_MANAGER.getAsset(CHAR_PATH.WORMTANK),
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.WORMTANK],
             sWidth: 159,
             sHeight: 106,
             scale: 0.5,
