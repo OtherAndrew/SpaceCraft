@@ -71,13 +71,14 @@ class Rocket {
             //remove the player from the game
             //display win condition message and end credit
             
-            transform.y -= 30;
-            this.components.transform.hasGravity = false;
+            // transform.y -= 30;
+            this.components.transform.gravity = 0;
             this.takeOff = true;
+            this.components.state.setState('win');
 
-        } else if (this.takeOff == true) {
-
-            transform.y -= 50;
+        // } else if (this.takeOff) {
+        //
+        //     transform.velocityY = -(GRAVITY + 50);
 
         } else {
             transform.velocityX = 0;
@@ -90,10 +91,12 @@ class Rocket {
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,0));
+        aMap.set('win', new AnimationProps(0, 0,0));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
         bMap.set('idleR', new BehaviorProps(0, 0));
+        bMap.set('win', new BehaviorProps(0, -GRAVITY -50));
     }
 
 }

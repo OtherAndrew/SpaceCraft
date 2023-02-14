@@ -18,6 +18,8 @@ class WorldScene extends Scene {
 
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.rocket =
+            this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
         this.spawnTestEntities();
 
@@ -54,13 +56,15 @@ class WorldScene extends Scene {
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.mobFactory.build('bloodsucker', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
     }
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
             // console.log(this.player)
+            if (this.rocket.components["state"].currentState === 'win') {
+                console.log("win")
+            }
             if (!this.player.isAlive) {
                 // this.init()
                 console.log("game over")
