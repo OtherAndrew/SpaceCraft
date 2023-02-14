@@ -93,13 +93,11 @@ class CollisionSystem {
     resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
             if (this.#checkCollision(atk, this.player)) {
-                // handle attack
+                this.player.components['stats'].currentHealth -= atk.components['stats'].damage
+                // this.player.components['stats'].applyDamage(atk.components['stats'].doDamage());
+                // console.log(atk.components['stats'].damage)
+                // console.log(this.player.components['stats'].currentHealth)
             }
-            this.tileList.forEach(tile => {
-               if (this.#checkCollision(atk, tile) && atk.tag.includes("enemyAttack")) {
-                   // remove
-               }
-            });
         });
     }
 
@@ -108,9 +106,6 @@ class CollisionSystem {
      */
     resolveProjectiles() {
         this.projectileList.forEach(p => {
-            // if (this.#checkCollision(p, this.player)) {
-            //     // damage player
-            // }
             this.mobList.forEach(mob => {
                if (this.#checkCollision(p, mob) && !mob.tag.includes('ignore')) {
                    // damage mob

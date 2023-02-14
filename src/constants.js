@@ -11,148 +11,22 @@ const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 
-// const BISMUTH_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const COAL_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 7.0
-// }
-// const COBALT_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const COPPER_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 7.0
-// }
-// const FERRITE_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const GOLD_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 6.0
-// }
-// const IRON_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 7.0
-// }
-// const PARAFFIN_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const SAND_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 15.0
-// }
-// const SILICA_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 5.0
-// }
-// const TIN_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 2.5
-// }
-// const TITANITE_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 1.5
-// }
-// const TUNGSTEN_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const RUBY_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 0.0
-// }
 
 const GENSTATS = {
-    BISMUTH	    :	{
-                        yMin: 0,
-                        yMax: 0,
-                        rate: 3.0
-                    },
-    COAL	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 7.0
-    				},
-    COBALT	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 3.0
-    				},
-    COPPER	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 7.0
-    				},
-    FERRITE	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 3.0
-    				},
-    GOLD	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 6.0
-    				},
-    IRON	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 7.0
-    				},
-    PARAFFIN	:	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 3.0
-    				},
-    RUBY	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 0.0
-    				},
-    SAND	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 15.0
-                    },
-    SILICA	    :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 5.0
-                    },
-    TIN	        :	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 2.5
-                    },
-    TITANITE	:	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 1.5
-                    },
-    TUNGSTEN	:	{
-    					yMin: 0,
-    					yMax: 0,
-    					rate: 3.0
-                    }
+    BISMUTH	    :	3.0,
+    COAL	    :	7.0,
+    COBALT	    :	3.0,
+    COPPER	    :	7.0,
+    FERRITE	    :	3.0,
+    GOLD	    :	6.0,
+    IRON	    :	7.0,
+    PARAFFIN	:	3.0,
+    RUBY	    :	2.0,
+    SAND	    :	15.0,
+    SILICA	    :	5.0,
+    TIN	        :	2.5,
+    TITANITE	:	1.5,
+    TUNGSTEN	:	3.0
 }
 
 const BG_PATH = {
@@ -212,18 +86,21 @@ const MISC_PATH = {
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
     GENERICDEATH	    :	'./assets/sprites/smoke.png',
-    FLAMETHROWER        :   './assets/items/flamethrower.png',
-    GUN                 :   './assets/items/coilgun.png',
     PICK	            :	'./assets/icons/item_3485.png',
-    PROJECTILE_FIRE     :   './assets/projectiles/fire.png',
-    PROJECTILE_ORB      :   './assets/projectiles/orb.png',
-    PROJECTILE_LASER    :   './assets/projectiles/laser.png'
 }
 
 const OVERLAY_PATH = {
     INVENTORY   :   './assets/overlay/inventory.png',
     VIGNETTE    :   './assets/overlay/vignette.png',
     FOV         :   './assets/overlay/fov.png'
+}
+
+const PROJECTILE_PATH = {
+    BOMB     :   './assets/projectiles/bomb.png',
+    DARK_ORB :   './assets/projectiles/orb_invert.png',
+    FIRE     :   './assets/projectiles/fire.png',
+    ORB      :   './assets/projectiles/orb.png',
+    LASER    :   './assets/projectiles/laser.png'
 }
 
 const TEST_PATH = {
@@ -255,14 +132,28 @@ const TILE_PATH = {
     TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',  //-------------------
 }
 
+const WEAPON_PATH = {
+    FLAMETHROWER        :   './assets/items/flamethrower.png',
+    GRENADE_LAUNCHER    :   './assets/items/grenade_launcher.png',
+    HAND_CANNON         :   './assets/items/tech_pistol.png',
+    LASER_GUN           :   './assets/items/laser_gun.png',
+    LASER_PISTOL        :   './assets/items/laser_pistol.png',
+    LASER_RIFLE         :   './assets/items/laser_rifle.png',
+    MINIGUN             :   './assets/items/minigun.png',
+    RAILGUN             :   './assets/items/sniper.png',
+    RAYGUN              :   './assets/items/raygun.png',
+}
+
 const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
+    WEAPONS     :   WEAPON_PATH
 }
 
 const CONSTANTS = {
@@ -273,8 +164,10 @@ const CONSTANTS = {
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
-    TILES       :   TILE_PATH
+    TILES       :   TILE_PATH,
+    WEAPONS     :   WEAPON_PATH
 }
 
 for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])

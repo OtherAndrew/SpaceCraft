@@ -36,7 +36,12 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.33,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 2,
+                    // 0.75 = (100% center to edge horizontal
+                    // 0.55 = (75% center to edge horizontal
+                    // 0.48 = (66% center to edge horizontal
+                    // 0.35 = (50% center to edge horizontal
+                    // 0.20 = (33% center to edge horizontal
+                    duration: 0.2,
                     hasGravity: false,
                     spread: 0
                 });
@@ -51,9 +56,9 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 1.25,
+                    duration: 1,
                     hasGravity: false,
-                    spread: 1/3
+                    spread: 0.33
                 });
                 break;
             case 'arc':
@@ -79,7 +84,7 @@ class ProjectileManager {
 
     bulletSprite() {
         return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_ORB),
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
             sWidth: 16,
             sHeight: 16,
             scale: 1,
@@ -89,7 +94,7 @@ class ProjectileManager {
 
     fireSprite() {
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_FIRE),
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.FIRE),
             sWidth: 8,
             sHeight: 12,
             scale: 2,

@@ -8,7 +8,7 @@ class PlayerController {
         this.fastFall = 3;
 
         this.jetpackTime = 0;
-        this.jetpackDuration = 2;
+        this.jetpackDuration = 500;
         this.elapsedTime = 0;
         this.jetpackCooldown = 5;
     }
