@@ -19,7 +19,7 @@ class WorldScene extends Scene {
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
 
-        // this.spawnTestEntities();
+        this.spawnTestEntities();
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
@@ -35,8 +35,8 @@ class WorldScene extends Scene {
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
-        //this.worldImages = new WorldImages(this.player)
-        //this.worldImages.init(this.entityManager)
+        // this.worldImages = new WorldImages(this.player)
+        // this.worldImages.init(this.entityManager)
 
         this.projectileManager = new ProjectileManager(this.entityManager)
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
