@@ -18,6 +18,8 @@ class WorldScene extends Scene {
 
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.rocket =
+            this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
         this.spawnTestEntities();
 
@@ -54,12 +56,24 @@ class WorldScene extends Scene {
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.mobFactory.build('bloodsucker', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
     }
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
+            // console.log(this.player)
+            if (this.rocket.components["state"].currentState === 'win') {
+                this.camera.setTarget(this.rocket)
+                const temp = this.player
+                this.player = this.rocket
+                temp.destroy()
+                console.log("win")
+            }
+            if (!this.player.isAlive) {
+                // this.init()
+                console.log("game over")
+                return
+            }
             this.containerManager.unloadInventory();
             // get input
             this.playerMovement.update(keys, deltaTime)
@@ -80,7 +94,7 @@ class WorldScene extends Scene {
             this.collisionSystem.resolveTileX()
 
             //this.worldImages.update()
-            
+            this.collisionSystem.resolveMobAttack()
             this.collisionSystem.resolveProjectiles()
             this.damageSystem.update();
             this.durationSystem.update(deltaTime)
@@ -103,7 +117,7 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -277,7 +291,7 @@ class WorldScene extends Scene {
             tag: 'gun',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_PISTOL],
                     sWidth: 32,
                     sHeight: 32
                 }),
@@ -292,7 +306,7 @@ class WorldScene extends Scene {
             tag: 'flamethrower',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.FLAMETHROWER],
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.FLAMETHROWER],
                     sWidth: 32,
                     sHeight: 32
                 }),

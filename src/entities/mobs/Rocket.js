@@ -62,38 +62,41 @@ class Rocket {
         const transform = this.components.transform;
         const distance = getDistance2(x, y, targetX, targetY);
         const angle = getAngle2(x, y, targetX, targetY);
-        console.log("rocketX", x, "rocketY", y);
-        console.log("playerX", targetX, "playerY", targetY);
-        console.log("distance", distance);
-        console.log("takeoff", this.takeOff);
+        // console.log("rocketX", x, "rocketY", y);
+        // console.log("playerX", targetX, "playerY", targetY);
+        // console.log("distance", distance);
+        // console.log("takeoff", this.takeOff);
         if (distance <= 300 && !this.takeOff) {  //add inventory check here for the win condition
 
             //remove the player from the game
             //display win condition message and end credit
             
-            transform.y -= 30;
-            this.components.transform.hasGravity = false;
+            // transform.y -= 30;
+            this.components.transform.gravity = 0;
             this.takeOff = true;
+            this.components.state.setState('win');
 
-        } else if (this.takeOff == true) {
-
-            transform.y -= 50;
+        // } else if (this.takeOff) {
+        //
+        //     transform.velocityY = -(GRAVITY + 50);
 
         } else {
-            transform.velocityX = 0;
-            transform.velocityY = 0;
+            // transform.velocityX = 0;
+            // transform.velocityY = 0;
         }
-        console.log("hasgravity", this.components.transform.hasGravity);
+        // console.log("hasgravity", this.components.transform.hasGravity);
 
     }
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,0));
+        aMap.set('win', new AnimationProps(0, 0,0));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
         bMap.set('idleR', new BehaviorProps(0, 0));
+        bMap.set('win', new BehaviorProps(0, -5));
     }
 
 }

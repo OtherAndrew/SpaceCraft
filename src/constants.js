@@ -212,18 +212,21 @@ const MISC_PATH = {
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
     GENERICDEATH	    :	'./assets/sprites/smoke.png',
-    FLAMETHROWER        :   './assets/items/flamethrower.png',
-    GUN                 :   './assets/items/laser_pistol.png',
     PICK	            :	'./assets/icons/item_3485.png',
-    PROJECTILE_FIRE     :   './assets/projectiles/fire.png',
-    PROJECTILE_ORB      :   './assets/projectiles/orb.png',
-    PROJECTILE_LASER    :   './assets/projectiles/laser.png'
 }
 
 const OVERLAY_PATH = {
     INVENTORY   :   './assets/overlay/inventory.png',
     VIGNETTE    :   './assets/overlay/vignette.png',
     FOV         :   './assets/overlay/fov.png'
+}
+
+const PROJECTILE_PATH = {
+    BOMB     :   './assets/projectiles/bomb.png',
+    DARK_ORB :   './assets/projectiles/orb_invert.png',
+    FIRE     :   './assets/projectiles/fire.png',
+    ORB      :   './assets/projectiles/orb.png',
+    LASER    :   './assets/projectiles/laser.png'
 }
 
 const TEST_PATH = {
@@ -255,14 +258,28 @@ const TILE_PATH = {
     TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',  //-------------------
 }
 
+const WEAPON_PATH = {
+    FLAMETHROWER        :   './assets/items/flamethrower.png',
+    GRENADE_LAUNCHER    :   './assets/items/grenade_launcher.png',
+    HAND_CANNON         :   './assets/items/tech_pistol.png',
+    LASER_GUN           :   './assets/items/laser_gun.png',
+    LASER_PISTOL        :   './assets/items/laser_pistol.png',
+    LASER_RIFLE         :   './assets/items/laser_rifle.png',
+    MINIGUN             :   './assets/items/minigun.png',
+    RAILGUN             :   './assets/items/sniper.png',
+    RAYGUN              :   './assets/items/raygun.png',
+}
+
 const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
+    WEAPONS     :   WEAPON_PATH
 }
 
 const CONSTANTS = {
@@ -273,8 +290,10 @@ const CONSTANTS = {
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
-    TILES       :   TILE_PATH
+    TILES       :   TILE_PATH,
+    WEAPONS     :   WEAPON_PATH
 }
 
 for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])
