@@ -81,8 +81,8 @@ class Rocket {
         //     transform.velocityY = -(GRAVITY + 50);
 
         } else {
-            transform.velocityX = 0;
-            transform.velocityY = 0;
+            // transform.velocityX = 0;
+            // transform.velocityY = 0;
         }
         // console.log("hasgravity", this.components.transform.hasGravity);
 
@@ -96,7 +96,7 @@ class Rocket {
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
         bMap.set('idleR', new BehaviorProps(0, 0));
-        bMap.set('win', new BehaviorProps(0, -GRAVITY -50));
+        bMap.set('win', new BehaviorProps(0, -5));
     }
 
 }
