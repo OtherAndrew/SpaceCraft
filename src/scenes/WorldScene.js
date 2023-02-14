@@ -64,6 +64,7 @@ class WorldScene extends Scene {
             if (!this.player.isAlive) {
                 // this.init()
                 console.log("game over")
+                return
             }
             this.containerManager.unloadInventory();
             // get input
