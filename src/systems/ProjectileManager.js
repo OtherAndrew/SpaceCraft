@@ -84,7 +84,7 @@ class ProjectileManager {
 
     bulletSprite() {
         return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_ORB),
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
             sWidth: 16,
             sHeight: 16,
             scale: 1,
@@ -94,7 +94,7 @@ class ProjectileManager {
 
     fireSprite() {
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.PROJECTILE_FIRE),
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.FIRE),
             sWidth: 8,
             sHeight: 12,
             scale: 2,

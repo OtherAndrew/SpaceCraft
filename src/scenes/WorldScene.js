@@ -283,7 +283,7 @@ class WorldScene extends Scene {
             tag: 'gun',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.GUN],
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_PISTOL],
                     sWidth: 32,
                     sHeight: 32
                 }),
@@ -298,7 +298,7 @@ class WorldScene extends Scene {
             tag: 'flamethrower',
             components: [
                 new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.FLAMETHROWER],
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.FLAMETHROWER],
                     sWidth: 32,
                     sHeight: 32
                 }),
