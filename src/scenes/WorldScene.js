@@ -93,7 +93,7 @@ class WorldScene extends Scene {
                 this.#handleClick(mouse, this.player, this.terrainMap)
             }
         }
-        this.cursorSystem.update(this.#getGridCell(mouse, this.player))
+        this.cursorSystem.update(menuActive, this.#getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.hud.update(menuActive, keys);
