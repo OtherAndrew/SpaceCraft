@@ -251,6 +251,7 @@ const getTerrain = (entityManager) => {
         let undergroundHeight = 216
         let scale = 2
         let scaleUnder = 6
+        let caveBGYVal = HEIGHT_PIXELS - (undergroundHeight * scaleUnder) - HEIGHT * .5
         let offset = BLOCKSIZE * 2
 
         for(let i = 0; i < 2; i++) {
@@ -292,7 +293,7 @@ const getTerrain = (entityManager) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        y:  caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -324,7 +325,7 @@ const getTerrain = (entityManager) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        y:  caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -340,7 +341,7 @@ const getTerrain = (entityManager) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        y:  caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -356,7 +357,7 @@ const getTerrain = (entityManager) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        y:  caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -372,7 +373,7 @@ const getTerrain = (entityManager) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        y:  caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -388,7 +389,7 @@ const getTerrain = (entityManager) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  HEIGHT_PIXELS - (undergroundHeight * scaleUnder),
+                        y:  caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({

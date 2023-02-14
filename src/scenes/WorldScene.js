@@ -64,6 +64,7 @@ class WorldScene extends Scene {
             // console.log(this.player)
             if (this.rocket.components["state"].currentState === 'win') {
                 this.camera.setTarget(this.rocket)
+                this.renderBox.setTarget(this.rocket)
                 const temp = this.player
                 this.player = this.rocket
                 temp.destroy()
