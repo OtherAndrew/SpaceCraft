@@ -6,7 +6,9 @@ class DamageSystem {
     }
 
     update(tick) {
-        const updateList = this.entities.filter(e => e.isDrawable && e.tag.includes('mob') && e.components["stats"]);
+        const updateList = this.entities.filter(e => e.isDrawable
+            // && (e.tag.includes('mob') || e.tag.includes("player"))
+            && e.components["stats"]);
         // console.log(updateList)
         updateList.forEach(e => {
             if (e.components["stats"].currentHealth <= 0) {

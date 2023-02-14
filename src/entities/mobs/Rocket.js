@@ -62,10 +62,10 @@ class Rocket {
         const transform = this.components.transform;
         const distance = getDistance2(x, y, targetX, targetY);
         const angle = getAngle2(x, y, targetX, targetY);
-        console.log("rocketX", x, "rocketY", y);
-        console.log("playerX", targetX, "playerY", targetY);
-        console.log("distance", distance);
-        console.log("takeoff", this.takeOff);
+        // console.log("rocketX", x, "rocketY", y);
+        // console.log("playerX", targetX, "playerY", targetY);
+        // console.log("distance", distance);
+        // console.log("takeoff", this.takeOff);
         if (distance <= 300 && !this.takeOff) {  //add inventory check here for the win condition
 
             //remove the player from the game
@@ -83,7 +83,7 @@ class Rocket {
             transform.velocityX = 0;
             transform.velocityY = 0;
         }
-        console.log("hasgravity", this.components.transform.hasGravity);
+        // console.log("hasgravity", this.components.transform.hasGravity);
 
     }
 

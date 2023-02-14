@@ -60,6 +60,11 @@ class WorldScene extends Scene {
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
+            // console.log(this.player)
+            if (!this.player.isAlive) {
+                // this.init()
+                console.log("game over")
+            }
             this.containerManager.unloadInventory();
             // get input
             this.playerMovement.update(keys, deltaTime)
@@ -80,7 +85,7 @@ class WorldScene extends Scene {
             this.collisionSystem.resolveTileX()
 
             //this.worldImages.update()
-            
+            this.collisionSystem.resolveMobAttack()
             this.collisionSystem.resolveProjectiles()
             this.damageSystem.update();
             this.durationSystem.update(deltaTime)
