@@ -62,6 +62,10 @@ const getDistance2 = (x1, y1, x2, y2) => {
     return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 
+const delayFunction = (f, time) => {
+    setTimeout(f, time);
+}
+
 /**
  * Returns the angle of p2 from a horizontal line on p1.
  * 

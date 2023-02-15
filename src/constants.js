@@ -12,6 +12,86 @@ const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 
 
+const MAXCREEPERILA = 2;
+const MAXDIRTCARVER = 5;
+const MAXLIGHTJELLY = 2;
+const MAXSPORE = 10;
+const MAXLIGHTBUG = 1;
+const MAXGRAPEBOMB = 3;
+const MAXBLOODSUCKER = 2;
+const MAXWORMTANK = 5;
+
+// const BISMUTH_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const COAL_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 7.0
+// }
+// const COBALT_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const COPPER_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 7.0
+// }
+// const FERRITE_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const GOLD_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 6.0
+// }
+// const IRON_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 7.0
+// }
+// const PARAFFIN_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const SAND_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 15.0
+// }
+// const SILICA_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 5.0
+// }
+// const TIN_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 2.5
+// }
+// const TITANITE_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 1.5
+// }
+// const TUNGSTEN_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 3.0
+// }
+// const RUBY_GEN_STATS = {
+//     yMin: 0,
+//     yMax: 0,
+//     rate: 0.0
+// }
+
 const GENSTATS = {
     BISMUTH	    :	3.0,
     COAL	    :	7.0,

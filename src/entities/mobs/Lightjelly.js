@@ -73,6 +73,11 @@ class Lightjelly {
             transform.velocityY = 0;
         }
         //adding tint
+
+        // console.log("playerX", targetX, "playerY", targetY);
+
+
+
     }
 
 }

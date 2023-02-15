@@ -13,6 +13,7 @@ class DamageSystem {
         updateList.forEach(e => {
             if (e.components["stats"].currentHealth <= 0) {
                 e.destroy();
+                // e.components.currentCount--;
             }
             if (e.components["stats"].canRegen(tick)) {
                 e.components.heal(1);
