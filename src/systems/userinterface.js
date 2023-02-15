@@ -14,14 +14,15 @@ class HUD {
         this.refreshActiveInfo();
 
         // TESTING
-        this.add(new Entity(generateCrafter('craft_table', 0, 0), 0));
+        this.add(new Entity(generateCrafter('craft_table', 0, 0), 0), 1);
+        this.add(new Entity(generateBlock('tile_iron', 0, 0, 'craftgen'),0), 10);
         // this.add(new Entity(generateCrafter('craft_furnace', 0, 0), 0));
         // this.add(new Entity(generateCrafter('craft_anvil', 0, 0), 0));
     };
 
     // TESTING
-    add(entity) {
-        this.cm.addToInventory("player", entity);
+    add(entity, count) {
+        this.cm.addToInventory("player", entity, count);
     };
 
     refreshActiveInfo() {

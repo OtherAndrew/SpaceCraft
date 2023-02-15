@@ -61,6 +61,7 @@ class WorldScene extends Scene {
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
+            this.#checkWinCon();
             // console.log(this.player)
             if (this.rocket.components["state"].currentState === 'win') {
                 this.camera.setTarget(this.rocket)
@@ -191,9 +192,6 @@ class WorldScene extends Scene {
 
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
-        console.log("GridCellsX : " + coords.x)
-        console.log("GridCellsY : " + coords.y)
-        console.log(pos.t)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
@@ -317,7 +315,7 @@ class WorldScene extends Scene {
     }
     
     #checkWinCon() {
-        let requisite = { tag : 'tile_iron', count : 10 }
-        return this.containerManager.checkCount(requisite, 'rocket');
+        let requisite = { item : { tag : 'tile_iron' }, count : 10 }
+        this.rocket.takeOff = this.containerManager.checkCount(requisite);
     }
 }
