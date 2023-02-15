@@ -75,10 +75,16 @@ const CHAR_PATH = {
     BLOODSUCKER :	'./assets/sprites/bloodsucker.png'
 }
 
+const CRAFT_COLOR = {
+    ANVIL   :   'black',
+    FURNACE :   'orange',
+    TABLE   :   'brown'
+}
+
 const CRAFT_PATH = {
-    ANVIL   :   './assets/icons/anvil.png',
-    FURNACE :   './assets/icons/furnace.png',
-    TABLE   :   './assets/icons/table.png'
+    ANVIL   :   './assets/crafting/stations/anvil.png',
+    FURNACE :   './assets/crafting/stations/furnace.png',
+    TABLE   :   './assets/crafting/stations/table.png'
 }
 
 const MISC_PATH = {
@@ -93,6 +99,10 @@ const OVERLAY_PATH = {
     INVENTORY   :   './assets/overlay/inventory.png',
     VIGNETTE    :   './assets/overlay/vignette.png',
     FOV         :   './assets/overlay/fov.png'
+}
+
+const PROD_PATH = {
+    
 }
 
 const PROJECTILE_PATH = {
@@ -150,6 +160,7 @@ const PATHS = {
     CRAFTS      :   CRAFT_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    PRODS       :   PROD_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
@@ -161,9 +172,11 @@ const CONSTANTS = {
     BGSCROLLS   :   BG_SCROLL,
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
+    CRAFTCOLORS :   CRAFT_COLOR,
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
+    PRODS       :   PROD_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,

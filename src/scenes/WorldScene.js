@@ -69,8 +69,7 @@ class WorldScene extends Scene {
                 this.player = this.rocket
                 temp.destroy()
                 console.log("win")
-            }
-            if (!this.player.isAlive) {
+            } else if (!this.player.isAlive) {
                 // this.init()
                 console.log("game over")
                 return
@@ -315,5 +314,10 @@ class WorldScene extends Scene {
             ]
         })
         this.containerManager.addToInventory('player', e)
+    }
+    
+    #checkWinCon() {
+        let requisite = { tag : 'tile_iron', count : 10 }
+        return this.containerManager.checkCount(requisite, 'rocket');
     }
 }

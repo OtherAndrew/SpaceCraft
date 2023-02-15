@@ -29,8 +29,8 @@ class HUD {
         this.y = this.activeContainer.y;
     }
 
-    draw(uiActive, ctx) {
-        if (!uiActive) {
+    draw(menuActive, ctx) {
+        if (!menuActive) {
             ctx.save();
             ctx.lineWidth = 2;
             ctx.beginPath();
