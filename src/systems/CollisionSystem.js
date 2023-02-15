@@ -110,8 +110,14 @@ class CollisionSystem {
      */
     resolveProjectiles() {
         this.projectileList.forEach(p => {
-            if (this.checkCollision(p, this.player) && p.tag.includes("explosion")) {
-                this.player.components["stats"].applyDamage(p.components["stats"].damage);
+            if (this.checkCollision(p, this.player)) {
+                if (p.tag.includes("explosion")) {
+                    this.player.components["stats"].applyDamage(p.components["stats"].damage);
+                }
+                if (p.tag.includes("bomb")) {
+                    // this.projectileManager.shoot("explosion",
+                    //     { x: p.components["boxCollider"].center.x, y:  p.components["boxCollider"].center.y }, p);
+                }
             }
 
             this.mobList.forEach(mob => {
