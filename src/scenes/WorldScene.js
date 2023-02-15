@@ -52,18 +52,21 @@ class WorldScene extends Scene {
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
+
+
+        this.projectileManager = new ProjectileManager(this.entityManager)
+        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileManager);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
 
-        this.projectileManager = new ProjectileManager(this.entityManager)
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
         this.#givePlayerFlamethrower()
+        this.#givePlayerGrenadeLauncher()
     }
 
     spawnTestEntities() {
@@ -294,6 +297,8 @@ class WorldScene extends Scene {
                 }
             } else if (active.tag === 'gun') {
                 this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            } else if (active.tag === 'grenadeLauncher') {
+                this.projectileManager.shoot('bomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             } else if (active.tag === 'flamethrower') {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
@@ -375,6 +380,21 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.FLAMETHROWER],
+                    sWidth: 32,
+                    sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerGrenadeLauncher() {
+        let e = this.entityManager.addEntity({
+            tag: 'grenadeLauncher',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.GRENADE_LAUNCHER],
                     sWidth: 32,
                     sHeight: 32
                 }),

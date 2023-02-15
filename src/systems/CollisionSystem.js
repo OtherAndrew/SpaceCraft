@@ -5,9 +5,10 @@
  * @author Andrew Nguyen
  */
 class CollisionSystem {
-    constructor(player, entities) {
+    constructor(player, entities, projectileManager) {
         this.player = player;
         this.entities = entities;
+        this.projectileManager = projectileManager;
 
         this.collideList = null;
         this.tileCollideList = null;
@@ -34,7 +35,7 @@ class CollisionSystem {
 
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
-        this.projectileList = this.collideList.filter(e => e.tag.includes("bullet"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("bullet") || e.tag.includes("bomb"));
         // extras
         // this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
         this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
@@ -122,13 +123,25 @@ class CollisionSystem {
                        mTransform.y = mTransform.last.y;
                    }
                    mob.components["boxCollider"].setPosition(mTransform.x, mTransform.y)
-                   if (!p.tag.includes("fire")) p.destroy();
+
+                   if (p.tag.includes("bomb")) {
+                       this.projectileManager.shoot("explosion",
+                           { x: p.components["boxCollider"].center.x, y:  p.components["boxCollider"].center.y }, p);
+                   }
+                   if (!p.tag.includes("fire") && !p.tag.includes("explosion")) p.destroy();
                }
             });
             this.tileList.forEach(tile => {
                if (this.checkCollision(p, tile)) {
-                   // remove projectile
-                   p.destroy();
+                   if (p.tag.includes("explosion")) {
+                       // tile.destroy();
+                   } else if (p.tag.includes("bomb")) {
+                       this.projectileManager.shoot("explosion",
+                           { x: p.components["transform"].x, y:  p.components["transform"].y }, p);
+                       p.destroy();
+                   } else {
+                       p.destroy();
+                   }
                }
             });
         });

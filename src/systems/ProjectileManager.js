@@ -9,7 +9,7 @@ class ProjectileManager {
             x: WIDTH * .5,
             y: HEIGHT * .5
         }
-        const oStats = originEntity.components['stats'];
+        // const oStats = originEntity.components['stats'];
         // const oTransform = originEntity.components["transform"];
         const oCollider = originEntity.components["boxCollider"];
         const directionVector = normalize(midPoint, targetPos)
@@ -41,7 +41,7 @@ class ProjectileManager {
                     // 0.48 = (66% center to edge horizontal
                     // 0.35 = (50% center to edge horizontal
                     // 0.20 = (33% center to edge horizontal
-                    duration: 0.2,
+                    duration: 0.55,
                     hasGravity: false,
                     spread: 0
                 });
@@ -61,14 +61,15 @@ class ProjectileManager {
                     spread: 0.33
                 });
                 break;
-            case 'arc':
+            case 'bomb':
                 projectileOrigin.x += directionVector.x * 20
                 projectileOrigin.y += directionVector.y * 20
+                directionVector.y -= 1.5
                 p = new Projectile({
-                    tag: 'bullet',
-                    sprite: this.bulletSprite(),
-                    damage: 1,
-                    speed: BLOCKSIZE * 0.7,
+                    tag: 'bomb',
+                    sprite: this.bombSprite(),
+                    damage: 0,
+                    speed: BLOCKSIZE * 0.25,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 2,
@@ -78,13 +79,13 @@ class ProjectileManager {
                 break;
             case 'explosion':
                 p = new Projectile({
-                   tag: 'explosion',
-                   sprite: this.explosionSprite(),
-                    damage: 10,
+                    tag: 'explosionbullet',
+                    sprite: this.explosionSprite(),
+                    damage: 5,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 6/30,
+                    duration: this.explosionSprite().frameDuration * 6,
                     hasGravity: false,
                     spread: 0
                 });
@@ -119,12 +120,21 @@ class ProjectileManager {
         return sprite;
     }
 
+    bombSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
+            sWidth: 10,
+            sHeight: 10,
+            scale: BLOCKSIZE * 0.75 / 10,
+        });
+    }
+
     explosionSprite() {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.EXPLOSION),
             sWidth: 64,
             sHeight: 64,
-            scale: 1,
+            scale: BLOCKSIZE * 4 / 64,
             firstFrameX: 0,
             lastFrameX: 5,
             fps: 30

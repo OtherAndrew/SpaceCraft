@@ -21,7 +21,7 @@ class CursorSystem {
                 // let tag = this.terrainMap[pos.y][pos.x].tag
                 if(/*/tile|craft/.test(tag) &&*/ selected.tag === 'pickaxe') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
-                } else if (selected.tag === 'gun' || selected.tag === 'flamethrower') {
+                } else if (selected.tag === 'gun' || selected.tag === 'flamethrower' || selected.tag === 'grenadeLauncher') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]
                 }
             }
