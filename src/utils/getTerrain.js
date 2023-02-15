@@ -7,7 +7,7 @@ const getTerrain = (entityManager) => {
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = {
-        FIRST: [
+        CHUNK_0: [
             'copper',
             'coal',
             'coal',
@@ -20,7 +20,7 @@ const getTerrain = (entityManager) => {
             'dirt',
             'dirt'
         ],
-        SECOND: [
+        CHUNK_1: [
             'cobalt',
             'copper',
             'copper',
@@ -33,7 +33,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        THIRD: [
+        CHUNK_2: [
             'iron',
             'silica',
             'cobalt',
@@ -46,7 +46,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        FOURTH: [
+        CHUNK_3: [
             'bismuth',
             'tin',
             'iron',
@@ -59,7 +59,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        FIFTH: [
+        CHUNK_4: [
             'tungsten',
             'bismuth',
             'tin',
@@ -72,7 +72,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        SIXTH: [
+        CHUNK_5: [
             'titanite',
             'tungsten',
             'tin',
@@ -85,7 +85,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        SEVENTH: [
+        CHUNK_6: [
             'gold',
             'titanite',
             'iron',
@@ -98,7 +98,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        EIGHT: [
+        CHUNK_7: [
             'titanite',
             'ruby',
             'tungsten',
@@ -111,7 +111,7 @@ const getTerrain = (entityManager) => {
             'null',
             'null'
         ],
-        NINTH: [
+        CHUNK_8: [
             'gold',
             'paraffin',
             'silica',
@@ -123,18 +123,24 @@ const getTerrain = (entityManager) => {
             'null',
             'null',
             'null'
+        ],
+        CHUNK_9: [
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock',
+            'bedrock'
         ]
 
     }
-    let firstChunk = 251
-    let secondChunk = 226
-    let thirdChunk = 301
-    let fourthChunk = 326
-    let fifthChunk = 351
-    let sixthChunk = 376
-    let seventhChunk = 401
-    let eighthChunk = 426
-    let ninthChunk = 451
+    let blocksPerChunk = 23
+    let startRow = 226
 
         /**
      * Private class function. Generates a (2*gridSize) * (2*gridSize) matrix of perlin noise values
@@ -201,44 +207,11 @@ const getTerrain = (entityManager) => {
      */
     function createBlock(props) {
         let value = clamp(props.value, 0, 10)
-        let block = 'tile_'
-        if (props.row < firstChunk) {
-            let val = blockValues.FIRST[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += blockValues.FIRST[value]
-        } else if (props.row < secondChunk) {
-            let val = blockValues.SECOND[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else if (props.row < thirdChunk) {
-            let val = blockValues.THIRD[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else if (props.row < fourthChunk) {
-            let val = blockValues.FOURTH[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else if (props.row < fifthChunk) {
-            let val = blockValues.FIFTH[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else if (props.row < sixthChunk) {
-            let val = blockValues.SIXTH[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else if (props.row < seventhChunk) {
-            let val = blockValues.SEVENTH[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else if (props.row < eighthChunk) {
-            let val = blockValues.EIGHT[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
-        } else  {
-            let val = blockValues.NINTH[value]
-            if(val === 'null') return {tag: 'air', id: null}
-            block += val
+        let index = blockValues['CHUNK_'+ Math.floor((props.row - startRow) / blocksPerChunk)][value]
+        if(index === 'null') {
+            return {tag: 'air', id: null}
         }
+        let block = 'tile_' + index
         return entityManager.addEntity(generateBlock(block, props.x, props.y, 'terraingen'));
     }
 
@@ -405,7 +378,7 @@ const getTerrain = (entityManager) => {
     function generateBorders() {
         // left border collider
         entityManager.addEntity({
-            tag: 'tile',
+            tag: 'tile_bedrock',
             components: [
                 new CTransform({
                     x: 0,
@@ -422,7 +395,7 @@ const getTerrain = (entityManager) => {
 
         // right border collider
         entityManager.addEntity({
-            tag: 'tile',
+            tag: 'tile_bedrock',
             components: [
                 new CTransform({
                     x: WIDTH_PIXELS - (WIDTH * .5),
@@ -439,15 +412,15 @@ const getTerrain = (entityManager) => {
 
         // bottom border
         entityManager.addEntity({
-            tag: 'tile',
+            tag: 'tile_bedrock',
             components: [
                 new CTransform({
                     x: 0,
-                    y: HEIGHT_PIXELS - (HEIGHT * .5)
+                    y: HEIGHT_PIXELS - (HEIGHT * .5) - (5 * BLOCKSIZE)
                 }),
                 new CBoxCollider({
                     x: 0,
-                    y: HEIGHT_PIXELS - (HEIGHT * .5),
+                    y: HEIGHT_PIXELS - (HEIGHT * .5) - (5 * BLOCKSIZE),
                     width: WIDTH_PIXELS,
                     height: HEIGHT * .5
                 })
@@ -456,7 +429,7 @@ const getTerrain = (entityManager) => {
 
         //top
         entityManager.addEntity({
-            tag: 'tile',
+            tag: 'tile_bedrock',
             components: [
                 new CTransform({
                     x: 0,

@@ -114,22 +114,23 @@ const TILE_LIFE = {
 }
 
 const TILE_PATH = {
-    BISMUTH	    :	'./assets/tiles/tilesBismuth.png', //-------------------
-    COAL	    :	'./assets/tiles/tilesCoal.png', //-------------------
-    COBALT	    :	'./assets/tiles/tilesCobalt.png', //-------------------
-    COPPER	    :	'./assets/tiles/tilesCopper.png',//-------------------
-    DIRT	    :	'./assets/tiles/tilesDirt.png', //-------------------
-    FERRITE	    :	'./assets/tiles/tilesFerrite.png', //-------------------
-    GOLD	    :	'./assets/tiles/tilesGold.png', //-------------------
-    IRON	    :	'./assets/tiles/tilesIron.png', //-------------------
+    BISMUTH	    :	'./assets/tiles/tilesBismuth.png',
+    COAL	    :	'./assets/tiles/tilesCoal.png',
+    COBALT	    :	'./assets/tiles/tilesCobalt.png',
+    COPPER	    :	'./assets/tiles/tilesCopper.png',
+    DIRT	    :	'./assets/tiles/tilesDirt.png',
+    FERRITE	    :	'./assets/tiles/tilesFerrite.png',
+    GOLD	    :	'./assets/tiles/tilesGold.png',
+    IRON	    :	'./assets/tiles/tilesIron.png',
     PARAFFIN	:	'./assets/tiles/tilesParaffin.png',
     RUBY	    :	'./assets/tiles/tilesRuby.png',
-    SAND	    :	'./assets/tiles/tilesSand.png', //-------------------
-    SILICA	    :	'./assets/tiles/tilesSilica.png', //-------------------
-    STONE	    :	'./assets/tiles/tilesStone.png', //-------------------
-    TIN	        :	'./assets/tiles/tilesTin.png', //-------------------
-    TITANITE	:	'./assets/tiles/tilesTitanite.png', //-------------------
-    TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',  //-------------------
+    SAND	    :	'./assets/tiles/tilesSand.png',
+    SILICA	    :	'./assets/tiles/tilesSilica.png',
+    STONE	    :	'./assets/tiles/tilesStone.png',
+    TIN	        :	'./assets/tiles/tilesTin.png',
+    TITANITE	:	'./assets/tiles/tilesTitanite.png',
+    TUNGSTEN	:	'./assets/tiles/tilesTungsten.png',
+    BEDROCK     :   './assets/tiles/tilesBedrock.png'
 }
 
 const WEAPON_PATH = {

@@ -118,7 +118,7 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 
-        // this.#drawColliders(ctx);
+        //this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -166,7 +166,7 @@ class WorldScene extends Scene {
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
 
-        if(e.isDrawable && e.tag.includes('tile')) {
+        if(e.isDrawable && e.tag.includes('tile') && !e.tag.includes('bedrock')) {
             const collider = new CBoxCollider({
                 x: e.components.transform.x,
                 y: e.components.transform.y,
@@ -192,13 +192,13 @@ class WorldScene extends Scene {
 
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
-        console.log("GridCellsX : " + coords.x)
-        console.log("GridCellsY : " + coords.y)
-        console.log(pos.t)
+        //console.log("GridCellsX : " + coords.x)
+        //console.log("GridCellsY : " + coords.y)
+        //console.log(pos.t)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
-        console.log(selected.tag)
+        //console.log(selected.tag)
         let active = this.hud.activeContainer.item;
         if (active) {
             if(/tile|craft/.test(active.tag)) {
