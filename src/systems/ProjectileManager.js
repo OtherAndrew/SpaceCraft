@@ -76,6 +76,19 @@ class ProjectileManager {
                     spread: 0
                 });
                 break;
+            case 'explosion':
+                p = new Projectile({
+                   tag: 'explosion',
+                   sprite: this.explosionSprite(),
+                    damage: 10,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 6/30,
+                    hasGravity: false,
+                    spread: 0
+                });
+                break;
             default: console.log(`Invalid projectile type: ${type}.`);
         }
         return this.entityManager.addEntity(p);
@@ -104,6 +117,18 @@ class ProjectileManager {
         });
         sprite.currentFrame = randomInt(sprite.lastFrameX);
         return sprite;
+    }
+
+    explosionSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.EXPLOSION),
+            sWidth: 64,
+            sHeight: 64,
+            scale: 1,
+            firstFrameX: 0,
+            lastFrameX: 5,
+            fps: 30
+        });
     }
 
 }

@@ -188,9 +188,10 @@ const PROD_PATH = {
 const PROJECTILE_PATH = {
     BOMB     :   './assets/projectiles/bomb.png',
     DARK_ORB :   './assets/projectiles/orb_invert.png',
+    EXPLOSION:   './assets/projectiles/explosion.png',
     FIRE     :   './assets/projectiles/fire.png',
-    ORB      :   './assets/projectiles/orb.png',
-    LASER    :   './assets/projectiles/laser.png'
+    LASER    :   './assets/projectiles/laser.png',
+    ORB      :   './assets/projectiles/orb.png'
 }
 
 const TEST_PATH = {
