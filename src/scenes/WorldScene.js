@@ -122,6 +122,7 @@ class WorldScene extends Scene {
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
+            this.#checkWinCon();
 
 
             // console.log(this.player)
@@ -132,8 +133,7 @@ class WorldScene extends Scene {
                 this.player = this.rocket
                 temp.destroy()
                 console.log("win")
-            }
-            if (!this.player.isAlive) {
+            } else if (!this.player.isAlive) {
                 // this.init()
                 console.log("game over")
                 return
@@ -173,7 +173,7 @@ class WorldScene extends Scene {
                 this.#handleClick(mouse, this.player, this.terrainMap)
             }
         }
-        this.cursorSystem.update(this.#getGridCell(mouse, this.player))
+        this.cursorSystem.update(menuActive, this.#getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.hud.update(menuActive, keys);
@@ -261,9 +261,6 @@ class WorldScene extends Scene {
 
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
-        console.log("GridCellsX : " + coords.x)
-        console.log("GridCellsY : " + coords.y)
-        console.log(pos.t)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
@@ -384,5 +381,10 @@ class WorldScene extends Scene {
             ]
         })
         this.containerManager.addToInventory('player', e)
+    }
+    
+    #checkWinCon() {
+        let requisite = { item : { tag : 'tile_iron' }, count : 10 }
+        this.rocket.takeOff = this.containerManager.checkCount(requisite);
     }
 }

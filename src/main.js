@@ -9,7 +9,7 @@ for (const category in PATHS) {
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
-	const ctx = canvas.getContext("2d");
+	const ctx = canvas.getContext("2d", { willReadFrequently : true });
 	gameEngine.init(ctx, ASSET_MANAGER.cache, canvas);
 	gameEngine.start();
 });

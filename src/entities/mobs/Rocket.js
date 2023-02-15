@@ -66,7 +66,7 @@ class Rocket {
         // console.log("playerX", targetX, "playerY", targetY);
         // console.log("distance", distance);
         // console.log("takeoff", this.takeOff);
-        if (distance <= 300 && !this.takeOff) {  //add inventory check here for the win condition
+        if (distance <= 300 && this.takeOff) {  //add inventory check here for the win condition
 
             //remove the player from the game
             //display win condition message and end credit
