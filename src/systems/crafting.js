@@ -55,14 +55,14 @@ class CraftMenu {
                 this.y + this.spacer * i,
                 1,
                 recipes[i].length, 
-                CRAFT_COLOR[owner],
+                CRAFT_COLOR[owner.toUpperCase()],
                 'recipe'
             );
             for (let j = 0; j < recipes[i].length; j++) {
                 this.cm.addToInventory(
                     owner + i,
                     new Entity(generateBlock(recipes[i][j].tag, 0, 0, 'craftgen'), 0),
-                    recipes[i][j].count/* || 1*/
+                    recipes[i][j].count
                 );
             }
             this.recipes.push(owner + i);
