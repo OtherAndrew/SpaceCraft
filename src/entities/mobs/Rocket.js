@@ -9,25 +9,16 @@ class Rocket {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'rocket mob ignore';
+        this.tag = 'rocket ignore';
         this.name = 'rocket';
         this.components = this.#buildComponents(props);
-        this.takeOff = false;
     };
     
     #buildComponents(props) {
-        const stats = new CStats({
-            invincible: true
-        });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.ROCKET],
             sWidth: 221,
             sHeight: 295,
-            scale: 1,
-            firstFrameX: 0,
-            frameY: 0,
-            lastFrameX: 0,
-            fps: 1,
             padding: 1
         });
         const transform = new CTransform({
@@ -37,7 +28,7 @@ class Rocket {
         });
         const cWidth = 3 * BLOCKSIZE;
         const collider = new CBoxCollider({
-            x: props.x + props.width / 2,
+            x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
@@ -50,10 +41,10 @@ class Rocket {
         const state = new CState();
         state.sprite = sprite;
         state.transform = transform;
-        return [stats, sprite, transform, collider, state];
+        return [sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {};
+    // update(tick, targetX, targetY) {};
 
     // update(tick, targetX, targetY) {
     //     this.components.state.setState('idleR');

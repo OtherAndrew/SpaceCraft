@@ -11,7 +11,7 @@ class DamageSystem {
             && e.components["stats"]);
         // console.log(updateList)
         updateList.forEach(e => {
-            if (e.components["stats"].currentHealth <= 0) {
+            if (e.components["stats"].currentHealth <= 0 && e.tag.includes('mob')) {
                 e.destroy();
                 // e.components.currentCount--;
             }

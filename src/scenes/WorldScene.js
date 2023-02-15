@@ -52,7 +52,7 @@ class WorldScene extends Scene {
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
+        this.collisionSystem = new CollisionSystem(this.player, this.rocket, this.entityManager.getEntities);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
         // this.worldImages = new WorldImages(this.player)
@@ -122,25 +122,26 @@ class WorldScene extends Scene {
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
-            this.#checkWinCon();
-
-
-            // console.log(this.player)
-            if (this.rocket.components["state"].currentState === 'win') {
+            if (this.#checkWinCon()) {
+                this.rocket.components["state"].setState("win");
                 this.rocket.components['transform'].gravity = 0;
                 this.camera.setTarget(this.rocket)
                 this.renderBox.setTarget(this.rocket)
                 this.player.isDrawable = false
                 this.player.components['stats'].invincible = true;
                 console.log("win")
-            } else if (!this.player.isAlive) {
-                // this.init()
+            } else if (this.player.components['stats'].currentHealth <= 0) {
+                this.player.components["transform"].velocityX = 0;
+                this.player.isDrawable = false
+                this.player.components['stats'].invincible = true;
                 console.log("game over")
-                return
+            } else {
+                // get input
+                this.playerMovement.update(keys, deltaTime)
             }
             this.containerManager.unloadInventory();
             // get input
-            this.playerMovement.update(keys, deltaTime)
+            // this.playerMovement.update(keys, deltaTime)
             // update state
             this.entityManager.update()
             //this.genericDeathManager.update(deltaTime)
@@ -180,7 +181,7 @@ class WorldScene extends Scene {
 
         // console.log("currentLightJelly", this.currentLightjelly.components.currentCount)
         // console.log("currentBloodSucker-total", this.entityManager.getEntities['bloodsucker'].components['stats'].total);
-        console.log("playerY", this.player.components.transform.y)
+        console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
     }
 
     draw(menuActive, ctx, mouse) {
@@ -385,6 +386,6 @@ class WorldScene extends Scene {
     
     #checkWinCon() {
         let requisite = { item : { tag : 'tile_iron' }, count : 10 }
-        if (this.containerManager.checkCount(requisite) && this.collisionSystem.checkCollision(this.player, this.rocket)) this.rocket.components["state"].setState("win");
+        return (this.containerManager.checkCount(requisite) && this.collisionSystem.checkCollision(this.player, this.rocket))
     }
 }
