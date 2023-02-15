@@ -110,6 +110,10 @@ class CollisionSystem {
      */
     resolveProjectiles() {
         this.projectileList.forEach(p => {
+            if (this.checkCollision(p, this.player) && p.tag.includes("explosion")) {
+                this.player.components["stats"].applyDamage(p.components["stats"].damage);
+            }
+
             this.mobList.forEach(mob => {
                if (this.checkCollision(p, mob) && !mob.tag.includes('ignore')) {
                    // damage mob
