@@ -1,116 +1,156 @@
-// Variety of ways to check for a collection
+/**
+ * Checks for and resolves collisions between entities.
+ *
+ * @author Mario Flores Vences
+ * @author Andrew Nguyen
+ */
 class CollisionSystem {
-    constructor(entities) {
-        this.entities = entities
-        this.collisions = []
+    constructor(player, entities) {
+        this.player = player;
+        this.entities = entities;
+
+        this.collideList = null;
+        this.tileCollideList = null;
+        this.mobList = null;
+        this.tileList = null;
+        //extras
+        this.playerAttackList = null;
+        this.mobAttackList = null;
+        this.projectileList = null;
+
+        this.refresh();
     }
-    update() {
-        this.entities.forEach(e => {
-            if(e.tag === 'player') {
-                this.entities.forEach(t => {
-                    if(e.id !== t.id) {
-                        if(this.boxCollision(e, t)) {
-                            e.components.boxCollider.collisions[t.tag] = true
-                        }
+
+    /**
+     * Refreshes collide check lists.
+     * Call this before resolving.
+     */
+    refresh() {
+        this.collideList = this.entities.filter(e => /*e.isDrawable &&*/ e.components["boxCollider"]);
+        this.tileCollideList = this.collideList.filter(e =>
+                   e.tag.includes("player") || e.tag.includes("rocket")
+                || (e.tag.includes("mob") && !e.tag.includes("ghost"))
+        );
+
+        this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
+        this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
+        this.projectileList = this.collideList.filter(e => e.tag.includes("bullet"));
+        // extras
+        // this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
+        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
+                                                       || e.tag.includes("enemyAttack"));
+
+
+    }
+
+    /**
+     * Checks for and resolves X collisions between mobs and tiles.
+     */
+    resolveTileX() {
+        this.tileCollideList.forEach(mob => {
+            this.tileList.forEach(tile => {
+                if (this.checkCollision(mob, tile)) {
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
+                    mTransform.velocityX = 0
+                    mTransform.x = mTransform.last.x
+                    mCollider.setPosition(mTransform.x, mTransform.y)
+                }
+            });
+        });
+    }
+
+    /**
+     * Checks for and resolves Y collisions between mobs and tiles.
+     */
+    resolveTileY() {
+        this.tileCollideList.forEach(mob => {
+            this.tileList.forEach(tile => {
+                if (this.checkCollision(mob, tile)) {
+                    const mTransform = mob.components["transform"];
+                    const mCollider = mob.components["boxCollider"];
+                    const tCollider = tile.components["boxCollider"];
+                    mTransform.velocityY = 0
+                    mTransform.y = mTransform.last.y
+                    if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
+                        mob.components.state.grounded = true;
                     }
-                })
+                    mCollider.setPosition(mTransform.x, mTransform.y)
+                }
+            });
+        });
+    }
+
+    //draft
+    resolvePlayerAttack() {
+        this.playerAttackList.forEach(atk => {
+           this.tileCollideList.forEach(mob => {
+               if (this.checkCollision(atk, mob)) {
+                   // handle attack
+               }
+           });
+        });
+    }
+
+    //draft
+    resolveMobAttack() {
+        this.mobAttackList.forEach(atk => {
+            if (this.checkCollision(atk, this.player)) {
+                this.player.components['stats'].applyDamage(atk.components['stats'].damage)
+                // this.player.components['stats'].applyDamage(atk.components['stats'].doDamage());
+                // console.log(atk.components['stats'].damage)
+                // console.log(this.player.components['stats'].currentHealth)
             }
-
-        })
+        });
     }
 
-    //Collision between two Rectangles, does not return direction of collision
-    boxCollision(entityA, entityB) {
-        if(entityA.components.boxCollider && entityB.components.boxCollider) {
-            let a = entityA.components.boxCollider
-            let b = entityB.components.boxCollider
-            if(a.x < b.x + b.width &&
-                a.x + a.width > b.x &&
-                a.y < b.y + b.height &&
-                a.y + a.height > b.y) {
-                return true
-            }
-        }
+    /**
+     * Resolves projectile collisions.
+     */
+    resolveProjectiles() {
+        this.projectileList.forEach(p => {
+            this.mobList.forEach(mob => {
+               if (this.checkCollision(p, mob) && !mob.tag.includes('ignore')) {
+                   // damage mob
+                   mob.components["stats"].applyDamage(p.components["stats"].damage);
+                   // freeze mob in place when hit
+                   const mTransform = mob.components["transform"];
+                   mTransform.velocityY = 0
+                   mTransform.x = mTransform.last.x;
+                   if (!mTransform.gravity) {
+                       mTransform.velocityY = 0
+                       mTransform.y = mTransform.last.y;
+                   }
+                   mob.components["boxCollider"].setPosition(mTransform.x, mTransform.y)
+                   if (!p.tag.includes("fire")) p.destroy();
+               }
+            });
+            this.tileList.forEach(tile => {
+               if (this.checkCollision(p, tile)) {
+                   // remove projectile
+                   p.destroy();
+               }
+            });
+        });
     }
 
-    // Checks if point is within a rectangle
-    pointInRect = (point, rect) => {
-        return (point.x >= rect.x && point.y >= rect.y && point.x < rect.x + rect.width && point.y < rect.y + rect.height)
+    // touchingRocket() {
+    //     return this.checkCollision(this.player, this.rocket)
+    // }
+
+    /**
+     * Checks for collision between 2 entities with box colliders.
+     * @param entityA     First entity.
+     * @param entityB     Second entity.
+     * @returns {boolean} If entities are colliding.
+     */
+    checkCollision(entityA, entityB) {
+        const a = entityA.components["boxCollider"];
+        const b = entityB.components["boxCollider"];
+        return a.right > b.left
+            && a.left < b.right
+            && a.top < b.bottom
+            && a.bottom > b.top;
     }
 
-    dynamicRectCollision(a, b) {
-
-        const expandedRect = {
-            x: b.x - a.x / 2,
-            y: b.y - a.y / 2,
-            width: b.width + a.width,
-            height: b.height + a.height
-        }
-
-        return this.#rayCastCollision({
-                x: a.x + a. width / 2,
-                y: a.y + a.height / 2
-            }, {
-                x: a.velocityX,
-                y: a.velocityY
-            }, expandedRect
-
-        )
-    }
-    // Helper function for dynamicCollision. A ray is used from a dynamic rectangle origin to another body to check for a collision,
-    // returns direction of collision
-    #rayCastCollision(rayOrigin, rayDirection, rect) {
-
-        let timeNear = {
-            x: (rect.x - rayOrigin.x) / rayDirection.x,
-            y: (rect.y - rayOrigin.y) / rayDirection.y
-        }
-        let timeFar = {
-            x: (rect.x + rect.width - rayOrigin.x) / rayDirection.x,
-            y: (rect.y + rect.height - rayOrigin.y) / rayDirection.y
-        }
-        if(timeNear.x > timeFar.x) {
-            let temp = timeNear.x
-            timeNear.x = timeFar.x
-            timeFar.x = temp
-        }
-        if(timeNear.y > timeFar.y) {
-            let temp = timeNear.y
-            timeNear.y = timeFar.y
-            timeFar.y = temp
-        }
-        if(timeNear.x > timeFar.y || timeNear.y > timeFar.x) {
-            return false
-        }
-
-        let timeHitNear = Math.max(timeNear.x, timeNear.y)
-        let timeHitFar = Math.min(timeFar.x, timeFar.y)
-        if(timeHitFar < 0) return false
-
-
-        let contactNormal = {
-            x: 0,
-            y: 0
-        }
-        let contactPoint = {
-            x: rayOrigin.x + timeHitNear * rayDirection.x,
-            y: rayOrigin.y + timeHitNear * rayDirection.y
-        }
-
-        if(timeNear.x > timeNear.y) {
-            if(rayDirection.x < 0) {
-                contactNormal.x = 1
-            } else {
-                contactNormal.x = -1
-            }
-        } else if (timeNear.x < timeNear.y) {
-            if(rayDirection.y < 0) {
-                contactNormal.y = 1
-            } else {
-                contactNormal.y = -1
-            }
-        }
-
-        return true, {contactNormal: contactNormal, contactPoint: contactPoint, hit: timeHitNear}
-    }
 }

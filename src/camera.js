@@ -5,30 +5,36 @@
  */
 
 class Camera {
-    constructor(target, worldWidth) {
+    constructor(target) {
         this.sceneWIDTH = WIDTH * .5
         this.sceneHEIGHT = HEIGHT * .5
-        this.worldWidth = worldWidth
-        this.targetPos = target.components.transform
-        this.x = this.targetPos.x - this.sceneWIDTH
-        this.y = this.targetPos.y - this.sceneHEIGHT    
+        this.worldWidth = WIDTH_PIXELS
+        this.worldHeight = HEIGHT_PIXELS
+        this.targetPos = target.components["boxCollider"]
+        this.x = this.targetPos.center.x - this.sceneWIDTH
+        this.y = this.targetPos.center.y + this.targetPos.height / 2 - this.sceneHEIGHT
+    }
+
+    setTarget(target) {
+        this.targetPos = target.components["boxCollider"]
+        this.x = this.targetPos.center.x - this.sceneWIDTH
+        this.y = this.targetPos.center.y + this.targetPos.height / 2 - this.sceneHEIGHT
     }
 
     update() {
-        if(this.targetPos.x - this.sceneWIDTH <= 0) {
+        if (this.targetPos.left - this.sceneWIDTH <= 0) {
             this.x = 0
-        } else if(this.targetPos.x + this.sceneWIDTH >= this.worldWidth) {
+        } else if (this.targetPos.right + this.sceneWIDTH >= this.worldWidth) {
             this.x = this.worldWidth - WIDTH
-        }
-        else {
-            this.x = this.targetPos.x - this.sceneWIDTH
+        } else {
+            this.x = this.targetPos.center.x - this.sceneWIDTH
         }
 
-        if(this.targetPos.y + this.sceneHEIGHT >= this.worldWidth + BLOCKSIZE) {
-            this.y = this.worldWidth - HEIGHT + BLOCKSIZE
+        if (this.targetPos.top + this.sceneHEIGHT >= this.worldHeight + BLOCKSIZE) {
+            this.y = this.worldHeight - HEIGHT + BLOCKSIZE
+        } else {
+            this.y = this.targetPos.center.y - this.sceneHEIGHT;
         }
-        else {
-            this.y = this.targetPos.y - this.sceneHEIGHT
-        }
+
     }
 }

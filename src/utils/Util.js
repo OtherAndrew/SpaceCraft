@@ -58,6 +58,40 @@ const getDistance = (p1, p2) => {
     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 };
 
+const getDistance2 = (x1, y1, x2, y2) => {
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+}
+
+const delayFunction = (f, time) => {
+    setTimeout(f, time);
+}
+
+/**
+ * Returns the angle of p2 from a horizontal line on p1.
+ * 
+ * @param {CTransform} p1 
+ * @param {CTransform} p2 
+ * @returns result in degrees
+ */
+const getAngle = (p1, p2) => {
+    return Math.atan2((p2.y - p1.y), (p2.x - p1.x)) * 180 / Math.PI
+}
+
+const getAngle2 = (x1, y1, x2, y2) => {
+    return Math.atan2((y2 - y1), (x2 - x1)) * 180 / Math.PI;
+}
+
+/**
+ * Checks if number is in between given range.
+ * @param {number} num
+ * @param {number} min
+ * @param {number} max
+ * @return {boolean}
+ */
+const isBetween = (num, min, max) => {
+    return num >= min && num <= max
+}
+
 /**
  * Restricts the num in between the min and max values.
  * @param {Number} num 
@@ -66,4 +100,31 @@ const getDistance = (p1, p2) => {
  * @returns either the number, min or max.
  */
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
-const getRandomInt = (max) =>  Math.floor(Math.random() * max);
+
+/**
+ * Normalizes a vector between two points.
+ * @param {x: Number, y: Number} vect1 starting point
+ * @param {x: Number, y: Number} vect2 end point
+ * @returns normalized x and y 
+ */
+const normalize = (p1, p2) => {
+    let d = getDistance(p1, p2)
+    return {
+        x: (p2.x - p1.x)/d,
+        y: (p2.y - p1.y)/d
+    }
+}
+
+const randomSpread = (spread) => {
+    return randomNumber(-spread/2, spread/2);
+}
+
+const randomNumber = (min, max) => {
+    return Math.random() * (max - min) + min;
+}
+
+const cleanTag = (tag) => {
+    let index = tag.lastIndexOf('_');
+    if (index !== -1) return tag.slice(index + 1);
+    return tag;
+}

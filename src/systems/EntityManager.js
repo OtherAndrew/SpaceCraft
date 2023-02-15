@@ -16,7 +16,7 @@ class EntityManager {
 
     constructor(){
         this.entities = []
-        this.entitiyMap = new Map()
+        this.entityMap = new Map()
         this.totalEntities = 0
         this.toAddEntities = []
     }
@@ -49,7 +49,7 @@ class EntityManager {
      * @returns an entity group with tag argument or entity with id argument
      */
     getEntity(arg) {
-        if(typeof arg === 'number') return this.entitiyMap.get(arg)
+        if(typeof arg === 'number') return this.entityMap.get(arg)
     }
 
     /**
@@ -60,12 +60,12 @@ class EntityManager {
     update() {
         this.toAddEntities.forEach(e => {
             this.entities.push(e)
-            this.entitiyMap.set(e.id, e)
+            this.entityMap.set(e.id, e)
         })
         let removed = this.#removeDeadEntities()
         this.toAddEntities.length = 0
         for(let tag in removed) {
-            this.entitiyMap.delete(tag)
+            this.entityMap.delete(tag)
         }
     }
 
@@ -98,10 +98,11 @@ class Entity  {
 
     /**
      *
-     * @param {Object} props
-     * @param {string} props.tag
-     * @param {[]} props.components
-     * @param {number} id
+     * @param {Object} props          Entity properties
+     * @param {string} props.tag      Entity tag(s)
+     * @param {[]} props.components   Entity components
+     * @param {function} props.update Entity update function
+     * @param {number} id             Entity ID
      */
     constructor(props, id) {
         this.id = id
@@ -109,9 +110,9 @@ class Entity  {
         this.isDrawable = true
         this.isAlive = true
         this.components = {}
-        if (props.components) {
-            this.addComponent(props.components)
-        }
+        this.update = null;
+        if (props.components) this.addComponent(props.components);
+        if (props.update) this.update = props.update;
     }
 
     /**
@@ -126,10 +127,17 @@ class Entity  {
      * @param {[]} components
      */
     addComponent(components) {
-        components.forEach(c => {
-            this.components[c.name] = c
-        })
+        components.forEach(c => this.components[c.name] = c);
     }
+
+    /**
+     * Removes component.
+     * @param {string} name Name of component to remove.
+     */
+    removeComponent(name) {
+        this.components = this.components.filter(c => c.name !== name);
+    }
+
 }
 
 

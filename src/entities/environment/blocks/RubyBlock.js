@@ -21,7 +21,7 @@
  */
 const RubyBlock = function(props) {
     return {
-        tag: 'ruby',
+        tag: 'tile_ruby',
         components: [
             new CTransform({
                 x: props.x,
@@ -34,7 +34,8 @@ const RubyBlock = function(props) {
                 scale: props.scale,
                 firstFrameX: props.frameX,
                 frameY: props.frameY
-            })
+            }),
+            new CLifespan(TILE_LIFE_RUBY)
         ]
     };
 }

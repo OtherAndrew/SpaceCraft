@@ -7,18 +7,67 @@
  * @version 1/18/23
  */
 
-/**
- * Initializes Box Collider component
- * @param {number} x          X coordinate of collider center
- * @param {number} y          Y coordinate of collider center
- * @param {number} width      Collider width
- * @param {number} height     Collider height
- * @returns {CBoxCollider} The box collider component
- * @constructor
- */
-const CBoxCollider = function CBoxCollider({ x, y, width, height }) {
-    Object.assign(this, { x, y, width, height });
-    this.collisions = {};
-    return this;
-};
-CBoxCollider.prototype.name = 'boxCollider';
+class CBoxCollider {
+    /**
+     * Initializes Box Collider component
+     * @param {number} x          X coordinate of collider center
+     * @param {number} y          Y coordinate of collider center
+     * @param {number} width      Collider width
+     * @param {number} height     Collider height
+     * @param {number} xOffset    X offset for collider
+     * @param {number} yOffset    Y offset for collider
+     * @returns {CBoxCollider} The box collider component
+     * @constructor
+     */
+    constructor({ x, y, width, height, xOffset = 0, yOffset = 0 }) {
+        Object.assign(this, { width, height, xOffset, yOffset });
+
+        this.x = x + this.xOffset;
+        this.y = y + this.yOffset
+        this.name = "boxCollider";
+        this.collisions = {};
+
+        this.top = this.y;
+        this.bottom = this.y + this.height;
+        this.left = this.x;
+        this.right = this.x + this.width;
+        this.center = {
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
+        }
+        this.last = {
+            top: this.top,
+            bottom: this.bottom,
+            left: this.left,
+            right: this.right,
+            center: this.center
+        };
+
+        return this;
+    }
+
+    /**
+     * Sets collider position.
+     * @param x
+     * @param y
+     */
+    setPosition(x, y) {
+        this.last = {
+            top: this.top,
+            bottom: this.bottom,
+            left: this.left,
+            right: this.right,
+            center: this.center
+        };
+        this.x = x + this.xOffset;
+        this.y = y + this.yOffset;
+        this.top = this.y;
+        this.bottom = this.y + this.height;
+        this.left = this.x;
+        this.right = this.x + this.width;
+        this.center = {
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2
+        }
+    }
+}

@@ -5,15 +5,29 @@
  * @version 1/19/23
  */
 
-/**
- * Initializes CState component.
- * @param {string} initialState Initial state, 'idleR' by default
- * @returns {CState}            The CState component.
- * @constructor
- */
-const CState = function CState(initialState = 'idleR') {
-    this.currentState = initialState;
-    this.states = [initialState];
-    return this;
-};
-CState.prototype.name = 'state';
+class CState {
+
+    /**
+     * Initializes CState component.
+     * @returns {CState} The CState component.
+     * @constructor
+     */
+    constructor() {
+        this.name = "state";
+        this.currentState = 'idleR';
+        // this.input = '';
+        this.direction = 'right';
+        this.grounded = true;
+        this.sprite = null;
+        this.transform = null;
+        return this;
+    }
+
+    setState(state) {
+        if (state !== this.currentState) {
+            this.currentState = state;
+            if (this.sprite) this.sprite.setAnimation(this.currentState);
+            if (this.transform) this.transform.setBehavior(this.currentState);
+        }
+    }
+}
