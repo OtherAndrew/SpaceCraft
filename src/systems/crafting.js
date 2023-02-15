@@ -1,7 +1,7 @@
 class CraftMenu {
     table_recipes = [
-        [{tag : 'tile_ruby'},
-            {tag : 'tile_dirt'},
+        [{tag : 'tile_iron'},
+            {tag : 'tile_dirt', count : 5},
             {tag : 'tile_stone', count : 2}],
         [{tag : 'tile_dirt'},
             {tag : 'tile_stone'}],
@@ -21,22 +21,6 @@ class CraftMenu {
         
         this.buildRecipe('table', this.table_recipes);
 
-        // this.cm.createInventory('table1', this.x, this.y + this.spacer * this.recipes.length, 1, 3, 'pink', 'recipe');
-        // this.cm.addToInventory('table1', new Entity(generateBlock('tile_ruby', 0, 0, 'craftgen'), 0));
-        // this.cm.addToInventory('table1', new Entity(generateBlock('tile_dirt', 0, 0, 'craftgen'), 0));
-        // this.cm.addToInventory('table1', new Entity(generateBlock('tile_stone', 0, 0, 'craftgen'), 0), 2);
-        // this.recipes.push('table1');
-        //
-        // this.cm.createInventory('table2', this.x, this.y + this.spacer * this.recipes.length, 1, 2, 'pink', 'recipe');
-        // this.cm.addToInventory('table2', new Entity(generateBlock('tile_dirt', 0, 0, 'craftgen'), 0));
-        // this.cm.addToInventory('table2', new Entity(generateBlock('tile_stone', 0, 0, 'craftgen'), 0));
-        // this.recipes.push('table2');
-        //
-        // this.cm.createInventory('table3', this.x, this.y + this.spacer * this.recipes.length, 1, 2, 'pink', 'recipe');
-        // this.cm.addToInventory('table3', new Entity(generateBlock('tile_stone', 0, 0, 'craftgen'), 0));
-        // this.cm.addToInventory('table3', new Entity(generateBlock('tile_dirt', 0, 0, 'craftgen'), 0));
-        // this.recipes.push('table3');
-
         for (const entry in this.recipes) {
             let recipe = this.recipes[entry];
             if (recipe.includes('table')) {
@@ -55,14 +39,14 @@ class CraftMenu {
                 this.y + this.spacer * i,
                 1,
                 recipes[i].length, 
-                CRAFT_COLOR[owner],
+                CRAFT_COLOR[owner.toUpperCase()],
                 'recipe'
             );
             for (let j = 0; j < recipes[i].length; j++) {
                 this.cm.addToInventory(
                     owner + i,
                     new Entity(generateBlock(recipes[i][j].tag, 0, 0, 'craftgen'), 0),
-                    recipes[i][j].count/* || 1*/
+                    recipes[i][j].count
                 );
             }
             this.recipes.push(owner + i);
