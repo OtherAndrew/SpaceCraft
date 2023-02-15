@@ -16,7 +16,7 @@ class AssetManager {
     };
 
     downloadAll(callback) {
-        if (this.downloadQueue.length === 0) setTimeout(callback, 10);
+        if (this.downloadQueue.length === 0) setTimeout(callback, 30);
         for (let i = 0; i < this.downloadQueue.length; i++) {
             const img = new Image();
 
@@ -44,4 +44,5 @@ class AssetManager {
         return this.cache[path];
     };
 }
+
 

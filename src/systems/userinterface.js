@@ -14,15 +14,15 @@ class HUD {
         this.refreshActiveInfo();
 
         // TESTING
-        this.add(new Entity(generateCrafter('craft_table', 0, 0), 0));
-        this.add(new Entity(generateCrafter('craft_furnace', 0, 0), 0));
-        this.add(new Entity(generateCrafter('craft_anvil', 0, 0), 0));
-        this.player.health = 100;
+        this.add(new Entity(generateCrafter('craft_table', 0, 0), 0), 1);
+        this.add(new Entity(generateBlock('tile_iron', 0, 0, 'craftgen'),0), 10);
+        // this.add(new Entity(generateCrafter('craft_furnace', 0, 0), 0));
+        // this.add(new Entity(generateCrafter('craft_anvil', 0, 0), 0));
     };
 
     // TESTING
-    add(entity) {
-        this.cm.addToInventory("player", entity);
+    add(entity, count) {
+        this.cm.addToInventory("player", entity, count);
     };
 
     refreshActiveInfo() {
@@ -30,8 +30,8 @@ class HUD {
         this.y = this.activeContainer.y;
     }
 
-    draw(uiActive, ctx) {
-        if (!uiActive) {
+    draw(menuActive, ctx) {
+        if (!menuActive) {
             ctx.save();
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -39,7 +39,7 @@ class HUD {
             ctx.rect(420,670, 183, 10);
             ctx.fill();
             ctx.beginPath();
-            let healthPercentage = this.player.health / 100
+            let healthPercentage = this.player.components['stats'].currentHealth / this.player.components['stats'].maxHealth;
             if (healthPercentage > 0.75) ctx.fillStyle = "green";
             else if (healthPercentage > 0.50) ctx.fillStyle = "yellow";
             else if (healthPercentage > 0.25) ctx.fillStyle = "orange";

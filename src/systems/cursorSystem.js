@@ -13,20 +13,17 @@ class CursorSystem {
         this.cursorList[MISC_PATH.CURSOR_CROSSHAIR] = `url(${MISC_PATH.CURSOR_CROSSHAIR}), none`
         this.cursorList[MISC_PATH.CURSOR_HAND] = `url(${MISC_PATH.CURSOR_HAND}), none`
     }
-    update(pos) {
+    update(menuActive, pos) {
         if(pos) {
+            this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_HAND]
             let selected = this.playerHud.activeContainer.item
-            if(selected) {
+            if(!menuActive && selected) {
                 // let tag = this.terrainMap[pos.y][pos.x].tag
-                if(/*tag.includes('tile') &&*/ selected.tag === 'pickaxe') {
+                if(/*/tile|craft/.test(tag) &&*/ selected.tag === 'pickaxe') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
-                } else if (selected.tag === 'gun' || selected.tag === 'flamethrower') {
+                } else if (selected.tag === 'gun' || selected.tag === 'flamethrower' || selected.tag === 'grenadeLauncher') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]
-                } else {
-                    this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_HAND]
                 }
-            } else {
-                this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_HAND]
             }
         }
         

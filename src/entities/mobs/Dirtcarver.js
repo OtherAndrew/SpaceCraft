@@ -55,6 +55,8 @@ class Dirtcarver {
         const x = this.components.transform.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
+
+        //check if this collide with
     }
 
     #addAnimations(sprite) {

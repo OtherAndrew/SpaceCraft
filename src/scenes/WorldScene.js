@@ -1,8 +1,26 @@
 
 class WorldScene extends Scene {
+
+
     constructor(game) {
         super()
         this.game = game;
+        //keep track of current enemies in scene
+        this.currentLightjelly = 0;
+        this.currentBloodsucker = 0;
+        this.currentLightbug = 0;
+        this.currentWormtank = 0;
+
+        this.currentSpore = 0;
+        this.currentMossamber = 0;
+        this.currentGrapebomb = 0;
+
+        //other game stats --- display during win condition (rocket scene)
+        //add total each mob kills
+        //total blocks mined
+        //total jetpack used
+        //total jumps
+        //total deaths
     }
 
     /**
@@ -34,50 +52,99 @@ class WorldScene extends Scene {
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
+
+
+        this.projectileManager = new ProjectileManager(this.entityManager)
+        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileManager);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
 
-        this.projectileManager = new ProjectileManager(this.entityManager)
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
         this.#givePlayerFlamethrower()
+        this.#givePlayerGrenadeLauncher()
     }
 
     spawnTestEntities() {
         this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
         this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
+        //spawn on the surface, will not die, main light source
         this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
-        this.mobFactory.build('lightjelly', this.player.components.transform.x + 300, this.player.components.transform.y - 300);
+
+        //explode with range, dont take out blocks  4k and below
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
+        //spawn 10k y-position and below (height)
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
+        //spawn first 20 block height
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
+        this.mobFactory.build('bloodsucker', this.player.components.transform.x + +500,
+            this.player.components.transform.y -500);
+        //creeperilla can jump and shoot projectile, spawn 10k and below
+    }
+
+    #spawnTimer() {
+        let playerY = this.player.components.transform.y;
+        //spawn condition 13000 y-position every 20 sec until max 3
+        if (playerY >= 7500 && (this.currentLightjelly < MAXLIGHTJELLY)) {
+            delayFunction(this.#LightjellySpawn(), 15000);
+            // this.currentLightjelly++;
+        }
+        //check player height before spawn
+        // if (playerY >= 8000 && (this.currentBloodsucker < MAXBLOODSUCKER)) {
+        //     delayFunction(this.#BloodsuckerSpawn(), 20000);
+        // }
+
+    }
+
+    #LightjellySpawn(){
+        let randAngle = Math.random() * 2 * Math.PI;
+        let distance = 500
+        this.mobFactory.build('lightjelly', this.player.components.transform.x + Math.cos(randAngle) * distance,
+            this.player.components.transform.y + Math.sin(randAngle) * distance);
+        this.currentLightjelly++;
+        // this.currentLightjelly.components.currentCount++;
+    }
+    #BloodsuckerSpawn(){
+        //spawn at 8k and below
+        //add random direction with fixed distance from the player
+        let randAngle = Math.random() * Math.PI;
+        let distance = 1000
+        this.mobFactory.build('bloodsucker', this.player.components.transform.x + Math.cos(randAngle) * distance,
+            this.player.components.transform.y + Math.sin(randAngle) * distance);
+        // this.entityManager.getEntities['bloodsucker'].components['stats'].total++;
+        this.currentBloodsucker++;
+    }
+    #WormtankSpawn(){
+        this.mobFactory.build('lightjelly', this.player.components.transform.x, this.player.components.transform.y - 200);
+        this.currentWormtank++;
     }
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
         if (!menuActive) {
-            // console.log(this.player)
-            if (this.rocket.components["state"].currentState === 'win') {
+            if (this.#checkWinCon()) {
+                this.rocket.components["state"].setState("win");
+                this.rocket.components['transform'].gravity = 0;
                 this.camera.setTarget(this.rocket)
                 this.renderBox.setTarget(this.rocket)
-                const temp = this.player
-                this.player = this.rocket
-                temp.destroy()
+                this.player.isDrawable = false
+                this.player.components['stats'].invincible = true;
                 console.log("win")
-            }
-            if (!this.player.isAlive) {
-                // this.init()
+            } else if (this.player.components['stats'].currentHealth <= 0) {
+                this.player.components["transform"].velocityX = 0;
+                this.player.isDrawable = false
+                this.player.components['stats'].invincible = true;
                 console.log("game over")
-                return
+            } else {
+                // get input
+                this.playerMovement.update(keys, deltaTime)
             }
             this.containerManager.unloadInventory();
             // get input
-            this.playerMovement.update(keys, deltaTime)
+            // this.playerMovement.update(keys, deltaTime)
             // update state
             this.entityManager.update()
             //this.genericDeathManager.update(deltaTime)
@@ -104,14 +171,20 @@ class WorldScene extends Scene {
             this.camera.update()
             this.renderSystem.update(deltaTime);
             // temporary spot for this
+
+            this.#spawnTimer();
             if(mouseDown) {
                 this.#handleClick(mouse, this.player, this.terrainMap)
             }
         }
-        this.cursorSystem.update(this.#getGridCell(mouse, this.player))
+        this.cursorSystem.update(menuActive, this.#getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.hud.update(menuActive, keys);
+
+        // console.log("currentLightJelly", this.currentLightjelly.components.currentCount)
+        // console.log("currentBloodSucker-total", this.entityManager.getEntities['bloodsucker'].components['stats'].total);
+        console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
     }
 
     draw(menuActive, ctx, mouse) {
@@ -192,9 +265,6 @@ class WorldScene extends Scene {
 
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
-        //console.log("GridCellsX : " + coords.x)
-        //console.log("GridCellsY : " + coords.y)
-        //console.log(pos.t)
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
@@ -227,6 +297,8 @@ class WorldScene extends Scene {
                 }
             } else if (active.tag === 'gun') {
                 this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            } else if (active.tag === 'grenadeLauncher') {
+                this.projectileManager.shoot('bomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             } else if (active.tag === 'flamethrower') {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
@@ -315,5 +387,25 @@ class WorldScene extends Scene {
             ]
         })
         this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerGrenadeLauncher() {
+        let e = this.entityManager.addEntity({
+            tag: 'grenadeLauncher',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.GRENADE_LAUNCHER],
+                    sWidth: 32,
+                    sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+    
+    #checkWinCon() {
+        let requisite = { item : { tag : 'tile_iron' }, count : 10 }
+        return (this.containerManager.checkCount(requisite) && this.collisionSystem.checkCollision(this.player, this.rocket))
     }
 }
