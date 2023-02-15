@@ -64,7 +64,7 @@ class ProjectileManager {
             case 'bomb':
                 projectileOrigin.x += directionVector.x * 20
                 projectileOrigin.y += directionVector.y * 20
-                directionVector.y -= 1.5
+                directionVector.y -= 1.25
                 p = new Projectile({
                     tag: 'bomb',
                     sprite: this.bombSprite(),
