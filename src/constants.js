@@ -11,6 +11,15 @@ const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 
+const MAXCREEPERILA = 2;
+const MAXDIRTCARVER = 5;
+const MAXLIGHTJELLY = 2;
+const MAXSPORE = 10;
+const MAXLIGHTBUG = 1;
+const MAXGRAPEBOMB = 3;
+const MAXBLOODSUCKER = 2;
+const MAXWORMTANK = 5;
+
 // const BISMUTH_GEN_STATS = {
 //     yMin: 0,
 //     yMax: 0,

@@ -18,6 +18,8 @@ class Bloodsucker {
         const stats = new CStats({
             damage: 1,
             speed: 3,
+            currentCount: 0,
+            total: MAXBLOODSUCKER,
             maxHealth: 70
         });
         const sprite = new CSprite({
