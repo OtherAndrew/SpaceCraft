@@ -127,11 +127,11 @@ class WorldScene extends Scene {
 
             // console.log(this.player)
             if (this.rocket.components["state"].currentState === 'win') {
+                this.rocket.components['transform'].gravity = 0;
                 this.camera.setTarget(this.rocket)
                 this.renderBox.setTarget(this.rocket)
-                const temp = this.player
-                this.player = this.rocket
-                temp.destroy()
+                this.player.isDrawable = false
+                this.player.components['stats'].invincible = true;
                 console.log("win")
             } else if (!this.player.isAlive) {
                 // this.init()
@@ -385,6 +385,6 @@ class WorldScene extends Scene {
     
     #checkWinCon() {
         let requisite = { item : { tag : 'tile_iron' }, count : 10 }
-        this.rocket.takeOff = this.containerManager.checkCount(requisite);
+        if (this.containerManager.checkCount(requisite) && this.collisionSystem.checkCollision(this.player, this.rocket)) this.rocket.components["state"].setState("win");
     }
 }
