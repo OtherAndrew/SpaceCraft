@@ -59,7 +59,7 @@ class ProjectileManager {
                     // 0.25 = (50% center to edge horizontal
                     duration: 0.5,
                     hasGravity: false,
-                    spread: 0.75
+                    spread: 1
                 });
                 break;
             case 'fire':
