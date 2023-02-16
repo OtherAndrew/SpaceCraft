@@ -27,8 +27,8 @@ class ProjectileManager {
         let p;
         switch (type) {
             case 'bullet':
-                projectileOrigin.x += directionVector.x * 20
-                projectileOrigin.y += directionVector.y * 20
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
                 p = new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(),
@@ -36,12 +36,10 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.75 = (100% center to edge horizontal
-                    // 0.55 = (75% center to edge horizontal
-                    // 0.48 = (66% center to edge horizontal
-                    // 0.35 = (50% center to edge horizontal
-                    // 0.20 = (33% center to edge horizontal
-                    duration: 0.55,
+                    // 0.5 = (100% center to edge horizontal
+                    // 0.375 = (75% center to edge horizontal
+                    // 0.25 = (50% center to edge horizontal
+                    duration: 0.375,
                     hasGravity: false,
                     spread: 0
                 });
@@ -91,8 +89,8 @@ class ProjectileManager {
                 });
                 break;
             case 'smallBomb':
-                projectileOrigin.x += directionVector.x * 20;
-                projectileOrigin.y += directionVector.y * 20;
+                projectileOrigin.x += directionVector.x * 10;
+                projectileOrigin.y += directionVector.y * 10;
                 p = new Projectile({
                     tag: 'smallbomb',
                     sprite: this.smallBombSprite(),
@@ -100,7 +98,7 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 2,
+                    duration: 1,
                     hasGravity: false,
                     spread: 0
                 });

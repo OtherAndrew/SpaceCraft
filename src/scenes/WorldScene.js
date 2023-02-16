@@ -39,7 +39,7 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        this.spawnTestEntities();
+        // this.spawnTestEntities();
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
@@ -63,11 +63,16 @@ class WorldScene extends Scene {
 
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
+        this.giveWeapons();
+    }
+
+    giveWeapons() {
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
         this.#givePlayerFlamethrower()
         this.#givePlayerGrenadeLauncher()
         this.#givePlayerHandCannon()
+        this.#givePlayerMinigun()
     }
 
     spawnTestEntities() {
@@ -296,7 +301,7 @@ class WorldScene extends Scene {
                         delete e.components["boxCollider"]
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))}
                 }
-            } else if (active.tag === 'gun') {
+            } else if (active.tag === 'gun' || active.tag === 'minigun') {
                 this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             } else if (active.tag === 'grenadeLauncher') {
                 this.projectileManager.shoot('bomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
@@ -415,6 +420,21 @@ class WorldScene extends Scene {
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.HAND_CANNON],
                     sWidth: 32,
                     sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerMinigun() {
+        let e = this.entityManager.addEntity({
+            tag: 'minigun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.MINIGUN],
+                    sWidth: 42,
+                    sHeight: 42,
                 }),
                 new CTransform(this.player.components.transform.x, this.player.components.transform.y)
             ]

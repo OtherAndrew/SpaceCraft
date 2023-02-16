@@ -6,6 +6,7 @@ class CursorSystem {
         this.terrainMap = terrainMap
         this.cursorList = []
         this.playerHud = hud
+        this.crosshairTags = ['gun', 'flamethrower', 'grenadeLauncher', 'handCannon', 'minigun']
     }
 
     init() {
@@ -21,7 +22,7 @@ class CursorSystem {
                 // let tag = this.terrainMap[pos.y][pos.x].tag
                 if(/*/tile|craft/.test(tag) &&*/ selected.tag === 'pickaxe') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
-                } else if (selected.tag === 'gun' || selected.tag === 'flamethrower' || selected.tag === 'grenadeLauncher') {
+                } else if (this.crosshairTags.some(t => selected.tag === t)) {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]
                 }
             }
