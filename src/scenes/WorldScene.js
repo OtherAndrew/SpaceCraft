@@ -39,7 +39,7 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        // this.spawnTestEntities();
+        this.spawnTestEntities();
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
@@ -73,6 +73,7 @@ class WorldScene extends Scene {
         this.#givePlayerGrenadeLauncher()
         this.#givePlayerHandCannon()
         this.#givePlayerMinigun()
+        this.#givePlayerRailgun()
     }
 
     spawnTestEntities() {
@@ -312,6 +313,8 @@ class WorldScene extends Scene {
                 this.projectileManager.shoot('fire', cursorTarget, player)
             } else if (active.tag === 'minigun') {
                 this.projectileManager.shoot('minigunbullet', cursorTarget, player)
+            } else if (active.tag === 'railgun') {
+                this.projectileManager.shoot('railgunbullet', cursorTarget, player)
             }
         } else if (selected.tag.includes('craft')) {
             this.containerManager.loadInventory(cleanTag(selected.tag));
@@ -438,6 +441,21 @@ class WorldScene extends Scene {
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.MINIGUN],
                     sWidth: 42,
                     sHeight: 42,
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerRailgun() {
+        let e = this.entityManager.addEntity({
+            tag: 'railgun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.RAILGUN],
+                    sWidth: 36,
+                    sHeight: 36,
                 }),
                 new CTransform(this.player.components.transform.x, this.player.components.transform.y)
             ]

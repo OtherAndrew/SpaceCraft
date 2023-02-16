@@ -62,6 +62,24 @@ class ProjectileManager {
                     spread: 1
                 });
                 break;
+            case 'railgunbullet':
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
+                p = new Projectile({
+                    tag: 'bullet',
+                    sprite: this.bulletSprite(2),
+                    damage: 100,
+                    speed: BLOCKSIZE,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    // 0.5 = (100% center to edge horizontal
+                    // 0.375 = (75% center to edge horizontal
+                    // 0.25 = (50% center to edge horizontal
+                    duration: 0.5,
+                    hasGravity: false,
+                    spread: 0
+                });
+                break;
             case 'fire':
                 projectileOrigin.x += directionVector.x * 30
                 projectileOrigin.y += directionVector.y * 30

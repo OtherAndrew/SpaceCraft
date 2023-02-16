@@ -6,7 +6,7 @@ class CursorSystem {
         this.terrainMap = terrainMap
         this.cursorList = []
         this.playerHud = hud
-        this.crosshairTags = ['gun', 'flamethrower', 'grenadeLauncher', 'handCannon', 'minigun']
+        this.crosshairTags = ['gun', 'flamethrower', 'grenadeLauncher', 'handCannon', 'minigun', 'railgun']
     }
 
     init() {
