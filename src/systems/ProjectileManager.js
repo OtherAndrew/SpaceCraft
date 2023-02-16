@@ -33,7 +33,7 @@ class ProjectileManager {
                     tag: 'bullet',
                     sprite: this.bulletSprite(),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.33,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     // 0.75 = (100% center to edge horizontal
@@ -62,14 +62,14 @@ class ProjectileManager {
                 });
                 break;
             case 'bomb':
-                projectileOrigin.x += directionVector.x * 20
-                projectileOrigin.y += directionVector.y * 20
-                directionVector.y -= 1.25
+                projectileOrigin.x += directionVector.x * 20;
+                projectileOrigin.y += directionVector.y * 20;
+                directionVector.y -= 0.5;
                 p = new Projectile({
                     tag: 'bomb',
                     sprite: this.bombSprite(),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.25,
+                    speed: BLOCKSIZE * 0.33,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 2,
@@ -78,14 +78,15 @@ class ProjectileManager {
                 });
                 break;
             case 'explosion':
+                const sprite = this.explosionSprite()
                 p = new Projectile({
                     tag: 'explosionbullet',
-                    sprite: this.explosionSprite(),
+                    sprite: sprite,
                     damage: 5,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: this.explosionSprite().frameDuration * 6,
+                    duration: sprite.frameDuration * 7,
                     hasGravity: false,
                     spread: 0
                 });
@@ -178,8 +179,8 @@ class Projectile {
             // rotation: props.angle,
             velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
             velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
-            maxVelocityX: 300,
-            maxVelocityY: 300,
+            // maxVelocityX: 300,
+            // maxVelocityY: 300,
         });
         const collider = new CBoxCollider({
             x: props.x,
