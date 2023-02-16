@@ -39,7 +39,7 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        // this.spawnTestEntities();
+        this.spawnTestEntities();
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
@@ -67,6 +67,7 @@ class WorldScene extends Scene {
         this.#givePlayerGun()
         this.#givePlayerFlamethrower()
         this.#givePlayerGrenadeLauncher()
+        this.#givePlayerHandCannon()
     }
 
     spawnTestEntities() {
@@ -299,6 +300,8 @@ class WorldScene extends Scene {
                 this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             } else if (active.tag === 'grenadeLauncher') {
                 this.projectileManager.shoot('bomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            } else if (active.tag === 'handCannon') {
+                this.projectileManager.shoot('smallBomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             } else if (active.tag === 'flamethrower') {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
@@ -395,6 +398,21 @@ class WorldScene extends Scene {
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.GRENADE_LAUNCHER],
+                    sWidth: 32,
+                    sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerHandCannon() {
+        let e = this.entityManager.addEntity({
+            tag: 'handCannon',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.HAND_CANNON],
                     sWidth: 32,
                     sHeight: 32
                 }),

@@ -94,7 +94,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 20;
                 projectileOrigin.y += directionVector.y * 20;
                 p = new Projectile({
-                    tag: 'bomb',
+                    tag: 'smallbomb',
                     sprite: this.smallBombSprite(),
                     damage: 0,
                     speed: BLOCKSIZE * 0.5,
@@ -105,10 +105,10 @@ class ProjectileManager {
                     spread: 0
                 });
                 break;
-            case 'smallExplosion':
+            case 'smallexplosion':
                 p = new Projectile({
                     tag: 'explosionbullet',
-                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
+                    sprite: this.explosionSprite(BLOCKSIZE * 1.75),
                     damage: 5,
                     speed: 0,
                     dVector: directionVector,
@@ -163,7 +163,7 @@ class ProjectileManager {
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
             sWidth: 10,
             sHeight: 10,
-            scale: BLOCKSIZE * 0.33 / 10,
+            scale: BLOCKSIZE * 0.4 / 10,
         });
     }
 
