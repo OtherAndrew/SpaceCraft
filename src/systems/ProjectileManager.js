@@ -31,7 +31,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10
                 p = new Projectile({
                     tag: 'bullet',
-                    sprite: this.bulletSprite(),
+                    sprite: this.bulletSprite(8),
                     damage: 1,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
@@ -42,6 +42,24 @@ class ProjectileManager {
                     duration: 0.375,
                     hasGravity: false,
                     spread: 0
+                });
+                break;
+            case 'minigunbullet':
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
+                p = new Projectile({
+                    tag: 'bullet',
+                    sprite: this.bulletSprite(14),
+                    damage: 1,
+                    speed: BLOCKSIZE * 0.5,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    // 0.5 = (100% center to edge horizontal
+                    // 0.375 = (75% center to edge horizontal
+                    // 0.25 = (50% center to edge horizontal
+                    duration: 0.5,
+                    hasGravity: false,
+                    spread: 0.75
                 });
                 break;
             case 'fire':
@@ -123,13 +141,14 @@ class ProjectileManager {
     }
 
 
-    bulletSprite() {
+    bulletSprite(frameX = 0, frameY = 0) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
             sWidth: 16,
             sHeight: 16,
             scale: 1,
-            firstFrameX: 8
+            firstFrameX: frameX,
+            frameY: frameY
         });
     }
 

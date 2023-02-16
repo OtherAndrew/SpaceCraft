@@ -274,6 +274,7 @@ class WorldScene extends Scene {
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
+        const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
         //console.log(selected.tag)
         let active = this.hud.activeContainer.item;
         if (active) {
@@ -301,14 +302,16 @@ class WorldScene extends Scene {
                         delete e.components["boxCollider"]
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))}
                 }
-            } else if (active.tag === 'gun' || active.tag === 'minigun') {
-                this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+            } else if (active.tag === 'gun') {
+                this.projectileManager.shoot('bullet', cursorTarget, player)
             } else if (active.tag === 'grenadeLauncher') {
-                this.projectileManager.shoot('bomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+                this.projectileManager.shoot('bomb', cursorTarget, player)
             } else if (active.tag === 'handCannon') {
-                this.projectileManager.shoot('smallBomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+                this.projectileManager.shoot('smallBomb', cursorTarget, player)
             } else if (active.tag === 'flamethrower') {
-                this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+                this.projectileManager.shoot('fire', cursorTarget, player)
+            } else if (active.tag === 'minigun') {
+                this.projectileManager.shoot('minigunbullet', cursorTarget, player)
             }
         } else if (selected.tag.includes('craft')) {
             this.containerManager.loadInventory(cleanTag(selected.tag));
