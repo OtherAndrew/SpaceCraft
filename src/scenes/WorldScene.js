@@ -301,7 +301,7 @@ class WorldScene extends Scene {
                         selected.tag = 'air'
                         selected.id = null
                         delete e.components["boxCollider"]
-                    this.containerManager.addToInventory('player', this.#resizeBlock(e))}
+                    this.containerManager.addToInventory('player', resizeBlock(e))}
                 }
             } else if (active.tag === 'gun') {
                 this.projectileManager.shoot('bullet', cursorTarget, player)
@@ -336,26 +336,6 @@ class WorldScene extends Scene {
             x: mapX,
             y: mapY
         }
-    }
-
-    #resizeBlock(e, mapX, mapY) {
-        if(e.isBroken) {
-            // e.components.sprite.dWidth *= 2
-            // e.components.sprite.dHeight *= 2
-            // e.components.transform.x = BLOCKSIZE * mapX
-            // e.components.transform.y = BLOCKSIZE * mapY
-            e.components.lifespan.current = e.components.lifespan.total
-            e.isBroken = false
-            e.isDrawable = true
-        } else {
-            e.components.sprite.dWidth *=  .5
-            e.components.sprite.dHeight = e.components.sprite.dHeight * .5
-            e.components.transform.velocityY = 10
-            e.isBroken = true
-            e.isDrawable = false
-        }
-
-        return e
     }
 
     #givePlayerPickAxe() {
