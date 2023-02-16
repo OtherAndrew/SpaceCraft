@@ -33,13 +33,13 @@ class ProjectileManager {
                     tag: 'bullet',
                     sprite: this.bulletSprite(8),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.5,
+                    speed: BLOCKSIZE * 0.66,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.5 = (100% center to edge horizontal
-                    // 0.375 = (75% center to edge horizontal
-                    // 0.25 = (50% center to edge horizontal
-                    duration: 0.375,
+                    // 0.4 = (100% center to edge horizontal
+                    // 0.3 = (75% center to edge horizontal
+                    // 0.2 = (50% center to edge horizontal
+                    duration: 0.4,
                     hasGravity: false,
                     spread: 0
                 });
@@ -51,15 +51,12 @@ class ProjectileManager {
                     tag: 'bullet',
                     sprite: this.bulletSprite(14),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.5,
+                    speed: BLOCKSIZE * 0.66,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.5 = (100% center to edge horizontal
-                    // 0.375 = (75% center to edge horizontal
-                    // 0.25 = (50% center to edge horizontal
-                    duration: 0.5,
+                    duration: 0.4,
                     hasGravity: false,
-                    spread: 1
+                    spread: 2.5
                 });
                 break;
             case 'railgunbullet':
@@ -72,9 +69,6 @@ class ProjectileManager {
                     speed: BLOCKSIZE,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.5 = (100% center to edge horizontal
-                    // 0.375 = (75% center to edge horizontal
-                    // 0.25 = (50% center to edge horizontal
                     duration: 0.5,
                     hasGravity: false,
                     spread: 0
@@ -101,14 +95,14 @@ class ProjectileManager {
                 directionVector.y -= 0.5;
                 p = new Projectile({
                     tag: 'bomb',
-                    sprite: this.bombSprite(),
+                    sprite: this.bombSprite(BLOCKSIZE * 0.6),
                     damage: 0,
                     speed: BLOCKSIZE * 0.33,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 2,
                     hasGravity: true,
-                    spread: 0
+                    spread: 0.5
                 });
                 break;
             case 'explosion':
@@ -129,9 +123,9 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10;
                 p = new Projectile({
                     tag: 'smallbomb',
-                    sprite: this.smallBombSprite(),
+                    sprite: this.bombSprite(BLOCKSIZE * 0.4),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.5,
+                    speed: BLOCKSIZE * 0.66,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 1,
@@ -184,21 +178,12 @@ class ProjectileManager {
         return sprite;
     }
 
-    bombSprite() {
+    bombSprite(size) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
             sWidth: 10,
             sHeight: 10,
-            scale: BLOCKSIZE * 0.66 / 10,
-        });
-    }
-
-    smallBombSprite() {
-        return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
-            sWidth: 10,
-            sHeight: 10,
-            scale: BLOCKSIZE * 0.4 / 10,
+            scale: size / 10,
         });
     }
 
