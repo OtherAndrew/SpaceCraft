@@ -108,7 +108,7 @@ class ProjectileManager {
             case 'explosion':
                 p = new Projectile({
                     tag: 'explosionbullet',
-                    sprite: this.explosionSprite(BLOCKSIZE * 4),
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 5,
                     speed: 0,
                     dVector: directionVector,
@@ -125,7 +125,7 @@ class ProjectileManager {
                     tag: 'smallbomb',
                     sprite: this.bombSprite(BLOCKSIZE * 0.4),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.66,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 1,
@@ -136,8 +136,8 @@ class ProjectileManager {
             case 'smallexplosion':
                 p = new Projectile({
                     tag: 'explosionbullet',
-                    sprite: this.explosionSprite(BLOCKSIZE * 1.75),
-                    damage: 5,
+                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
+                    damage: 4,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
