@@ -84,7 +84,7 @@ const generateBlock = (tag, x, y, mode) => {
 }
 
 const resizeBlock = (e, mapX, mapY) => {
-    if(e.isBroken) {
+    if (e.isBroken) {
         // e.components.sprite.dWidth *= 2
         // e.components.sprite.dHeight *= 2
         // e.components.transform.x = BLOCKSIZE * mapX
@@ -99,6 +99,5 @@ const resizeBlock = (e, mapX, mapY) => {
         e.isBroken = true
         e.isDrawable = false
     }
-
     return e
 }
