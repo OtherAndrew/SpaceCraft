@@ -78,19 +78,47 @@ class ProjectileManager {
                 });
                 break;
             case 'explosion':
-                const sprite = this.explosionSprite()
                 p = new Projectile({
                     tag: 'explosionbullet',
-                    sprite: sprite,
+                    sprite: this.explosionSprite(BLOCKSIZE * 4),
                     damage: 5,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: sprite.frameDuration * 7,
+                    duration: 7/30,
                     hasGravity: false,
                     spread: 0
                 });
                 break;
+            case 'smallBomb':
+                projectileOrigin.x += directionVector.x * 20;
+                projectileOrigin.y += directionVector.y * 20;
+                p = new Projectile({
+                    tag: 'bomb',
+                    sprite: this.smallBombSprite(),
+                    damage: 0,
+                    speed: BLOCKSIZE * 0.5,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 2,
+                    hasGravity: false,
+                    spread: 0
+                });
+                break;
+            case 'smallExplosion':
+                p = new Projectile({
+                    tag: 'explosionbullet',
+                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
+                    damage: 5,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 7/30,
+                    hasGravity: false,
+                    spread: 0
+                });
+                break;
+
             default: console.log(`Invalid projectile type: ${type}.`);
         }
         return this.entityManager.addEntity(p);
@@ -126,16 +154,25 @@ class ProjectileManager {
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
             sWidth: 10,
             sHeight: 10,
-            scale: BLOCKSIZE * 0.75 / 10,
+            scale: BLOCKSIZE * 0.66 / 10,
         });
     }
 
-    explosionSprite() {
+    smallBombSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
+            sWidth: 10,
+            sHeight: 10,
+            scale: BLOCKSIZE * 0.33 / 10,
+        });
+    }
+
+    explosionSprite(size) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.EXPLOSION),
             sWidth: 64,
             sHeight: 64,
-            scale: BLOCKSIZE * 4 / 64,
+            scale: size / 64,
             firstFrameX: 0,
             lastFrameX: 5,
             fps: 30
