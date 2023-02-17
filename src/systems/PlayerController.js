@@ -92,11 +92,11 @@ class PlayerController {
 
     handleMouse(pos, activeContainer) {
         let coords = this.getGridCell(pos)
-        let mapY = coords.y || 0;
-        let mapX = coords.x || 0
+        let mapY = coords.y
+        let mapX = coords.x
         let selected = this.terrainMap[mapY][mapX];
         const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
-        //console.log(selected.tag)
+        console.log(selected.tag)
         let active = activeContainer.item;
 
         if (active) {
@@ -138,6 +138,7 @@ class PlayerController {
                 this.projectileManager.shoot('railgunbullet', cursorTarget, this.player)
             }
         } else if (selected.tag.includes('craft')) {
+            console.log('open crafting menu')
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
