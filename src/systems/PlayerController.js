@@ -17,11 +17,11 @@ class PlayerController {
         weaponMap.set('laserPistol', new WeaponProps('weakbullet', 0.5));
         weaponMap.set('laserGun', new WeaponProps('midbullet', 0.33));
         weaponMap.set('laserRifle', new WeaponProps('strongbullet', 0.25));
-        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 0.85));
-        weaponMap.set("handCannon", new WeaponProps("smallBomb", 1));
-        weaponMap.set("flamethrower", new WeaponProps('fire', 7.5, 5));
+        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 1));
+        weaponMap.set("handCannon", new WeaponProps("smallBomb", 1.75));
+        weaponMap.set("flamethrower", new WeaponProps('fire', 6, 3));
         weaponMap.set('minigun', new WeaponProps('minigunbullet', 7.5, 5));
-        weaponMap.set('railgun', new WeaponProps('railgunbullet', 10));
+        weaponMap.set('railgun', new WeaponProps('railgunbullet', 5));
         // weaponMap.set('jetpack', new WeaponProps('smoke', 5, 5));
         return weaponMap;
     }

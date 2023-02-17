@@ -141,7 +141,11 @@ class CollisionSystem {
                        this.projectileManager.shoot("smallexplosion",
                            {x: p.components["transform"].x, y: p.components["transform"].y}, p);
                    }
-                   if (!p.tag.includes("fire") && !p.tag.includes("explosion")) p.destroy();
+                   if (!p.tag.includes("fire")
+                       && !p.tag.includes("explosion")
+                       && !p.tag.includes("railgun")){
+                       p.destroy();
+                   }
                }
             });
             this.tileList.forEach(tile => {

@@ -43,7 +43,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 15
                 p = new Projectile({
                     tag: 'bullet',
-                    sprite: this.bulletSprite(13),
+                    sprite: this.bulletSprite(11),
                     damage: 1,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
@@ -84,9 +84,9 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 0.4,
+                    duration: 0.45,
                     hasGravity: false,
-                    spread: 1.5
+                    spread: 1.25
                 });
                 for (let i = 0; i < 1; i++) {
                     this.entityManager.addEntity(new Projectile({
@@ -96,9 +96,9 @@ class ProjectileManager {
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
                         origin: projectileOrigin,
-                        duration: 0.4,
+                        duration: 0.45,
                         hasGravity: false,
-                        spread: 1.5
+                        spread: 1.25
                     }));
                 }
                 break;
@@ -106,10 +106,10 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 p = new Projectile({
-                    tag: 'bullet',
+                    tag: 'railgunbullet',
                     sprite: this.bulletSprite(2),
                     damage: 100,
-                    speed: BLOCKSIZE,
+                    speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 0.5,
@@ -127,7 +127,7 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 1,
+                    duration: 1.25,
                     hasGravity: false,
                     spread: 0.33
                 });
@@ -175,12 +175,25 @@ class ProjectileManager {
                     hasGravity: false,
                     spread: 0
                 });
+                for (let i = 0; i < 2; i++) {
+                    this.entityManager.addEntity(new Projectile({
+                        tag: 'smallbomb',
+                        sprite: this.bombSprite(BLOCKSIZE * 0.45),
+                        damage: 0,
+                        speed: BLOCKSIZE * 0.75,
+                        dVector: directionVector,
+                        origin: projectileOrigin,
+                        duration: 0.5,
+                        hasGravity: false,
+                        spread: 5
+                    }));
+                }
                 break;
             case 'smallexplosion':
                 p = new Projectile({
                     tag: 'explosionbullet',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 5,
+                    damage: 2,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
