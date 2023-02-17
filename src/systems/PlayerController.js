@@ -44,11 +44,13 @@ class PlayerController {
             //     this.elapsedTime += tick;
             // }
             this.weaponMap.forEach(w => {
-                if (w.elapsedTime >= w.cooldown) {
-                    w.elapsedTime = 0;
-                    w.fireTime = 0;
-                } else {
-                    w.elapsedTime += tick;
+                if (w.fireTime > w.duration) {
+                    if (w.elapsedTime >= w.cooldown) {
+                        w.elapsedTime = 0;
+                        w.fireTime = 0;
+                    } else {
+                        w.elapsedTime += tick;
+                    }
                 }
             });
         }
@@ -154,7 +156,7 @@ class PlayerController {
     #fireWeapon(activeWeapon, target, tick) {
         const wProps = this.weaponMap.get(activeWeapon);
         console.log(wProps)
-        if (wProps.fireTime < wProps.duration) {
+        if (wProps.fireTime <= wProps.duration) {
             this.projectileManager.shoot(wProps.projectileType, target, this.player)
             wProps.fireTime += tick;
         }
