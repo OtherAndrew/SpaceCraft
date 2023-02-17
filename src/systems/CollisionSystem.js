@@ -27,7 +27,7 @@ class CollisionSystem {
      * Call this before resolving.
      */
     refresh() {
-        this.collideList = this.entities.filter(e => /*e.isDrawable &&*/ e.components["boxCollider"]);
+        this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
         this.tileCollideList = this.collideList.filter(e =>
                    e.tag.includes("player") || e.tag.includes("rocket")
                 || (e.tag.includes("mob") && !e.tag.includes("ghost"))

@@ -33,7 +33,7 @@ class ProjectileManager {
                     tag: 'bullet',
                     sprite: this.bulletSprite(8),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.66,
+                    speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     // 0.4 = (100% center to edge horizontal
@@ -51,7 +51,7 @@ class ProjectileManager {
                     tag: 'bullet',
                     sprite: this.bulletSprite(14),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.66,
+                    speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 0.4,
@@ -92,12 +92,12 @@ class ProjectileManager {
             case 'bomb':
                 projectileOrigin.x += directionVector.x * 20;
                 projectileOrigin.y += directionVector.y * 20;
-                directionVector.y -= 0.5;
+                directionVector.y -= 0.25;
                 p = new Projectile({
                     tag: 'bomb',
                     sprite: this.bombSprite(BLOCKSIZE * 0.6),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.33,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 2,
@@ -125,10 +125,10 @@ class ProjectileManager {
                     tag: 'smallbomb',
                     sprite: this.bombSprite(BLOCKSIZE * 0.4),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.5,
+                    speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 1,
+                    duration: 0.5,
                     hasGravity: false,
                     spread: 0
                 });

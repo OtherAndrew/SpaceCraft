@@ -34,22 +34,22 @@ class PlayerController {
     #handleKey(input, tick) {
         let state = this.pSprite.currentState;
 
-        if ((input[' ']) && this.pState.grounded) { //jump
+        if ((input[' '] || input['w']) && this.pState.grounded) { //jump
             this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + 15);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
-        if (input['w']) { // jetpack?
-            if (this.jetpackTime < this.jetpackDuration) {
-                this.pState.grounded = false
-                this.pTransform.velocityY = -(GRAVITY + 10);
-                this.jetpackTime += tick;
-                state = this.pState.direction === 'right' ? 'flyR' : 'flyL';
-            } else {
-                state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
-            }
-        }
+        // if (input['w']) { // jetpack?
+        //     if (this.jetpackTime < this.jetpackDuration) {
+        //         this.pState.grounded = false
+        //         this.pTransform.velocityY = -(GRAVITY + 10);
+        //         this.jetpackTime += tick;
+        //         state = this.pState.direction === 'right' ? 'flyR' : 'flyL';
+        //     } else {
+        //         state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
+        //     }
+        // }
 
         if (input['a']) {
             this.pState.direction = 'left'
