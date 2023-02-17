@@ -93,8 +93,8 @@ class WorldScene extends Scene {
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         //spawn first 20 block height
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x + +500,
-            this.player.components.transform.y -500);
+        this.mobFactory.build('bloodsucker', this.player.components.transform.x + 500,
+            this.player.components.transform.y - 500);
         //creeperilla can jump and shoot projectile, spawn 10k and below
     }
 

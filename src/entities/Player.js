@@ -24,7 +24,7 @@ class Player {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 100,
+            maxHealth: 200,
             speed: 6
         });
         const spriteWidth = 200;
