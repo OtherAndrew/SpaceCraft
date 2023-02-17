@@ -1,5 +1,5 @@
 
-class DamageSystem {
+class HealthSystem {
 
     constructor(entities) {
         Object.assign(this, { entities });
@@ -11,12 +11,15 @@ class DamageSystem {
             && e.components["stats"]);
         // console.log(updateList)
         updateList.forEach(e => {
-            if (e.components["stats"].currentHealth <= 0 && e.tag.includes('mob')) {
+            const eStats = e.components["stats"];
+            if (eStats.currentHealth <= 0 && e.tag.includes('mob')) {
                 e.destroy();
-                // e.components.currentCount--;
-            }
-            if (e.components["stats"].canRegen(tick)) {
-                e.components.heal(1);
+            } else {
+                if (eStats.canRegen()) {
+                    eStats.heal(0.1);
+                } else {
+                    eStats.elapsedTime += tick;
+                }
             }
         });
     }

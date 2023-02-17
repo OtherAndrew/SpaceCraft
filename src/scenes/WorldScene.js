@@ -41,6 +41,8 @@ class WorldScene extends Scene {
 
         // this.spawnTestEntities();
         this.mobFactory.build('mossamber', this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        this.mobFactory.build('bloodsucker', this.player.components.transform.x + 500,
+            this.player.components.transform.y - 500);
 
         //this.#genericDeath()
         this.projectileManager = new ProjectileManager(this.entityManager)
@@ -64,7 +66,7 @@ class WorldScene extends Scene {
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
 
-        this.damageSystem = new DamageSystem(this.entityManager.getEntities)
+        this.healthSystem = new HealthSystem(this.entityManager.getEntities)
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.giveWeapons();
     }
@@ -156,6 +158,8 @@ class WorldScene extends Scene {
                 // get input
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer)
             }
+            console.log(this.player.components["stats"].elapsedTime)
+            console.log(this.player.components["stats"].currentHealth)
             this.containerManager.unloadInventory();
             // get input
             // this.playerMovement.update(keys, deltaTime)
@@ -178,7 +182,7 @@ class WorldScene extends Scene {
             //this.worldImages.update()
             this.collisionSystem.resolveMobAttack()
             this.collisionSystem.resolveProjectiles()
-            this.damageSystem.update();
+            this.healthSystem.update(deltaTime);
             this.durationSystem.update(deltaTime)
 
             // draw
