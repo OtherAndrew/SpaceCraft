@@ -9,10 +9,20 @@ class PlayerController {
         this.acceleration = 1
         this.fastFall = 3;
 
-        this.jetpackTime = 0;
-        this.jetpackDuration = 5;
-        this.elapsedTime = 0;
-        this.jetpackCooldown = 5;
+        this.weaponMap = this.#buildWeaponMap();
+    }
+
+    #buildWeaponMap() {
+        const weaponMap = new Map();
+        weaponMap.set('gun', new WeaponProps('bullet', 0.5));
+        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 1));
+        weaponMap.set("handCannon", new WeaponProps("smallBomb", 1.5));
+        weaponMap.set("flamethrower", new WeaponProps('fire', 7.5, 10));
+        weaponMap.set('minigun', new WeaponProps('minigunbullet', 7.5, 10));
+        weaponMap.set('railgun', new WeaponProps('railgunbullet', 60));
+        // weaponMap.set('jetpack', new WeaponProps('smoke', 5, 5));
+        weaponMap.forEach(w => console.log(w))
+        return weaponMap;
     }
 
     /**
@@ -25,14 +35,22 @@ class PlayerController {
      */
     update(keys, mouseDown, mouse, tick, activeContainer) {
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
-        if (mouseDown) this.handleMouse(mouse, activeContainer);
+        if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
         if (this.pState.grounded) {
-            if (this.elapsedTime >= this.jetpackCooldown) {
-                this.elapsedTime = 0;
-                this.jetpackTime = 0;
-            } else {
-                this.elapsedTime += tick;
-            }
+            // if (this.elapsedTime >= this.jetpackCooldown) {
+            //     this.elapsedTime = 0;
+            //     this.jetpackTime = 0;
+            // } else {
+            //     this.elapsedTime += tick;
+            // }
+            this.weaponMap.forEach(w => {
+                if (w.elapsedTime >= w.cooldown) {
+                    w.elapsedTime = 0;
+                    w.fireTime = 0;
+                } else {
+                    w.elapsedTime += tick;
+                }
+            });
         }
     }
 
@@ -90,7 +108,7 @@ class PlayerController {
         return state;
     }
 
-    handleMouse(pos, activeContainer) {
+    handleMouse(pos, activeContainer, tick) {
         let coords = this.getGridCell(pos)
         let mapY = coords.y
         let mapX = coords.x
@@ -98,7 +116,6 @@ class PlayerController {
         const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
         console.log(selected.tag)
         let active = activeContainer.item;
-
         if (active) {
             if(/tile|craft/.test(active.tag)) {
                 if(selected.tag.includes('air')) {
@@ -111,7 +128,7 @@ class PlayerController {
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
-                        console.log(newBlock)
+                        // console.log(newBlock)
                     }
                 }
             } else if (active.tag === 'pickaxe') {
@@ -125,7 +142,7 @@ class PlayerController {
                         this.containerManager.addToInventory('player', resizeBlock(e))}
                 }
             } else {
-                this.#fireWeapon(active.tag, cursorTarget);
+                this.#fireWeapon(active.tag, cursorTarget, tick);
             }
         } else if (selected.tag.includes('craft')) {
             console.log('open crafting menu')
@@ -134,28 +151,12 @@ class PlayerController {
         }
     }
 
-    #fireWeapon(activeWeapon, cursorTarget) {
-        switch (activeWeapon) {
-            case "gun":
-                this.projectileManager.shoot('bullet', cursorTarget, this.player);
-                break;
-            case "grenadeLauncher":
-                this.projectileManager.shoot('bomb', cursorTarget, this.player);
-                break;
-            case "handCannon":
-                this.projectileManager.shoot('smallBomb', cursorTarget, this.player);
-                break;
-            case "flamethrower":
-                this.projectileManager.shoot('fire', cursorTarget, this.player);
-                break;
-            case "minigun":
-                this.projectileManager.shoot('minigunbullet', cursorTarget, this.player);
-                break;
-            case "railgun":
-                this.projectileManager.shoot('railgunbullet', cursorTarget, this.player);
-                break;
-            default:
-                console.log(`Unrecognized weapon: ${activeWeapon}.`);
+    #fireWeapon(activeWeapon, target, tick) {
+        const wProps = this.weaponMap.get(activeWeapon);
+        console.log(wProps)
+        if (wProps.fireTime < wProps.duration) {
+            this.projectileManager.shoot(wProps.projectileType, target, this.player)
+            wProps.fireTime += tick;
         }
     }
 
@@ -173,5 +174,14 @@ class PlayerController {
             x: mapX,
             y: mapY
         }
+    }
+}
+
+class WeaponProps {
+    constructor(projectileType, cooldown, duration = 0) {
+        Object.assign(this, { projectileType, cooldown, duration })
+        this.elapsedTime = 0;
+        this.fireTime = 0;
+        return this;
     }
 }

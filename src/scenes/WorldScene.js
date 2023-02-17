@@ -193,7 +193,7 @@ class WorldScene extends Scene {
 
         // console.log("currentLightJelly", this.currentLightjelly.components.currentCount)
         // console.log("currentBloodSucker-total", this.entityManager.getEntities['bloodsucker'].components['stats'].total);
-        console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
+        // console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
     }
 
     draw(menuActive, ctx, mouse) {
