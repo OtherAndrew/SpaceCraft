@@ -5,16 +5,7 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-        //keep track of current enemies in scene
-        this.currentLightjelly = 0;
-        this.currentBloodsucker = 0;
-        this.currentLightbug = 0;
-        this.currentWormtank = 0;
-
-        this.currentSpore = 0;
-        this.currentMossamber = 0;
-        this.currentGrapebomb = 0;
-
+    
         //other game stats --- display during win condition (rocket scene)
         //add total each mob kills
         //total blocks mined
@@ -31,16 +22,21 @@ class WorldScene extends Scene {
     init(assets, canvas) {
         // entities
         //this.genericDeathSprite = assets[GENERICDEATH_PATH];
-        [this.terrainMap, this.spawnMap] = getTerrain(this.entityManager)
-        console.log(this.spawnMap)
+        let spawnMap
+        [this.terrainMap, spawnMap] = getTerrain(this.entityManager)
         this.mobFactory = new MobFactory(this.entityManager);
-
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
+        this.spawnManager = new SpawnerManager(this.mobFactory, spawnMap, this.player)
 
-        this.spawnTestEntities();
+            /*
+        this.spawnManager.spawnTestEntities({
+            x: WIDTH_PIXELS * .5,
+            y: HEIGHT_PIXELS * .5 - 100
+        });
+        */
 
         //this.#genericDeath()
         this.playerMovement = new PlayerController(this.player)
@@ -75,60 +71,6 @@ class WorldScene extends Scene {
         this.#givePlayerHandCannon()
         this.#givePlayerMinigun()
         this.#givePlayerRailgun()
-    }
-
-    spawnTestEntities() {
-        this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
-        this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
-        //spawn on the surface, will not die, main light source
-        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
-
-        //explode with range, dont take out blocks  4k and below
-        this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
-        //spawn 10k y-position and below (height)
-        this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
-        //spawn first 20 block height
-        this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x + +500,
-            this.player.components.transform.y -500);
-        //creeperilla can jump and shoot projectile, spawn 10k and below
-    }
-
-    #spawnTimer() {
-        let playerY = this.player.components.transform.y;
-        //spawn condition 13000 y-position every 20 sec until max 3
-        if (playerY >= 7500 && (this.currentLightjelly < MAXLIGHTJELLY)) {
-            delayFunction(this.#LightjellySpawn(), 15000);
-            // this.currentLightjelly++;
-        }
-        //check player height before spawn
-        // if (playerY >= 8000 && (this.currentBloodsucker < MAXBLOODSUCKER)) {
-        //     delayFunction(this.#BloodsuckerSpawn(), 20000);
-        // }
-
-    }
-
-    #LightjellySpawn(){
-        let randAngle = Math.random() * 2 * Math.PI;
-        let distance = 500
-        this.mobFactory.build('lightjelly', this.player.components.transform.x + Math.cos(randAngle) * distance,
-            this.player.components.transform.y + Math.sin(randAngle) * distance);
-        this.currentLightjelly++;
-        // this.currentLightjelly.components.currentCount++;
-    }
-    #BloodsuckerSpawn(){
-        //spawn at 8k and below
-        //add random direction with fixed distance from the player
-        let randAngle = Math.random() * Math.PI;
-        let distance = 1000
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x + Math.cos(randAngle) * distance,
-            this.player.components.transform.y + Math.sin(randAngle) * distance);
-        // this.entityManager.getEntities['bloodsucker'].components['stats'].total++;
-        this.currentBloodsucker++;
-    }
-    #WormtankSpawn(){
-        this.mobFactory.build('lightjelly', this.player.components.transform.x, this.player.components.transform.y - 200);
-        this.currentWormtank++;
     }
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
@@ -180,7 +122,7 @@ class WorldScene extends Scene {
             this.renderSystem.update(deltaTime);
             // temporary spot for this
 
-            this.#spawnTimer();
+            this.spawnManager.update(deltaTime)
             if(mouseDown) {
                 this.#handleClick(mouse, this.player, this.terrainMap)
             }
@@ -189,10 +131,6 @@ class WorldScene extends Scene {
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.hud.update(menuActive, keys);
-
-        // console.log("currentLightJelly", this.currentLightjelly.components.currentCount)
-        // console.log("currentBloodSucker-total", this.entityManager.getEntities['bloodsucker'].components['stats'].total);
-        //console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
     }
 
     draw(menuActive, ctx, mouse) {
@@ -200,13 +138,6 @@ class WorldScene extends Scene {
         else this.renderSystem.draw(ctx, this.camera);
 
         //this.#drawColliders(ctx);
-        this.spawnMap.forEach(pos => {
-            ctx.fillStyle = 'rgba(255,0,0)'
-            ctx.fillRect((pos.x * BLOCKSIZE) - this.camera.x, (pos.y * BLOCKSIZE) - this.camera.y, BLOCKSIZE, BLOCKSIZE)
-        })
-        let cell = this.spawnMap[spawnMob(this.spawnMap, this.player)]
-        ctx.fillStyle = 'rgba(0,0,255)'
-        ctx.fillRect((cell.x * BLOCKSIZE) - this.camera.x, (cell.y * BLOCKSIZE) - this.camera.y, BLOCKSIZE, BLOCKSIZE)
     
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -220,6 +151,10 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         });
+        this.spawnManager.spawnMap.forEach(pos => {
+            ctx.fillStyle = 'rgba(255,0,0)'
+            ctx.fillRect((pos.x * BLOCKSIZE) - this.camera.x, (pos.y * BLOCKSIZE) - this.camera.y, BLOCKSIZE, BLOCKSIZE)
+        })
     }
 
     /**

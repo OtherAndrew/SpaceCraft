@@ -460,20 +460,3 @@ const getTerrain = (entityManager) => {
     generateSpawnLocations()
     return [terrainMap, spawnMap]
 }
-
-const spawnMob = (map, player) => {
-    let playerX = player.components.transform.x / BLOCKSIZE
-    let playerY = player.components.transform.Y / BLOCKSIZE
-    let closestNode = Math.floor(getDistance(player.components.transform, {x: map[0].x * BLOCKSIZE, y: map[0].y * BLOCKSIZE}))
-    console.log(closestNode)
-    let index = 0
-    map.forEach((node, i) => {
-        let distance = Math.floor(getDistance(player.components.transform, {x: node.x * BLOCKSIZE, y: node.y * BLOCKSIZE}))
-        if(distance < closestNode) {
-            closestNode = distance
-            index = i
-        }
-    })
-    console.log(closestNode)
-    return index
-}
