@@ -1,9 +1,9 @@
 class CStats {
-    constructor({damage = 0, maxHealth = 1, speed = 0, invincible = false }) {
-        Object.assign(this, { damage, maxHealth, speed, invincible })
+    constructor({damage = 0, maxHealth = 1, speed = 0,
+                    regenCooldown = 10, regenAmount = 0.25, invincible = false }) {
+        Object.assign(this, { damage, maxHealth, speed, regenCooldown, regenAmount, invincible })
         this.currentHealth = this.maxHealth;
         this.name = "stats"
-        this.regenCooldown = 10;
         this.elapsedTime = this.regenCooldown;
         return this;
     }

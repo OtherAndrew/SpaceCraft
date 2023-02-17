@@ -16,7 +16,7 @@ class HealthSystem {
                 e.destroy();
             } else {
                 if (eStats.canRegen()) {
-                    eStats.heal(0.1);
+                    eStats.heal(eStats.regenAmount);
                 } else {
                     eStats.elapsedTime += tick;
                 }
