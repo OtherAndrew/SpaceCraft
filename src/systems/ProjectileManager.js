@@ -18,20 +18,50 @@ class ProjectileManager {
             // y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
             y: oCollider.center.y
         }
-        // if (originEntity.tag.includes('player')) {
-        //     projectileOrigin.x += directionVector.x * 25
-        //     projectileOrigin.y += directionVector.y * 25
-        // }
-
-        //switch bullet, fire, spore, arcing, etc.
         let p;
         switch (type) {
-            case 'bullet':
+            case 'weakbullet':
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 p = new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(8),
+                    damage: 1,
+                    speed: BLOCKSIZE * 0.75,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    // 0.4 = (100% center to edge horizontal
+                    // 0.3 = (75% center to edge horizontal
+                    // 0.2 = (50% center to edge horizontal
+                    duration: 0.2,
+                    hasGravity: false,
+                    spread: 0
+                });
+                break;
+            case 'midbullet':
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
+                p = new Projectile({
+                    tag: 'bullet',
+                    sprite: this.bulletSprite(10),
+                    damage: 1,
+                    speed: BLOCKSIZE * 0.75,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    // 0.4 = (100% center to edge horizontal
+                    // 0.3 = (75% center to edge horizontal
+                    // 0.2 = (50% center to edge horizontal
+                    duration: 0.3,
+                    hasGravity: false,
+                    spread: 0
+                });
+                break;
+            case 'strongbullet':
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
+                p = new Projectile({
+                    tag: 'bullet',
+                    sprite: this.bulletSprite(2),
                     damage: 1,
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
@@ -164,6 +194,8 @@ class ProjectileManager {
         }
         this.entityManager.addEntity(p);
     }
+
+
 
 
     bulletSprite(frameX = 0, frameY = 0) {

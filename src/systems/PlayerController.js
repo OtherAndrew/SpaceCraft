@@ -14,7 +14,7 @@ class PlayerController {
 
     #buildWeaponMap() {
         const weaponMap = new Map();
-        weaponMap.set('gun', new WeaponProps('bullet', 0.5));
+        weaponMap.set('gun', new WeaponProps('weakbullet', 0.5));
         weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 0.85));
         weaponMap.set("handCannon", new WeaponProps("smallBomb", 1));
         weaponMap.set("flamethrower", new WeaponProps('fire', 7.5, 5));
