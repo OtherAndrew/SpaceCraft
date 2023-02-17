@@ -134,11 +134,11 @@ class CollisionSystem {
                    }
                    mob.components["boxCollider"].setPosition(mTransform.x, mTransform.y)
 
-                   if (p.tag ==="bomb") {
+                   if (p.tag === "bomb") {
                        this.projectileManager.shoot("explosion",
                            { x: p.components["boxCollider"].center.x, y:  p.components["boxCollider"].center.y }, p);
-                   } else if (p.tag === "smallbomb") {
-                       this.projectileManager.shoot("smallexplosion",
+                   } else if (p.tag === "mini_bomb") {
+                       this.projectileManager.shoot("mini_explosion",
                            {x: p.components["transform"].x, y: p.components["transform"].y}, p);
                    }
                    if (!p.tag.includes("fire")
@@ -156,8 +156,8 @@ class CollisionSystem {
                        this.projectileManager.shoot("explosion",
                            {x: p.components["transform"].x, y: p.components["transform"].y}, p);
                        p.destroy();
-                   } else if (p.tag === "smallbomb") {
-                       this.projectileManager.shoot("smallexplosion",
+                   } else if (p.tag === "mini_bomb") {
+                       this.projectileManager.shoot("mini_explosion",
                            {x: p.components["transform"].x, y: p.components["transform"].y}, p);
                        p.destroy();
                    } else {

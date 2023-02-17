@@ -20,7 +20,7 @@ class ProjectileManager {
         }
         const projectileQueue = [];
         switch (type) {
-            case 'weakbullet':
+            case 'weak_bullet':
                 projectileOrigin.x += directionVector.x * 15
                 projectileOrigin.y += directionVector.y * 15
                 projectileQueue.push(new Projectile({
@@ -38,7 +38,7 @@ class ProjectileManager {
                     spread: 1
                 }));
                 break;
-            case 'midbullet':
+            case 'mid_bullet':
                 projectileOrigin.x += directionVector.x * 15
                 projectileOrigin.y += directionVector.y * 15
                 projectileQueue.push(new Projectile({
@@ -56,7 +56,7 @@ class ProjectileManager {
                     spread: 1
                 }));
                 break;
-            case 'strongbullet':
+            case 'strong_bullet':
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
@@ -74,12 +74,12 @@ class ProjectileManager {
                     spread: 1
                 }));
                 break;
-            case 'minigunbullet':
+            case 'minigun_bullet':
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
-                        tag: 'bullet',
+                        tag: 'bullet_minigun',
                         sprite: this.bulletSprite(14, 0, 0.8),
                         damage: 1.5,
                         speed: BLOCKSIZE * 0.75,
@@ -91,11 +91,11 @@ class ProjectileManager {
                     }));
                 }
                 break;
-            case 'railgunbullet':
+            case 'railgun_bullet':
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
-                    tag: 'railgunbullet',
+                    tag: 'bullet_railgun',
                     sprite: this.bulletSprite(4),
                     damage: 100,
                     speed: BLOCKSIZE * 0.9,
@@ -110,7 +110,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 30
                 projectileOrigin.y += directionVector.y * 30
                 projectileQueue.push(new Projectile({
-                    tag: 'firebullet',
+                    tag: 'bullet_fire',
                     sprite: this.fireSprite(),
                     damage: 0.05,
                     speed: BLOCKSIZE * 0.1,
@@ -139,7 +139,7 @@ class ProjectileManager {
                 break;
             case 'explosion':
                 projectileQueue.push(new Projectile({
-                    tag: 'explosionbullet',
+                    tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 8,
                     speed: 0,
@@ -150,11 +150,11 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
-            case 'smallBomb':
+            case 'mini_bomb':
                 projectileOrigin.x += directionVector.x * 10;
                 projectileOrigin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
-                    tag: 'smallbomb',
+                    tag: 'mini_bomb',
                     sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                     damage: 0,
                     speed: BLOCKSIZE * 0.75,
@@ -166,7 +166,7 @@ class ProjectileManager {
                 }));
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
-                        tag: 'smallbomb',
+                        tag: 'mini_bomb',
                         sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                         damage: 0,
                         speed: BLOCKSIZE * 0.75,
@@ -178,9 +178,9 @@ class ProjectileManager {
                     }));
                 }
                 break;
-            case 'smallexplosion':
+            case 'mini_explosion':
                 projectileQueue.push(new Projectile({
-                    tag: 'explosionbullet',
+                    tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
                     damage: 3,
                     speed: 0,
