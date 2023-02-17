@@ -150,8 +150,11 @@ class CollisionSystem {
             });
             this.tileList.forEach(tile => {
                if (this.checkCollision(p, tile)) {
-                   if (p.tag.includes("explosion")) {
+                   if (p.tag === "explosion") { // only big explosions and railguns destroy blocks
                        // tile.destroy();
+                   } else if (p.tag.includes('railgun')) {
+                       // tile.destroy();
+                       // p.destroy()
                    } else if (p.tag === "bomb") {
                        this.projectileManager.shoot("explosion",
                            {x: p.components["transform"].x, y: p.components["transform"].y}, p);
