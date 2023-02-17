@@ -21,31 +21,31 @@ class ProjectileManager {
         let p;
         switch (type) {
             case 'weakbullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
+                projectileOrigin.x += directionVector.x * 15
+                projectileOrigin.y += directionVector.y * 15
                 p = new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(8),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.75,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.4 = (100% center to edge horizontal
-                    // 0.3 = (75% center to edge horizontal
-                    // 0.2 = (50% center to edge horizontal
+                    // 0.35 = (100% center to edge horizontal
+                    // 0.25 = (75% center to edge horizontal
+                    // 0.15 = (50% center to edge horizontal
                     duration: 0.2,
                     hasGravity: false,
-                    spread: 0
+                    spread: 1
                 });
                 break;
             case 'midbullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
+                projectileOrigin.x += directionVector.x * 15
+                projectileOrigin.y += directionVector.y * 15
                 p = new Projectile({
                     tag: 'bullet',
-                    sprite: this.bulletSprite(10),
+                    sprite: this.bulletSprite(13),
                     damage: 1,
-                    speed: BLOCKSIZE * 0.75,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     // 0.4 = (100% center to edge horizontal
@@ -53,7 +53,7 @@ class ProjectileManager {
                     // 0.2 = (50% center to edge horizontal
                     duration: 0.3,
                     hasGravity: false,
-                    spread: 0
+                    spread: 1
                 });
                 break;
             case 'strongbullet':
@@ -69,9 +69,9 @@ class ProjectileManager {
                     // 0.4 = (100% center to edge horizontal
                     // 0.3 = (75% center to edge horizontal
                     // 0.2 = (50% center to edge horizontal
-                    duration: 0.4,
+                    duration: 0.3,
                     hasGravity: false,
-                    spread: 0
+                    spread: 1
                 });
                 break;
             case 'minigunbullet':
@@ -79,7 +79,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10
                 p = new Projectile({
                     tag: 'bullet',
-                    sprite: this.bulletSprite(14),
+                    sprite: this.bulletSprite(14, 0, 0.8),
                     damage: 1,
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
@@ -91,7 +91,7 @@ class ProjectileManager {
                 for (let i = 0; i < 1; i++) {
                     this.entityManager.addEntity(new Projectile({
                         tag: 'bullet',
-                        sprite: this.bulletSprite(14),
+                        sprite: this.bulletSprite(14, 0, 0.8),
                         damage: 1,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
@@ -198,12 +198,12 @@ class ProjectileManager {
 
 
 
-    bulletSprite(frameX = 0, frameY = 0) {
+    bulletSprite(frameX = 0, frameY = 0, scale = 1) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
             sWidth: 16,
             sHeight: 16,
-            scale: 1,
+            scale: scale,
             firstFrameX: frameX,
             frameY: frameY
         });

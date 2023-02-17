@@ -39,7 +39,7 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        this.spawnTestEntities();
+        // this.spawnTestEntities();
 
         //this.#genericDeath()
         this.projectileManager = new ProjectileManager(this.entityManager)
@@ -70,7 +70,9 @@ class WorldScene extends Scene {
 
     giveWeapons() {
         this.#givePlayerPickAxe()
-        this.#givePlayerGun()
+        this.#givePlayerLaserPistol()
+        this.#givePlayerLaserGun()
+        this.#givePlayerLaserRifle()
         this.#givePlayerFlamethrower()
         this.#givePlayerGrenadeLauncher()
         this.#givePlayerHandCannon()
@@ -357,12 +359,42 @@ class WorldScene extends Scene {
         this.containerManager.addToInventory('player', e)
     }
 
-    #givePlayerGun() {
+    #givePlayerLaserPistol() {
         let e = this.entityManager.addEntity({
-            tag: 'gun',
+            tag: 'laserPistol',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_PISTOL],
+                    sWidth: 32,
+                    sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerLaserGun() {
+        let e = this.entityManager.addEntity({
+            tag: 'laserGun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_GUN],
+                    sWidth: 32,
+                    sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerLaserRifle() {
+        let e = this.entityManager.addEntity({
+            tag: 'laserRifle',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_RIFLE],
                     sWidth: 32,
                     sHeight: 32
                 }),

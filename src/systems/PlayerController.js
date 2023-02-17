@@ -14,7 +14,9 @@ class PlayerController {
 
     #buildWeaponMap() {
         const weaponMap = new Map();
-        weaponMap.set('gun', new WeaponProps('weakbullet', 0.5));
+        weaponMap.set('laserPistol', new WeaponProps('weakbullet', 0.5));
+        weaponMap.set('laserGun', new WeaponProps('midbullet', 0.33));
+        weaponMap.set('laserRifle', new WeaponProps('strongbullet', 0.25));
         weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 0.85));
         weaponMap.set("handCannon", new WeaponProps("smallBomb", 1));
         weaponMap.set("flamethrower", new WeaponProps('fire', 7.5, 5));
@@ -35,7 +37,7 @@ class PlayerController {
     update(keys, mouseDown, mouse, tick, activeContainer) {
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
-        if (this.pState.grounded) {
+        // if (this.pState.grounded) {
             // if (this.elapsedTime >= this.jetpackCooldown) {
             //     this.elapsedTime = 0;
             //     this.jetpackTime = 0;
@@ -55,7 +57,7 @@ class PlayerController {
                 //     w.fireTime = clamp(w.fireTime - tick/3, 0, w.fireTime);
                 // }
             });
-        }
+        // }
     }
 
     handleKeyboard(key, tick) {
