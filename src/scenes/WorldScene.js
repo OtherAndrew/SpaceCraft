@@ -147,7 +147,7 @@ class WorldScene extends Scene {
                 console.log("game over")
             } else {
                 // get input
-                this.playerMovement.update(keys, deltaTime)
+                this.playerMovement.update(keys, mouseDown, mouse, deltaTime, this.terrainMap)
             }
             this.containerManager.unloadInventory();
             // get input

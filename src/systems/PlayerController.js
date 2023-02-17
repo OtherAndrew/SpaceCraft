@@ -16,11 +16,15 @@ class PlayerController {
 
     /**
      * Updates player state, animation, and position
-     * @param input keyboard and mouse input
+     * @param keys keyboard input
+     * @param mouseDown mouse click
+     * @param mouse mouse position
      * @param tick time slice
+     * @param terrain terrain map
      */
-    update(input, tick) {
-        this.pSprite.setAnimation(this.#handleKey(input, tick));
+    update(keys, mouseDown, mouse, tick, terrain) {
+        this.pSprite.setAnimation(this.#handleKeyboard(keys, tick));
+        // if (mouseDown) this.#handleMouse(mouse, terrain);
         if (this.pState.grounded) {
             if (this.elapsedTime >= this.jetpackCooldown) {
                 this.elapsedTime = 0;
@@ -31,10 +35,10 @@ class PlayerController {
         }
     }
 
-    #handleKey(input, tick) {
+    #handleKeyboard(key, tick) {
         let state = this.pSprite.currentState;
 
-        if ((input[' '] || input['w']) && this.pState.grounded) { //jump
+        if ((key[' '] || key['w']) && this.pState.grounded) { //jump
             this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + 15);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
@@ -51,18 +55,18 @@ class PlayerController {
         //     }
         // }
 
-        if (input['a']) {
+        if (key['a']) {
             this.pState.direction = 'left'
-            if (input['s']) {
+            if (key['s']) {
                 this.pTransform.velocityX = -this.pStats.speed / 4;
                 state = this.pState.grounded ? 'walkL' : 'crouchL';
             } else {
                 this.pTransform.velocityX -= this.acceleration;
                 state = this.pState.grounded ? 'walkL' : 'jumpL';
             }
-        } else if (input['d']) {
+        } else if (key['d']) {
             this.pState.direction = "right"
-            if (input['s']) {
+            if (key['s']) {
                 this.pTransform.velocityX = this.pStats.speed / 4;
                 state = this.pState.grounded ? 'walkR' : 'crouchR';
             } else {
@@ -70,7 +74,7 @@ class PlayerController {
                 state = this.pState.grounded ? 'walkR' : 'jumpR';
             }
         } else {
-            if (input['s']) {
+            if (key['s']) {
                 // fast fall/crouch
                 this.pTransform.velocityY += this.fastFall
                 this.pTransform.velocityX = 0;
@@ -85,7 +89,7 @@ class PlayerController {
         return state;
     }
 
-    // #handleClick(pos, player, terrainMap) {
+    // #handleMouse(pos, player, terrainMap) {
     //     let coords = this.#getGridCell(pos, player)
     //     let mapY = coords.y || 0;
     //     let mapX = coords.x || 0
