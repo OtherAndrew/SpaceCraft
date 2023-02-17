@@ -30,9 +30,9 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.35 = (100% center to edge horizontal
-                    // 0.25 = (75% center to edge horizontal
-                    // 0.15 = (50% center to edge horizontal
+                    // 0.4 = (100% center to edge horizontal
+                    // 0.3 = (75% center to edge horizontal
+                    // 0.2 = (50% center to edge horizontal
                     duration: 0.2,
                     hasGravity: false,
                     spread: 1
@@ -96,7 +96,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
                     tag: 'railgunbullet',
-                    sprite: this.bulletSprite(2),
+                    sprite: this.bulletSprite(4),
                     damage: 100,
                     speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
@@ -155,7 +155,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
                     tag: 'smallbomb',
-                    sprite: this.bombSprite(BLOCKSIZE * 0.45),
+                    sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                     damage: 0,
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
@@ -167,7 +167,7 @@ class ProjectileManager {
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
                         tag: 'smallbomb',
-                        sprite: this.bombSprite(BLOCKSIZE * 0.45),
+                        sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                         damage: 0,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
@@ -198,9 +198,6 @@ class ProjectileManager {
         // this.entityManager.addEntity(projectileQueue);
     }
 
-
-
-
     bulletSprite(frameX = 0, frameY = 0, scale = 1) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
@@ -229,6 +226,15 @@ class ProjectileManager {
     bombSprite(size) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.BOMB),
+            sWidth: 10,
+            sHeight: 10,
+            scale: size / 10,
+        });
+    }
+
+    miniBombSprite(size) {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.MINI_BOMB),
             sWidth: 10,
             sHeight: 10,
             scale: size / 10,

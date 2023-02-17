@@ -191,6 +191,7 @@ const PROJECTILE_PATH = {
     EXPLOSION:   './assets/projectiles/explosion.png',
     FIRE     :   './assets/projectiles/fire.png',
     LASER    :   './assets/projectiles/laser.png',
+    MINI_BOMB:   './assets/projectiles/red_bomb.png',
     ORB      :   './assets/projectiles/orb.png'
 }
 
