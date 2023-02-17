@@ -1,10 +1,6 @@
 # SpaceCraft ([Play here!](https://otherandrew.github.io/491-project/))
 
----
-
 ## Description
-
----
 
 SpaceCraft is a 2D sandbox game featuring procedural world generation and an extensive crafting system.
 
@@ -14,9 +10,8 @@ Term project for TCSS 491 - Computational Worlds at the University of Washington
 
 ## Getting Started
 
----
-
 ### Controls
+
 | Input   | Action             |
 |---------|--------------------|
 | `A, D`  | Walk left / right  |
@@ -39,14 +34,10 @@ Term project for TCSS 491 - Computational Worlds at the University of Washington
 
 ## Help
 
----
-
 ### Poor performance
 - SpaceCraft runs better on Chromium-based browsers versus Firefox.
 
 ## Authors
-
----
 
 - [Anthony Nguyen](https://github.com/anguyenq)
 - [Andrew Nguyen](https://github.com/OtherAndrew)
@@ -54,8 +45,6 @@ Term project for TCSS 491 - Computational Worlds at the University of Washington
 - [Mario Flores Vences](https://github.com/mfvcreative)
 
 ## Version History
-
----
 
 ### Minimal deliverable release (2/17/23)
 
@@ -76,12 +65,8 @@ Term project for TCSS 491 - Computational Worlds at the University of Washington
 
 ## License
 
----
-
 This project is licensed under the MIT License - see [LICENSE.txt](LICENSE.txt) for details.
 
 ## Acknowledgments
-
----
 
 - [README-Template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)

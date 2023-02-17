@@ -64,10 +64,17 @@ class WorldScene extends Scene {
 
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
+        this.giveWeapons();
+    }
+
+    giveWeapons() {
         this.#givePlayerPickAxe()
         this.#givePlayerGun()
         this.#givePlayerFlamethrower()
         this.#givePlayerGrenadeLauncher()
+        this.#givePlayerHandCannon()
+        this.#givePlayerMinigun()
+        this.#givePlayerRailgun()
     }
 
     spawnTestEntities() {
@@ -276,6 +283,7 @@ class WorldScene extends Scene {
         let mapY = coords.y || 0;
         let mapX = coords.x || 0
         let selected = terrainMap[mapY][mapX];
+        const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
         //console.log(selected.tag)
         let active = this.hud.activeContainer.item;
         if (active) {
@@ -304,11 +312,17 @@ class WorldScene extends Scene {
                     this.containerManager.addToInventory('player', this.#resizeBlock(e))}
                 }
             } else if (active.tag === 'gun') {
-                this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+                this.projectileManager.shoot('bullet', cursorTarget, player)
             } else if (active.tag === 'grenadeLauncher') {
-                this.projectileManager.shoot('bomb', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+                this.projectileManager.shoot('bomb', cursorTarget, player)
+            } else if (active.tag === 'handCannon') {
+                this.projectileManager.shoot('smallBomb', cursorTarget, player)
             } else if (active.tag === 'flamethrower') {
-                this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+                this.projectileManager.shoot('fire', cursorTarget, player)
+            } else if (active.tag === 'minigun') {
+                this.projectileManager.shoot('minigunbullet', cursorTarget, player)
+            } else if (active.tag === 'railgun') {
+                this.projectileManager.shoot('railgunbullet', cursorTarget, player)
             }
         } else if (selected.tag.includes('craft')) {
             this.containerManager.loadInventory(cleanTag(selected.tag));
@@ -405,6 +419,51 @@ class WorldScene extends Scene {
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.GRENADE_LAUNCHER],
                     sWidth: 32,
                     sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerHandCannon() {
+        let e = this.entityManager.addEntity({
+            tag: 'handCannon',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.HAND_CANNON],
+                    sWidth: 32,
+                    sHeight: 32
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerMinigun() {
+        let e = this.entityManager.addEntity({
+            tag: 'minigun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.MINIGUN],
+                    sWidth: 42,
+                    sHeight: 42,
+                }),
+                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
+            ]
+        })
+        this.containerManager.addToInventory('player', e)
+    }
+
+    #givePlayerRailgun() {
+        let e = this.entityManager.addEntity({
+            tag: 'railgun',
+            components: [
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.RAILGUN],
+                    sWidth: 36,
+                    sHeight: 36,
                 }),
                 new CTransform(this.player.components.transform.x, this.player.components.transform.y)
             ]

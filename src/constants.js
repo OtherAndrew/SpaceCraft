@@ -232,6 +232,7 @@ const WEAPON_PATH = {
     LASER_PISTOL        :   './assets/items/laser_pistol.png',
     LASER_RIFLE         :   './assets/items/laser_rifle.png',
     MINIGUN             :   './assets/items/minigun.png',
+    MINIGUN_ANIM        :   './assets/items/minigun_anim.png',
     RAILGUN             :   './assets/items/sniper.png',
     RAYGUN              :   './assets/items/raygun.png',
 }

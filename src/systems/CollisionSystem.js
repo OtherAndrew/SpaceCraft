@@ -110,8 +110,14 @@ class CollisionSystem {
      */
     resolveProjectiles() {
         this.projectileList.forEach(p => {
-            if (this.checkCollision(p, this.player) && p.tag.includes("explosion")) {
-                this.player.components["stats"].applyDamage(p.components["stats"].damage);
+            if (this.checkCollision(p, this.player)) {
+                if (p.tag.includes("explosion")) {
+                    this.player.components["stats"].applyDamage(p.components["stats"].damage);
+                }
+                if (p.tag.includes("bomb")) {
+                    // this.projectileManager.shoot("explosion",
+                    //     { x: p.components["boxCollider"].center.x, y:  p.components["boxCollider"].center.y }, p);
+                }
             }
 
             this.mobList.forEach(mob => {
@@ -128,9 +134,12 @@ class CollisionSystem {
                    }
                    mob.components["boxCollider"].setPosition(mTransform.x, mTransform.y)
 
-                   if (p.tag.includes("bomb")) {
+                   if (p.tag ==="bomb") {
                        this.projectileManager.shoot("explosion",
                            { x: p.components["boxCollider"].center.x, y:  p.components["boxCollider"].center.y }, p);
+                   } else if (p.tag === "smallbomb") {
+                       this.projectileManager.shoot("smallexplosion",
+                           {x: p.components["transform"].x, y: p.components["transform"].y}, p);
                    }
                    if (!p.tag.includes("fire") && !p.tag.includes("explosion")) p.destroy();
                }
@@ -139,9 +148,13 @@ class CollisionSystem {
                if (this.checkCollision(p, tile)) {
                    if (p.tag.includes("explosion")) {
                        // tile.destroy();
-                   } else if (p.tag.includes("bomb")) {
+                   } else if (p.tag === "bomb") {
                        this.projectileManager.shoot("explosion",
-                           { x: p.components["transform"].x, y:  p.components["transform"].y }, p);
+                           {x: p.components["transform"].x, y: p.components["transform"].y}, p);
+                       p.destroy();
+                   } else if (p.tag === "smallbomb") {
+                       this.projectileManager.shoot("smallexplosion",
+                           {x: p.components["transform"].x, y: p.components["transform"].y}, p);
                        p.destroy();
                    } else {
                        p.destroy();
