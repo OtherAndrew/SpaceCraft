@@ -39,7 +39,8 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        this.spawnTestEntities();
+        // this.spawnTestEntities();
+        this.mobFactory.build('mossamber', this.player.components.transform.x + 400, this.player.components.transform.y - 200);
 
         //this.#genericDeath()
         this.projectileManager = new ProjectileManager(this.entityManager)

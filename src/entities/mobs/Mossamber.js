@@ -16,7 +16,7 @@ class Mossamber {
     
     #buildComponents(props) {
         const stats = new CStats({
-
+            maxHealth: 100
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
