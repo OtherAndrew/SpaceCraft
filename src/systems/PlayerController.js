@@ -124,23 +124,38 @@ class PlayerController {
                         delete e.components["boxCollider"]
                         this.containerManager.addToInventory('player', resizeBlock(e))}
                 }
-            } else if (active.tag === 'gun') {
-                this.projectileManager.shoot('bullet', cursorTarget, this.player)
-            } else if (active.tag === 'grenadeLauncher') {
-                this.projectileManager.shoot('bomb', cursorTarget, this.player)
-            } else if (active.tag === 'handCannon') {
-                this.projectileManager.shoot('smallBomb', cursorTarget, this.player)
-            } else if (active.tag === 'flamethrower') {
-                this.projectileManager.shoot('fire', cursorTarget, this.player)
-            } else if (active.tag === 'minigun') {
-                this.projectileManager.shoot('minigunbullet', cursorTarget, this.player)
-            } else if (active.tag === 'railgun') {
-                this.projectileManager.shoot('railgunbullet', cursorTarget, this.player)
+            } else {
+                this.#fireWeapon(active.tag, cursorTarget);
             }
         } else if (selected.tag.includes('craft')) {
             console.log('open crafting menu')
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
+        }
+    }
+
+    #fireWeapon(activeWeapon, cursorTarget) {
+        switch (activeWeapon) {
+            case "gun":
+                this.projectileManager.shoot('bullet', cursorTarget, this.player);
+                break;
+            case "grenadeLauncher":
+                this.projectileManager.shoot('bomb', cursorTarget, this.player);
+                break;
+            case "handCannon":
+                this.projectileManager.shoot('smallBomb', cursorTarget, this.player);
+                break;
+            case "flamethrower":
+                this.projectileManager.shoot('fire', cursorTarget, this.player);
+                break;
+            case "minigun":
+                this.projectileManager.shoot('minigunbullet', cursorTarget, this.player);
+                break;
+            case "railgun":
+                this.projectileManager.shoot('railgunbullet', cursorTarget, this.player);
+                break;
+            default:
+                console.log(`Unrecognized weapon: ${activeWeapon}.`);
         }
     }
 
