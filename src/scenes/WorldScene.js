@@ -31,7 +31,8 @@ class WorldScene extends Scene {
     init(assets, canvas) {
         // entities
         //this.genericDeathSprite = assets[GENERICDEATH_PATH];
-        this.terrainMap = getTerrain(this.entityManager)
+        [this.terrainMap, this.spawnMap] = getTerrain(this.entityManager)
+        console.log(this.spawnMap)
         this.mobFactory = new MobFactory(this.entityManager);
 
         // this.#createEntity()
@@ -184,7 +185,7 @@ class WorldScene extends Scene {
 
         // console.log("currentLightJelly", this.currentLightjelly.components.currentCount)
         // console.log("currentBloodSucker-total", this.entityManager.getEntities['bloodsucker'].components['stats'].total);
-        console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
+        //console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
     }
 
     draw(menuActive, ctx, mouse) {
@@ -192,7 +193,14 @@ class WorldScene extends Scene {
         else this.renderSystem.draw(ctx, this.camera);
 
         //this.#drawColliders(ctx);
-
+        this.spawnMap.forEach(pos => {
+            ctx.fillStyle = 'rgba(255,0,0)'
+            ctx.fillRect((pos.x * BLOCKSIZE) - this.camera.x, (pos.y * BLOCKSIZE) - this.camera.y, BLOCKSIZE, BLOCKSIZE)
+        })
+        let cell = this.spawnMap[spawnMob(this.spawnMap, this.player)]
+        ctx.fillStyle = 'rgba(0,0,255)'
+        ctx.fillRect((cell.x * BLOCKSIZE) - this.camera.x, (cell.y * BLOCKSIZE) - this.camera.y, BLOCKSIZE, BLOCKSIZE)
+    
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
     }

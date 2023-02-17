@@ -4,6 +4,7 @@ const getTerrain = (entityManager) => {
 
     let noiseMap = []
     let terrainMap = []
+    let spawnMap = []
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = {
@@ -199,6 +200,13 @@ const getTerrain = (entityManager) => {
         })
     }
 
+    function generateSpawnLocations() {
+        let yOffset = 5
+        //generate surface level locations
+        for(let i = 0; i < terrainMap.length; i += WIDTH/BLOCKSIZE) {
+            spawnMap.push({x: i, y: startRow - yOffset})
+        }
+    }
 
     /**
      * Creates a tile entity according to the noise value 
@@ -449,5 +457,23 @@ const getTerrain = (entityManager) => {
     generateNoiseMap()
     generateTerrain()
     generateBorders()
-    return terrainMap
+    generateSpawnLocations()
+    return [terrainMap, spawnMap]
+}
+
+const spawnMob = (map, player) => {
+    let playerX = player.components.transform.x / BLOCKSIZE
+    let playerY = player.components.transform.Y / BLOCKSIZE
+    let closestNode = Math.floor(getDistance(player.components.transform, {x: map[0].x * BLOCKSIZE, y: map[0].y * BLOCKSIZE}))
+    console.log(closestNode)
+    let index = 0
+    map.forEach((node, i) => {
+        let distance = Math.floor(getDistance(player.components.transform, {x: node.x * BLOCKSIZE, y: node.y * BLOCKSIZE}))
+        if(distance < closestNode) {
+            closestNode = distance
+            index = i
+        }
+    })
+    console.log(closestNode)
+    return index
 }
