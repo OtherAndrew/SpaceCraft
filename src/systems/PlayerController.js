@@ -53,6 +53,9 @@ class PlayerController {
                         w.elapsedTime += tick;
                     }
                 }
+                // else if (!mouseDown) { // regen when not using
+                //     w.fireTime = clamp(w.fireTime - tick/3, 0, w.fireTime);
+                // }
             });
         }
     }
