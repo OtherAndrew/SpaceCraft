@@ -1,6 +1,7 @@
 class PlayerController {
-    constructor(player) {
-        this.player = player
+    constructor(player, game, entityManager, containerManager, projectileManager, terrainMap) {
+        // this.player = player
+        Object.assign(this, { player, game, entityManager, containerManager, projectileManager, terrainMap })
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
         this.pSprite = this.player.components.sprite
@@ -20,11 +21,11 @@ class PlayerController {
      * @param mouseDown mouse click
      * @param mouse mouse position
      * @param tick time slice
-     * @param terrain terrain map
+     * @param activeContainer
      */
-    update(keys, mouseDown, mouse, tick, terrain) {
-        this.pSprite.setAnimation(this.#handleKeyboard(keys, tick));
-        // if (mouseDown) this.#handleMouse(mouse, terrain);
+    update(keys, mouseDown, mouse, tick, activeContainer) {
+        this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
+        if (mouseDown) this.handleMouse(mouse, activeContainer);
         if (this.pState.grounded) {
             if (this.elapsedTime >= this.jetpackCooldown) {
                 this.elapsedTime = 0;
@@ -35,7 +36,7 @@ class PlayerController {
         }
     }
 
-    #handleKeyboard(key, tick) {
+    handleKeyboard(key, tick) {
         let state = this.pSprite.currentState;
 
         if ((key[' '] || key['w']) && this.pState.grounded) { //jump
@@ -89,55 +90,72 @@ class PlayerController {
         return state;
     }
 
-    // #handleMouse(pos, player, terrainMap) {
-    //     let coords = this.#getGridCell(pos, player)
-    //     let mapY = coords.y || 0;
-    //     let mapX = coords.x || 0
-    //     let selected = terrainMap[mapY][mapX];
-    //     const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
-    //     //console.log(selected.tag)
-    //     let active = this.hud.activeContainer.item;
-    //     if (active) {
-    //         if(/tile|craft/.test(active.tag)) {
-    //             if(selected.tag.includes('air')) {
-    //                 let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
-    //                 let newBlock;
-    //                 if (active.tag.includes('craft'))
-    //                     newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
-    //                 else
-    //                     newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
-    //                 if (newBlock) {
-    //                     selected.tag = newBlock.tag
-    //                     selected.id = newBlock.id
-    //                     console.log(newBlock)
-    //                 }
-    //             }
-    //         } else if (active.tag === 'pickaxe') {
-    //             if(/tile|craft/.test(selected.tag)) {
-    //                 let e = this.entityManager.getEntity(selected.id)
-    //                 e.components.lifespan.current -= 1
-    //                 if(e.components.lifespan.current <= 0) {
-    //                     selected.tag = 'air'
-    //                     selected.id = null
-    //                     delete e.components["boxCollider"]
-    //                     this.containerManager.addToInventory('player', this.#resizeBlock(e))}
-    //             }
-    //         } else if (active.tag === 'gun') {
-    //             this.projectileManager.shoot('bullet', cursorTarget, player)
-    //         } else if (active.tag === 'grenadeLauncher') {
-    //             this.projectileManager.shoot('bomb', cursorTarget, player)
-    //         } else if (active.tag === 'handCannon') {
-    //             this.projectileManager.shoot('smallBomb', cursorTarget, player)
-    //         } else if (active.tag === 'flamethrower') {
-    //             this.projectileManager.shoot('fire', cursorTarget, player)
-    //         } else if (active.tag === 'minigun') {
-    //             this.projectileManager.shoot('minigunbullet', cursorTarget, player)
-    //         } else if (active.tag === 'railgun') {
-    //             this.projectileManager.shoot('railgunbullet', cursorTarget, player)
-    //         }
-    //     } else if (selected.tag.includes('craft')) {
-    //         this.containerManager.loadInventory(cleanTag(selected.tag));
-    //         this.game.activateMenu();
-    //     }
-    // }
+    handleMouse(pos, activeContainer) {
+        let coords = this.getGridCell(pos)
+        let mapY = coords.y || 0;
+        let mapX = coords.x || 0
+        let selected = this.terrainMap[mapY][mapX];
+        const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
+        //console.log(selected.tag)
+        let active = activeContainer.item;
+
+        if (active) {
+            if(/tile|craft/.test(active.tag)) {
+                if(selected.tag.includes('air')) {
+                    let tag = this.containerManager.removeFromPlayer(activeContainer.slot);
+                    let newBlock;
+                    if (active.tag.includes('craft'))
+                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
+                    else
+                        newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+                    if (newBlock) {
+                        selected.tag = newBlock.tag
+                        selected.id = newBlock.id
+                        console.log(newBlock)
+                    }
+                }
+            } else if (active.tag === 'pickaxe') {
+                if(/tile|craft/.test(selected.tag)) {
+                    let e = this.entityManager.getEntity(selected.id)
+                    e.components.lifespan.current -= 1
+                    if(e.components.lifespan.current <= 0) {
+                        selected.tag = 'air'
+                        selected.id = null
+                        delete e.components["boxCollider"]
+                        this.containerManager.addToInventory('player', resizeBlock(e))}
+                }
+            } else if (active.tag === 'gun') {
+                this.projectileManager.shoot('bullet', cursorTarget, this.player)
+            } else if (active.tag === 'grenadeLauncher') {
+                this.projectileManager.shoot('bomb', cursorTarget, this.player)
+            } else if (active.tag === 'handCannon') {
+                this.projectileManager.shoot('smallBomb', cursorTarget, this.player)
+            } else if (active.tag === 'flamethrower') {
+                this.projectileManager.shoot('fire', cursorTarget, this.player)
+            } else if (active.tag === 'minigun') {
+                this.projectileManager.shoot('minigunbullet', cursorTarget, this.player)
+            } else if (active.tag === 'railgun') {
+                this.projectileManager.shoot('railgunbullet', cursorTarget, this.player)
+            }
+        } else if (selected.tag.includes('craft')) {
+            this.containerManager.loadInventory(cleanTag(selected.tag));
+            this.game.activateMenu();
+        }
+    }
+
+    getGridCell(pos) {
+        if(pos === null) return null
+        const pCollider = this.player.components["boxCollider"]
+        let offsetX = pCollider.center.x >= WIDTH/2 ?
+            pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
+                WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
+                (pCollider.center.x - WIDTH/2) : 0
+        let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
+        let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
+        //if(mapY < 0) return mapY
+        return {
+            x: mapX,
+            y: mapY
+        }
+    }
 }
