@@ -39,7 +39,7 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        // this.spawnTestEntities();
+        this.spawnTestEntities();
 
         //this.#genericDeath()
         this.projectileManager = new ProjectileManager(this.entityManager)
@@ -143,7 +143,9 @@ class WorldScene extends Scene {
                 this.player.components['stats'].invincible = true;
                 console.log("win")
             } else if (this.player.components['stats'].currentHealth <= 0) {
+                this.player.components["transform"].gravity = 0;
                 this.player.components["transform"].velocityX = 0;
+                this.player.components["transform"].velocityY = 0;
                 this.player.isDrawable = false
                 this.player.components['stats'].invincible = true;
                 console.log("game over")

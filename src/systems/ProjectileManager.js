@@ -56,8 +56,21 @@ class ProjectileManager {
                     origin: projectileOrigin,
                     duration: 0.4,
                     hasGravity: false,
-                    spread: 2.5
+                    spread: 1.5
                 });
+                for (let i = 0; i < 1; i++) {
+                    this.entityManager.addEntity(new Projectile({
+                        tag: 'bullet',
+                        sprite: this.bulletSprite(14),
+                        damage: 1,
+                        speed: BLOCKSIZE * 0.75,
+                        dVector: directionVector,
+                        origin: projectileOrigin,
+                        duration: 0.4,
+                        hasGravity: false,
+                        spread: 1.5
+                    }));
+                }
                 break;
             case 'railgunbullet':
                 projectileOrigin.x += directionVector.x * 10
@@ -123,7 +136,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10;
                 p = new Projectile({
                     tag: 'smallbomb',
-                    sprite: this.bombSprite(BLOCKSIZE * 0.4),
+                    sprite: this.bombSprite(BLOCKSIZE * 0.45),
                     damage: 0,
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
@@ -137,7 +150,7 @@ class ProjectileManager {
                 p = new Projectile({
                     tag: 'explosionbullet',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 4,
+                    damage: 5,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
@@ -149,7 +162,7 @@ class ProjectileManager {
 
             default: console.log(`Invalid projectile type: ${type}.`);
         }
-        return this.entityManager.addEntity(p);
+        this.entityManager.addEntity(p);
     }
 
 

@@ -15,13 +15,12 @@ class PlayerController {
     #buildWeaponMap() {
         const weaponMap = new Map();
         weaponMap.set('gun', new WeaponProps('bullet', 0.5));
-        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 1));
-        weaponMap.set("handCannon", new WeaponProps("smallBomb", 1.25));
-        weaponMap.set("flamethrower", new WeaponProps('fire', 10, .5));
+        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 0.85));
+        weaponMap.set("handCannon", new WeaponProps("smallBomb", 1));
+        weaponMap.set("flamethrower", new WeaponProps('fire', 7.5, 5));
         weaponMap.set('minigun', new WeaponProps('minigunbullet', 7.5, 5));
-        weaponMap.set('railgun', new WeaponProps('railgunbullet', 60));
+        weaponMap.set('railgun', new WeaponProps('railgunbullet', 10));
         // weaponMap.set('jetpack', new WeaponProps('smoke', 5, 5));
-        weaponMap.forEach(w => console.log(w))
         return weaponMap;
     }
 
@@ -44,7 +43,6 @@ class PlayerController {
             //     this.elapsedTime += tick;
             // }
             this.weaponMap.forEach(w => {
-                console.log(w)
                 if (w.fireTime > w.duration) {
                     if (w.elapsedTime >= w.cooldown) {
                         w.elapsedTime = 0;
