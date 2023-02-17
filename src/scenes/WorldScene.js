@@ -158,8 +158,6 @@ class WorldScene extends Scene {
                 // get input
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer)
             }
-            console.log(this.player.components["stats"].elapsedTime)
-            console.log(this.player.components["stats"].currentHealth)
             this.containerManager.unloadInventory();
             // get input
             // this.playerMovement.update(keys, deltaTime)

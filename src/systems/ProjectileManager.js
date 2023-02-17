@@ -182,7 +182,7 @@ class ProjectileManager {
                 projectileQueue.push(new Projectile({
                     tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 3,
+                    damage: 2.5,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
