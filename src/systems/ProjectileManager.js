@@ -9,14 +9,10 @@ class ProjectileManager {
             x: WIDTH * .5,
             y: HEIGHT * .5
         }
-        // const oStats = originEntity.components['stats'];
-        // const oTransform = originEntity.components["transform"];
-        const oCollider = originEntity.components["boxCollider"];
-        const directionVector = normalize(midPoint, targetPos)
+        const directionVector = normalize(midPoint, targetPos);
         const projectileOrigin = {
-            x: oCollider.center.x ,//+ directionVector.x * 30,
-            // y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
-            y: oCollider.center.y
+            x: originEntity.components["boxCollider"].center.x,
+            y: originEntity.components["boxCollider"].center.y
         }
         const projectileQueue = [];
         switch (type) {
@@ -180,7 +176,7 @@ class ProjectileManager {
                 break;
             case 'mini_explosion':
                 projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
+                    tag: 'bullet_mini_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
                     damage: 2.5,
                     speed: 0,
@@ -191,11 +187,9 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
-
             default: console.log(`Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
-        // this.entityManager.addEntity(projectileQueue);
     }
 
     bulletSprite(frameX = 0, frameY = 0, scale = 1) {
@@ -252,7 +246,6 @@ class ProjectileManager {
             fps: 30
         });
     }
-
 }
 
 class Projectile {
@@ -287,11 +280,8 @@ class Projectile {
             x: props.origin.x - sprite.dWidth / 2,
             y: props.origin.y - sprite.dHeight / 2,
             hasGravity: props.hasGravity,
-            // rotation: props.angle,
             velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
             velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
-            // maxVelocityX: 300,
-            // maxVelocityY: 300,
         });
         const collider = new CBoxCollider({
             x: props.x,
@@ -303,7 +293,4 @@ class Projectile {
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }
-
 }
-
-//damage, angle, speed, hasGravity
