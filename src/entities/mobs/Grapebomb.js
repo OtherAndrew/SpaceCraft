@@ -49,8 +49,8 @@ class Grapebomb {
     update(targetX, targetY, projectileManager) {
         const origin = this.components['boxCollider'].center;
         if (getDistance2(origin.x, origin.y, targetX, targetY) <= BLOCKSIZE * 3) {
+            this.components['stats'].currentHealth = 0;
             projectileManager.detonate('enemy_explosion', origin);
-            this.destroy();
         }
     }
 
