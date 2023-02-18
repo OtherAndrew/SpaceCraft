@@ -144,7 +144,7 @@ const BG_SCROLL = {
 const CHAR_PATH = {
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
     ENTITY      :	'./assets/sprites/entity.png',
-    GRAPEBOMB   :	'./assets/sprites/grapebomb.png',
+    GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     PLAYER      :	'./assets/sprites/player.png',

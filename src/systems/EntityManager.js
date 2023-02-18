@@ -23,7 +23,6 @@ class EntityManager {
 
     /**
      * Creates and adds an entity to the manager
-     * @todo isAlive?
      * @param {Object} props          NPC properties
      * @param {string} props.tag      NPC tag
      * @param {[]} props.components   NPC components

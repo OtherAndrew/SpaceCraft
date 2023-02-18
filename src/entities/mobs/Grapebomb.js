@@ -1,10 +1,9 @@
-
 class Grapebomb {
     /**
-     * Initializes Spore (enemy)
+     * Initializes
      * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
+     * @param {number} props.x       X position of monster spawn
+     * @param {number} props.y       Y position of monster spawn
      * @returns {Object}             return enemy
      * @constructor
      */
@@ -13,18 +12,17 @@ class Grapebomb {
         this.name = 'grapebomb';
         this.components = this.#buildComponents(props);
     };
-    
+
     #buildComponents(props) {
         const stats = new CStats({
             maxHealth: 50
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
-            sWidth: 236,
-            sHeight: 195,
+            sWidth: 155,
+            sHeight: 171,
             scale: 0.3,
             fps: 4,
-            padding: 3
         });
         const transform = new CTransform({
             x: props.x,
@@ -48,9 +46,7 @@ class Grapebomb {
     }
 
     update(targetX, targetY, projectileManager) {
-        //despawn after x range from player position
-        console.log("grapebomb")
-        if (getDistance2(this.components['transform'].x, this.components['transform'].y, targetX, targetY) <= 10) {
+        if (getDistance2(this.components['transform'].x, this.components['transform'].y, targetX, targetY) <= 100) {
             projectileManager.shoot('explosion', { x: targetX, y: targetY }, this);
         }
     }
@@ -58,12 +54,10 @@ class Grapebomb {
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,3));
-        aMap.set('death', new AnimationProps(0, 1,3));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
         bMap.set('idleR', new BehaviorProps(0, 0));
-        bMap.set('death', new BehaviorProps(0, 0));
-
     }
+
 }

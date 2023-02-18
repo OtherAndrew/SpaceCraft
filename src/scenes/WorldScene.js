@@ -80,19 +80,19 @@ class WorldScene extends Scene {
     }
 
     spawnTestEntities() {
-        // this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
+        this.mobFactory.build('spore', this.player.components.transform.x + 600, this.player.components.transform.y - 50);
         // this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
         //spawn on the surface, will not die, main light source
         // this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
 
         //explode with range, dont take out blocks  4k and below
-        this.mobFactory.build('grapebomb', this.player.components.transform.x + 200, this.player.components.transform.y - 200);
+        this.mobFactory.build('grapebomb', this.player.components.transform.x + 100, this.player.components.transform.y - 20);
         //spawn 10k y-position and below (height)
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         //spawn first 20 block height
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x + 500,
-            this.player.components.transform.y - 500);
+        // this.mobFactory.build('bloodsucker', this.player.components.transform.x + 500,
+        //     this.player.components.transform.y - 500);
         //creeperilla can jump and shoot projectile, spawn 10k and below
     }
 

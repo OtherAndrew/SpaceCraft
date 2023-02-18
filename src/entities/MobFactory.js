@@ -21,31 +21,4 @@ class MobFactory {
         }
         return out;
     }
-
-    #buildSpore(x, y) {
-        return new Spore({ x: x, y: y });
-    }
-
-    #buildDirtcarver(x, y) {
-        return new Dirtcarver({ x: x, y: y });
-    }
-
-    #buildLightbug(x, y) {
-        return new Lightbug({ x: x, y: y });
-    }
-
-    #buildGrapebomb(x, y) {
-        return new Grapebomb({ x: x, y: y });
-    }
-
-    #buildMossamber(x, y) {
-        return new Grapebomb({ x: x, y: y });
-    }
-    #buildRocket(x, y) {
-        return new Grapebomb({ x: x, y: y });
-    }
-
-    #buildBloodsucker(x, y) {
-        return new Grapebomb({ x: x, y: y });
-    }
 }

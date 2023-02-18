@@ -72,7 +72,6 @@ class Bloodsucker {
     }
 
     update(targetX, targetY, projectileManager) {
-
         //TODO use A* to to find path
         let x = this.components.transform.x;
         const velocity = this.components["stats"].speed;

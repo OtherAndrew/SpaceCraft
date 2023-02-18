@@ -22,9 +22,6 @@ class Spore {
             sWidth: 138,
             sHeight: 196,
             scale: 0.5,
-            firstFrameX: 0,
-            frameY: 0,
-            lastFrameX: 7,
             fps: 4,
             padding: 3
         });
@@ -50,8 +47,9 @@ class Spore {
     }
 
     update(targetX, targetY, projectileManager) {
-        this.components.state.setState('idleR');
-        // this.components.transform.update(tick);
+        if (getDistance2(this.components['transform'].x, this.components['transform'].y, targetX, targetY) <= 100) {
+            projectileManager.shoot('explosion', { x: targetX, y: targetY }, this);
+        }
     }
 
     #addAnimations(sprite) {
