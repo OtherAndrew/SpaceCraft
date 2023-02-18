@@ -29,12 +29,12 @@ class CollisionSystem {
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
         this.tileCollideList = this.collideList.filter(e =>
-                e.tag.includes("player") || e.tag.includes("rocket")
+                e.name === "player" || e.name === "rocket"
                 || (e.tag.includes("mob") && !e.tag.includes("ghost"))
         );
 
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
-        this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
+        this.tileList = this.collideList.filter(e => e.name === 'block');
         this.projectileList = this.collideList.filter(e =>
                 e.tag.includes("bullet") || e.tag.includes("bomb"));
         // extras
@@ -136,8 +136,8 @@ class CollisionSystem {
 
             this.tileList.forEach(tile => {
                if (this.checkCollision(p, tile)) {
-                   // only big explosions and railguns destroy blocks
-                   if (p.tag === "bullet_explosion" || p.tag.includes('railgun')) {
+                   // only big explosions can destroy blocks
+                   if (p.tag === "bullet_explosion") {
                        // tile.destroy();
                    }
                    if (p.tag.includes("bomb")) {

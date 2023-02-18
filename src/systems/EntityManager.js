@@ -99,7 +99,7 @@ class Entity  {
      *
      * @param {Object} props          Entity properties
      * @param {string} props.tag      Entity tag(s)
-     * @param {string} props.name      Entity name
+     * @param {string} props.name     Entity name
      * @param {[]} props.components   Entity components
      * @param {function} props.update Entity update function
      * @param {function} props.resize Entity resize function
