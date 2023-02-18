@@ -95,7 +95,9 @@ class CollisionSystem {
         this.mobAttackList.forEach(atk => {
             if (this.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
-                if (atk.tag === "enemyAttack") atk.destroy();
+                if (atk.tag === "enemyAttack") {
+                    atk.destroy();
+                }
             }
             this.tileList.forEach(tile => {
                 if (this.checkCollision(atk, tile) && atk.tag === "enemyAttack") {
@@ -170,10 +172,7 @@ class CollisionSystem {
      * @param {Entity} p Bomb projectile.
      */
     #handleExplosions(p) {
-        const origin = {
-            x: p.components["boxCollider"].center.x,
-            y: p.components["boxCollider"].center.y
-        };
+        const origin = p.components["boxCollider"].center;
         if (p.tag === "bomb") {
             this.projectileManager.playerShoot("explosion", origin, p);
         } else if (p.tag === "mini_bomb") {

@@ -52,7 +52,7 @@ class Dirtcarver {
     }
 
     update(targetX, targetY, projectileManager) {
-        const x = this.components.transform.x;
+        const x = this.components['boxCollider'].center.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
 

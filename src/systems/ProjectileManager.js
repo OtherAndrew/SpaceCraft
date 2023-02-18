@@ -324,7 +324,7 @@ class ProjectileManager {
             sprite: ASSET_MANAGER.getAsset(MISC_PATH.DEATH_EFFECT),
             sWidth: 64,
             sHeight: 64,
-            scale: 1.5,
+            scale: 2,
             lastFrameX: 10,
             fps: 30
         })
