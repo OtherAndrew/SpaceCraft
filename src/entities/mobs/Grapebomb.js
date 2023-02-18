@@ -47,7 +47,8 @@ class Grapebomb {
 
     update(targetX, targetY, projectileManager) {
         if (getDistance2(this.components['transform'].x, this.components['transform'].y, targetX, targetY) <= 100) {
-            projectileManager.shoot('explosion', { x: targetX, y: targetY }, this);
+            projectileManager.shoot('enemyexplosion', { x: targetX, y: targetY }, this);
+            this.destroy();
         }
     }
 

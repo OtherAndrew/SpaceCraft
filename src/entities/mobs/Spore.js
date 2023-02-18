@@ -47,9 +47,6 @@ class Spore {
     }
 
     update(targetX, targetY, projectileManager) {
-        if (getDistance2(this.components['transform'].x, this.components['transform'].y, targetX, targetY) <= 100) {
-            projectileManager.shoot('explosion', { x: targetX, y: targetY }, this);
-        }
     }
 
     #addAnimations(sprite) {

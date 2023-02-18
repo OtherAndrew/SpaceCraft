@@ -196,6 +196,19 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
+            case 'enemyexplosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
+                    damage: 5,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 7/30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             default: console.log(`Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
