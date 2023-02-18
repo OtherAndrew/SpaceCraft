@@ -15,9 +15,10 @@ class CollisionSystem {
         this.mobList = null;
         this.tileList = null;
         //extras
+        // this.playerAttackList = null;
         this.playerAttackList = null;
-        this.mobAttackList = null;
-        this.projectileList = null;
+        this.explosionList = null;
+        this.enemyAttackList = null;
 
         this.refresh();
     }
@@ -35,11 +36,12 @@ class CollisionSystem {
 
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.name === 'block');
-        this.projectileList = this.collideList.filter(e =>
+        this.playerAttackList = this.collideList.filter(e =>
                 e.tag.includes("bullet") || e.tag.includes("bomb"));
+        this.explosionList = this.collideList.filter(e => e.name === 'explosion');
         // extras
         // this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
-        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy"))
+        this.enemyAttackList = this.collideList.filter(e => e.tag.includes("enemy"))
     }
 
     /**
@@ -84,40 +86,16 @@ class CollisionSystem {
      * Responds to attack collisions.
      */
     resolveAttack() {
-        this.#resolveMobAttack();
-        this.#resolveProjectiles();
-    }
-
-    /**
-     * Applies damage to player if attacked by mob.
-     */
-    #resolveMobAttack() {
-        this.mobAttackList.forEach(atk => {
-            if (this.checkCollision(atk, this.player)) {
-                this.player.components['stats'].applyDamage(atk.components['stats'].damage)
-                if (atk.tag === "enemyAttack") {
-                    atk.destroy();
-                }
-            }
-            this.tileList.forEach(tile => {
-                if (this.checkCollision(atk, tile) && atk.tag === "enemyAttack") {
-                    atk.destroy();
-                }
-            });
-        });
+        this.#resolvePlayerAttack();
+        this.#resolveExplosions();
+        this.#resolveEnemyAttack();
     }
 
     /**
      * Resolves projectile collisions.
      */
-    #resolveProjectiles() {
-        this.projectileList.forEach(p => {
-            if (this.checkCollision(p, this.player)) {
-                if (p.tag.includes("explosion")) {
-                    this.player.components["stats"].applyDamage(p.components["stats"].damage);
-                }
-                // this.#handleExplosions(p)
-            }
+    #resolvePlayerAttack() {
+        this.playerAttackList.forEach(p => {
 
             this.mobList.forEach(mob => {
                if (this.checkCollision(p, mob) && !mob.tag.includes('ignore')) {
@@ -148,6 +126,52 @@ class CollisionSystem {
                        p.destroy();
                    }
                }
+            });
+        });
+    }
+
+    #resolveExplosions() {
+        this.explosionList.forEach(e => {
+            if (this.checkCollision(e, this.player)) {
+                if (e.tag.includes("explosion")) {
+                    this.player.components["stats"].applyDamage(p.components["stats"].damage);
+                }
+                // this.#handleExplosions(p)
+            }
+            this.mobList.forEach(mob => {
+                if (this.checkCollision(e, mob) && !mob.tag.includes('ignore')) {
+                    mob.components["stats"].applyDamage(e.components["stats"].damage);
+                    this.#stun(mob);
+                }
+            });
+
+            this.tileList.forEach(tile => {
+                if (this.checkCollision(e, tile)) {
+                    // only big explosions can destroy blocks
+                    if (e.tag === "bullet_explosion") {
+                        // tile.destroy();
+                    }
+                }
+            });
+        });
+
+    }
+
+    /**
+     * Applies damage to player if attacked by mob.
+     */
+    #resolveEnemyAttack() {
+        this.enemyAttackList.forEach(atk => {
+            if (this.checkCollision(atk, this.player)) {
+                this.player.components['stats'].applyDamage(atk.components['stats'].damage)
+                if (atk.tag === "enemyAttack") {
+                    atk.destroy();
+                }
+            }
+            this.tileList.forEach(tile => {
+                if (this.checkCollision(atk, tile) && atk.tag === "enemyAttack") {
+                    atk.destroy();
+                }
             });
         });
     }
