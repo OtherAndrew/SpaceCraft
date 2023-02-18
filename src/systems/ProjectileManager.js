@@ -201,7 +201,7 @@ class ProjectileManager {
         const projectileQueue = [];
         switch (type) {
             case 'explosion':
-                projectileQueue.push(new Projectile({
+                projectileQueue.push(new Explosion({
                     tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 10,
@@ -214,42 +214,27 @@ class ProjectileManager {
                 }));
                 break;
             case 'mini_explosion':
-                projectileQueue.push(new Projectile({
+                projectileQueue.push(new Explosion({
                     tag: 'bullet_mini_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
                     damage: 3,
-                    speed: 0,
-                    dVector: zeroVector,
                     origin: position,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
                 }));
                 break;
             case 'enemy_explosion':
-                projectileQueue.push(new Projectile({
+                projectileQueue.push(new Explosion({
                     tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 5,
-                    speed: 0,
-                    dVector: zeroVector,
                     origin: position,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
                 }));
                 break;
             case 'death_effect':
-                projectileQueue.push(new Projectile({
+                projectileQueue.push(new Explosion({
                     tag: 'death',
                     sprite: this.deathSprite(),
                     damage: 0,
-                    speed: 0,
-                    dVector: zeroVector,
                     origin: position,
-                    duration: 0.4,
-                    hasGravity: false,
-                    spread: 0
                 }));
                 break;
             default: console.log(`ProjectileManager.detonate: Invalid projectile type: ${type}.`);
@@ -341,6 +326,7 @@ class Projectile {
      * Generates projectile blueprint.
      * @param {Object} props                   Projectile properties
      * @param {string} props.tag               Projectile tag
+     * @param {CSprite} props.sprite           Projectile sprite
      * @param {number} props.damage            Projectile damage
      * @param {number} props.speed             Projectile speed
      * @param {{number, number}} props.dVector Projectile direction vector (vX, vY)
@@ -377,6 +363,47 @@ class Projectile {
             height: sprite.dHeight,
         });
         const duration = new CDuration(props.duration);
+        transform.collider = collider
+        return [stats, sprite, transform, collider, duration];
+    }
+}
+
+class Explosion {
+
+    /**
+     * Generates Explosion blueprint.
+     * @param {Object} props                   Explosion properties
+     * @param {string} props.tag               Explosion tag
+     * @param {CSprite} props.sprite           Explosion sprite
+     * @param {number} props.damage            Explosion damage
+     * @param {{number, number}} props.origin  Explosion origin point (x, y)
+     * @return {Explosion} Projectile blueprint.
+     */
+    constructor(props) {
+        this.tag = props.tag;
+        this.name = 'explosion';
+        this.components = this.#buildComponents(props);
+        return this;
+    }
+
+    #buildComponents(props) {
+        const stats = new CStats({
+            damage: props.damage,
+            invincible: true
+        });
+        const sprite = props.sprite;
+        const transform = new CTransform({
+            x: props.origin.x - sprite.dWidth / 2,
+            y: props.origin.y - sprite.dHeight / 2,
+            hasGravity: false,
+        });
+        const collider = new CBoxCollider({
+            x: transform.x,
+            y: transform.y,
+            width: sprite.dWidth,
+            height: sprite.dHeight,
+        });
+        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }
