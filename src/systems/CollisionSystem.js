@@ -163,7 +163,7 @@ class CollisionSystem {
 
     /**
      * Spawns explosion from projectile if bomb.
-     * @param {Projectile} p Bomb projectile.
+     * @param {Entity} p Bomb projectile.
      */
     #handleExplosions(p) {
         const targetPos = {
