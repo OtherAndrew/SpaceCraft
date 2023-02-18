@@ -83,7 +83,7 @@ class ProjectileManager {
                     projectileQueue.push(new Projectile({
                         tag: 'bullet_minigun',
                         sprite: this.bulletSprite(14, 0, 0.8),
-                        damage: 1.5,
+                        damage: 2,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
                         origin: projectileOrigin,
