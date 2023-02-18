@@ -22,8 +22,8 @@ class Spore {
             sWidth: 138,
             sHeight: 196,
             scale: 0.5,
-            fps: 4,
-            padding: 3
+            fps: 10,
+            lastFrameX: 7
         });
         const transform = new CTransform({
             x: props.x,
@@ -34,7 +34,7 @@ class Spore {
             x: props.x,
             y: props.y,
             width: sprite.dWidth,
-            height: sprite.dHeight
+            height: sprite.dHeight - 15
         });
 
         this.#addAnimations(sprite);
