@@ -23,7 +23,6 @@ class EntityManager {
 
     /**
      * Creates and adds an entity to the manager
-     * @todo isAlive?
      * @param {Object} props          NPC properties
      * @param {string} props.tag      NPC tag
      * @param {[]} props.components   NPC components
@@ -102,6 +101,7 @@ class Entity  {
      * @param {string} props.tag      Entity tag(s)
      * @param {[]} props.components   Entity components
      * @param {function} props.update Entity update function
+     * @param {function} props.resize Entity resize function
      * @param {number} id             Entity ID
      */
     constructor(props, id) {
@@ -110,9 +110,8 @@ class Entity  {
         this.isDrawable = true
         this.isAlive = true
         this.components = {}
-        this.update = null;
+        this.update = props.update ? props.update : null;
         if (props.components) this.addComponent(props.components);
-        if (props.update) this.update = props.update;
     }
 
     /**
@@ -129,15 +128,6 @@ class Entity  {
     addComponent(components) {
         components.forEach(c => this.components[c.name] = c);
     }
-
-    /**
-     * Removes component.
-     * @param {string} name Name of component to remove.
-     */
-    removeComponent(name) {
-        this.components = this.components.filter(c => c.name !== name);
-    }
-
 }
 
 

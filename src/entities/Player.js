@@ -24,9 +24,10 @@ class Player {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
-            maxHealth: 100,
-            speed: 6
+            maxHealth: 200,
+            speed: 6,
+            // regenCooldown: 10,
+            regenAmount: 0.1
         });
         const spriteWidth = 200;
         const sprite = new CSprite({

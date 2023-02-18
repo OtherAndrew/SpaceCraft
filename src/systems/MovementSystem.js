@@ -18,7 +18,10 @@ class MovementSystem {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityX(this.player, tick);
         const mobs = this.entities.filter(e => e.isDrawable
-            && (e.tag.includes('mob') || e.tag.includes('bullet') || e.tag.includes('bomb')));
+            && (e.tag.includes('mob') || e.tag.includes('bullet')
+                || e.tag.includes('bomb')
+                || e.tag.includes("enemyAttack"))
+        );
         mobs.forEach(e => this.#moveEntityX(e, tick));
     }
 
@@ -30,7 +33,10 @@ class MovementSystem {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityY(this.player, tick);
         const mobs = this.entities.filter(e => e.isDrawable
-            && (e.tag.includes('mob') || e.tag.includes('bullet') || e.tag.includes("rocket") || e.tag.includes('bomb')));
+            && (e.tag.includes('mob') || e.tag.includes('bullet')
+                || e.tag.includes("rocket") || e.tag.includes('bomb')
+                || e.tag.includes("enemyAttack"))
+        );
         mobs.forEach(e => this.#moveEntityY(e, tick));
     }
 
@@ -43,7 +49,7 @@ class MovementSystem {
         const t = entity.components.transform;
         t.last.x = t.x;
         t.velocityX = clamp(t.velocityX, -t.maxVelocityX, t.maxVelocityX);
-        t.x += t.velocityX * tick * 60;
+        t.x += t.velocityX * BLOCKSIZE * 2 * tick;
         if (t.collider) t.collider.setPosition(t.x, t.y);
     }
 
@@ -56,7 +62,7 @@ class MovementSystem {
         const t = entity.components.transform;
         t.last.y = t.y;
         t.velocityY = clamp(t.velocityY + t.gravity, -t.maxVelocityY, t.maxVelocityY);
-        t.y += t.velocityY * tick * 60;
+        t.y += t.velocityY * BLOCKSIZE * 2 * tick;
         if (t.collider) t.collider.setPosition(t.x, t.y);
     }
 }

@@ -4,161 +4,265 @@ class ProjectileManager {
         this.entityManager = entityManager;
     }
 
-    shoot(type, targetPos, originEntity) {
+    /**
+     * Shoots a projectile.
+     * @param {String} type                Projectile type.
+     * @param {{number, number}} targetPos Target position.
+     * @param {Object} originEntity        Origin entity.
+     */
+    playerShoot(type, targetPos, originEntity) {
         const midPoint = {
             x: WIDTH * .5,
             y: HEIGHT * .5
         }
-        // const oStats = originEntity.components['stats'];
-        // const oTransform = originEntity.components["transform"];
-        const oCollider = originEntity.components["boxCollider"];
-        const directionVector = normalize(midPoint, targetPos)
-        const projectileOrigin = {
-            x: oCollider.center.x ,//+ directionVector.x * 30,
-            // y: oCollider.y + oCollider.height / 3 //+ directionVector.y * 30
-            y: oCollider.center.y
-        }
-        // if (originEntity.tag.includes('player')) {
-        //     projectileOrigin.x += directionVector.x * 25
-        //     projectileOrigin.y += directionVector.y * 25
-        // }
-
-        //switch bullet, fire, spore, arcing, etc.
-        let p;
+        const directionVector = normalize(midPoint, targetPos);
+        const projectileOrigin = originEntity.components["boxCollider"].center;
+        const projectileQueue = [];
         switch (type) {
-            case 'bullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
-                p = new Projectile({
+            case 'weak_bullet':
+                projectileOrigin.x += directionVector.x * 15
+                projectileOrigin.y += directionVector.y * 15
+                projectileQueue.push(new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(8),
-                    damage: 1,
-                    speed: BLOCKSIZE * 0.66,
+                    damage: 10,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.4 = (100% center to edge horizontal
-                    // 0.3 = (75% center to edge horizontal
-                    // 0.2 = (50% center to edge horizontal
-                    duration: 0.4,
+                    // 0.4 = 100% center to edge horizontal
+                    // 0.3 = 75% center to edge horizontal
+                    // 0.2 = 50% center to edge horizontal
+                    duration: 0.2,
                     hasGravity: false,
-                    spread: 0
-                });
+                    spread: 1
+                }));
                 break;
-            case 'minigunbullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
-                p = new Projectile({
+            case 'mid_bullet':
+                projectileOrigin.x += directionVector.x * 15
+                projectileOrigin.y += directionVector.y * 15
+                projectileQueue.push(new Projectile({
                     tag: 'bullet',
-                    sprite: this.bulletSprite(14),
-                    damage: 1,
-                    speed: BLOCKSIZE * 0.66,
+                    sprite: this.bulletSprite(11),
+                    damage: 15,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    duration: 0.4,
+                    // 0.4 = 100% center to edge horizontal
+                    // 0.3 = 75% center to edge horizontal
+                    // 0.2 = 50% center to edge horizontal
+                    duration: 0.3,
                     hasGravity: false,
-                    spread: 2.5
-                });
+                    spread: 1
+                }));
                 break;
-            case 'railgunbullet':
+            case 'strong_bullet':
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
-                p = new Projectile({
+                projectileQueue.push(new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(2),
+                    damage: 20,
+                    speed: BLOCKSIZE * 0.75,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    // 0.4 = 100% center to edge horizontal
+                    // 0.3 = 75% center to edge horizontal
+                    // 0.2 = 50% center to edge horizontal
+                    duration: 0.3,
+                    hasGravity: false,
+                    spread: 1
+                }));
+                break;
+            case 'minigun_bullet':
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
+                for (let i = 0; i < 2; i++) {
+                    projectileQueue.push(new Projectile({
+                        tag: 'bullet_minigun',
+                        sprite: this.bulletSprite(14, 0, 0.8),
+                        damage: 2,
+                        speed: BLOCKSIZE * 0.75,
+                        dVector: directionVector,
+                        origin: projectileOrigin,
+                        // 0.4 = 100% center to edge horizontal
+                        // 0.3 = 75% center to edge horizontal
+                        // 0.2 = 50% center to edge horizontal
+                        duration: 0.45,
+                        hasGravity: false,
+                        spread: 1.25
+                    }));
+                }
+                break;
+            case 'railgun_bullet':
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_railgun',
+                    sprite: this.bulletSprite(4),
                     damage: 100,
-                    speed: BLOCKSIZE,
+                    speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 0.5,
                     hasGravity: false,
                     spread: 0
-                });
+                }));
                 break;
             case 'fire':
                 projectileOrigin.x += directionVector.x * 30
                 projectileOrigin.y += directionVector.y * 30
-                p = new Projectile({
-                    tag: 'firebullet',
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_fire',
                     sprite: this.fireSprite(),
-                    damage: 0.1,
+                    damage: 0.05,
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 1,
                     hasGravity: false,
                     spread: 0.33
-                });
+                }));
                 break;
             case 'bomb':
                 projectileOrigin.x += directionVector.x * 20;
                 projectileOrigin.y += directionVector.y * 20;
-                directionVector.y -= 0.5;
-                p = new Projectile({
+                directionVector.y -= 0.25;
+                projectileQueue.push(new Projectile({
                     tag: 'bomb',
                     sprite: this.bombSprite(BLOCKSIZE * 0.6),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.33,
+                    speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     duration: 2,
                     hasGravity: true,
                     spread: 0.5
-                });
+                }));
                 break;
+            case 'mini_bomb':
+                projectileOrigin.x += directionVector.x * 10;
+                projectileOrigin.y += directionVector.y * 10;
+                projectileQueue.push(new Projectile({
+                    tag: 'mini_bomb',
+                    sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
+                    damage: 0,
+                    speed: BLOCKSIZE * 0.75,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 0.5,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                for (let i = 0; i < 2; i++) {
+                    projectileQueue.push(new Projectile({
+                        tag: 'mini_bomb',
+                        sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
+                        damage: 0,
+                        speed: BLOCKSIZE * 0.75,
+                        dVector: directionVector,
+                        origin: projectileOrigin,
+                        duration: 0.5,
+                        hasGravity: false,
+                        spread: 3.5
+                    }));
+                }
+                break;
+            default: console.log(`ProjectileManager.playerShoot: Invalid projectile type: ${type}.`);
+        }
+        projectileQueue.forEach(p => this.entityManager.addEntity(p));
+    }
+
+    entityShoot(type, targetPos, origin) {
+        const directionVector = normalize(origin, targetPos);
+        const projectileQueue = [];
+        switch (type) {
+            case 'spore':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                projectileQueue.push(new Projectile({
+                    tag: 'enemyAttack',
+                    sprite: this.darkOrbSprite(4, 1),
+                    damage: 20,
+                    speed: BLOCKSIZE * 0.05,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: 5,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            default: console.log(`ProjectileManager.entityShoot: Invalid projectile type: ${type}.`);
+        }
+        projectileQueue.forEach(p => this.entityManager.addEntity(p));
+    }
+
+    detonate(type, position) {
+        const zeroVector = {x: 0, y: 0};
+        const projectileQueue = [];
+        switch (type) {
             case 'explosion':
-                p = new Projectile({
-                    tag: 'explosionbullet',
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
+                    damage: 10,
+                    speed: 0,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'mini_explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_mini_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
+                    damage: 3,
+                    speed: 0,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'enemy_explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 5,
                     speed: 0,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 7/30,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 7 / 30,
                     hasGravity: false,
                     spread: 0
-                });
+                }));
                 break;
-            case 'smallBomb':
-                projectileOrigin.x += directionVector.x * 10;
-                projectileOrigin.y += directionVector.y * 10;
-                p = new Projectile({
-                    tag: 'smallbomb',
-                    sprite: this.bombSprite(BLOCKSIZE * 0.4),
+            case 'death_effect':
+                projectileQueue.push(new Projectile({
+                    tag: 'death',
+                    sprite: this.deathSprite(),
                     damage: 0,
-                    speed: BLOCKSIZE * 0.5,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 1,
-                    hasGravity: false,
-                    spread: 0
-                });
-                break;
-            case 'smallexplosion':
-                p = new Projectile({
-                    tag: 'explosionbullet',
-                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 4,
                     speed: 0,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 7/30,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 0.4,
                     hasGravity: false,
                     spread: 0
-                });
+                }));
                 break;
-
-            default: console.log(`Invalid projectile type: ${type}.`);
+            default: console.log(`ProjectileManager.detonate: Invalid projectile type: ${type}.`);
         }
-        return this.entityManager.addEntity(p);
+        projectileQueue.forEach(p => this.entityManager.addEntity(p));
     }
 
-
-    bulletSprite(frameX = 0, frameY = 0) {
+    bulletSprite(frameX = 0, frameY = 0, scale = 1) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
             sWidth: 16,
             sHeight: 16,
-            scale: 1,
+            scale: scale,
             firstFrameX: frameX,
             frameY: frameY
         });
@@ -187,6 +291,15 @@ class ProjectileManager {
         });
     }
 
+    miniBombSprite(size) {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.MINI_BOMB),
+            sWidth: 10,
+            sHeight: 10,
+            scale: size / 10,
+        });
+    }
+
     explosionSprite(size) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.EXPLOSION),
@@ -199,21 +312,42 @@ class ProjectileManager {
         });
     }
 
+    darkOrbSprite(frameX = 0, frameY = 0, scale = 1) {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.DARK_ORB),
+            sWidth: 16,
+            sHeight: 16,
+            scale: scale,
+            firstFrameX: frameX,
+            frameY: frameY
+        });
+    }
+
+    deathSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(MISC_PATH.DEATH_EFFECT),
+            sWidth: 64,
+            sHeight: 64,
+            scale: 2,
+            lastFrameX: 10,
+            fps: 30
+        })
+    }
 }
 
 class Projectile {
 
     /**
-     *
-     * @param {Object} props
-     * @param {string} props.tag
-     * @param {number} props.damage
-     * @param {number} props.speed
-     * @param {{number, number}} props.dVector
-     * @param {{number, number}} props.origin
-     * @param {number} props.duration
-     * @param {boolean} props.hasGravity
-     * @return {Projectile}
+     * Generates projectile blueprint.
+     * @param {Object} props                   Projectile properties
+     * @param {string} props.tag               Projectile tag
+     * @param {number} props.damage            Projectile damage
+     * @param {number} props.speed             Projectile speed
+     * @param {{number, number}} props.dVector Projectile direction vector (vX, vY)
+     * @param {{number, number}} props.origin  Projectile origin point (x, y)
+     * @param {number} props.duration          Projectile duration
+     * @param {boolean} props.hasGravity       If projectile has gravity
+     * @return {Projectile} Projectile blueprint.
      */
     constructor(props) {
         this.tag = props.tag;
@@ -233,15 +367,12 @@ class Projectile {
             x: props.origin.x - sprite.dWidth / 2,
             y: props.origin.y - sprite.dHeight / 2,
             hasGravity: props.hasGravity,
-            // rotation: props.angle,
             velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
             velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
-            // maxVelocityX: 300,
-            // maxVelocityY: 300,
         });
         const collider = new CBoxCollider({
-            x: props.x,
-            y: props.y,
+            x: transform.x,
+            y: transform.y,
             width: sprite.dWidth,
             height: sprite.dHeight,
         });
@@ -249,7 +380,4 @@ class Projectile {
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }
-
 }
-
-//damage, angle, speed, hasGravity

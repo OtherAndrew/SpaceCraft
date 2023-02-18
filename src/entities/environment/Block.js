@@ -2,28 +2,32 @@
  * Blueprint for Block entities.
  *
  * @author Andrew Nguyen
- * @version 1/20/23
+ * @author Anthony Nguyen
+ * @version 2/16/23
  */
 
-/**
- * Initializes new Block
- * @param {Object} props         Position and display properties
- * @param {string} props.tag     Type tag
- * @param {Image} props.sprite   Sprite sheet
- * @param {number} props.x       X position on canvas to draw sprite
- * @param {number} props.y       Y position on canvas to draw sprite
- * @param {number} props.sWidth  Width of sprite on sprite sheet
- * @param {number} props.sHeight Height of sprite on sprite sheet
- * @param {number} props.scale   Sprite scale factor, 1 by default
- * @param {number} props.frameX  X position of sprite frame (not pixel position!), 0 by default
- * @param {number} props.frameY  Y position of sprite frame (not pixel position!), 0 by default
- * @returns {Object}             This Block's properties.
- * @constructor
- */
-const Block = function(props) {
-    return {
-        tag: props.tag,
-        components: [
+
+class Block {
+
+    /**
+     * Initializes new Block
+     * @param {Object} props         Position and display properties
+     * @param {string} props.tag     Type tag
+     * @param {Image} props.sprite   Sprite sheet
+     * @param {number} props.x       X position on canvas to draw sprite
+     * @param {number} props.y       Y position on canvas to draw sprite
+     * @param {number} props.sWidth  Width of sprite on sprite sheet
+     * @param {number} props.sHeight Height of sprite on sprite sheet
+     * @param {number} props.scale   Sprite scale factor, 1 by default
+     * @param {number} props.frameX  X position of sprite frame (not pixel position!), 0 by default
+     * @param {number} props.frameY  Y position of sprite frame (not pixel position!), 0 by default
+     * @returns {Object}             This Block's properties.
+     * @constructor
+     */
+    constructor(props) {
+        this.tag = props.tag;
+        this.name = 'block';
+        this.components =  [
             new CTransform({
                 x: props.x,
                 y: props.y,
@@ -37,10 +41,10 @@ const Block = function(props) {
                 frameY: props.frameY
             }),
             new CLifespan(props.lifespan)
-        ]
-    };
+        ];
+        return this;
+    }
 }
-Block.prototype.name = 'block';
 
 /**
  * Creates a block blueprint with corresponding sprite path and lifespan.
@@ -77,4 +81,23 @@ const generateBlock = (tag, x, y, mode) => {
         frameX: randomInt(6),
         frameY: randomInt(2)
     });
+}
+
+const resizeBlock = (e, mapX, mapY) => {
+    if (e.isBroken) {
+        // e.components.sprite.dWidth *= 2
+        // e.components.sprite.dHeight *= 2
+        // e.components.transform.x = BLOCKSIZE * mapX
+        // e.components.transform.y = BLOCKSIZE * mapY
+        e.components.lifespan.current = e.components.lifespan.total
+        e.isBroken = false
+        e.isDrawable = true
+    } else {
+        e.components.sprite.dWidth *=  .5
+        e.components.sprite.dHeight = e.components.sprite.dHeight * .5
+        e.components.transform.velocityY = 10
+        e.isBroken = true
+        e.isDrawable = false
+    }
+    return e
 }

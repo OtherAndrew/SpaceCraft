@@ -15,18 +15,15 @@ class Spore {
     };
     #buildComponents(props) {
         const stats = new CStats({
-
+            maxHealth: 100
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
             sWidth: 138,
             sHeight: 196,
             scale: 0.5,
-            firstFrameX: 0,
-            frameY: 0,
-            lastFrameX: 7,
-            fps: 4,
-            padding: 3
+            fps: 10,
+            lastFrameX: 7
         });
         const transform = new CTransform({
             x: props.x,
@@ -37,7 +34,7 @@ class Spore {
             x: props.x,
             y: props.y,
             width: sprite.dWidth,
-            height: sprite.dHeight
+            height: sprite.dHeight - 15
         });
 
         this.#addAnimations(sprite);
@@ -49,9 +46,13 @@ class Spore {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {
-        this.components.state.setState('idleR');
-        // this.components.transform.update(tick);
+    update(targetX, targetY, projectileManager) {
+        const origin = this.components['boxCollider'].center;
+        const state = this.components['state'];
+        if (state.elapsedTime > 2 && getDistance2(origin.x, origin.y, targetX, targetY) <= BLOCKSIZE * 16) {
+            projectileManager.entityShoot('spore', {x: targetX, y: targetY}, origin)
+            state.elapsedTime = 0;
+        }
     }
 
     #addAnimations(sprite) {

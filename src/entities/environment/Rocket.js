@@ -44,37 +44,6 @@ class Rocket {
         return [sprite, transform, collider, state];
     }
 
-    // update(tick, targetX, targetY) {};
-
-    // update(tick, targetX, targetY) {
-    //     this.components.state.setState('idleR');
-    //     let x = this.components.transform.x;
-    //     let y = this.components.transform.y;
-    //     const transform = this.components.transform;
-    //     const distance = getDistance2(x, y, targetX, targetY);
-    //     const angle = getAngle2(x, y, targetX, targetY);
-    //     // console.log("rocketX", x, "rocketY", y);
-    //     // console.log("playerX", targetX, "playerY", targetY);
-    //     // console.log("distance", distance);
-    //     // console.log("takeoff", this.takeOff);
-    //     if (distance <= 300 && this.takeOff) {  //add inventory check here for the win condition
-    //
-    //         //remove the player from the game
-    //         //display win condition message and end credit
-    //
-    //         // transform.y -= 30;
-    //         this.components.transform.gravity = 0;
-    //         this.takeOff = true;
-    //         this.components.state.setState('win');
-    //
-    //     // } else if (this.takeOff) {
-    //     //
-    //     //     transform.velocityY = -(GRAVITY + 50);
-    //
-    //     }
-    //
-    // }
-
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,0));

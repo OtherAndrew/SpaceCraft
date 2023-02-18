@@ -16,7 +16,7 @@ class Mossamber {
     
     #buildComponents(props) {
         const stats = new CStats({
-
+            maxHealth: 100
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
@@ -50,9 +50,7 @@ class Mossamber {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {
-        this.components.state.setState('idleR');
-        // this.components.transform.update(tick);
+    update(targetX, targetY, projectileManager) {
     }
 
     #addAnimations(sprite) {

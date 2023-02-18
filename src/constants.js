@@ -11,7 +11,6 @@ const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 
-
 const MAXCREEPERILA = 2;
 const MAXDIRTCARVER = 5;
 const MAXLIGHTJELLY = 2;
@@ -144,11 +143,11 @@ const BG_SCROLL = {
 const CHAR_PATH = {
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
     ENTITY      :	'./assets/sprites/entity.png',
-    GRAPEBOMB   :	'./assets/sprites/grapebomb.png',
+    GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     PLAYER      :	'./assets/sprites/player.png',
-    SPORE       :	'./assets/sprites/spore.png',
+    SPORE       :	'./assets/sprites/spore2.png',
     WORMTANK    :	'./assets/sprites/wormtank.png',
     ROCKET      :	'./assets/sprites/rocket.png',
     MOSSAMBER   :	'./assets/sprites/mossamber.png',
@@ -171,7 +170,7 @@ const MISC_PATH = {
     CURSOR_CROSSHAIR    :   './assets/cursors/Crosshairs_Red.png',
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
-    GENERICDEATH	    :	'./assets/sprites/smoke.png',
+    DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
     PICK	            :	'./assets/icons/item_3485.png',
 }
 
@@ -191,6 +190,7 @@ const PROJECTILE_PATH = {
     EXPLOSION:   './assets/projectiles/explosion.png',
     FIRE     :   './assets/projectiles/fire.png',
     LASER    :   './assets/projectiles/laser.png',
+    MINI_BOMB:   './assets/projectiles/red_bomb.png',
     ORB      :   './assets/projectiles/orb.png'
 }
 
