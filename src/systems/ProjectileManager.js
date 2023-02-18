@@ -203,8 +203,6 @@ class ProjectileManager {
     }
 
     enemyShoot(type, targetPos, origin) {
-        console.log(targetPos)
-        console.log(origin)
         const directionVector = normalize(origin, targetPos);
         const projectileQueue = [];
         switch (type) {

@@ -170,14 +170,14 @@ class CollisionSystem {
      * @param {Entity} p Bomb projectile.
      */
     #handleExplosions(p) {
-        const targetPos = {
+        const origin = {
             x: p.components["boxCollider"].center.x,
             y: p.components["boxCollider"].center.y
         };
         if (p.tag === "bomb") {
-            this.projectileManager.shoot("explosion", targetPos, p);
+            this.projectileManager.shoot("explosion", origin, p);
         } else if (p.tag === "mini_bomb") {
-            this.projectileManager.shoot("mini_explosion", targetPos, p);
+            this.projectileManager.shoot("mini_explosion", origin, p);
         }
     }
 

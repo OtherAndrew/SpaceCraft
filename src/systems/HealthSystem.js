@@ -1,8 +1,8 @@
 
 class HealthSystem {
 
-    constructor(entities) {
-        Object.assign(this, { entities });
+    constructor(entities, projectileManager) {
+        Object.assign(this, { entities, projectileManager });
     }
 
     update(tick) {
@@ -12,8 +12,11 @@ class HealthSystem {
         // console.log(updateList)
         updateList.forEach(e => {
             const eStats = e.components["stats"];
-            if (eStats.currentHealth <= 0 && e.tag.includes('mob')) {
-                e.destroy();
+            if (eStats.currentHealth <= 0) {
+                // this.projectileManager.enemyShoot()
+                if (e.tag.includes('mob')) {
+                    e.destroy();
+                }
             } else {
                 if (eStats.canRegen()) {
                     eStats.heal(eStats.regenAmount);
