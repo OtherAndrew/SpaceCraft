@@ -20,8 +20,6 @@ class WorldScene extends Scene {
      * @param assets
      */
     init(assets, canvas) {
-        // entities
-        //this.genericDeathSprite = assets[GENERICDEATH_PATH];
         let spawnMap
         [this.terrainMap, spawnMap] = getTerrain(this.entityManager)
         this.mobFactory = new MobFactory(this.entityManager);
@@ -30,39 +28,39 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.spawnManager = new SpawnerManager(this.mobFactory, spawnMap, this.player)
+        this.spawnTestEntities();
 
-            /*
-        this.spawnManager.spawnTestEntities({
-            x: WIDTH_PIXELS * .5,
-            y: HEIGHT_PIXELS * .5 - 100
-        });
-        */
+        /*
+    this.spawnManager.spawnTestEntities({
+        x: WIDTH_PIXELS * .5,
+        y: HEIGHT_PIXELS * .5 - 100
+    });
+    */
 
-        //this.#genericDeath()
         this.projectileManager = new ProjectileManager(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
-                                                   this.projectileManager, this.terrainMap)
-        //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
-
-        this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player)
+                                                     this.projectileManager, this.terrainMap);
+        this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileManager);
-        this.renderSystem = new RenderSystem(this.entityManager.getEntities)
-        this.camera = new Camera(this.player)
-        this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
+        this.renderSystem = new RenderSystem(this.entityManager.getEntities);
+        this.camera = new Camera(this.player);
+        this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-
-
-
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileManager);
-        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
-        this.cursorSystem.init()
+        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud);
+        this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
-
-        this.healthSystem = new HealthSystem(this.entityManager.getEntities, this.projectileManager)
-        this.durationSystem = new DurationSystem(this.entityManager.getEntities)
+        this.healthSystem = new HealthSystem(this.entityManager.getEntities, this.projectileManager);
+        this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.giveWeapons();
+    }
+
+    spawnTestEntities() {
+        this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
+        this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
+        this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
     }
 
     giveWeapons() {
@@ -82,52 +80,47 @@ class WorldScene extends Scene {
             if (this.#checkWinCon()) {
                 this.rocket.components["state"].setState("win");
                 this.rocket.components['transform'].gravity = 0;
-                this.camera.setTarget(this.rocket)
-                this.renderBox.setTarget(this.rocket)
-                this.player.isDrawable = false
+                this.camera.setTarget(this.rocket);
+                this.renderBox.setTarget(this.rocket);
+                this.player.isDrawable = false;
                 this.player.components['stats'].invincible = true;
-                console.log("win")
+                console.log("win");
             } else if (this.player.components['stats'].currentHealth <= 0) {
                 this.player.components["transform"].gravity = 0;
                 this.player.components["transform"].velocityX = 0;
                 this.player.components["transform"].velocityY = 0;
-                this.player.isDrawable = false
+                this.player.isDrawable = false;
                 this.player.components['stats'].invincible = true;
-                console.log("game over")
+                console.log("game over");
             } else {
                 this.containerManager.unloadInventory();
-                // get input
-                this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer)
+                // **get input**
+                this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
             }
-            // get input
-            // this.playerMovement.update(keys, deltaTime)
-            // update state
-            this.entityManager.update()
-            //this.genericDeathManager.update(deltaTime)
-            this.renderBox.update()
-            this.#updateTileState()
+            // **update state**
+            this.spawnManager.update(deltaTime);
+            this.entityManager.update();
+            this.renderBox.update();
+            this.#updateTileState();
             this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.refresh()
+            this.collisionSystem.refresh();
 
-            this.mobController.update(deltaTime)
-            //https://gamedev.stackexchange.com/a/71123
+            this.mobController.update(deltaTime);
+            // https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
-            this.movementSystem.updateY(deltaTime)
-            this.collisionSystem.resolveTileY()
-            this.movementSystem.updateX(deltaTime)
-            this.collisionSystem.resolveTileX()
+            this.movementSystem.updateY(deltaTime);
+            this.collisionSystem.resolveTileY();
+            this.movementSystem.updateX(deltaTime);
+            this.collisionSystem.resolveTileX();
 
             //this.worldImages.update()
-            this.collisionSystem.resolveAttack()
+            this.collisionSystem.resolveAttack();
             this.healthSystem.update(deltaTime);
             this.durationSystem.update(deltaTime)
 
-            // draw
-            this.camera.update()
+            // **draw**
+            this.camera.update();
             this.renderSystem.update(deltaTime);
-            // temporary spot for this
-
-            this.spawnManager.update(deltaTime)
         }
         this.cursorSystem.update(menuActive, this.playerController.getGridCell(mouse))
         this.craftingMenu.update(menuActive);
@@ -214,74 +207,6 @@ class WorldScene extends Scene {
                || /air|craft/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
                || /air|craft/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
     }
-
-    // #handleClick(pos, player, terrainMap) {
-    //     let coords = this.#getGridCell(pos, player)
-    //     let mapY = coords.y || 0;
-    //     let mapX = coords.x || 0
-    //     let selected = terrainMap[mapY][mapX];
-    //     const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
-    //     //console.log(selected.tag)
-    //     let active = this.hud.activeContainer.item;
-    //     if (active) {
-    //         if(/tile|craft/.test(active.tag)) {
-    //             if(selected.tag.includes('air')) {
-    //                 let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
-    //                 let newBlock;
-    //                 if (active.tag.includes('craft'))
-    //                     newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
-    //                 else
-    //                     newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
-    //                 if (newBlock) {
-    //                     selected.tag = newBlock.tag
-    //                     selected.id = newBlock.id
-    //                     console.log(newBlock)
-    //                 }
-    //             }
-    //         } else if (active.tag === 'pickaxe') {
-    //             if(/tile|craft/.test(selected.tag)) {
-    //                 let e = this.entityManager.getEntity(selected.id)
-    //                 e.components.lifespan.current -= 1
-    //                 if(e.components.lifespan.current <= 0) {
-    //                     selected.tag = 'air'
-    //                     selected.id = null
-    //                     delete e.components["boxCollider"]
-    //                 this.containerManager.addToInventory('player', resizeBlock(e))}
-    //             }
-    //         } else if (active.tag === 'gun') {
-    //             this.projectileManager.shoot('bullet', cursorTarget, player)
-    //         } else if (active.tag === 'grenadeLauncher') {
-    //             this.projectileManager.shoot('bomb', cursorTarget, player)
-    //         } else if (active.tag === 'handCannon') {
-    //             this.projectileManager.shoot('smallBomb', cursorTarget, player)
-    //         } else if (active.tag === 'flamethrower') {
-    //             this.projectileManager.shoot('fire', cursorTarget, player)
-    //         } else if (active.tag === 'minigun') {
-    //             this.projectileManager.shoot('minigunbullet', cursorTarget, player)
-    //         } else if (active.tag === 'railgun') {
-    //             this.projectileManager.shoot('railgunbullet', cursorTarget, player)
-    //         }
-    //     } else if (selected.tag.includes('craft')) {
-    //         this.containerManager.loadInventory(cleanTag(selected.tag));
-    //         this.game.activateMenu();
-    //     }
-    // }
-    //
-    // #getGridCell(pos, player) {
-    //     if(pos === null) return null
-    //     const pCollider = player.components["boxCollider"]
-    //     let offsetX = pCollider.center.x >= WIDTH/2 ?
-    //                   pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
-    //                   WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
-    //                   (pCollider.center.x - WIDTH/2) : 0
-    //     let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
-    //     let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
-    //     //if(mapY < 0) return mapY
-    //     return {
-    //         x: mapX,
-    //         y: mapY
-    //     }
-    // }
 
     #givePlayerPickAxe() {
         let e = this.entityManager.addEntity({
