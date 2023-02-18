@@ -86,7 +86,7 @@ class WorldScene extends Scene {
         // this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
 
         //explode with range, dont take out blocks  4k and below
-        this.mobFactory.build('grapebomb', this.player.components.transform.x + 600, this.player.components.transform.y - 20);
+        this.mobFactory.build('grapebomb', this.player.components.transform.x + 600, this.player.components.transform.y - 200);
         //spawn 10k y-position and below (height)
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         //spawn first 20 block height

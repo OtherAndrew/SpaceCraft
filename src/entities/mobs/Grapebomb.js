@@ -8,7 +8,7 @@ class Grapebomb {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'grapebomb mob';
+        this.tag = 'mob';
         this.name = 'grapebomb';
         this.components = this.#buildComponents(props);
     };
