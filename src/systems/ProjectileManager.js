@@ -196,6 +196,33 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
+
+            default: console.log(`Invalid projectile type: ${type}.`);
+        }
+        projectileQueue.forEach(p => this.entityManager.addEntity(p));
+    }
+
+    enemyShoot(type, targetPos, origin) {
+        console.log(targetPos)
+        console.log(origin)
+        const directionVector = normalize(origin, targetPos);
+        const projectileQueue = [];
+        switch (type) {
+            case 'spore':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                projectileQueue.push(new Projectile({
+                    tag: 'enemyAttack',
+                    sprite: this.darkOrbSprite(4, 1),
+                    damage: 20,
+                    speed: BLOCKSIZE * 0.05,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: 5,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             case 'enemyexplosion':
                 projectileQueue.push(new Projectile({
                     tag: 'bullet_explosion',
@@ -203,29 +230,15 @@ class ProjectileManager {
                     damage: 5,
                     speed: 0,
                     dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 7/30,
+                    origin: origin,
+                    duration: 7 / 30,
                     hasGravity: false,
                     spread: 0
                 }));
                 break;
-            case 'spore':
-                console.log("s")
-                projectileOrigin.x += directionVector.x * 30;
-                projectileOrigin.y += directionVector.y * 30;
-                projectileQueue.push(new Projectile({
-                    tag: 'enemybullet_spore',
-                    sprite: this.darkOrbSprite(4, 1),
-                    damage: 20,
-                    speed: BLOCKSIZE * 0.3,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 5,
-                    hasGravity: false,
-                }));
-                break;
             default: console.log(`Invalid projectile type: ${type}.`);
         }
+        projectileQueue.forEach(p => console.log(p));
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
     }
 
@@ -331,9 +344,10 @@ class Projectile {
             velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
             velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
         });
+        console.log(transform)
         const collider = new CBoxCollider({
-            x: props.x,
-            y: props.y,
+            x: transform.x,
+            y: transform.y,
             width: sprite.dWidth,
             height: sprite.dHeight,
         });

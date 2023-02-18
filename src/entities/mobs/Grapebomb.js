@@ -15,7 +15,7 @@ class Grapebomb {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 50
+            maxHealth: 30
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
@@ -23,6 +23,7 @@ class Grapebomb {
             sHeight: 171,
             scale: 0.3,
             fps: 4,
+            lastFrameX: 3
         });
         const transform = new CTransform({
             x: props.x,
@@ -33,7 +34,7 @@ class Grapebomb {
             x: props.x,
             y: props.y,
             width: sprite.dWidth,
-            height: sprite.dHeight
+            height: BLOCKSIZE * 1.4
         });
 
         this.#addAnimations(sprite);
@@ -46,15 +47,19 @@ class Grapebomb {
     }
 
     update(targetX, targetY, projectileManager) {
-        if (getDistance2(this.components['transform'].x, this.components['transform'].y, targetX, targetY) <= 100) {
-            projectileManager.shoot('enemyexplosion', { x: targetX, y: targetY }, this);
+        const origin = {
+            x: this.components['boxCollider'].center.x,
+            y: this.components['boxCollider'].center.y
+        };
+        if (getDistance2(origin.x, origin.y, targetX, targetY) <= BLOCKSIZE * 3) {
+            projectileManager.enemyShoot('enemyexplosion', { x: targetX, y: targetY }, origin);
             this.destroy();
         }
     }
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,0));
+        aMap.set('idleR', new AnimationProps(0, 0,3));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;

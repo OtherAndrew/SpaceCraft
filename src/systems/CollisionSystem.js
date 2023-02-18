@@ -29,20 +29,17 @@ class CollisionSystem {
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
         this.tileCollideList = this.collideList.filter(e =>
-                   e.tag.includes("player") || e.tag.includes("rocket")
+                e.tag.includes("player") || e.tag.includes("rocket")
                 || (e.tag.includes("mob") && !e.tag.includes("ghost"))
         );
 
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.tag.includes("tile"));
         this.projectileList = this.collideList.filter(e =>
-            (e.tag.includes("bullet") || e.tag.includes("bomb")) && !e.tag.includes('enemy'));
+                e.tag.includes("bullet") || e.tag.includes("bomb"));
         // extras
         // this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
-        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy")
-                                                       || e.tag.includes("enemyAttack"));
-
-
+        this.mobAttackList = this.collideList.filter(e => e.tag.includes("enemy"))
     }
 
     /**
@@ -96,10 +93,15 @@ class CollisionSystem {
      */
     #resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
-            console.log((atk))
             if (this.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
+                if (atk.tag === "enemyAttack") atk.destroy();
             }
+            this.tileList.forEach(tile => {
+                if (this.checkCollision(atk, tile) && atk.tag === "enemyAttack") {
+                    atk.destroy();
+                }
+            });
         });
     }
 

@@ -15,7 +15,7 @@ class Spore {
     };
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 500
+            maxHealth: 100
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
@@ -48,8 +48,12 @@ class Spore {
 
     update(targetX, targetY, projectileManager) {
         // console.log(this.elapsedTime)
-        if (this.elapsedTime > 1) {
-            projectileManager.shoot('spore', {x: targetX, y: targetY}, this)
+        if (this.elapsedTime > 5) {
+            const origin = {
+                x: this.components['boxCollider'].center.x,
+                y: this.components['boxCollider'].center.y
+            };
+            projectileManager.enemyShoot('spore', {x: targetX, y: targetY}, origin)
             this.elapsedTime = 0;
         }
     }
