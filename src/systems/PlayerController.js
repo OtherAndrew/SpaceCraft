@@ -35,7 +35,11 @@ class PlayerController {
      * @param activeContainer
      */
     update(keys, mouseDown, mouse, tick, activeContainer) {
-        this.holdingMinigun = activeContainer.item.tag === 'minigun';
+        if (activeContainer.item) {
+            this.holdingMinigun = activeContainer.item.tag === 'minigun';
+        } else {
+            this.holdingMinigun = false;
+        }
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
         // if (this.pState.grounded) {

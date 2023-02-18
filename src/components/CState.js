@@ -20,6 +20,8 @@ class CState {
         this.grounded = true;
         this.sprite = null;
         this.transform = null;
+        this.elapsedTime = 0;
+        this.stateSequence = [];
         return this;
     }
 

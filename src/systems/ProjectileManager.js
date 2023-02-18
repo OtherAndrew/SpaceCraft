@@ -370,7 +370,6 @@ class Projectile {
             velocityX: props.dVector.x * stats.speed + randomSpread(props.spread),
             velocityY: props.dVector.y * stats.speed + randomSpread(props.spread),
         });
-        console.log(transform)
         const collider = new CBoxCollider({
             x: transform.x,
             y: transform.y,

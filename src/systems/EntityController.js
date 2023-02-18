@@ -12,7 +12,7 @@ class EntityController {
         const updateList = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
         // console.log(updateList)
         updateList.forEach(e => {
-            e.elapsedTime += tick;
+            e.components['state'].elapsedTime += tick;
             e.update(playerPosition.x, playerPosition.y, this.projectileManager);
         });
     }

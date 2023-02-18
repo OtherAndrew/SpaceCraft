@@ -151,10 +151,10 @@ class WorldScene extends Scene {
                 this.player.components['stats'].invincible = true;
                 console.log("game over")
             } else {
+                this.containerManager.unloadInventory();
                 // get input
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer)
             }
-            this.containerManager.unloadInventory();
             // get input
             // this.playerMovement.update(keys, deltaTime)
             // update state
