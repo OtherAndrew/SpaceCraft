@@ -23,6 +23,10 @@ class CState {
         return this;
     }
 
+    /**
+     * Sets state and corresponding animation and movement properties if assigned.
+     * @param {string} state The state to assign.
+     */
     setState(state) {
         if (state !== this.currentState) {
             this.currentState = state;

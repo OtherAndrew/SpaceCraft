@@ -39,6 +39,10 @@ class CSprite {
         return this;
     };
 
+    /**
+     * Sets sprite scale.
+     * @param scale Scale factor to apply to sprite.
+     */
     setScale(scale) {
         this.dWidth = this.sWidth * scale;
         this.dHeight = this.sHeight * scale;
