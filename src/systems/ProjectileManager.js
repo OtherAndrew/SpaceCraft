@@ -46,7 +46,7 @@ class ProjectileManager {
                 projectileQueue.push(new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(11),
-                    damage: 10,
+                    damage: 15,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
@@ -64,7 +64,7 @@ class ProjectileManager {
                 projectileQueue.push(new Projectile({
                     tag: 'bullet',
                     sprite: this.bulletSprite(2),
-                    damage: 10,
+                    damage: 20,
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
                     origin: projectileOrigin,

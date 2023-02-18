@@ -119,7 +119,10 @@ class PlayerController {
         let mapY = coords.y
         let mapX = coords.x
         let selected = this.terrainMap[mapY][mapX];
-        const cursorTarget = {x: pos.x + 25/2, y: pos.y + 25/2};
+        const cursorTarget = {
+            x: pos.x + 25/2,
+            y: pos.y + 25/2
+        };
         console.log(selected.tag)
         let active = activeContainer.item;
         if (active) {
