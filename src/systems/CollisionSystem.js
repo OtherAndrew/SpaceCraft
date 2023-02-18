@@ -174,9 +174,9 @@ class CollisionSystem {
     #handleExplosions(p) {
         const origin = p.components["boxCollider"].center;
         if (p.tag === "bomb") {
-            this.projectileManager.entityShoot("explosion", origin, origin);
+            this.projectileManager.detonate("explosion", origin);
         } else if (p.tag === "mini_bomb") {
-            this.projectileManager.entityShoot("mini_explosion", origin, origin);
+            this.projectileManager.detonate("mini_explosion", origin);
         }
     }
 

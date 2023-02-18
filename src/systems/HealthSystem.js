@@ -14,7 +14,7 @@ class HealthSystem {
             const eStats = e.components["stats"];
             if (eStats.currentHealth <= 0) {
                 const origin = e.components['boxCollider'].center;
-                this.projectileManager.entityShoot('death_effect', origin, origin)
+                this.projectileManager.detonate('death_effect', origin);
                 if (e.tag.includes('mob')) {
                     e.destroy();
                 }

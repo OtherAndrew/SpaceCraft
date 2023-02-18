@@ -48,7 +48,7 @@ class Spore {
 
     update(targetX, targetY, projectileManager) {
         // console.log(this.elapsedTime)
-        if (this.elapsedTime > 5) {
+        if (this.elapsedTime > 2.5) {
             const origin = this.components['boxCollider'].center;
             projectileManager.entityShoot('spore', {x: targetX, y: targetY}, origin)
             this.elapsedTime = 0;

@@ -167,7 +167,7 @@ class ProjectileManager {
                     }));
                 }
                 break;
-            default: console.log(`Invalid projectile type: ${type}.`);
+            default: console.log(`ProjectileManager.playerShoot: Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
     }
@@ -176,45 +176,6 @@ class ProjectileManager {
         const directionVector = normalize(origin, targetPos);
         const projectileQueue = [];
         switch (type) {
-            case 'explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
-                    sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 10,
-                    speed: 0,
-                    dVector: {x: 0, y: 0},
-                    origin: origin,
-                    duration: 7/30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
-            case 'mini_explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_mini_explosion',
-                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 3,
-                    speed: 0,
-                    dVector: {x: 0, y: 0},
-                    origin: origin,
-                    duration: 7/30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
-            case 'enemy_explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
-                    sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 5,
-                    speed: 0,
-                    dVector: {x: 0, y: 0},
-                    origin: origin,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
             case 'spore':
                 origin.x += directionVector.x * 10;
                 origin.y += directionVector.y * 10;
@@ -230,22 +191,69 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
+            default: console.log(`ProjectileManager.entityShoot: Invalid projectile type: ${type}.`);
+        }
+        projectileQueue.forEach(p => this.entityManager.addEntity(p));
+    }
+
+    detonate(type, position) {
+        const zeroVector = {x: 0, y: 0};
+        const projectileQueue = [];
+        switch (type) {
+            case 'explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
+                    damage: 10,
+                    speed: 0,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'mini_explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_mini_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
+                    damage: 3,
+                    speed: 0,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'enemy_explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
+                    damage: 5,
+                    speed: 0,
+                    dVector: zeroVector,
+                    origin: position,
+                    duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             case 'death_effect':
                 projectileQueue.push(new Projectile({
                     tag: 'death',
                     sprite: this.deathSprite(),
                     damage: 0,
                     speed: 0,
-                    dVector: {x: 0, y: 0},
-                    origin: origin,
+                    dVector: zeroVector,
+                    origin: position,
                     duration: 0.4,
                     hasGravity: false,
                     spread: 0
                 }));
                 break;
-            default: console.log(`Invalid projectile type: ${type}.`);
+            default: console.log(`ProjectileManager.detonate: Invalid projectile type: ${type}.`);
         }
-        projectileQueue.forEach(p => console.log(p));
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
     }
 
