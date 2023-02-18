@@ -4,6 +4,12 @@ class ProjectileManager {
         this.entityManager = entityManager;
     }
 
+    /**
+     * Shoots a projectile.
+     * @param {String} type                Projectile type.
+     * @param {{number, number}} targetPos Target position.
+     * @param {Entity} originEntity        Origin entity.
+     */
     shoot(type, targetPos, originEntity) {
         const midPoint = {
             x: WIDTH * .5,
@@ -26,9 +32,9 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.4 = (100% center to edge horizontal
-                    // 0.3 = (75% center to edge horizontal
-                    // 0.2 = (50% center to edge horizontal
+                    // 0.4 = 100% center to edge horizontal
+                    // 0.3 = 75% center to edge horizontal
+                    // 0.2 = 50% center to edge horizontal
                     duration: 0.2,
                     hasGravity: false,
                     spread: 1
@@ -44,9 +50,9 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.4 = (100% center to edge horizontal
-                    // 0.3 = (75% center to edge horizontal
-                    // 0.2 = (50% center to edge horizontal
+                    // 0.4 = 100% center to edge horizontal
+                    // 0.3 = 75% center to edge horizontal
+                    // 0.2 = 50% center to edge horizontal
                     duration: 0.3,
                     hasGravity: false,
                     spread: 1
@@ -62,9 +68,9 @@ class ProjectileManager {
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
                     origin: projectileOrigin,
-                    // 0.4 = (100% center to edge horizontal
-                    // 0.3 = (75% center to edge horizontal
-                    // 0.2 = (50% center to edge horizontal
+                    // 0.4 = 100% center to edge horizontal
+                    // 0.3 = 75% center to edge horizontal
+                    // 0.2 = 50% center to edge horizontal
                     duration: 0.3,
                     hasGravity: false,
                     spread: 1
@@ -81,6 +87,9 @@ class ProjectileManager {
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
                         origin: projectileOrigin,
+                        // 0.4 = 100% center to edge horizontal
+                        // 0.3 = 75% center to edge horizontal
+                        // 0.2 = 50% center to edge horizontal
                         duration: 0.45,
                         hasGravity: false,
                         spread: 1.25
@@ -251,16 +260,16 @@ class ProjectileManager {
 class Projectile {
 
     /**
-     *
-     * @param {Object} props
-     * @param {string} props.tag
-     * @param {number} props.damage
-     * @param {number} props.speed
-     * @param {{number, number}} props.dVector
-     * @param {{number, number}} props.origin
-     * @param {number} props.duration
-     * @param {boolean} props.hasGravity
-     * @return {Projectile}
+     * Generates projectile blueprint.
+     * @param {Object} props                   Projectile properties
+     * @param {string} props.tag               Projectile tag
+     * @param {number} props.damage            Projectile damage
+     * @param {number} props.speed             Projectile speed
+     * @param {{number, number}} props.dVector Projectile direction vector (vX, vY)
+     * @param {{number, number}} props.origin  Projectile origin point (x, y)
+     * @param {number} props.duration          Projectile duration
+     * @param {boolean} props.hasGravity       If projectile has gravity
+     * @return {Projectile}                    Projectile blueprint.
      */
     constructor(props) {
         this.tag = props.tag;
