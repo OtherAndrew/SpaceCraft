@@ -99,6 +99,7 @@ class Entity  {
      *
      * @param {Object} props          Entity properties
      * @param {string} props.tag      Entity tag(s)
+     * @param {string} props.name      Entity name
      * @param {[]} props.components   Entity components
      * @param {function} props.update Entity update function
      * @param {function} props.resize Entity resize function
@@ -107,6 +108,7 @@ class Entity  {
     constructor(props, id) {
         this.id = id
         this.tag = props.tag
+        this.name = props.name
         this.isDrawable = true
         this.isAlive = true
         this.components = {}

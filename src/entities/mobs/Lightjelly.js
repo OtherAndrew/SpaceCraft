@@ -9,7 +9,7 @@ class Lightjelly {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'lightjelly mob enemy ghost';
+        this.tag = 'mob enemy ghost';
         this.name = 'lightjelly';
         this.components = this.#buildComponents(props);
     };

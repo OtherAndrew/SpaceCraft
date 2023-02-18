@@ -9,7 +9,7 @@ class Bloodsucker {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'bloodsucker mob enemy';
+        this.tag = 'mob enemy';
         this.name = 'bloodsucker';
         this.components = this.#buildComponents(props);
     };
