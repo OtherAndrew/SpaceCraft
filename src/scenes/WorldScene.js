@@ -178,8 +178,7 @@ class WorldScene extends Scene {
             this.collisionSystem.resolveTileX()
 
             //this.worldImages.update()
-            this.collisionSystem.resolveMobAttack()
-            this.collisionSystem.resolveProjectiles()
+            this.collisionSystem.resolveAttack()
             this.healthSystem.update(deltaTime);
             this.durationSystem.update(deltaTime)
 

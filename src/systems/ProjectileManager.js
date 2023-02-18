@@ -269,7 +269,7 @@ class Projectile {
      * @param {{number, number}} props.origin  Projectile origin point (x, y)
      * @param {number} props.duration          Projectile duration
      * @param {boolean} props.hasGravity       If projectile has gravity
-     * @return {Projectile}                    Projectile blueprint.
+     * @return {Projectile} Projectile blueprint.
      */
     constructor(props) {
         this.tag = props.tag;

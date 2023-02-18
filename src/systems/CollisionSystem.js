@@ -83,9 +83,17 @@ class CollisionSystem {
     }
 
     /**
+     * Responds to attack collisions.
+     */
+    resolveAttack() {
+        this.#resolveMobAttack();
+        this.#resolveProjectiles();
+    }
+
+    /**
      * Applies damage to player if attacked by mob.
      */
-    resolveMobAttack() {
+    #resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
             if (this.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
@@ -96,7 +104,7 @@ class CollisionSystem {
     /**
      * Resolves projectile collisions.
      */
-    resolveProjectiles() {
+    #resolveProjectiles() {
         this.projectileList.forEach(p => {
             if (this.checkCollision(p, this.player)) {
                 if (p.tag.includes("explosion")) {
