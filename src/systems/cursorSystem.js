@@ -19,7 +19,7 @@ class CursorSystem {
             let selected = this.playerHud.activeContainer.item
             if(!menuActive && selected) {
                 // let tag = this.terrainMap[pos.y][pos.x].tag
-                if(/*/tile|craft/.test(tag) &&*/ selected.tag === 'pickaxe') {
+                if(/*/tile|interact/.test(tag) &&*/ selected.tag === 'pickaxe') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
                 } else if (selected.tag === 'gun' || selected.tag === 'flamethrower') {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]

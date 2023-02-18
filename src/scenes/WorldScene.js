@@ -51,7 +51,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player)
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
         this.hud = new HUD(this.containerManager, this.player);
-        this.craftingMenu = new CraftMenu(this.containerManager);
+        this.craftingMenu = new InteractiveMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud)
         this.cursorSystem.init()
@@ -78,8 +78,8 @@ class WorldScene extends Scene {
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         //spawn first 20 block height
         this.mobFactory.build('mossamber', this.player.components.transform.x - 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x + +500,
-            this.player.components.transform.y -500);
+        //this.mobFactory.build('bloodsucker', this.player.components.transform.x + +500,
+        //    this.player.components.transform.y -500);
         //creeperilla can jump and shoot projectile, spawn 10k and below
     }
 
@@ -139,7 +139,7 @@ class WorldScene extends Scene {
                 // get input
                 this.playerMovement.update(keys, deltaTime)
             }
-            this.containerManager.unloadInventory();
+            this.containerManager.reloadInventory();
             // get input
             // this.playerMovement.update(keys, deltaTime)
             // update state
@@ -181,7 +181,7 @@ class WorldScene extends Scene {
 
         // console.log("currentLightJelly", this.currentLightjelly.components.currentCount)
         // console.log("currentBloodSucker-total", this.entityManager.getEntities['bloodsucker'].components['stats'].total);
-        console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
+        // console.log("playerY", Math.floor(this.player.components["boxCollider"].bottom))
     }
 
     draw(menuActive, ctx, mouse) {
@@ -253,11 +253,11 @@ class WorldScene extends Scene {
 
     #isExposed(posY, posX) {
         return posY === 0
-               || /air|craft/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
-               || /air|craft/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
-               || /air|craft/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
-               || /air|craft/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
-               || /air|craft/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
+               || /air|interact/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
+               || /air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
+               || /air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
+               || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
+               || /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
     }
 
     #handleClick(pos, player, terrainMap) {
@@ -268,12 +268,12 @@ class WorldScene extends Scene {
         console.log(selected.tag)
         let active = this.hud.activeContainer.item;
         if (active) {
-            if(/tile|craft/.test(active.tag)) {
+            if(/tile|interact/.test(active.tag)) {
                 if(selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
                     let newBlock;
-                    if (active.tag.includes('craft')) 
-                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
+                    if (active.tag.includes('interact')) 
+                        newBlock = this.entityManager.addEntity(generateInteractive(tag, mapX, mapY));
                     else 
                         newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
                     if (newBlock) {
@@ -283,7 +283,7 @@ class WorldScene extends Scene {
                     }
                 }
             } else if (active.tag === 'pickaxe') {
-                if(/tile|craft/.test(selected.tag)) {
+                if(/tile|interact/.test(selected.tag)) {
                     let e = this.entityManager.getEntity(selected.id)
                     e.components.lifespan.current -= 1
                     if(e.components.lifespan.current <= 0) {
@@ -297,7 +297,8 @@ class WorldScene extends Scene {
             } else if (active.tag === 'flamethrower') {
                 this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
             }
-        } else if (selected.tag.includes('craft')) {
+        } else if (selected.tag.includes('interact')) {
+            this.containerManager.unloadInventory();
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }

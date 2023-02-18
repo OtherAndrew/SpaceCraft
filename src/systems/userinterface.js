@@ -6,6 +6,7 @@ class HUD {
         // create player inventory and trashcan
         this.cm.createInventory("player", 420, 690, 4, 4, undefined, "reverse");
         this.cm.createInventory(null, 561, 502, 1, 1, "red");
+        
         this.cm.activateInventory("player");
         this.cm.activateInventory(null);
 
@@ -14,15 +15,16 @@ class HUD {
         this.refreshActiveInfo();
 
         // TESTING
-        this.add(new Entity(generateCrafter('craft_table', 0, 0), 0), 1);
-        this.add(new Entity(generateBlock('tile_iron', 0, 0, 'craftgen'),0), 10);
+        this.add(new Entity(generateInteractive('interact_table', 0, 0), 0));
+        // this.add(new Entity(generateInteractive('interact_furnace', 0, 0), 0));
+        //this.add(new Entity(generateBlock('tile_iron', 0, 0, 'craftgen'),0), 10);
         // this.add(new Entity(generateCrafter('craft_furnace', 0, 0), 0));
         // this.add(new Entity(generateCrafter('craft_anvil', 0, 0), 0));
     };
 
     // TESTING
-    add(entity, count) {
-        this.cm.addToInventory("player", entity, count);
+    add(entity) {
+        this.cm.addToInventory("player", entity);
     };
 
     refreshActiveInfo() {
@@ -39,7 +41,8 @@ class HUD {
             ctx.rect(420,670, 183, 10);
             ctx.fill();
             ctx.beginPath();
-            let healthPercentage = this.player.components['stats'].currentHealth / this.player.components['stats'].maxHealth;
+            let healthPercentage = Math.max(0,
+                this.player.components['stats'].currentHealth / this.player.components['stats'].maxHealth);
             if (healthPercentage > 0.75) ctx.fillStyle = "green";
             else if (healthPercentage > 0.50) ctx.fillStyle = "yellow";
             else if (healthPercentage > 0.25) ctx.fillStyle = "orange";
@@ -63,8 +66,8 @@ class HUD {
         }
     }
 
-    update(uiActive, keys) {
-        if (!uiActive) {
+    update(menuActive, keys) {
+        if (!menuActive) {
             if (keys['1']) this.activeContainer = this.containers[0];
             if (keys['2']) this.activeContainer = this.containers[1];
             if (keys['3']) this.activeContainer = this.containers[2];

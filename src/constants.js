@@ -156,13 +156,19 @@ const CHAR_PATH = {
 }
 
 const CRAFT_COLOR = {
-    ANVIL   :   'black',
-    FURNACE :   'orange',
-    TABLE   :   'brown'
+    ANVIL_I     :   'black',
+    ANVIL_P     :   'grey',
+    BUILTIN_I   :   'blue',
+    BUILTIN_P   :   'purple',
+    FURNACE_I   :   'orange',
+    FURNACE_P   :   'red',
+    TABLE_I     :   'brown',
+    TABLE_P     :   'green'
 }
 
 const CRAFT_PATH = {
     ANVIL   :   './assets/crafting/stations/anvil.png',
+    CHEST   :   './assets/crafting/stations/chest.png',
     FURNACE :   './assets/crafting/stations/furnace.png',
     TABLE   :   './assets/crafting/stations/table.png'
 }

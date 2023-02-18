@@ -78,3 +78,19 @@ const generateBlock = (tag, x, y, mode) => {
         frameY: randomInt(2)
     });
 }
+
+const generateInteractive = (tag, x, y) => {
+    let id = cleanTag(tag).toUpperCase();
+    if (id.includes('CHEST') && !isNaN(id.slice(-1))) id = id.slice(0,-1);
+    let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
+    let tempX = x * BLOCKSIZE, tempY = y * BLOCKSIZE;
+    return new Block({
+        tag: tag,
+        sprite: image,
+        lifespan: 20,
+        x: tempX,
+        y: tempY,
+        sWidth: image.width,
+        sHeight: image.height,
+    });
+}
