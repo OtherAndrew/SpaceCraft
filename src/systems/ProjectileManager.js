@@ -10,7 +10,7 @@ class ProjectileManager {
      * @param {{number, number}} targetPos Target position.
      * @param {Object} originEntity        Origin entity.
      */
-    shoot(type, targetPos, originEntity) {
+    playerShoot(type, targetPos, originEntity) {
         const midPoint = {
             x: WIDTH * .5,
             y: HEIGHT * .5
@@ -202,7 +202,7 @@ class ProjectileManager {
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
     }
 
-    enemyShoot(type, targetPos, origin) {
+    entityShoot(type, targetPos, origin) {
         const directionVector = normalize(origin, targetPos);
         const projectileQueue = [];
         switch (type) {

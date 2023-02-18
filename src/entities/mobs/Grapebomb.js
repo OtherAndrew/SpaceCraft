@@ -52,7 +52,7 @@ class Grapebomb {
             y: this.components['boxCollider'].center.y
         };
         if (getDistance2(origin.x, origin.y, targetX, targetY) <= BLOCKSIZE * 3) {
-            projectileManager.enemyShoot('enemyexplosion', { x: targetX, y: targetY }, origin);
+            projectileManager.entityShoot('enemyexplosion', { x: targetX, y: targetY }, origin);
             this.destroy();
         }
     }

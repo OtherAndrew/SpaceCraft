@@ -53,7 +53,7 @@ class Spore {
                 x: this.components['boxCollider'].center.x,
                 y: this.components['boxCollider'].center.y
             };
-            projectileManager.enemyShoot('spore', {x: targetX, y: targetY}, origin)
+            projectileManager.entityShoot('spore', {x: targetX, y: targetY}, origin)
             this.elapsedTime = 0;
         }
     }

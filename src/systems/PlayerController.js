@@ -163,7 +163,7 @@ class PlayerController {
     #fireWeapon(activeWeapon, target, tick) {
         const wProps = this.weaponMap.get(activeWeapon);
         if (wProps.fireTime <= wProps.duration) {
-            this.projectileManager.shoot(wProps.projectileType, target, this.player)
+            this.projectileManager.playerShoot(wProps.projectileType, target, this.player)
             wProps.fireTime += tick;
         }
     }
