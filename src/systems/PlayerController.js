@@ -84,7 +84,7 @@ class PlayerController {
         if (key['a']) {
             this.pState.direction = 'left'
             if (key['s'] || this.holdingMinigun) {
-                this.pTransform.velocityX = -this.pStats.speed / 4;
+                this.pTransform.velocityX = -this.pStats.speed / 3;
                 state = this.pState.grounded ? 'walkL' : 'crouchL';
             } else {
                 this.pTransform.velocityX -= this.acceleration;
@@ -93,7 +93,7 @@ class PlayerController {
         } else if (key['d']) {
             this.pState.direction = "right"
             if (key['s'] || this.holdingMinigun) {
-                this.pTransform.velocityX = this.pStats.speed / 4;
+                this.pTransform.velocityX = this.pStats.speed / 3;
                 state = this.pState.grounded ? 'walkR' : 'crouchR';
             } else {
                 this.pTransform.velocityX += this.acceleration;
