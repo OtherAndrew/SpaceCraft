@@ -1,16 +1,18 @@
 // Changes state of an entity. Usually used to change an animation
 class EntityController {
 
-    constructor(entities, player) {
+    constructor(entities, player, projectileManager) {
         this.entities = entities;
         this.playerPosition = player.components.transform;
+        this.projectileManager = projectileManager;
     }
 
     update(tick) {
         const updateList = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
         // console.log(updateList)
         updateList.forEach(e => {
-            e.update(tick, this.playerPosition.x, this.playerPosition.y);
+            e.elapsedTime += tick;
+            e.update(this.playerPosition.x, this.playerPosition.y, this.projectileManager);
         });
     }
 }

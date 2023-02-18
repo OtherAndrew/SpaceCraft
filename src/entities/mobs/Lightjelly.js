@@ -54,7 +54,7 @@ class Lightjelly {
 
     };
 
-    update(tick, targetX, targetY) {
+    update(targetX, targetY, projectileManager) {
         const velocity = this.components["stats"].speed;
 
         const x = this.components.transform.x;

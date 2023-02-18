@@ -50,9 +50,7 @@ class Mossamber {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {
-        this.components.state.setState('idleR');
-        // this.components.transform.update(tick);
+    update(targetX, targetY, projectileManager) {
     }
 
     #addAnimations(sprite) {

@@ -110,6 +110,7 @@ class Entity  {
         this.tag = props.tag
         this.isDrawable = true
         this.isAlive = true
+        this.elapsedTime = 0;
         this.components = {}
         this.update = props.update ? props.update : null;
         if (props.components) this.addComponent(props.components);

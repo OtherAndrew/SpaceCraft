@@ -17,7 +17,7 @@ class Bloodsucker {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 1,
-            speed: 3,
+            speed: 1.5,
             currentCount: 0,
             total: MAXBLOODSUCKER,
             maxHealth: 70
@@ -71,7 +71,7 @@ class Bloodsucker {
         bMap.set('flyR', new BehaviorProps(-stats.speed, null));
     }
 
-    update(tick, targetX, targetY) {
+    update(targetX, targetY, projectileManager) {
 
         //TODO use A* to to find path
         let x = this.components.transform.x;

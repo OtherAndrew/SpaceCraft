@@ -8,7 +8,7 @@ class ProjectileManager {
      * Shoots a projectile.
      * @param {String} type                Projectile type.
      * @param {{number, number}} targetPos Target position.
-     * @param {Entity} originEntity        Origin entity.
+     * @param {Object} originEntity        Origin entity.
      */
     shoot(type, targetPos, originEntity) {
         const midPoint = {
@@ -146,7 +146,7 @@ class ProjectileManager {
                 projectileQueue.push(new Projectile({
                     tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 8,
+                    damage: 10,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,
@@ -187,7 +187,7 @@ class ProjectileManager {
                 projectileQueue.push(new Projectile({
                     tag: 'bullet_mini_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 2.5,
+                    damage: 3,
                     speed: 0,
                     dVector: directionVector,
                     origin: projectileOrigin,

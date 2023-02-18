@@ -49,7 +49,7 @@ class Spore {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {
+    update(targetX, targetY, projectileManager) {
         this.components.state.setState('idleR');
         // this.components.transform.update(tick);
     }

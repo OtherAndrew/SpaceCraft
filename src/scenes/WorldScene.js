@@ -39,11 +39,7 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
 
-        // this.spawnTestEntities();
-        this.mobFactory.build('mossamber', this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        this.mobFactory.build('bloodsucker', this.player.components.transform.x + 500,
-            this.player.components.transform.y - 500);
-
+        this.spawnTestEntities();
         //this.#genericDeath()
         this.projectileManager = new ProjectileManager(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
@@ -51,7 +47,7 @@ class WorldScene extends Scene {
         //this.genericDeathManager = new GenericDeathController(this.lightjelly, this.player)
 
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player)
-        this.mobController = new EntityController(this.entityManager.getEntities, this.player);
+        this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileManager);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities)
         this.camera = new Camera(this.player)
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE)
@@ -84,13 +80,13 @@ class WorldScene extends Scene {
     }
 
     spawnTestEntities() {
-        this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
-        this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
+        // this.mobFactory.build('spore', this.player.components.transform.x, this.player.components.transform.y - 50);
+        // this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
         //spawn on the surface, will not die, main light source
-        this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
+        // this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
 
         //explode with range, dont take out blocks  4k and below
-        this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 400);
+        this.mobFactory.build('grapebomb', this.player.components.transform.x + 200, this.player.components.transform.y - 200);
         //spawn 10k y-position and below (height)
         this.mobFactory.build('wormtank', this.player.components.transform.x + 800, this.player.components.transform.y - 200);
         //spawn first 20 block height
