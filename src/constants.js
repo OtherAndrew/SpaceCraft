@@ -171,7 +171,7 @@ const MISC_PATH = {
     CURSOR_CROSSHAIR    :   './assets/cursors/Crosshairs_Red.png',
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
-    GENERICDEATH	    :	'./assets/sprites/smoke.png',
+    DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
     PICK	            :	'./assets/icons/item_3485.png',
 }
 

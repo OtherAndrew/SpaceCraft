@@ -221,7 +221,7 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
-            case 'enemyexplosion':
+            case 'enemy_explosion':
                 projectileQueue.push(new Projectile({
                     tag: 'bullet_explosion',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
@@ -230,6 +230,19 @@ class ProjectileManager {
                     dVector: directionVector,
                     origin: origin,
                     duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'death_effect':
+                projectileQueue.push(new Projectile({
+                    tag: 'death',
+                    sprite: this.deathSprite(),
+                    damage: 0,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: 0.4,
                     hasGravity: false,
                     spread: 0
                 }));
@@ -304,6 +317,17 @@ class ProjectileManager {
             firstFrameX: frameX,
             frameY: frameY
         });
+    }
+
+    deathSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(MISC_PATH.DEATH_EFFECT),
+            sWidth: 64,
+            sHeight: 64,
+            scale: 1.5,
+            lastFrameX: 10,
+            fps: 30
+        })
     }
 }
 

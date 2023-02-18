@@ -13,7 +13,11 @@ class HealthSystem {
         updateList.forEach(e => {
             const eStats = e.components["stats"];
             if (eStats.currentHealth <= 0) {
-                // this.projectileManager.enemyShoot()
+                const origin = {
+                    x: e.components['boxCollider'].center.x,
+                    y: e.components['boxCollider'].center.y
+                }
+                this.projectileManager.entityShoot('death_effect', origin, origin)
                 if (e.tag.includes('mob')) {
                     e.destroy();
                 }
