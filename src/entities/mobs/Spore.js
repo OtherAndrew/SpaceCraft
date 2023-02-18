@@ -15,7 +15,7 @@ class Spore {
     };
     #buildComponents(props) {
         const stats = new CStats({
-
+            maxHealth: 500
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
@@ -47,6 +47,11 @@ class Spore {
     }
 
     update(targetX, targetY, projectileManager) {
+        // console.log(this.elapsedTime)
+        if (this.elapsedTime > 1) {
+            projectileManager.shoot('spore', {x: targetX, y: targetY}, this)
+            this.elapsedTime = 0;
+        }
     }
 
     #addAnimations(sprite) {

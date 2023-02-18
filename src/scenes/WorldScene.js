@@ -80,7 +80,7 @@ class WorldScene extends Scene {
     }
 
     spawnTestEntities() {
-        // this.mobFactory.build('spore', this.player.components.transform.x + 600, this.player.components.transform.y - 200);
+        this.mobFactory.build('spore', this.player.components.transform.x + 400, this.player.components.transform.y - 200);
         // this.mobFactory.build('dirtcarver', this.player.components.transform.x - 100, this.player.components.transform.y - 250);
         //spawn on the surface, will not die, main light source
         // this.mobFactory.build('lightbug', this.player.components.transform.x + 1200, this.player.components.transform.y - 100);
@@ -202,7 +202,7 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);

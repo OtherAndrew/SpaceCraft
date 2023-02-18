@@ -209,6 +209,21 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
+            case 'spore':
+                console.log("s")
+                projectileOrigin.x += directionVector.x * 30;
+                projectileOrigin.y += directionVector.y * 30;
+                projectileQueue.push(new Projectile({
+                    tag: 'enemybullet_spore',
+                    sprite: this.darkOrbSprite(4, 1),
+                    damage: 20,
+                    speed: BLOCKSIZE * 0.3,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 5,
+                    hasGravity: false,
+                }));
+                break;
             default: console.log(`Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
@@ -266,6 +281,17 @@ class ProjectileManager {
             firstFrameX: 0,
             lastFrameX: 5,
             fps: 30
+        });
+    }
+
+    darkOrbSprite(frameX = 0, frameY = 0, scale = 1) {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.DARK_ORB),
+            sWidth: 16,
+            sHeight: 16,
+            scale: scale,
+            firstFrameX: frameX,
+            frameY: frameY
         });
     }
 }
