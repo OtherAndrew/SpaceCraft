@@ -8,7 +8,7 @@ class PlayerController {
         this.pStats = this.player.components['stats']
         this.acceleration = 1
         this.fastFall = 3;
-
+        this.holdingMinigun = false;
         this.weaponMap = this.#buildWeaponMap();
     }
 
@@ -35,6 +35,7 @@ class PlayerController {
      * @param activeContainer
      */
     update(keys, mouseDown, mouse, tick, activeContainer) {
+        this.holdingMinigun = activeContainer.item.tag === 'minigun';
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
         // if (this.pState.grounded) {
@@ -63,7 +64,7 @@ class PlayerController {
     handleKeyboard(key, tick) {
         let state = this.pSprite.currentState;
 
-        if ((key[' '] || key['w']) && this.pState.grounded) { //jump
+        if ((key[' '] || key['w']) && this.pState.grounded && !this.holdingMinigun) { //jump
             this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + 15);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
@@ -82,7 +83,7 @@ class PlayerController {
 
         if (key['a']) {
             this.pState.direction = 'left'
-            if (key['s']) {
+            if (key['s'] || this.holdingMinigun) {
                 this.pTransform.velocityX = -this.pStats.speed / 4;
                 state = this.pState.grounded ? 'walkL' : 'crouchL';
             } else {
@@ -91,7 +92,7 @@ class PlayerController {
             }
         } else if (key['d']) {
             this.pState.direction = "right"
-            if (key['s']) {
+            if (key['s'] || this.holdingMinigun) {
                 this.pTransform.velocityX = this.pStats.speed / 4;
                 state = this.pState.grounded ? 'walkR' : 'crouchR';
             } else {
