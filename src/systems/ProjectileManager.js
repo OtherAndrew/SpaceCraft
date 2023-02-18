@@ -16,10 +16,7 @@ class ProjectileManager {
             y: HEIGHT * .5
         }
         const directionVector = normalize(midPoint, targetPos);
-        const projectileOrigin = {
-            x: originEntity.components["boxCollider"].center.x,
-            y: originEntity.components["boxCollider"].center.y
-        }
+        const projectileOrigin = originEntity.components["boxCollider"].center;
         const projectileQueue = [];
         switch (type) {
             case 'weak_bullet':
@@ -142,19 +139,6 @@ class ProjectileManager {
                     spread: 0.5
                 }));
                 break;
-            case 'explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
-                    sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 10,
-                    speed: 0,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 7/30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
             case 'mini_bomb':
                 projectileOrigin.x += directionVector.x * 10;
                 projectileOrigin.y += directionVector.y * 10;
@@ -183,20 +167,6 @@ class ProjectileManager {
                     }));
                 }
                 break;
-            case 'mini_explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_mini_explosion',
-                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 3,
-                    speed: 0,
-                    dVector: directionVector,
-                    origin: projectileOrigin,
-                    duration: 7/30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
-
             default: console.log(`Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
@@ -206,6 +176,45 @@ class ProjectileManager {
         const directionVector = normalize(origin, targetPos);
         const projectileQueue = [];
         switch (type) {
+            case 'explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
+                    damage: 10,
+                    speed: 0,
+                    dVector: {x: 0, y: 0},
+                    origin: origin,
+                    duration: 7/30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'mini_explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_mini_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 1.5),
+                    damage: 3,
+                    speed: 0,
+                    dVector: {x: 0, y: 0},
+                    origin: origin,
+                    duration: 7/30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'enemy_explosion':
+                projectileQueue.push(new Projectile({
+                    tag: 'bullet_explosion',
+                    sprite: this.explosionSprite(BLOCKSIZE * 5),
+                    damage: 5,
+                    speed: 0,
+                    dVector: {x: 0, y: 0},
+                    origin: origin,
+                    duration: 7 / 30,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             case 'spore':
                 origin.x += directionVector.x * 10;
                 origin.y += directionVector.y * 10;
@@ -221,26 +230,13 @@ class ProjectileManager {
                     spread: 0
                 }));
                 break;
-            case 'enemy_explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
-                    sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 5,
-                    speed: 0,
-                    dVector: directionVector,
-                    origin: origin,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
             case 'death_effect':
                 projectileQueue.push(new Projectile({
                     tag: 'death',
                     sprite: this.deathSprite(),
                     damage: 0,
                     speed: 0,
-                    dVector: directionVector,
+                    dVector: {x: 0, y: 0},
                     origin: origin,
                     duration: 0.4,
                     hasGravity: false,
