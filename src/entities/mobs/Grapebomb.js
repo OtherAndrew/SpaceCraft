@@ -53,7 +53,7 @@ class Grapebomb {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,3));
+        aMap.set('idleR', new AnimationProps(0, 0,0));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
