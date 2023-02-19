@@ -158,7 +158,7 @@ const getGridCell = (pos, player) => {
  * @param {*} entityB the block that is to be placed
  * @returns boolean whether block is placed on player
  */
-const checkCollision = (entityA, entityB) => {
+const checkBlockOverlap = (entityA, entityB) => {
     const a = entityA.components["boxCollider"];
     const b = {
         top: entityB.y,
@@ -210,6 +210,6 @@ const checkCellConnectedToBlock = (coords, terrainMap) => {
 const isPlaceable = (player, coords, terrainMap) => {
     if(checkPlayerDistance(coords, player) < BLOCK_PLACEMENT_DISTANCE) {
         let c = {x: coords.x * BLOCKSIZE, y: coords.y * BLOCKSIZE}
-        return !checkCollision(player, c) && checkCellConnectedToBlock(coords, terrainMap)
+        return !checkBlockOverlap(player, c) && checkCellConnectedToBlock(coords, terrainMap)
     }
 }
