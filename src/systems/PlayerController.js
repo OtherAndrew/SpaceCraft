@@ -146,7 +146,7 @@ class PlayerController {
                     }
                 }
             } else if (active.tag === 'pickaxe') {
-                if(/tile|craft/.test(selected.tag)) {
+                if(/tile|craft/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
                     let e = this.entityManager.getEntity(selected.id)
                     e.components.lifespan.current -= 1
                     if(e.components.lifespan.current <= 0) {
