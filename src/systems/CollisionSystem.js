@@ -14,8 +14,7 @@ class CollisionSystem {
         this.tileCollideList = null;
         this.mobList = null;
         this.tileList = null;
-        //extras
-        // this.playerAttackList = null;
+
         this.playerAttackList = null;
         this.explosionList = null;
         this.enemyAttackList = null;
@@ -33,14 +32,11 @@ class CollisionSystem {
                 e.name === "player" || e.name === "rocket"
                 || (e.tag.includes("mob") && !e.tag.includes("ghost"))
         );
-
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
         this.tileList = this.collideList.filter(e => e.name === 'block');
-        this.playerAttackList = this.collideList.filter(e =>
-                e.tag.includes("bullet") || e.tag.includes("bomb"));
+
+        this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
         this.explosionList = this.collideList.filter(e => e.name === 'explosion');
-        // extras
-        // this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
         this.enemyAttackList = this.collideList.filter(e => e.tag.includes("enemy"))
     }
 
@@ -95,35 +91,27 @@ class CollisionSystem {
      * Resolves projectile collisions.
      */
     #resolvePlayerAttack() {
-        this.playerAttackList.forEach(p => {
-
+        this.playerAttackList.forEach(atk => {
             this.mobList.forEach(mob => {
-               if (this.checkCollision(p, mob) && !mob.tag.includes('ignore')) {
-                   mob.components["stats"].applyDamage(p.components["stats"].damage);
+               if (this.checkCollision(atk, mob) && !mob.tag.includes('ignoreAttack')) {
+                   mob.components["stats"].applyDamage(atk.components["stats"].damage);
                    this.#stun(mob);
-                   if (p.tag.includes("bomb")) {
-                       this.#handleExplosions(p);
+                   if (atk.tag.includes("explosive")) {
+                       this.#handleExplosions(atk);
                    }
-                   if (!p.tag.includes("fire")
-                            && !p.tag.includes("explosion")
-                            && !p.tag.includes("railgun")) {
-                       p.destroy();
+                   if (!atk.tag.includes("pierce")) {
+                       atk.destroy();
                    }
                }
             });
 
             this.tileList.forEach(tile => {
-               if (this.checkCollision(p, tile)) {
-                   // only big explosions can destroy blocks
-                   if (p.tag === "bullet_explosion") {
-                       // tile.destroy();
+               if (this.checkCollision(atk, tile)) {
+                   if (atk.tag.includes("explosive")) {
+                       this.#handleExplosions(atk);
                    }
-                   if (p.tag.includes("bomb")) {
-                       this.#handleExplosions(p);
-                   }
-                   if (!p.tag.includes("explosion")
-                            && !p.tag.includes("railgun")) {
-                       p.destroy();
+                   if (!atk.tag.includes("ignoreTile")) {
+                       atk.destroy();
                    }
                }
             });
@@ -133,28 +121,22 @@ class CollisionSystem {
     #resolveExplosions() {
         this.explosionList.forEach(e => {
             if (this.checkCollision(e, this.player)) {
-                if (e.tag.includes("explosion")) {
-                    this.player.components["stats"].applyDamage(p.components["stats"].damage);
-                }
-                // this.#handleExplosions(p)
+                this.player.components["stats"].applyDamage(e.components["stats"].damage);
             }
             this.mobList.forEach(mob => {
-                if (this.checkCollision(e, mob) && !mob.tag.includes('ignore')) {
+                if (this.checkCollision(e, mob) && !mob.tag.includes('ignoreAttack')) {
                     mob.components["stats"].applyDamage(e.components["stats"].damage);
                     this.#stun(mob);
                 }
             });
-
             this.tileList.forEach(tile => {
                 if (this.checkCollision(e, tile)) {
-                    // only big explosions can destroy blocks
-                    if (e.tag === "bullet_explosion") {
+                    if (e.tag.includes("destroyBlock")) {
                         // tile.destroy();
                     }
                 }
             });
         });
-
     }
 
     /**
@@ -164,13 +146,21 @@ class CollisionSystem {
         this.enemyAttackList.forEach(atk => {
             if (this.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
-                if (atk.tag === "enemyAttack") {
+                if (atk.name === "projectile") {
+                    atk.destroy();
+                }
+                if (atk.tag.includes("explosive")) {
+                    this.#handleExplosions(atk);
+                }
+                if (!atk.tag.includes("pierce")) {
                     atk.destroy();
                 }
             }
             this.tileList.forEach(tile => {
-                if (this.checkCollision(atk, tile) && atk.tag === "enemyAttack") {
-                    atk.destroy();
+                if (this.checkCollision(atk, tile)) {
+                    if (!atk.tag.includes("ignoreTile")) {
+                        atk.destroy();
+                    }
                 }
             });
         });
@@ -197,9 +187,9 @@ class CollisionSystem {
      */
     #handleExplosions(p) {
         const origin = p.components["boxCollider"].center;
-        if (p.tag === "bomb") {
+        if (p.tag === "playerAttack explosive") {
             this.projectileManager.detonate("explosion", origin);
-        } else if (p.tag === "mini_bomb") {
+        } else if (p.tag === "playerAttack explosive mini") {
             this.projectileManager.detonate("mini_explosion", origin);
         }
     }

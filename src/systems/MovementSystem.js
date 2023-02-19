@@ -17,12 +17,10 @@ class MovementSystem {
     updateX(tick) {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityX(this.player, tick);
-        const mobs = this.entities.filter(e => e.isDrawable
-            && (e.tag.includes('mob') || e.tag.includes('bullet')
-                || e.tag.includes('bomb')
-                || e.tag.includes("enemyAttack"))
+        const movables = this.entities.filter(e => e.isDrawable
+            && (e.tag.includes('mob') || e.name === 'projectile')
         );
-        mobs.forEach(e => this.#moveEntityX(e, tick));
+        movables.forEach(e => this.#moveEntityX(e, tick));
     }
 
     /**
@@ -32,12 +30,12 @@ class MovementSystem {
     updateY(tick) {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityY(this.player, tick);
-        const mobs = this.entities.filter(e => e.isDrawable
-            && (e.tag.includes('mob') || e.tag.includes('bullet')
-                || e.tag.includes("rocket") || e.tag.includes('bomb')
-                || e.tag.includes("enemyAttack"))
+        const movables = this.entities.filter(e => e.isDrawable
+            && (e.tag.includes('mob')
+                || e.tag.includes("rocket")
+                || e.name === 'projectile')
         );
-        mobs.forEach(e => this.#moveEntityY(e, tick));
+        movables.forEach(e => this.#moveEntityY(e, tick));
     }
 
     /**
