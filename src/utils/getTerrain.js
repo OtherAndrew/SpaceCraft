@@ -332,22 +332,6 @@ const getTerrain = (entityManager) => {
                 ]
             })
             entityManager.addEntity({
-                tag: 'background_0',
-                components: [
-                    new CTransform({
-                        x: (undergroundWidth * i * scaleUnder),
-                        y:  caveBGYVal,
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_0],
-                        sWidth: undergroundWidth,
-                        sHeight: undergroundHeight,
-                        scale: scaleUnder,
-                    })
-                ]
-            })
-            entityManager.addEntity({
                 tag: 'background_1',
                 components: [
                     new CTransform({
@@ -360,38 +344,6 @@ const getTerrain = (entityManager) => {
                         sWidth: surfaceBackWidth,
                         sHeight: surfaceBackHeight,
                         scale: scale,
-                    })
-                ]
-            })
-            entityManager.addEntity({
-                tag: 'background_1',
-                components: [
-                    new CTransform({
-                        x: (undergroundWidth * i * scaleUnder),
-                        y:  caveBGYVal,
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_1],
-                        sWidth: undergroundWidth,
-                        sHeight: undergroundHeight,
-                        scale: scaleUnder,
-                    })
-                ]
-            })
-            entityManager.addEntity({
-                tag: 'background_2',
-                components: [
-                    new CTransform({
-                        x: (undergroundWidth * i * scaleUnder),
-                        y:  caveBGYVal,
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_2],
-                        sWidth: undergroundWidth,
-                        sHeight: undergroundHeight,
-                        scale: scaleUnder,
                     })
                 ]
             })
@@ -411,6 +363,7 @@ const getTerrain = (entityManager) => {
                     })
                 ]
             })
+            
             entityManager.addEntity({
                 tag: 'background_4',
                 components: [
@@ -421,22 +374,6 @@ const getTerrain = (entityManager) => {
                     }),
                     new CSprite({
                         sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_4],
-                        sWidth: undergroundWidth,
-                        sHeight: undergroundHeight,
-                        scale: scaleUnder,
-                    })
-                ]
-            })
-            entityManager.addEntity({
-                tag: 'background_5',
-                components: [
-                    new CTransform({
-                        x: (undergroundWidth * i * scaleUnder),
-                        y:  caveBGYVal,
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: ASSET_MANAGER.cache[BG_PATH.UNDERGROUND_5],
                         sWidth: undergroundWidth,
                         sHeight: undergroundHeight,
                         scale: scaleUnder,
@@ -480,23 +417,6 @@ const getTerrain = (entityManager) => {
             ]
         })
 
-        // bottom border
-        entityManager.addEntity({
-            tag: 'tile_bedrock',
-            components: [
-                new CTransform({
-                    x: 0,
-                    y: HEIGHT_PIXELS - (HEIGHT * .5) - (5 * BLOCKSIZE)
-                }),
-                new CBoxCollider({
-                    x: 0,
-                    y: HEIGHT_PIXELS - (HEIGHT * .5) - (5 * BLOCKSIZE),
-                    width: WIDTH_PIXELS,
-                    height: HEIGHT * .5
-                })
-            ]
-        })
-
         //top
         entityManager.addEntity({
             tag: 'tile_bedrock',
@@ -515,11 +435,65 @@ const getTerrain = (entityManager) => {
         })
     }
 
+    function generateStatues() {
+        for(let r = 0; r < 3; r++) {
+            let pos = chooseRandomLocation(6,7)
+            let pos2 = {}
+            pos2.x = pos.x * BLOCKSIZE
+            pos2.y = pos.y * BLOCKSIZE
+           let e = entityManager.addEntity({
+                tag: 'chozo',
+                components: [
+                    new CTransform({
+                        x: pos2.x,
+                        y: pos2.y,
+                        hasGravity: true
+                    }),
+                    new CSprite({
+                        sprite: ASSET_MANAGER.cache[ENV_PATH.CHOZO_STATUE],
+                        sWidth: 64,
+                        sHeight: 64,
+                        scale: 3,
+                    })
+                ]
+            })
+            for(let i = 0, j = 0; i < 6 * BLOCKSIZE; i += BLOCKSIZE) {
+                let e = entityManager.addEntity(generateBlock('tile_bedrock', pos2.x + i, pos2.y + (BLOCKSIZE * 6), 'terraingen'))
+                terrainMap[pos.y + 6][pos.x + j++] = {
+                    tag: e.tag,
+                    id: e.id
+                }
+                
+            }
+        }
+        
+    }
+    function chooseRandomLocation(width, height) {
+        entityManager.update()
+        let x = clamp(randomInt(terrainMap[0].length), 16, terrainMap[0].length - width -1)
+        let y = clamp(randomInt(terrainMap.length) + startRow, 333, terrainMap.length - height - 20)
+        console.log(x, y)
+        for(let i = y; i < y + height; i++) {
+            for(let j = x; j < x + width; j++) {
+                let cell = terrainMap[i][j]
+                if(cell.tag !== 'air') {
+                    let e =entityManager.getEntity(cell.id)
+                e.destroy()
+                terrainMap[i][j] = {tag: 'air', id: null}
+                }
+            }
+        }
+        entityManager.update()
+        return {x:x,y:y}
+    }
+
     generateBackgrounds()
     generateNoiseMap()
     generateTerrain()
     generateBorders()
     generateSpawnLocations()
+    generateStatues()
     //prepareListForDFS()
     return [terrainMap, spawnMap]
+
 }

@@ -170,6 +170,10 @@ const WEAPON_PATH = {
     RAYGUN              :   './assets/weapons/raygun.png',
 }
 
+const ENV_PATH = {
+    CHOZO_STATUE        :   './assets/environment/chozoStatue.png'
+}
+
 const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
@@ -181,7 +185,8 @@ const PATHS = {
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
     WEAPONS     :   WEAPON_PATH,
-    SOUNDS      :   SOUND_PATH
+    SOUNDS      :   SOUND_PATH,
+    ENV_PATH    :   ENV_PATH
 }
 
 const CONSTANTS = {
@@ -198,7 +203,8 @@ const CONSTANTS = {
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
     WEAPONS     :   WEAPON_PATH,
-    SOUNDS      :   SOUND_PATH
+    SOUNDS      :   SOUND_PATH,
+    ENV_PATH    :   ENV_PATH
 }
 
 for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])

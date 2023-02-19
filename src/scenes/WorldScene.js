@@ -123,6 +123,7 @@ class WorldScene extends Scene {
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime);
+            console.log(this.player.components.transform.x/BLOCKSIZE, this.player.components.transform.y/BLOCKSIZE)
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
@@ -186,7 +187,7 @@ class WorldScene extends Scene {
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
 
-        if(e.isDrawable && e.tag.includes('tile') && !e.tag.includes('bedrock')) {
+        if(e.isDrawable && e.tag.includes('tile')) {
             const collider = new CBoxCollider({
                 x: e.components.transform.x,
                 y: e.components.transform.y,

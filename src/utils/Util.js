@@ -193,7 +193,6 @@ const checkPlayerDistance = (coords, player) => {
  * @returns 
  */
 const checkCellConnectedToBlock = (coords, terrainMap) => {
-    console.log(coords)
     if(terrainMap[coords.y][clamp(coords.x-1, 0, terrainMap[0].length-1)].tag.includes('tile')) return true
     if(terrainMap[coords.y][clamp(coords.x+1, 0, terrainMap[0].length-1)].tag.includes('tile')) return true
     if(terrainMap[clamp(coords.y-1, 0, terrainMap.length-1)][coords.x].tag.includes('tile')) return true

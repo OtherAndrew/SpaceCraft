@@ -42,9 +42,9 @@ class EntityManager {
     }
 
     /**
-     * Returns an entity groups by tag or a single entity with id
+     * Returns an entity by id
      * 
-     * @param {string, Number} tag 
+     * @param {Number} id
      * @returns an entity group with tag argument or entity with id argument
      */
     getEntity(arg) {
@@ -63,8 +63,8 @@ class EntityManager {
         })
         let removed = this.#removeDeadEntities()
         this.toAddEntities.length = 0
-        for(let tag in removed) {
-            this.entityMap.delete(tag)
+        for(let id in removed) {
+            this.entityMap.delete(id)
         }
     }
 
@@ -79,7 +79,7 @@ class EntityManager {
             for(let i = this.entities.length - 1; i >= 0; i--) {
                 let e = this.entities[i]
                 if(!e.isAlive) {
-                    removed.push(e.tag)
+                    removed.push(e.id)
                     this.entities.splice(i, 1)
                 }
             }
