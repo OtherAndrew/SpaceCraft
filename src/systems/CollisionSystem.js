@@ -50,7 +50,7 @@ class CollisionSystem {
     resolveTileX() {
         this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
-                if (this.checkCollision(mob, tile)) {
+                if (CollisionSystem.checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     mTransform.velocityX = 0
@@ -67,7 +67,7 @@ class CollisionSystem {
     resolveTileY() {
         this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
-                if (this.checkCollision(mob, tile)) {
+                if (CollisionSystem.checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     const tCollider = tile.components["boxCollider"];
@@ -96,7 +96,7 @@ class CollisionSystem {
     //draft
     resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
-            if (this.checkCollision(atk, this.player)) {
+            if (CollisionSystem.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
                 // this.player.components['stats'].applyDamage(atk.components['stats'].doDamage());
                 // console.log(atk.components['stats'].damage)
@@ -110,7 +110,7 @@ class CollisionSystem {
      */
     resolveProjectiles() {
         this.projectileList.forEach(p => {
-            if (this.checkCollision(p, this.player)) {
+            if (CollisionSystem.checkCollision(p, this.player)) {
                 if (p.tag.includes("explosion")) {
                     this.player.components["stats"].applyDamage(p.components["stats"].damage);
                 }
@@ -121,7 +121,7 @@ class CollisionSystem {
             }
 
             this.mobList.forEach(mob => {
-               if (this.checkCollision(p, mob) && !mob.tag.includes('ignore')) {
+               if (CollisionSystem.checkCollision(p, mob) && !mob.tag.includes('ignore')) {
                    // damage mob
                    mob.components["stats"].applyDamage(p.components["stats"].damage);
                    // freeze mob in place when hit
@@ -145,7 +145,7 @@ class CollisionSystem {
                }
             });
             this.tileList.forEach(tile => {
-               if (this.checkCollision(p, tile)) {
+               if (CollisionSystem.checkCollision(p, tile)) {
                    if (p.tag.includes("explosion")) {
                        // tile.destroy();
                    } else if (p.tag === "bomb") {
@@ -174,7 +174,7 @@ class CollisionSystem {
      * @param entityB     Second entity.
      * @returns {boolean} If entities are colliding.
      */
-    checkCollision(entityA, entityB) {
+    static checkCollision(entityA, entityB) {
         const a = entityA.components["boxCollider"];
         const b = entityB.components["boxCollider"];
         return a.right > b.left
