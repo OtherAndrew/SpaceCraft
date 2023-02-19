@@ -17,11 +17,12 @@ class Spore {
         const stats = new CStats({
             maxHealth: 100
         });
+        const height = 160;
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
             sWidth: 138,
-            sHeight: 160,  //196
-            scale: 0.45,
+            sHeight: height,  //196
+            scale: 0.5,
             fps: 10,
             lastFrameX: 7
         });
@@ -30,11 +31,13 @@ class Spore {
             y: props.y,
             hasGravity: true
         });
+        const cWidth = BLOCKSIZE * 2;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: sprite.dWidth + 1.9,
-            height: sprite.dHeight   //-15
+            width: cWidth,
+            height: sprite.dHeight,   //-15
+            xOffset: (sprite.dWidth - cWidth) / 2
         });
 
         console.log('spore width', collider.width);
