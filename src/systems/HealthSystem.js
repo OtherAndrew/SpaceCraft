@@ -1,8 +1,8 @@
 
 class HealthSystem {
 
-    constructor(entities, projectileManager) {
-        Object.assign(this, { entities, projectileManager });
+    constructor(entities, particleFactory) {
+        Object.assign(this, { entities, particleFactory });
     }
 
     update(tick) {
@@ -14,7 +14,7 @@ class HealthSystem {
             const eStats = e.components["stats"];
             if (eStats.currentHealth <= 0) {
                 const origin = e.components['boxCollider'].center;
-                this.projectileManager.detonate('death_effect', origin);
+                this.particleFactory.generate('death', origin);
                 if (e.tag.includes('mob')) {
                     e.destroy();
                 }

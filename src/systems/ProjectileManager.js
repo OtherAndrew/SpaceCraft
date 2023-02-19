@@ -201,7 +201,7 @@ class ProjectileManager {
         switch (type) {
             case 'explosion':
                 projectileQueue.push(new Explosion({
-                    tag: 'explosion destroyBlock',
+                    tag: 'ignoreTile destroyBlock',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 10,
                     origin: position,
@@ -209,7 +209,7 @@ class ProjectileManager {
                 break;
             case 'mini_explosion':
                 projectileQueue.push(new Explosion({
-                    tag: 'explosion',
+                    tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
                     damage: 3,
                     origin: position,
@@ -217,17 +217,9 @@ class ProjectileManager {
                 break;
             case 'enemy_explosion':
                 projectileQueue.push(new Explosion({
-                    tag: 'explosion',
+                    tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
                     damage: 5,
-                    origin: position,
-                }));
-                break;
-            case 'death_effect':
-                projectileQueue.push(new Explosion({
-                    tag: 'explosion',
-                    sprite: this.deathSprite(),
-                    damage: 0,
                     origin: position,
                 }));
                 break;
@@ -300,17 +292,6 @@ class ProjectileManager {
             firstFrameX: frameX,
             frameY: frameY
         });
-    }
-
-    deathSprite() {
-        return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.DEATH_EFFECT),
-            sWidth: 64,
-            sHeight: 64,
-            scale: 2,
-            lastFrameX: 10,
-            fps: 30
-        })
     }
 }
 
@@ -400,34 +381,5 @@ class Explosion {
         const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
-    }
-}
-
-class Particle {
-
-    /**
-     * Generates Particle blueprint.
-     * @param {Object} props                   Particle properties
-     * @param {string} props.tag               Particle tag
-     * @param {CSprite} props.sprite           Particle sprite
-     * @param {{number, number}} props.origin  Particle origin point (x, y)
-     * @return {Particle} Particle blueprint.
-     */
-    constructor(props) {
-        this.tag = props.tag;
-        this.name = 'particle';
-        this.components = this.#buildComponents(props);
-        return this;
-    }
-
-    #buildComponents(props) {
-        const sprite = props.sprite;
-        const transform = new CTransform({
-            x: props.origin.x - sprite.dWidth / 2,
-            y: props.origin.y - sprite.dHeight / 2,
-            hasGravity: false,
-        });
-        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
-        return [sprite, transform, duration];
     }
 }
