@@ -1,4 +1,4 @@
-class ProjectileManager {
+class ProjectileFactory {
 
     constructor(entityManager) {
         this.entityManager = entityManager;
@@ -23,7 +23,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 15
                 projectileOrigin.y += directionVector.y * 15
                 projectileQueue.push(new Projectile({
-                    tag: 'bullet',
+                    tag: 'playerAttack',
                     sprite: this.bulletSprite(8),
                     damage: 10,
                     speed: BLOCKSIZE * 0.5,
@@ -41,7 +41,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 15
                 projectileOrigin.y += directionVector.y * 15
                 projectileQueue.push(new Projectile({
-                    tag: 'bullet',
+                    tag: 'playerAttack',
                     sprite: this.bulletSprite(11),
                     damage: 15,
                     speed: BLOCKSIZE * 0.5,
@@ -59,7 +59,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
-                    tag: 'bullet',
+                    tag: 'playerAttack',
                     sprite: this.bulletSprite(2),
                     damage: 20,
                     speed: BLOCKSIZE * 0.75,
@@ -78,9 +78,9 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 10
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
-                        tag: 'bullet_minigun',
+                        tag: 'playerAttack',
                         sprite: this.bulletSprite(14, 0, 0.8),
-                        damage: 2,
+                        damage: 2.5,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
                         origin: projectileOrigin,
@@ -97,9 +97,9 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 10
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
-                    tag: 'bullet_railgun',
+                    tag: 'playerAttack ignoreTile pierce',
                     sprite: this.bulletSprite(4),
-                    damage: 100,
+                    damage: 120,
                     speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
                     origin: projectileOrigin,
@@ -112,7 +112,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 30
                 projectileOrigin.y += directionVector.y * 30
                 projectileQueue.push(new Projectile({
-                    tag: 'bullet_fire',
+                    tag: 'playerAttack pierce',
                     sprite: this.fireSprite(),
                     damage: 0.05,
                     speed: BLOCKSIZE * 0.1,
@@ -128,7 +128,7 @@ class ProjectileManager {
                 projectileOrigin.y += directionVector.y * 20;
                 directionVector.y -= 0.25;
                 projectileQueue.push(new Projectile({
-                    tag: 'bomb',
+                    tag: 'playerAttack explosive',
                     sprite: this.bombSprite(BLOCKSIZE * 0.6),
                     damage: 0,
                     speed: BLOCKSIZE * 0.5,
@@ -143,7 +143,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 10;
                 projectileOrigin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
-                    tag: 'mini_bomb',
+                    tag: 'playerAttack mini explosive',
                     sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                     damage: 0,
                     speed: BLOCKSIZE * 0.75,
@@ -155,7 +155,7 @@ class ProjectileManager {
                 }));
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
-                        tag: 'mini_bomb',
+                        tag: 'playerAttack mini explosive',
                         sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                         damage: 0,
                         speed: BLOCKSIZE * 0.75,
@@ -180,9 +180,9 @@ class ProjectileManager {
                 origin.x += directionVector.x * 10;
                 origin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
-                    tag: 'enemyAttack',
+                    tag: 'enemy',
                     sprite: this.darkOrbSprite(4, 1),
-                    damage: 20,
+                    damage: 10,
                     speed: BLOCKSIZE * 0.05,
                     dVector: directionVector,
                     origin: origin,
@@ -197,59 +197,30 @@ class ProjectileManager {
     }
 
     detonate(type, position) {
-        const zeroVector = {x: 0, y: 0};
         const projectileQueue = [];
         switch (type) {
             case 'explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
+                projectileQueue.push(new Explosion({
+                    tag: 'ignoreTile destroyBlock',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 10,
-                    speed: 0,
-                    dVector: zeroVector,
+                    damage: 12,
                     origin: position,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
                 }));
                 break;
             case 'mini_explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_mini_explosion',
+                projectileQueue.push(new Explosion({
+                    tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
                     damage: 3,
-                    speed: 0,
-                    dVector: zeroVector,
                     origin: position,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
                 }));
                 break;
             case 'enemy_explosion':
-                projectileQueue.push(new Projectile({
-                    tag: 'bullet_explosion',
+                projectileQueue.push(new Explosion({
+                    tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 5,
-                    speed: 0,
-                    dVector: zeroVector,
+                    damage: 2.5,
                     origin: position,
-                    duration: 7 / 30,
-                    hasGravity: false,
-                    spread: 0
-                }));
-                break;
-            case 'death_effect':
-                projectileQueue.push(new Projectile({
-                    tag: 'death',
-                    sprite: this.deathSprite(),
-                    damage: 0,
-                    speed: 0,
-                    dVector: zeroVector,
-                    origin: position,
-                    duration: 0.4,
-                    hasGravity: false,
-                    spread: 0
                 }));
                 break;
             default: console.log(`ProjectileManager.detonate: Invalid projectile type: ${type}.`);
@@ -322,17 +293,6 @@ class ProjectileManager {
             frameY: frameY
         });
     }
-
-    deathSprite() {
-        return new CSprite({
-            sprite: ASSET_MANAGER.getAsset(MISC_PATH.DEATH_EFFECT),
-            sWidth: 64,
-            sHeight: 64,
-            scale: 2,
-            lastFrameX: 10,
-            fps: 30
-        })
-    }
 }
 
 class Projectile {
@@ -341,6 +301,7 @@ class Projectile {
      * Generates projectile blueprint.
      * @param {Object} props                   Projectile properties
      * @param {string} props.tag               Projectile tag
+     * @param {CSprite} props.sprite           Projectile sprite
      * @param {number} props.damage            Projectile damage
      * @param {number} props.speed             Projectile speed
      * @param {{number, number}} props.dVector Projectile direction vector (vX, vY)
@@ -377,6 +338,47 @@ class Projectile {
             height: sprite.dHeight,
         });
         const duration = new CDuration(props.duration);
+        transform.collider = collider
+        return [stats, sprite, transform, collider, duration];
+    }
+}
+
+class Explosion {
+
+    /**
+     * Generates Explosion blueprint.
+     * @param {Object} props                   Explosion properties
+     * @param {string} props.tag               Explosion tag
+     * @param {CSprite} props.sprite           Explosion sprite
+     * @param {number} props.damage            Explosion damage
+     * @param {{number, number}} props.origin  Explosion origin point (x, y)
+     * @return {Explosion} Projectile blueprint.
+     */
+    constructor(props) {
+        this.tag = props.tag;
+        this.name = 'explosion';
+        this.components = this.#buildComponents(props);
+        return this;
+    }
+
+    #buildComponents(props) {
+        const stats = new CStats({
+            damage: props.damage,
+            invincible: true
+        });
+        const sprite = props.sprite;
+        const transform = new CTransform({
+            x: props.origin.x - sprite.dWidth / 2,
+            y: props.origin.y - sprite.dHeight / 2,
+            hasGravity: false,
+        });
+        const collider = new CBoxCollider({
+            x: transform.x,
+            y: transform.y,
+            width: sprite.dWidth,
+            height: sprite.dHeight,
+        });
+        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }
