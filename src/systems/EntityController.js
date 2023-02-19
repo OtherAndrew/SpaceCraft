@@ -6,12 +6,11 @@ class EntityController {
     }
 
     update(tick) {
-        const playerPosition = this.player.components['boxCollider'].center
+        const pCollider = this.player.components['boxCollider']
         const updateList = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
-        // console.log(updateList)
         updateList.forEach(e => {
             e.components['state'].elapsedTime += tick;
-            e.update(playerPosition.x, playerPosition.y, this.projectileFactory);
+            e.update(pCollider, this.projectileFactory);
         });
     }
 }

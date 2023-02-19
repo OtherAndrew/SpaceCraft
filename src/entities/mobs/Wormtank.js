@@ -52,7 +52,8 @@ class Wormtank {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
+        const targetX = target.center.x;
         const x = this.components['boxCollider'].center.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);

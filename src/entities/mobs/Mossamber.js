@@ -38,8 +38,8 @@ class Mossamber {
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: sprite.dWidth + 4.35,
-            // xOffset: (sprite.dWidth - cWidth) / 2,
+            width: cWidth,
+            xOffset: (sprite.dWidth - cWidth) / 2,
             height: sprite.dHeight
         });
 
@@ -54,8 +54,7 @@ class Mossamber {
 
     }
 
-    update(targetX, targetY, projectileManager) {
-
+    update(target, projectileManager) {
     }
 
     #addAnimations(sprite) {
@@ -68,6 +67,3 @@ class Mossamber {
     }
 
 }
-// change base to blocksize divisible
-// if width < blocksize  multiple until width > blocksize
-//

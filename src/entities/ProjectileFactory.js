@@ -25,14 +25,14 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
                     sprite: this.bulletSprite(8),
-                    damage: 10,
+                    damage: 12.5,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
                     origin: projectileOrigin,
                     // 0.4 = 100% center to edge horizontal
                     // 0.3 = 75% center to edge horizontal
                     // 0.2 = 50% center to edge horizontal
-                    duration: 0.2,
+                    duration: 0.25,
                     hasGravity: false,
                     spread: 1
                 }));
@@ -114,7 +114,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack pierce',
                     sprite: this.fireSprite(),
-                    damage: 0.05,
+                    damage: 0.15,
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,

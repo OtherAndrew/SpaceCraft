@@ -49,11 +49,11 @@ class Spore {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
         const origin = this.components['boxCollider'].center;
         const state = this.components['state'];
-        if (state.elapsedTime > 2 && getDistance2(origin.x, origin.y, targetX, targetY) <= BLOCKSIZE * 16) {
-            projectileManager.entityShoot('spore', {x: targetX, y: targetY}, origin)
+        if (state.elapsedTime > 2 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
+            projectileManager.entityShoot('spore', target.center, origin)
             state.elapsedTime = 0;
         }
     }

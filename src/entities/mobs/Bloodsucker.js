@@ -72,7 +72,9 @@ class Bloodsucker {
         bMap.set('flyR', new BehaviorProps(-stats.speed, null));
     }
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
+        const targetX = target.center.x;
+        const targetY = target.center.y;
         //TODO use A* to to find path
         const x = this.components['boxCollider'].center.x;
         const y = this.components['boxCollider'].center.y;

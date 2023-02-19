@@ -54,11 +54,12 @@ class Lightjelly {
 
     };
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
         const velocity = this.components["stats"].speed;
-
-        const x = this.components.transform.x;
-        const y = this.components.transform.y;
+        const targetX = target.center.x;
+        const targetY = target.center.y;
+        const x = this.components['boxCollider'].center.x;
+        const y = this.components['boxCollider'].center.y;
         const transform = this.components.transform;
 
         const distance = getDistance2(x, y, targetX, targetY);
