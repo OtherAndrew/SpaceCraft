@@ -152,7 +152,8 @@ const CHAR_PATH = {
     ROCKET      :	'./assets/sprites/rocket.png',
     MOSSAMBER   :	'./assets/sprites/mossamber.png',
     BLOODSUCKER :	'./assets/sprites/bloodsucker.png',
-    CREEPERILLA :	'./assets/sprites/creeperilla.png'
+    CREEPERILLA :	'./assets/sprites/creeperilla.png',
+    BROODMOTHER :	'./assets/sprites/broodmother.png'
 }
 
 const CRAFT_COLOR = {

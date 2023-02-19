@@ -22,7 +22,7 @@ class Mossamber {
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
             sWidth: 141,
             sHeight: 159,
-            scale: .7,
+            scale: .65,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 0,
@@ -34,10 +34,12 @@ class Mossamber {
             y: props.y,
             hasGravity: true
         });
+        const cWidth = 1.2 * BLOCKSIZE;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: sprite.dWidth,
+            width: sprite.dWidth + 4.35,
+            // xOffset: (sprite.dWidth - cWidth) / 2,
             height: sprite.dHeight
         });
 
@@ -48,9 +50,12 @@ class Mossamber {
         state.sprite = sprite;
         state.transform = transform;
         return [stats, sprite, transform, collider, state];
+
+
     }
 
     update(targetX, targetY, projectileManager) {
+
     }
 
     #addAnimations(sprite) {
@@ -63,3 +68,6 @@ class Mossamber {
     }
 
 }
+// change base to blocksize divisible
+// if width < blocksize  multiple until width > blocksize
+//

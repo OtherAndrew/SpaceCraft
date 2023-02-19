@@ -63,6 +63,8 @@ class WorldScene extends Scene {
         this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
         this.mobFactory.build('creeperilla', this.player.components.transform.x + 1500, this.player.components.transform.y - 350);
         this.mobFactory.build('spiderboss', this.player.components.transform.x + 800, this.player.components.transform.y - 550);
+        this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 350);
+
     }
 
 
@@ -136,7 +138,7 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 
-        //this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
