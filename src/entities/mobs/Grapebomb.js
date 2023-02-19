@@ -21,7 +21,7 @@ class Grapebomb {
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
             sWidth: 155,
             sHeight: 171,
-            scale: 0.3,
+            scale: 0.35,
             fps: 4,
             lastFrameX: 3
         });
@@ -30,10 +30,12 @@ class Grapebomb {
             y: props.y,
             hasGravity: true
         });
+        const cWidth = 2 * BLOCKSIZE;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: sprite.dWidth,
+            width: sprite.dWidth + 9.75,
+            xOffset: (sprite.dWidth - cWidth) / 2,
             height: BLOCKSIZE * 1.4
         });
 

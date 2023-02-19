@@ -11,6 +11,7 @@ class Dirtcarver {
         this.tag = 'mob';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
+        this.rand = Math.floor(Math.random()*(60 - 10) + 10);
     };
 
     #buildComponents(props) {
@@ -56,7 +57,15 @@ class Dirtcarver {
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
 
-        //check if this collide with
+        if (this.rand > 0) {
+            this.rand--;
+
+        } else {
+            let height = Math.floor(Math.random()*(15 - 3) + 3);
+            this.components.transform.velocityY -= height;
+            this.components.transform.velocityX = state == "walkL" ? -2: 2;
+        }
+        console.log('dc num', this.rand);
     }
 
     #addAnimations(sprite) {

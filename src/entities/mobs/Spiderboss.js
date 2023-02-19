@@ -11,22 +11,22 @@ class Spiderboss {
         this.tag = 'spiderboss mob';
         this.name = 'spiderboss';
         this.components = this.#buildComponents(props);
-        this.rand = 10 + Math.random()*60;
+        this.rand = Math.floor(Math.random()*(60-10) + 10);
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 3
+            speed: 1
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.CREEPERILLA],
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.BROODMOTHER],
             sWidth: 150,
             sHeight: 104,
             scale: 5,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 3,
-            fps: 8,
+            fps: 1.5,
             padding: 3
         });
         const transform = new CTransform({
@@ -34,7 +34,7 @@ class Spiderboss {
             y: props.y,
             hasGravity: true,
         });
-        const cWidth = 10 * BLOCKSIZE;
+        const cWidth = 13 * BLOCKSIZE;
         const collider = new CBoxCollider({
             x: props.x + props.width / 2,
             y: props.y,
@@ -56,22 +56,15 @@ class Spiderboss {
         const x = this.components['boxCollider'].center.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
-        //check if this collide with
-
-        // let rand = 2000 + Math.random()*5000;
         if (this.rand > 0) {
             this.rand -= 1;
-            console.log('random num', this.rand);
+
         } else {
 
-            let height = Math.random()*(10 - 5) + 5
+            let height = Math.floor(Math.random()*(10 - 5) + 5);
             this.components.transform.velocityY -= height;
-            // let leap = Math.random()*(10 - 3) + 3
-            // this.components.transform.velocityX = state == "walkL" ? -leap: leap;
-            this.rand = Math.random()*(60 - 30) + 30;
-            // console.log('height', height);
+            this.rand = Math.floor(Math.random()*(60 - 30) + 30);
         }
-        // console.log('random num', this.rand);
 
     }
 

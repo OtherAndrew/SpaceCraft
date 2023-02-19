@@ -11,7 +11,7 @@ class Creeperilla {
         this.tag = 'creeperilla mob';
         this.name = 'creeperilla';
         this.components = this.#buildComponents(props);
-        this.rand = 10 + Math.random()*60;
+        this.rand = Math.floor(Math.random()*(60-10) + 10);
     };
 
     #buildComponents(props) {
@@ -56,23 +56,17 @@ class Creeperilla {
         const x = this.components['boxCollider'].center.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
-        //check if this collide with
-
-        // let rand = 2000 + Math.random()*5000;
         if (this.rand > 0) {
             this.rand -= 1;
-            console.log('random num', this.rand);
+
         } else {
 
-            let height = Math.random()*(25 - 5) + 5
+            let height = Math.floor(Math.random()*(25 - 5) + 5);
             this.components.transform.velocityY -= height;
-            let leap = Math.random()*(10 - 3) + 3
+            let leap = Math.floor(Math.random()*(10 - 3) + 3);
             this.components.transform.velocityX = state == "walkL" ? -leap: leap;
-            this.rand = Math.random()*(60 - 30) + 30;
-            console.log('height', height);
+            this.rand = Math.floor(Math.random()*(60 - 30) + 30);
         }
-        console.log('random num', this.rand);
-
     }
 
     #jump(){
