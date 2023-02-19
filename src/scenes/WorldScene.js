@@ -48,7 +48,7 @@ class WorldScene extends Scene {
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileManager);
-        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud);
+        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
@@ -61,11 +61,7 @@ class WorldScene extends Scene {
         this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
         this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
-        this.mobFactory.build('creeperilla', this.player.components.transform.x + 1500, this.player.components.transform.y - 350);
-        this.mobFactory.build('spiderboss', this.player.components.transform.x + 800, this.player.components.transform.y - 550);
     }
-
-
 
     giveWeapons() {
         this.#givePlayerPickAxe()
@@ -126,7 +122,7 @@ class WorldScene extends Scene {
             this.camera.update();
             this.renderSystem.update(deltaTime);
         }
-        this.cursorSystem.update(menuActive, this.playerController.getGridCell(mouse))
+        this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.hud.update(menuActive, keys);

@@ -10,6 +10,7 @@ const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
+const BLOCK_PLACEMENT_DISTANCE = 3
 
 const MAXCREEPERILA = 2;
 const MAXDIRTCARVER = 5;
@@ -19,77 +20,6 @@ const MAXLIGHTBUG = 1;
 const MAXGRAPEBOMB = 3;
 const MAXBLOODSUCKER = 2;
 const MAXWORMTANK = 5;
-
-// const BISMUTH_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const COAL_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 7.0
-// }
-// const COBALT_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const COPPER_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 7.0
-// }
-// const FERRITE_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const GOLD_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 6.0
-// }
-// const IRON_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 7.0
-// }
-// const PARAFFIN_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const SAND_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 15.0
-// }
-// const SILICA_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 5.0
-// }
-// const TIN_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 2.5
-// }
-// const TITANITE_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 1.5
-// }
-// const TUNGSTEN_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 3.0
-// }
-// const RUBY_GEN_STATS = {
-//     yMin: 0,
-//     yMax: 0,
-//     rate: 0.0
-// }
 
 const GENSTATS = {
     BISMUTH	    :	3.0,
@@ -121,6 +51,10 @@ const BG_PATH = {
     UNDERGROUND_6	:	'./assets/backgrounds/underground_6.png'
 }
 
+const SOUND_PATH = {
+    BOSS            : './assets/music/themes/boss_battle.mp3'
+}
+
 const BG_SCROLL = {
     SPEED_0 :	.03,
     SPEED_1	:	.05,
@@ -129,16 +63,6 @@ const BG_SCROLL = {
     SPEED_4	:	.08,
     SPEED_5	:	.09
 }
-
-// ALT SOLUTION
-// const BG_SCROLL = {
-//     BACKGROUND_0    :   .03,
-//     BACKGROUND_1	:	.05,
-//     BACKGROUND_2	:	.06,
-//     BACKGROUND_3	:	.07,
-//     BACKGROUND_4	:	.08,
-//     BACKGROUND_5	:	.09
-// }
 
 const CHAR_PATH = {
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
@@ -173,6 +97,8 @@ const MISC_PATH = {
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
     DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
     PICK	            :	'./assets/icons/item_3485.png',
+    BLOCK_PLACEMENT_GREEN     :   './assets/cursors/blockPlacementGreen.cur',
+    BLOCK_PLACEMENT_RED     :   './assets/cursors/blockPlacementRed.cur'
 }
 
 const OVERLAY_PATH = {
@@ -248,7 +174,8 @@ const PATHS = {
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
-    WEAPONS     :   WEAPON_PATH
+    WEAPONS     :   WEAPON_PATH,
+    SOUNDS      :   SOUND_PATH
 }
 
 const CONSTANTS = {
@@ -264,7 +191,8 @@ const CONSTANTS = {
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
-    WEAPONS     :   WEAPON_PATH
+    WEAPONS     :   WEAPON_PATH,
+    SOUNDS      :   SOUND_PATH
 }
 
 for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])

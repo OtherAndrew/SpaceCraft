@@ -129,6 +129,35 @@ const cleanTag = (tag) => {
     return tag;
 }
 
+/**
+ * Converts mouse click coordinates to world coordinates according to player's position.
+ * 
+ * @param {*} pos 
+ * @param {*} player 
+ * @returns new mouse coords
+ */
+const getGridCell = (pos, player) => {
+    if(pos === null) return null
+    const pCollider = player.components["boxCollider"]
+    let offsetX = pCollider.center.x >= WIDTH/2 ?
+        pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
+            WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
+            (pCollider.center.x - WIDTH/2) : 0
+    let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
+    let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
+    //if(mapY < 0) return mapY
+    return {
+        x: mapX,
+        y: mapY
+    }
+}
+
+/**
+ * Used when placing a block to world. 
+ * @param {*} entityA  the player
+ * @param {*} entityB the block that is to be placed
+ * @returns boolean whether block is placed on player
+ */
 const checkCollision = (entityA, entityB) => {
     const a = entityA.components["boxCollider"];
     const b = {
@@ -141,4 +170,47 @@ const checkCollision = (entityA, entityB) => {
         && a.left < b.right
         && a.top < b.bottom
         && a.bottom > b.top;
+}
+
+/**
+ * Checks the distance between block placement cell and player
+ * @param {*} coords 
+ * @param {*} player 
+ * @returns the distance in block count
+ */
+const checkPlayerDistance = (coords, player) => {
+    let playerCoords = {
+        x: Math.ceil(player.components.transform.x / BLOCKSIZE),
+        y: Math.floor(player.components.transform.y / BLOCKSIZE)
+    }
+    return getDistance(playerCoords, coords)
+}
+
+/**
+ * Checks to see if block placement cell has a block in one of its cardinal directions.
+ * @param {*} coords 
+ * @param {*} terrainMap 
+ * @returns 
+ */
+const checkCellConnectedToBlock = (coords, terrainMap) => {
+    console.log(coords)
+    if(terrainMap[coords.y][clamp(coords.x-1, 0, terrainMap[0].length-1)].tag.includes('tile')) return true
+    if(terrainMap[coords.y][clamp(coords.x+1, 0, terrainMap[0].length-1)].tag.includes('tile')) return true
+    if(terrainMap[clamp(coords.y-1, 0, terrainMap.length-1)][coords.x].tag.includes('tile')) return true
+    if(terrainMap[clamp(coords.y+1, 0, terrainMap.length-1)][coords.x].tag.includes('tile')) return true
+}
+
+/**
+ * Handles the call to 3 functions to determine if block placement is allowed in clicked cell.
+ * 
+ * @param {*} player 
+ * @param {*} coords 
+ * @param {*} terrainMap 
+ * @returns 
+ */
+const isPlaceable = (player, coords, terrainMap) => {
+    if(checkPlayerDistance(coords, player) < BLOCK_PLACEMENT_DISTANCE) {
+        let c = {x: coords.x * BLOCKSIZE, y: coords.y * BLOCKSIZE}
+        return !checkCollision(player, c) && checkCellConnectedToBlock(coords, terrainMap)
+    }
 }

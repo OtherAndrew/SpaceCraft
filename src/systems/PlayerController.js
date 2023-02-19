@@ -120,7 +120,7 @@ class PlayerController {
     }
 
     handleMouse(pos, activeContainer, tick) {
-        let coords = this.getGridCell(pos)
+        let coords = getGridCell(pos, this.player)
         let mapY = coords.y
         let mapX = coords.x
         let selected = this.terrainMap[mapY][mapX];
@@ -131,10 +131,7 @@ class PlayerController {
         console.log(selected.tag)
         let active = activeContainer.item;
         if (active) {
-            if(/tile|craft/.test(active.tag) && 
-                !checkCollision(this.player, {x: mapX* BLOCKSIZE, y: mapY * BLOCKSIZE}) &&
-                this.#checkPlayerDistance(coords) < 3 &&
-                this.#checkCellConnectedToBlock(coords)) {
+            if(/tile|craft/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
                 if(selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(activeContainer.slot);
                     let newBlock;
@@ -171,42 +168,11 @@ class PlayerController {
         }
     }
 
-    #checkPlayerDistance(coords) {
-        let playerCoords = {
-            x: Math.ceil(this.player.components.transform.x / BLOCKSIZE),
-            y: Math.floor(this.player.components.transform.y / BLOCKSIZE)
-        }
-        return getDistance(playerCoords, coords)
-    }
-    #checkCellConnectedToBlock(coords) {
-        console.log(coords)
-        if(this.terrainMap[coords.y][clamp(coords.x-1, 0, this.terrainMap[0].length-1)].tag.includes('tile')) return true
-        if(this.terrainMap[coords.y][clamp(coords.x+1, 0, this.terrainMap[0].length-1)].tag.includes('tile')) return true
-        if(this.terrainMap[clamp(coords.y-1, 0, this.terrainMap.length-1)][coords.x].tag.includes('tile')) return true
-        if(this.terrainMap[clamp(coords.y+1, 0, this.terrainMap.length-1)][coords.x].tag.includes('tile')) return true
-    }
-
     #fireWeapon(activeWeapon, target, tick) {
         const wProps = this.weaponMap.get(activeWeapon);
         if (wProps.fireTime <= wProps.duration) {
             this.projectileManager.playerShoot(wProps.projectileType, target, this.player)
             wProps.fireTime += tick;
-        }
-    }
-
-    getGridCell(pos) {
-        if(pos === null) return null
-        const pCollider = this.player.components["boxCollider"]
-        let offsetX = pCollider.center.x >= WIDTH/2 ?
-            pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
-                WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
-                (pCollider.center.x - WIDTH/2) : 0
-        let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
-        let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
-        //if(mapY < 0) return mapY
-        return {
-            x: mapX,
-            y: mapY
         }
     }
 }
