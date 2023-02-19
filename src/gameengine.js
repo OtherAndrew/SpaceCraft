@@ -74,7 +74,6 @@ class GameEngine {
                 console.log("MouseDown", getXandY(e));
             }
             this.mouseDown = getXYTW(e);
-            console.log(this.mouseDown);
         })
 
         this.ctx.canvas.addEventListener('mouseup', e => {

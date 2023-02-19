@@ -128,3 +128,17 @@ const cleanTag = (tag) => {
     if (index !== -1) return tag.slice(index + 1);
     return tag;
 }
+
+const checkCollision = (entityA, entityB) => {
+    const a = entityA.components["boxCollider"];
+    const b = {
+        top: entityB.y,
+        bottom: entityB.y + BLOCKSIZE,
+        left: entityB.x,
+        right: entityB.x + BLOCKSIZE
+    }
+    return a.right > b.left
+        && a.left < b.right
+        && a.top < b.bottom
+        && a.bottom > b.top;
+}

@@ -131,7 +131,10 @@ class PlayerController {
         console.log(selected.tag)
         let active = activeContainer.item;
         if (active) {
-            if(/tile|craft/.test(active.tag)) {
+            if(/tile|craft/.test(active.tag) && 
+                !checkCollision(this.player, {x: mapX* BLOCKSIZE, y: mapY * BLOCKSIZE}) &&
+                this.#checkPlayerDistance(coords) < 3 &&
+                this.#checkCellConnectedToBlock(coords)) {
                 if(selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(activeContainer.slot);
                     let newBlock;
@@ -155,14 +158,32 @@ class PlayerController {
                         delete e.components["boxCollider"]
                         this.containerManager.addToInventory('player', resizeBlock(e))}
                 }
-            } else {
+            } 
+            /*
+            else {
                 this.#fireWeapon(active.tag, cursorTarget, tick);
             }
+            */
         } else if (selected.tag.includes('craft')) {
             console.log('open crafting menu')
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
+    }
+
+    #checkPlayerDistance(coords) {
+        let playerCoords = {
+            x: Math.ceil(this.player.components.transform.x / BLOCKSIZE),
+            y: Math.floor(this.player.components.transform.y / BLOCKSIZE)
+        }
+        return getDistance(playerCoords, coords)
+    }
+    #checkCellConnectedToBlock(coords) {
+        console.log(coords)
+        if(this.terrainMap[coords.y][clamp(coords.x-1, 0, this.terrainMap[0].length-1)].tag.includes('tile')) return true
+        if(this.terrainMap[coords.y][clamp(coords.x+1, 0, this.terrainMap[0].length-1)].tag.includes('tile')) return true
+        if(this.terrainMap[clamp(coords.y-1, 0, this.terrainMap.length-1)][coords.x].tag.includes('tile')) return true
+        if(this.terrainMap[clamp(coords.y+1, 0, this.terrainMap.length-1)][coords.x].tag.includes('tile')) return true
     }
 
     #fireWeapon(activeWeapon, target, tick) {

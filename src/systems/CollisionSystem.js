@@ -48,7 +48,7 @@ class CollisionSystem {
     resolveTileX() {
         this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
-                if (CollisionSystem.checkCollision(mob, tile)) {
+                if (this.checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     mTransform.velocityX = 0
@@ -65,7 +65,7 @@ class CollisionSystem {
     resolveTileY() {
         this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
-                if (CollisionSystem.checkCollision(mob, tile)) {
+                if (this.checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     const tCollider = tile.components["boxCollider"];
@@ -93,7 +93,7 @@ class CollisionSystem {
      */
     #resolveMobAttack() {
         this.mobAttackList.forEach(atk => {
-            if (CollisionSystem.checkCollision(atk, this.player)) {
+            if (this.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
                 if (atk.tag === "enemyAttack") {
                     atk.destroy();
@@ -112,7 +112,7 @@ class CollisionSystem {
      */
     #resolveProjectiles() {
         this.projectileList.forEach(p => {
-            if (CollisionSystem.checkCollision(p, this.player)) {
+            if (this.checkCollision(p, this.player)) {
                 if (p.tag.includes("explosion")) {
                     this.player.components["stats"].applyDamage(p.components["stats"].damage);
                 }
@@ -186,7 +186,7 @@ class CollisionSystem {
      * @param {Entity} entityB     Second entity.
      * @returns {boolean} If entities are colliding.
      */
-    static checkCollision(entityA, entityB) {
+    checkCollision(entityA, entityB) {
         const a = entityA.components["boxCollider"];
         const b = entityB.components["boxCollider"];
         return a.right > b.left

@@ -345,6 +345,6 @@ class WorldScene extends Scene {
     
     #checkWinCon() {
         let requisite = { item : { tag : 'tile_iron' }, count : 10 }
-        return (this.containerManager.checkCount(requisite) && CollisionSystem.checkCollision(this.player, this.rocket))
+        return (this.containerManager.checkCount(requisite) && this.collisionSystem.checkCollision(this.player, this.rocket))
     }
 }
