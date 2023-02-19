@@ -44,7 +44,7 @@ class CollisionSystem {
     resolveTileX() {
         this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
-                if (this.checkCollision(mob, tile)) {
+                if (checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     mTransform.velocityX = 0
@@ -61,7 +61,7 @@ class CollisionSystem {
     resolveTileY() {
         this.tileCollideList.forEach(mob => {
             this.tileList.forEach(tile => {
-                if (this.checkCollision(mob, tile)) {
+                if (checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     const tCollider = tile.components["boxCollider"];
@@ -91,7 +91,7 @@ class CollisionSystem {
     #resolvePlayerAttack() {
         this.playerAttackList.forEach(atk => {
             this.mobList.forEach(mob => {
-               if (this.checkCollision(atk, mob) && !mob.tag.includes('ignoreAttack')) {
+               if (checkCollision(atk, mob) && !mob.tag.includes('ignoreAttack')) {
                    mob.components["stats"].applyDamage(atk.components["stats"].damage);
                    this.#stun(mob);
                    if (atk.tag.includes("explosive")) {
@@ -104,7 +104,7 @@ class CollisionSystem {
             });
 
             this.tileList.forEach(tile => {
-               if (this.checkCollision(atk, tile)) {
+               if (checkCollision(atk, tile)) {
                    if (atk.tag.includes("explosive")) {
                        this.#handleExplosions(atk);
                    }
@@ -118,17 +118,17 @@ class CollisionSystem {
 
     #resolveExplosions() {
         this.explosionList.forEach(e => {
-            if (this.checkCollision(e, this.player)) {
+            if (checkCollision(e, this.player)) {
                 this.player.components["stats"].applyDamage(e.components["stats"].damage);
             }
             this.mobList.forEach(mob => {
-                if (this.checkCollision(e, mob) && !mob.tag.includes('ignoreAttack')) {
+                if (checkCollision(e, mob) && !mob.tag.includes('ignoreAttack')) {
                     mob.components["stats"].applyDamage(e.components["stats"].damage);
                     this.#stun(mob);
                 }
             });
             this.tileList.forEach(tile => {
-                if (this.checkCollision(e, tile)) {
+                if (checkCollision(e, tile)) {
                     if (e.tag.includes("destroyBlock")) {
                         // tile.destroy();
                     }
@@ -142,7 +142,7 @@ class CollisionSystem {
      */
     #resolveEnemyAttack() {
         this.enemyAttackList.forEach(atk => {
-            if (this.checkCollision(atk, this.player)) {
+            if (checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
                 if (atk.tag.includes("explosive")) {
                     this.#handleExplosions(atk);
@@ -152,7 +152,7 @@ class CollisionSystem {
                 }
             }
             this.tileList.forEach(tile => {
-                if (this.checkCollision(atk, tile)) {
+                if (checkCollision(atk, tile)) {
                     if (atk.name === "projectile" && !atk.tag.includes("ignoreTile")) {
                         atk.destroy();
                     }
@@ -188,20 +188,19 @@ class CollisionSystem {
             this.projectileFactory.detonate("mini_explosion", origin);
         }
     }
+}
 
-    /**
-     * Checks for collision between 2 entities with box colliders.
-     * @param {Entity} entityA     First entity.
-     * @param {Entity} entityB     Second entity.
-     * @returns {boolean} If entities are colliding.
-     */
-    checkCollision(entityA, entityB) {
-        const a = entityA.components["boxCollider"];
-        const b = entityB.components["boxCollider"];
-        return a.right > b.left
-            && a.left < b.right
-            && a.top < b.bottom
-            && a.bottom > b.top;
-    }
-
+/**
+ * Checks for collision between 2 entities with box colliders.
+ * @param {Object | CBoxCollider} entityA     First entity.
+ * @param {Object | CBoxCollider} entityB     Second entity.
+ * @returns {boolean} If entities are colliding.
+ */
+const checkCollision = (entityA, entityB) => {
+    const a = (entityA instanceof CBoxCollider) ? entityA : entityA.components["boxCollider"];
+    const b = (entityB instanceof CBoxCollider) ? entityB : entityB.components["boxCollider"];
+    return a.right > b.left
+        && a.left < b.right
+        && a.top < b.bottom
+        && a.bottom > b.top;
 }
