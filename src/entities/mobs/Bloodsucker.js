@@ -16,10 +16,8 @@ class Bloodsucker {
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
+            damage: 0.5,
             speed: 1.5,
-            currentCount: 0,
-            total: MAXBLOODSUCKER,
             maxHealth: 70
         });
         const sprite = new CSprite({

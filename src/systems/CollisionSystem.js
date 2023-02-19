@@ -5,10 +5,8 @@
  * @author Andrew Nguyen
  */
 class CollisionSystem {
-    constructor(player, entities, projectileManager) {
-        this.player = player;
-        this.entities = entities;
-        this.projectileManager = projectileManager;
+    constructor(player, entities, projectileFactory) {
+        Object.assign(this, { player, entities, projectileFactory })
 
         this.collideList = null;
         this.tileCollideList = null;
@@ -146,19 +144,16 @@ class CollisionSystem {
         this.enemyAttackList.forEach(atk => {
             if (this.checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
-                if (atk.name === "projectile") {
-                    atk.destroy();
-                }
                 if (atk.tag.includes("explosive")) {
                     this.#handleExplosions(atk);
                 }
-                if (!atk.tag.includes("pierce")) {
+                if (atk.name === "projectile" && !atk.tag.includes("pierce")) {
                     atk.destroy();
                 }
             }
             this.tileList.forEach(tile => {
                 if (this.checkCollision(atk, tile)) {
-                    if (!atk.tag.includes("ignoreTile")) {
+                    if (atk.name === "projectile" && !atk.tag.includes("ignoreTile")) {
                         atk.destroy();
                     }
                 }
@@ -188,9 +183,9 @@ class CollisionSystem {
     #handleExplosions(p) {
         const origin = p.components["boxCollider"].center;
         if (p.tag === "playerAttack explosive") {
-            this.projectileManager.detonate("explosion", origin);
-        } else if (p.tag === "playerAttack explosive mini") {
-            this.projectileManager.detonate("mini_explosion", origin);
+            this.projectileFactory.detonate("explosion", origin);
+        } else if (p.tag === "playerAttack mini explosive") {
+            this.projectileFactory.detonate("mini_explosion", origin);
         }
     }
 

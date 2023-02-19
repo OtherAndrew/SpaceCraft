@@ -1,4 +1,4 @@
-class ProjectileManager {
+class ProjectileFactory {
 
     constructor(entityManager) {
         this.entityManager = entityManager;
@@ -80,7 +80,7 @@ class ProjectileManager {
                     projectileQueue.push(new Projectile({
                         tag: 'playerAttack',
                         sprite: this.bulletSprite(14, 0, 0.8),
-                        damage: 2,
+                        damage: 2.5,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
                         origin: projectileOrigin,
@@ -99,7 +99,7 @@ class ProjectileManager {
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack ignoreTile pierce',
                     sprite: this.bulletSprite(4),
-                    damage: 100,
+                    damage: 120,
                     speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
                     origin: projectileOrigin,
@@ -143,7 +143,7 @@ class ProjectileManager {
                 projectileOrigin.x += directionVector.x * 10;
                 projectileOrigin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
-                    tag: 'playerAttack explosive mini',
+                    tag: 'playerAttack mini explosive',
                     sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                     damage: 0,
                     speed: BLOCKSIZE * 0.75,
@@ -155,7 +155,7 @@ class ProjectileManager {
                 }));
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
-                        tag: 'playerAttack explosive mini',
+                        tag: 'playerAttack mini explosive',
                         sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
                         damage: 0,
                         speed: BLOCKSIZE * 0.75,
@@ -180,9 +180,9 @@ class ProjectileManager {
                 origin.x += directionVector.x * 10;
                 origin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
-                    tag: 'enemyAttack',
+                    tag: 'enemy',
                     sprite: this.darkOrbSprite(4, 1),
-                    damage: 20,
+                    damage: 10,
                     speed: BLOCKSIZE * 0.05,
                     dVector: directionVector,
                     origin: origin,
@@ -203,7 +203,7 @@ class ProjectileManager {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile destroyBlock',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 10,
+                    damage: 12,
                     origin: position,
                 }));
                 break;
@@ -219,7 +219,7 @@ class ProjectileManager {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 5,
+                    damage: 2.5,
                     origin: position,
                 }));
                 break;

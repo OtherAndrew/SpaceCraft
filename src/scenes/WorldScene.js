@@ -37,17 +37,17 @@ class WorldScene extends Scene {
     });
     */
 
-        this.projectileManager = new ProjectileManager(this.entityManager)
+        this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
-                                                     this.projectileManager, this.terrainMap);
+                                                     this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
-        this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileManager);
+        this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftMenu(this.containerManager);
-        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileManager);
+        this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
@@ -59,6 +59,7 @@ class WorldScene extends Scene {
     }
 
     spawnTestEntities() {
+        this.mobFactory.build("bloodsucker", this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
         this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
         this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);

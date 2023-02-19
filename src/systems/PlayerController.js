@@ -1,7 +1,7 @@
 class PlayerController {
-    constructor(player, game, entityManager, containerManager, projectileManager, terrainMap) {
+    constructor(player, game, entityManager, containerManager, projectileFactory, terrainMap) {
         // this.player = player
-        Object.assign(this, { player, game, entityManager, containerManager, projectileManager, terrainMap })
+        Object.assign(this, { player, game, entityManager, containerManager, projectileFactory, terrainMap })
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
         this.pSprite = this.player.components.sprite
@@ -21,7 +21,7 @@ class PlayerController {
         weaponMap.set("handCannon", new WeaponProps("mini_bomb", 1.5));
         weaponMap.set("flamethrower", new WeaponProps('fire', 6, 3));
         weaponMap.set('minigun', new WeaponProps('minigun_bullet', 7.5, 5));
-        weaponMap.set('railgun', new WeaponProps('railgun_bullet', 5));
+        weaponMap.set('railgun', new WeaponProps('railgun_bullet', 3));
         // weaponMap.set('jetpack', new WeaponProps('smoke', 5, 5));
         return weaponMap;
     }
@@ -168,7 +168,7 @@ class PlayerController {
     #fireWeapon(activeWeapon, target, tick) {
         const wProps = this.weaponMap.get(activeWeapon);
         if (wProps.fireTime <= wProps.duration) {
-            this.projectileManager.playerShoot(wProps.projectileType, target, this.player)
+            this.projectileFactory.playerShoot(wProps.projectileType, target, this.player)
             wProps.fireTime += tick;
         }
     }
