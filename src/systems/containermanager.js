@@ -19,6 +19,7 @@ class ContainerManager {
         this.splitCount = 0;            // new stack count
 
         this.chestCount = 0;
+        this.reuseChest = [];
     }
 
     /**
@@ -367,21 +368,64 @@ class ContainerManager {
         if (this.checkSufficient(recipe)) {
             for (let i = 1; i < recipe.length; i++) this.removeForCrafting(recipe[i]);
             let product = recipe[0];
-            this.addToInventory('player', product.item, product.count);
-            if (product.item.tag.includes('chest')) {
-                let id = 'interact_chest' + this.chestCount++;
-                product.item.tag = id;
-                this.createChest(id);
-            }
+            // if (product.item.tag.includes('chest')) {
+            //     // let chest = new Entity(generateInteractive('interact_chest', 0, 0), 0);
+            //     // chest.tag = this.createChest(chest.tag);
+            //     this.addToInventory('player', /*chest*/ product.item, product.count)
+            // } else {
+                this.addToInventory('player', product.item, product.count);
+            // }
         }
         this.lastClick = click;
     }
 
-    createChest(tag) {
-        this.createInventory(tag, 1000, 300, 4, 4, 'red');
+    // registerChest(tag) { // connect this to worldscene instead so empty chests can stack
+    //     let index = this.reuseChest.splice(0, 1);  // grab first value in queue
+    //     let id;
+    //     if (index.length === 0) {  // if there is no value, use chest counter to create a new inventory
+    //         console.log("No item in reuse");
+    //         id = tag + this.chestCount++;
+    //         console.log("new chest:" + id)
+    //         console.log("adding to inventory list:"+cleanTag(id))
+    //         this.createInventory(cleanTag(id), 420, 314, 4, 4, 'blue');
+    //     } else {
+    //         id = tag + index;
+    //     }
+    //     return id;
+    // }
+
+    registerChest(chest) { // connect this to worldscene instead so empty chests can stack
+        let index = this.reuseChest.splice(0, 1);  // grab first value in queue
+        if (index.length === 0) {  // if there is no value, use chest counter to create a new inventory
+            console.log("No item in reuse");
+            chest.tag = chest.tag + this.chestCount++;
+            console.log("new chest:" + chest.tag)
+            console.log("adding to inventory list:"+cleanTag(chest.tag))
+            this.createInventory(cleanTag(chest.tag), 420, 314, 4, 4, 'blue');
+        } else {
+            chest.tag = chest.tag + index;
+        }
     }
     
-    deleteChest() {}
+    // register when placed by worldscene
+    // deregister when destroyed by worldscene
+    
+    deregisterChest(chest) {
+        // interact_chest0, interact_chest1, ... , interact_chestX
+        console.log("deregistering:"+chest.tag)
+        let index = chest.tag.match(/\d+$/);
+        console.log("removing index:"+index[0]);
+        this.reuseChest.push(index[0]);
+        chest.tag = 'interact_chest'
+        console.log("new tag:"+chest.tag)
+    }
+    
+    checkChest(chest) {
+        let empty = true;
+        let linked = this.getInventory(cleanTag(chest.tag));
+        for (let i = 0; i < linked.length && empty; i++) if (linked[i].item) empty = false;
+        return empty;
+    }
 }
 
 class Container {

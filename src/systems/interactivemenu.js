@@ -14,25 +14,40 @@ class InteractiveMenu {
     ];
 
     table_recipes = [
-        [{tag: 'interact_chest'},
-            {tag: 'tile_dirt'}],
-        [{tag: 'tile_iron'},
-            {tag: 'tile_dirt', count: 5},
-            {tag: 'tile_stone', count: 2}],
-        [{tag: 'tile_dirt'},
-            {tag: 'tile_stone'}],
-        [{tag: 'tile_stone'},
-            {tag: 'tile_dirt'}]
+        [{tag: 'interact_trader'},
+            {tag: 'tile_stone', count: 80},
+            {tag: 'item_copper bar', count: 20}]
+        // refined silica 1:1 silica
+        // circuit 1 goldbar, 5 amber
     ];
 
     furnace_recipes = [
-        [{tag: 'tile_iron'},
-            {tag: 'tile_dirt', count: 5},
-            {tag: 'tile_stone', count: 2}],
-        [{tag: 'tile_dirt'},
-            {tag: 'tile_stone'}],
-        [{tag: 'tile_stone'},
-            {tag: 'tile_dirt'}]
+        [{tag: 'interact_chest'},       // TESTING
+            {tag: 'tile_sand'}],
+        [{tag: 'item_bismuth bar'},
+            {tag: 'tile_bismuth', count: 2}],
+        [{tag: 'item_cobalt bar'},
+            {tag: 'tile_cobalt', count: 2}],
+        [{tag: 'item_copper bar'},
+            {tag: 'tile_copper', count: 2}],
+        [{tag: 'item_ferrite bar'},
+            {tag: 'tile_ferrite', count: 2}],
+        [{tag: 'item_gold bar'},
+            {tag: 'tile_gold', count: 2}],
+        [{tag: 'item_iron bar'},
+            {tag: 'tile_iron', count: 2}],
+        [{tag: 'item_paraffin bar'},
+            {tag: 'tile_paraffin', count: 2}],
+        [{tag: 'item_tin bar'},
+            {tag: 'tile_tin', count: 2}],
+        [{tag: 'item_titanite bar'},
+            {tag: 'tile_titanite', count: 2}],
+        [{tag: 'item_tungsten bar'},
+            {tag: 'tile_tungsten', count: 2}],
+        [{tag: 'item_steel bar'},
+            {tag: 'tile_iron'},
+            {tag: 'tile_coal'},
+            {tag: 'tile_silica'}],
     ];
     
     constructor(containManager) {
@@ -71,9 +86,9 @@ class InteractiveMenu {
                 let generate;
                 if (item.tag.includes('interact')) { // interactive
                     generate = new Entity(generateInteractive(item.tag, 0, 0), 0);
-                }/* else if (item.tag.includes('item')) {
+                } else if (item.tag.includes('item')) {
                     generate = new Entity(generateItem(item.tag, 0, 0), 0);
-                }*/ else { // tile
+                } else { // tile
                     generate = new Entity(generateBlock(item.tag, 0, 0, 'craftgen'), 0);
                 }
                 this.cm.addToInventory(
@@ -107,10 +122,6 @@ class InteractiveMenu {
         }
     }
 
-    createChest() {
-        this.cm.createInventory(this.chestCount + 'chest', 1000, 300, 4, 4, 'red');
-    }
-
     update(menuActive) {
         if (menuActive) {
             let actives = this.cm.activeInventory;
@@ -133,46 +144,3 @@ class InteractiveMenu {
         }
     }
 }
-
-// /**
-//  * Blueprint for Crafter entities.
-//  *
-//  * @author Andrew Nguyen
-//  * @version 1/20/23
-//  */
-// /**
-//  * Initializes new Block
-//  * @param {Object} props         Position and display properties
-//  * @param {string} props.tag     Type tag
-//  * @param {Image} props.sprite   Sprite sheet
-//  * @param {number} props.x       X position on canvas to draw sprite
-//  * @param {number} props.y       Y position on canvas to draw sprite
-//  * @param {number} props.sWidth  Width of sprite on sprite sheet
-//  * @param {number} props.sHeight Height of sprite on sprite sheet
-//  * @param {number} props.scale   Sprite scale factor, 1 by default
-//  * @param {number} props.frameX  X position of sprite frame (not pixel position!), 0 by default
-//  * @param {number} props.frameY  Y position of sprite frame (not pixel position!), 0 by default
-//  * @returns {Object}             This Block's properties.
-//  * @constructor
-//  */
-// const Crafter = function(props) {
-//     return {
-//         tag: props.tag,
-//         components: [
-//             new CTransform({
-//                 x: props.x,
-//                 y: props.y
-//             }),
-//             new CSprite({
-//                 sprite: props.sprite,
-//                 sWidth: props.sWidth,
-//                 sHeight: props.sHeight,
-//                 scale: props.scale,
-//                 firstFrameX: props.frameX,
-//                 frameY: props.frameY
-//             }),
-//             new CLifespan(props.lifespan)
-//         ]
-//     };
-// }
-// Crafter.prototype.name = 'crafter';

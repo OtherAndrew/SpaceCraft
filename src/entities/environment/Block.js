@@ -81,16 +81,31 @@ const generateBlock = (tag, x, y, mode) => {
 
 const generateInteractive = (tag, x, y) => {
     let id = cleanTag(tag).toUpperCase();
-    if (id.includes('CHEST') && !isNaN(id.slice(-1))) id = id.slice(0,-1);
+    if (id.includes('CHEST')) id = 'CHEST';
     let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
-    let tempX = x * BLOCKSIZE, tempY = y * BLOCKSIZE;
     return new Block({
         tag: tag,
         sprite: image,
         lifespan: 20,
-        x: tempX,
-        y: tempY,
+        x: x * BLOCKSIZE,
+        y: y * BLOCKSIZE,
         sWidth: image.width,
-        sHeight: image.height,
+        sHeight: image.height
+    });
+}
+
+const generateItem = (tag, x, y) => {
+    let id = cleanTag(tag).toUpperCase();
+    let index = id.lastIndexOf(' ');
+    id = id.slice(0, index);
+    let image = ASSET_MANAGER.cache[PROD_PATH[id]];
+    return new Block({
+        tag: tag,
+        sprite: image,
+        lifespan: 20,
+        x: x * BLOCKSIZE,
+        y: y * BLOCKSIZE,
+        sWidth: image.width,
+        sHeight: image.height
     });
 }

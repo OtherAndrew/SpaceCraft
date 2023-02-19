@@ -62,8 +62,8 @@ class WorldScene extends Scene {
         this.damageSystem = new DamageSystem(this.entityManager.getEntities)
         this.durationSystem = new DurationSystem(this.entityManager.getEntities)
         this.#givePlayerPickAxe()
-        this.#givePlayerGun()
-        this.#givePlayerFlamethrower()
+        //this.#givePlayerGun()
+        //this.#givePlayerFlamethrower()
     }
 
     spawnTestEntities() {
@@ -263,7 +263,7 @@ class WorldScene extends Scene {
     #handleClick(pos, player, terrainMap) {
         let coords = this.#getGridCell(pos, player)
         let mapY = coords.y || 0;
-        let mapX = coords.x || 0
+        let mapX = coords.x || 0;
         let selected = terrainMap[mapY][mapX];
         console.log(selected.tag)
         let active = this.hud.activeContainer.item;
@@ -272,10 +272,10 @@ class WorldScene extends Scene {
                 if(selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
                     let newBlock;
-                    if (active.tag.includes('interact')) 
+                    if (active.tag.includes('interact')) {
                         newBlock = this.entityManager.addEntity(generateInteractive(tag, mapX, mapY));
-                    else 
-                        newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+                        if (active.tag.includes('chest')) this.containerManager.registerChest(newBlock);
+                    } else newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
@@ -284,13 +284,19 @@ class WorldScene extends Scene {
                 }
             } else if (active.tag === 'pickaxe') {
                 if(/tile|interact/.test(selected.tag)) {
-                    let e = this.entityManager.getEntity(selected.id)
-                    e.components.lifespan.current -= 1
-                    if(e.components.lifespan.current <= 0) {
-                        selected.tag = 'air'
-                        selected.id = null
-                        delete e.components["boxCollider"]
-                    this.containerManager.addToInventory('player', this.#resizeBlock(e))}
+                    let destroyable = true;
+                    if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
+                    if (destroyable) {
+                        let e = this.entityManager.getEntity(selected.id)
+                        e.components.lifespan.current -= 1
+                        if(e.components.lifespan.current <= 0) {
+                            if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
+                            selected.tag = 'air'
+                            selected.id = null
+                            delete e.components["boxCollider"]
+                            this.containerManager.addToInventory('player', this.#resizeBlock(e))
+                        }
+                    }
                 }
             } else if (active.tag === 'gun') {
                 this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
@@ -299,6 +305,7 @@ class WorldScene extends Scene {
             }
         } else if (selected.tag.includes('interact')) {
             this.containerManager.unloadInventory();
+            console.log('attempting load:'+cleanTag(selected.tag))
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }

@@ -122,24 +122,24 @@ const BG_PATH = {
     UNDERGROUND_6	:	'./assets/backgrounds/underground_6.png'
 }
 
-const BG_SCROLL = {
-    SPEED_0 :	.03,
-    SPEED_1	:	.05,
-    SPEED_2	:	.06,
-    SPEED_3	:	.07,
-    SPEED_4	:	.08,
-    SPEED_5	:	.09
-}
+// const BG_SCROLL = {
+//     SPEED_0 :	.03,
+//     SPEED_1	:	.05,
+//     SPEED_2	:	.06,
+//     SPEED_3	:	.07,
+//     SPEED_4	:	.08,
+//     SPEED_5	:	.09
+// }
 
 // ALT SOLUTION
-// const BG_SCROLL = {
-//     BACKGROUND_0    :   .03,
-//     BACKGROUND_1	:	.05,
-//     BACKGROUND_2	:	.06,
-//     BACKGROUND_3	:	.07,
-//     BACKGROUND_4	:	.08,
-//     BACKGROUND_5	:	.09
-// }
+const BG_SCROLL = {
+    BACKGROUND_0    :   .03,
+    BACKGROUND_1	:	.05,
+    BACKGROUND_2	:	.06,
+    BACKGROUND_3	:	.07,
+    BACKGROUND_4	:	.08,
+    BACKGROUND_5	:	.09
+}
 
 const CHAR_PATH = {
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
@@ -162,15 +162,24 @@ const CRAFT_COLOR = {
     BUILTIN_P   :   'purple',
     FURNACE_I   :   'orange',
     FURNACE_P   :   'red',
+    HUB_I       :   'orange',
+    HUB_P       :   'black',
+    STATION_I   :   'red',
+    STATION_P   :   'yellow',
     TABLE_I     :   'brown',
-    TABLE_P     :   'green'
+    TABLE_P     :   'green',
+    TRADER_I    :   'yellow',
+    TRADER_P    :   'pink'
 }
 
 const CRAFT_PATH = {
-    ANVIL   :   './assets/crafting/stations/anvil.png',
-    CHEST   :   './assets/crafting/stations/chest.png',
-    FURNACE :   './assets/crafting/stations/furnace.png',
-    TABLE   :   './assets/crafting/stations/table.png'
+    ANVIL   :   './assets/interactives/furniture/anvil.png',
+    CHEST   :   './assets/interactives/furniture/chest.png',
+    FURNACE :   './assets/interactives/furniture/furnace.png',
+    HUB     :   './assets/interactives/furniture/hub.png',
+    STATION :   './assets/interactives/furniture/station.png',
+    TABLE   :   './assets/interactives/furniture/table.png',
+    TRADER  :   './assets/interactives/furniture/trader.png'
 }
 
 const MISC_PATH = {
@@ -182,13 +191,23 @@ const MISC_PATH = {
 }
 
 const OVERLAY_PATH = {
-    INVENTORY   :   './assets/overlay/inventory.png',
-    VIGNETTE    :   './assets/overlay/vignette.png',
-    FOV         :   './assets/overlay/fov.png'
+    INVENTORY   :   './assets/overlays/inventory.png',
+    VIGNETTE    :   './assets/overlays/vignette.png',
+    FOV         :   './assets/overlays/fov.png'
 }
 
 const PROD_PATH = {
-    
+    BISMUTH	    :	'./assets/interactives/products/bismuth_bar.png',
+    COBALT	    :	'./assets/interactives/products/cobalt_bar.png',
+    COPPER	    :	'./assets/interactives/products/copper_bar.png',
+    FERRITE	    :	'./assets/interactives/products/ferrite_bar.png',
+    GOLD	    :	'./assets/interactives/products/gold_bar.png',
+    IRON	    :	'./assets/interactives/products/iron_bar.png',
+    PARAFFIN	:	'./assets/interactives/products/paraffin_bar.png',
+    STEEL       :   './assets/interactives/products/steel_bar.png',
+    TIN	        :	'./assets/interactives/products/tin_bar.png',
+    TITANITE	:	'./assets/interactives/products/titanite_bar.png',
+    TUNGSTEN	:	'./assets/interactives/products/tungsten_bar.png'
 }
 
 const PROJECTILE_PATH = {
