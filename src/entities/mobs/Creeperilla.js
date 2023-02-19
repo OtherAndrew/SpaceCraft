@@ -52,7 +52,8 @@ class Creeperilla {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
+        const targetX = target.center.x;
         const x = this.components['boxCollider'].center.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
@@ -67,7 +68,7 @@ class Creeperilla {
             let height = Math.random()*(25 - 5) + 5
             this.components.transform.velocityY -= height;
             let leap = Math.random()*(10 - 3) + 3
-            this.components.transform.velocityX = state == "walkL" ? -leap: leap;
+            this.components.transform.velocityX = state === "walkL" ? -leap: leap;
             this.rand = Math.random()*(60 - 30) + 30;
             console.log('height', height);
         }

@@ -50,7 +50,7 @@ class Mossamber {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
     }
 
     #addAnimations(sprite) {

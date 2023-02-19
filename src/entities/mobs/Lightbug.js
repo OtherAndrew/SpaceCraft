@@ -51,13 +51,15 @@ class Lightbug {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(targetX, targetY, projectileManager) {
+    update(target, projectileManager) {
+        const targetX = target.center.x;
+        const targetY = target.center.y;
+        const x = this.components['boxCollider'].center.x;
+        const y = this.components['boxCollider'].center.y;
         const velocity = this.components["stats"].speed;
         const offsetX = 0
         const offsetY = -28
 
-        const x = this.components.transform.x;
-        const y = this.components.transform.y;
         const transform = this.components.transform;
 
         //despawn after x range from player position
