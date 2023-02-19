@@ -22,11 +22,7 @@ class Mossamber {
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
             sWidth: 141,
             sHeight: 159,
-            scale: .65,
-            firstFrameX: 0,
-            frameY: 0,
-            lastFrameX: 0,
-            fps: 1,
+            scale: .66,
             padding: 1
         });
         const transform = new CTransform({
@@ -34,7 +30,7 @@ class Mossamber {
             y: props.y,
             hasGravity: true
         });
-        const cWidth = 1.2 * BLOCKSIZE;
+        const cWidth = 2 * BLOCKSIZE;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
