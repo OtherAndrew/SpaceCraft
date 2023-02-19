@@ -192,8 +192,8 @@ class CollisionSystem {
 
 /**
  * Checks for collision between 2 entities with box colliders.
- * @param {Object | CBoxCollider} entityA     First entity.
- * @param {Object | CBoxCollider} entityB     Second entity.
+ * @param {Entity | CBoxCollider} entityA     First entity.
+ * @param {Entity | CBoxCollider} entityB     Second entity.
  * @returns {boolean} If entities are colliding.
  */
 const checkCollision = (entityA, entityB) => {
