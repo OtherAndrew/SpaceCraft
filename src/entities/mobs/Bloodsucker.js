@@ -17,7 +17,7 @@ class Bloodsucker {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 1,
-            speed: 3,
+            speed: 1.5,
             currentCount: 0,
             total: MAXBLOODSUCKER,
             maxHealth: 70
@@ -37,11 +37,14 @@ class Bloodsucker {
             x: props.x,
             y: props.y
         });
+        const cDim = BLOCKSIZE * 1.75
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: sprite.dWidth,
-            height: sprite.dHeight
+            width: cDim,
+            height: cDim,
+            xOffset: (sprite.dWidth - cDim) / 2,
+            yOffset: (sprite.dHeight - cDim),
         });
         this.#addAnimations(sprite);
         this.#addBehaviors(transform, stats);
@@ -71,29 +74,25 @@ class Bloodsucker {
         bMap.set('flyR', new BehaviorProps(-stats.speed, null));
     }
 
-    update(tick, targetX, targetY) {
-
+    update(targetX, targetY, projectileManager) {
         //TODO use A* to to find path
-        let x = this.components.transform.x;
+        const x = this.components['boxCollider'].center.x;
+        const y = this.components['boxCollider'].center.y;
+
+
         const velocity = this.components["stats"].speed;
 
-        let state = targetX < x ? "flyL" : "flyR";
-
-            const y = this.components.transform.y;
         const transform = this.components.transform;
-
         const distance = getDistance2(x, y, targetX, targetY);
         // const angle = getAngle2(x, y, targetX, targetY);
         if (distance <= 870) {
-
             transform.velocityY = targetY < y ? -velocity : velocity;
             transform.velocityX = targetX < x ? -velocity : velocity;
         } else {
             transform.velocityX = 0;
             transform.velocityY = 0;
         }
-
-        this.components.state.setState(state);
+        this.components.state.setState(targetX < x ? "flyL" : "flyR");
     }
 
     #direction(x1,y1,x2,y2) {

@@ -51,7 +51,7 @@ class Lightbug {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {
+    update(targetX, targetY, projectileManager) {
         const velocity = this.components["stats"].speed;
         const offsetX = 0
         const offsetY = -28

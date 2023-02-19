@@ -48,8 +48,8 @@ class CBoxCollider {
 
     /**
      * Sets collider position.
-     * @param x
-     * @param y
+     * @param {number} x X position.
+     * @param {number} y Y position.
      */
     setPosition(x, y) {
         this.last = {

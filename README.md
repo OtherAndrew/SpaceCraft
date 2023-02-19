@@ -25,7 +25,9 @@ Term project for TCSS 491 - Computational Worlds at the University of Washington
 
 ### Dependencies
 
-- Web browser that supports ECMAScript 2016 (most modern browsers)
+- Laptop or desktop computer.
+- Web browser that supports ECMAScript 2016 (most modern browsers).
+- Keyboard and mouse recommended.
 
 ### Downloading and running locally
 

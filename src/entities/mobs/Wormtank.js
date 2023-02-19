@@ -52,8 +52,8 @@ class Wormtank {
         return [stats, sprite, transform, collider, state];
     }
 
-    update(tick, targetX, targetY) {
-        const x = this.components.transform.x;
+    update(targetX, targetY, projectileManager) {
+        const x = this.components['boxCollider'].center.x;
         const state = targetX < x ? "walkL" : "walkR";
         this.components.state.setState(state);
         //walk back and forth if no block or hit a collision
