@@ -17,6 +17,8 @@ class MobFactory {
             case 'mossamber': out = this.entityManager.addEntity(new Mossamber({ x: x, y: y })); break;
             case 'bloodsucker': out = this.entityManager.addEntity(new Bloodsucker({ x: x, y: y })); break;
             case 'rocket': out = this.entityManager.addEntity(new Rocket({ x: x, y: y })); break;
+            case 'creeperilla': out = this.entityManager.addEntity(new Creeperilla({ x: x, y: y })); break;
+            case 'spiderboss': out = this.entityManager.addEntity(new Spiderboss({ x: x, y: y })); break;
             default: console.log(`Invalid mob name: ${mob}.`);
         }
         return out;
