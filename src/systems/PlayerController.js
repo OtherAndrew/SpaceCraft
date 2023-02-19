@@ -158,12 +158,10 @@ class PlayerController {
                         delete e.components["boxCollider"]
                         this.containerManager.addToInventory('player', resizeBlock(e))}
                 }
-            } 
-            /*
-            else {
+            }
+            else if (active.name === 'weapon') {
                 this.#fireWeapon(active.tag, cursorTarget, tick);
             }
-            */
         } else if (selected.tag.includes('craft')) {
             console.log('open crafting menu')
             this.containerManager.loadInventory(cleanTag(selected.tag));

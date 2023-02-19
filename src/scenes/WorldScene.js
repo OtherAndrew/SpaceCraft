@@ -215,6 +215,7 @@ class WorldScene extends Scene {
     #givePlayerPickAxe() {
         let e = this.entityManager.addEntity({
             tag: 'pickaxe',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[MISC_PATH.PICK],
@@ -230,6 +231,7 @@ class WorldScene extends Scene {
     #givePlayerLaserPistol() {
         let e = this.entityManager.addEntity({
             tag: 'laserPistol',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_PISTOL],
@@ -245,6 +247,7 @@ class WorldScene extends Scene {
     #givePlayerLaserGun() {
         let e = this.entityManager.addEntity({
             tag: 'laserGun',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_GUN],
@@ -260,6 +263,7 @@ class WorldScene extends Scene {
     #givePlayerLaserRifle() {
         let e = this.entityManager.addEntity({
             tag: 'laserRifle',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_RIFLE],
@@ -275,6 +279,7 @@ class WorldScene extends Scene {
     #givePlayerFlamethrower() {
         let e = this.entityManager.addEntity({
             tag: 'flamethrower',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.FLAMETHROWER],
@@ -290,6 +295,7 @@ class WorldScene extends Scene {
     #givePlayerGrenadeLauncher() {
         let e = this.entityManager.addEntity({
             tag: 'grenadeLauncher',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.GRENADE_LAUNCHER],
@@ -305,6 +311,7 @@ class WorldScene extends Scene {
     #givePlayerHandCannon() {
         let e = this.entityManager.addEntity({
             tag: 'handCannon',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.HAND_CANNON],
@@ -320,6 +327,7 @@ class WorldScene extends Scene {
     #givePlayerMinigun() {
         let e = this.entityManager.addEntity({
             tag: 'minigun',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.MINIGUN],
@@ -335,6 +343,7 @@ class WorldScene extends Scene {
     #givePlayerRailgun() {
         let e = this.entityManager.addEntity({
             tag: 'railgun',
+            name: 'weapon',
             components: [
                 new CSprite({
                     sprite: ASSET_MANAGER.cache[WEAPON_PATH.RAILGUN],
