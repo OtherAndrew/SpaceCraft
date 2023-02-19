@@ -8,7 +8,7 @@ class Wormtank {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'wormtank mob';
+        this.tag = 'mob';
         this.name = 'wormtank';
         this.components = this.#buildComponents(props);
     };

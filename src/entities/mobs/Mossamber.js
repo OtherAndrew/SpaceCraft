@@ -9,7 +9,7 @@ class Mossamber {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mossamber mob';
+        this.tag = 'mob';
         this.name = 'mossamber';
         this.components = this.#buildComponents(props);
     };
