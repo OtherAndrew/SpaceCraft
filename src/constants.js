@@ -167,12 +167,18 @@ const CRAFT_PATH = {
     TABLE   :   './assets/crafting/stations/table.png'
 }
 
+const ITEM_PATH = {
+    BROKEN_GRENADE_LAUNCHER : './assets/items/broken_grenade_launcher.png',
+    BROKEN_MINIGUN          : './assets/items/broken_minigun.png',
+    BROKEN_RAILGUN          : './assets/items/broken_sniper.png'
+}
+
 const MISC_PATH = {
     CURSOR_CROSSHAIR    :   './assets/cursors/Crosshairs_Red.png',
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
     DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
-    PICK	            :	'./assets/icons/item_3485.png',
+    PICK	            :	'./assets/icons/item_3485.png'
 }
 
 const OVERLAY_PATH = {
@@ -226,16 +232,16 @@ const TILE_PATH = {
 }
 
 const WEAPON_PATH = {
-    FLAMETHROWER        :   './assets/items/flamethrower.png',
-    GRENADE_LAUNCHER    :   './assets/items/grenade_launcher.png',
-    HAND_CANNON         :   './assets/items/tech_pistol.png',
-    LASER_GUN           :   './assets/items/laser_gun.png',
-    LASER_PISTOL        :   './assets/items/laser_pistol.png',
-    LASER_RIFLE         :   './assets/items/laser_rifle.png',
-    MINIGUN             :   './assets/items/minigun.png',
-    MINIGUN_ANIM        :   './assets/items/minigun_anim.png',
-    RAILGUN             :   './assets/items/sniper.png',
-    RAYGUN              :   './assets/items/raygun.png',
+    FLAMETHROWER        :   './assets/weapons/flamethrower.png',
+    GRENADE_LAUNCHER    :   './assets/weapons/grenade_launcher.png',
+    HAND_CANNON         :   './assets/weapons/tech_pistol.png',
+    LASER_GUN           :   './assets/weapons/laser_gun.png',
+    LASER_PISTOL        :   './assets/weapons/laser_pistol.png',
+    LASER_RIFLE         :   './assets/weapons/laser_rifle.png',
+    MINIGUN             :   './assets/weapons/minigun.png',
+    MINIGUN_ANIM        :   './assets/weapons/minigun_anim.png',
+    RAILGUN             :   './assets/weapons/sniper.png',
+    RAYGUN              :   './assets/weapons/raygun.png',
 }
 
 const PATHS = {
