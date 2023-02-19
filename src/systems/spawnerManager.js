@@ -35,14 +35,16 @@ class SpawnerManager {
         let index = 0
         this.spawnMap.forEach((node, i) => {
             let distance = Math.floor(getDistance(this.player.components.transform, {x: node.x * BLOCKSIZE, y: node.y * BLOCKSIZE}))
+            // console.log('distance', distance);
             if(distance < closestNode) {
                 closestNode = distance
                 index = i
             }
         })
         let node = this.spawnMap[index]
-        console.log(node)
+        console.log('node', node)
         this.mobFactory.build('wormtank', node.x * BLOCKSIZE, node.y * BLOCKSIZE);
+
         return this.spawnMap[index]
     }
 
