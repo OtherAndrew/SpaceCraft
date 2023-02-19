@@ -8,7 +8,7 @@ class PlayerController {
         this.pStats = this.player.components['stats']
         this.acceleration = 1
         this.fastFall = 3;
-        this.holdingMinigun = false;
+        this.restrictMovement = false;
         this.weaponMap = this.#buildWeaponMap();
     }
 
@@ -36,9 +36,9 @@ class PlayerController {
      */
     update(keys, mouseDown, mouse, tick, activeContainer) {
         if (activeContainer.item) {
-            this.holdingMinigun = activeContainer.item.tag === 'minigun';
+            this.restrictMovement = activeContainer.item.tag === 'minigun' || activeContainer.item.tag === 'railgun';
         } else {
-            this.holdingMinigun = false;
+            this.restrictMovement = false;
         }
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
@@ -68,7 +68,7 @@ class PlayerController {
     handleKeyboard(key, tick) {
         let state = this.pSprite.currentState;
 
-        if ((key[' '] || key['w']) && this.pState.grounded && !this.holdingMinigun) { //jump
+        if ((key[' '] || key['w']) && this.pState.grounded && !this.restrictMovement) { //jump
             this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + 15);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
@@ -87,7 +87,7 @@ class PlayerController {
 
         if (key['a']) {
             this.pState.direction = 'left'
-            if (key['s'] || this.holdingMinigun) {
+            if (key['s'] || this.restrictMovement) {
                 this.pTransform.velocityX = -this.pStats.speed / 3;
                 state = this.pState.grounded ? 'walkL' : 'crouchL';
             } else {
@@ -96,7 +96,7 @@ class PlayerController {
             }
         } else if (key['d']) {
             this.pState.direction = "right"
-            if (key['s'] || this.holdingMinigun) {
+            if (key['s'] || this.restrictMovement) {
                 this.pTransform.velocityX = this.pStats.speed / 3;
                 state = this.pState.grounded ? 'walkR' : 'crouchR';
             } else {
