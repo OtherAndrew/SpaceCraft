@@ -26,7 +26,7 @@ class SpawnerManager {
         if(this.timer > this.spawnTime) {
             this.timer = 0
             console.log('spawning')
-            this.spawnMob()
+            //this.spawnMob()
         }
     }
 

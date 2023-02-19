@@ -24,7 +24,7 @@ class Player {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 200,
+            maxHealth: 100,
             speed: 6,
             // regenCooldown: 10,
             regenAmount: 0.1

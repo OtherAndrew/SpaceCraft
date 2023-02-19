@@ -8,7 +8,7 @@ class Dirtcarver {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'dirtcarver mob';
+        this.tag = 'mob';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
         this.rand = Math.floor(Math.random()*(60 - 10) + 10);

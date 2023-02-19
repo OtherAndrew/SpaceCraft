@@ -5,6 +5,7 @@ const getTerrain = (entityManager) => {
     let noiseMap = []
     let terrainMap = []
     let spawnMap = []
+    let airPockets = []
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = {
@@ -71,7 +72,8 @@ const getTerrain = (entityManager) => {
             'null',
             'null',
             'null',
-            'null'
+            'null',
+            'gold'
         ],
         CHUNK_5: [
             'titanite',
@@ -203,9 +205,69 @@ const getTerrain = (entityManager) => {
     function generateSpawnLocations() {
         let yOffset = 5
         //generate surface level locations
-        for(let i = 0; i < terrainMap.length; i += WIDTH/BLOCKSIZE) {
+        for(let i = WIDTH/BLOCKSIZE; i < terrainMap.length/2 - 2; i += WIDTH/BLOCKSIZE) {
             spawnMap.push({x: i, y: startRow - yOffset})
         }
+        //generate cave spawn locations
+        for(let currentChunk = startRow + 2 * blocksPerChunk; currentChunk < terrainMap.length; currentChunk += blocksPerChunk) {
+            for(let i = WIDTH/BLOCKSIZE; i < terrainMap.length/2 - 2; i += WIDTH/BLOCKSIZE) {
+                spawnMap.push({x: i, y: currentChunk})
+            }
+        }
+    }
+    function prepareListForDFS() {
+        let adjMap = new Map()
+        for(let i = startRow + blocksPerChunk; i < terrainMap.length; i++) {
+            for(let j = 0; j < terrainMap[i].length; j++) {
+                if(terrainMap[i][j].tag === 'air') {
+                    let key = JSON.stringify({x:i,y:j})
+                    if(!adjMap.has(key)) {
+                        let obj = {
+                            marked: false,
+                            vertices: []
+                        }
+                        // check four directions for connected air blocks
+                        if(terrainMap[clamp(i - 1,startRow + blocksPerChunk,terrainMap.length-1)][j].tag === 'air') {
+                            obj.vertices.push(JSON.stringify({x:i-1, y: j}))
+                        }
+                        if(terrainMap[clamp(i + 1,0,terrainMap.length-1)][j].tag === 'air') {
+                            obj.vertices.push(JSON.stringify({x:i+1, y: j}))
+                        }
+                        if(terrainMap[i][clamp(j - 1,0,terrainMap[0].length-1)].tag === 'air') {
+                            obj.vertices.push(JSON.stringify({x:i, y: j -1}))
+                        }
+                        if(terrainMap[i][clamp(j+1,0,terrainMap[0].length-1)].tag === 'air') {
+                            obj.vertices.push(JSON.stringify({x:i, y: j +1}))
+                        }
+                        adjMap.set(key, obj)
+                    }
+                }
+            }
+        }
+        generateAirPockets(adjMap)
+    }
+    function generateAirPockets(adjMap) {
+        adjMap.forEach((val, key) => {
+            if(!val.marked) {
+                val.marked = true
+                let size = modifiedDFS(adjMap, val)
+                airPockets.push(size)
+            }
+        })
+        airPockets = airPockets.sort((a,b) => b - a)
+        console.log(airPockets)
+    }
+
+    function modifiedDFS(adjMap, val) {
+        let size = 1
+        val.vertices.forEach(key => {
+            let obj = adjMap.get(key)
+            if(obj && !obj.marked) {
+                obj.marked = true
+                size += modifiedDFS(adjMap, obj)
+            }
+        })
+        return size
     }
 
     /**
@@ -458,5 +520,6 @@ const getTerrain = (entityManager) => {
     generateTerrain()
     generateBorders()
     generateSpawnLocations()
+    //prepareListForDFS()
     return [terrainMap, spawnMap]
 }

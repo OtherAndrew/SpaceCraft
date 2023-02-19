@@ -9,7 +9,7 @@ class Spore {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'spore mob';
+        this.tag = 'mob';
         this.name = 'spore';
         this.components = this.#buildComponents(props);
     };
