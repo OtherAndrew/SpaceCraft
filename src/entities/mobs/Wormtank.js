@@ -75,7 +75,7 @@ class Wormtank {
         let animState;
 
         if (distance > 300) {
-            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/4 : -speed/4;
+            transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             animState = transform.velocityX < 0 ? "walkL" : "walkR"
         } else {
             if (checkCollision(collider, target)) {

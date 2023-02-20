@@ -66,7 +66,7 @@ class Wasp {
         let animState;
 
         if (distance > 200) {
-            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/5 : -speed/5;
+            transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
             animState = transform.velocityX < 0 ? "flyL" : "flyR"
         } else {
