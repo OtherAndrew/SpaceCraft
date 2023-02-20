@@ -62,6 +62,7 @@ class WorldScene extends Scene {
     spawnTestEntities() {
         this.mobFactory.build("wasp", this.player.components.transform.x + 250, this.player.components.transform.y - 200);
         this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
         // this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
         // this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
         // this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
