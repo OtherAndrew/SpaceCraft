@@ -55,4 +55,11 @@ class CStats {
         return this.elapsedTime >= this.regenCooldown;
     }
 
+    /**
+     * Determines if entity is dead, i.e. current health is 0 or less.
+     * @return {boolean} If entity is dead.
+     */
+    isDead() {
+        return this.currentHealth <= 0;
+    }
 }

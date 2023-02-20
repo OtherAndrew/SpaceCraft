@@ -8,7 +8,6 @@
 
 
 class Block {
-
     /**
      * Initializes new Block
      * @param {Object} props         Position and display properties
@@ -40,7 +39,7 @@ class Block {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CLifespan(props.lifespan)
+            new CStats({maxHealth: props.maxHealth || 30})
         ]
     };
 }
@@ -71,7 +70,7 @@ const generateBlock = (tag, x, y, mode) => {
     return new Block({
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-        lifespan: TILE_LIFE[id] || 30,
+        maxHealth: TILE_LIFE[id],
         x: tempX,
         y: tempY,
         sWidth: 16,
@@ -88,7 +87,7 @@ const resizeBlock = (e, mapX, mapY) => {
         // e.components.sprite.dHeight *= 2
         // e.components.transform.x = BLOCKSIZE * mapX
         // e.components.transform.y = BLOCKSIZE * mapY
-        e.components.lifespan.current = e.components.lifespan.total
+        e.components.stats.currentHealth = e.components.stats.maxHealth
         e.isBroken = false
         e.isDrawable = true
     } else {
@@ -107,7 +106,7 @@ const generateInteractive = (tag, x, y) => {
     return new Block({
         tag: tag,
         sprite: image,
-        lifespan: 20,
+        maxHealth: 50,
         x: x * BLOCKSIZE,
         y: y * BLOCKSIZE,
         sWidth: image.width,
@@ -123,7 +122,6 @@ const generateItem = (tag, x, y) => {
     return new Block({
         tag: tag,
         sprite: image,
-        lifespan: 20,
         x: x * BLOCKSIZE,
         y: y * BLOCKSIZE,
         sWidth: image.width,
