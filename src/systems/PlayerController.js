@@ -121,8 +121,8 @@ class PlayerController {
 
     handleMouse(pos, activeContainer, tick) {
         let coords = getGridCell(pos, this.player)
-        let mapY = coords.y
-        let mapX = coords.x
+        let mapY = coords.y || 0;
+        let mapX = coords.x || 0;
         let selected = this.terrainMap[mapY][mapX];
         const cursorTarget = {
             x: pos.x + 25/2,
@@ -131,14 +131,14 @@ class PlayerController {
         console.log(selected.tag)
         let active = activeContainer.item;
         if (active) {
-            if(/tile|craft/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
+            if(/tile|interact/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
                 if(selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(activeContainer.slot);
                     let newBlock;
-                    if (active.tag.includes('craft'))
-                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
-                    else
-                        newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+                    if (active.tag.includes('interact')) {
+                        newBlock = this.entityManager.addEntity(generateInteractive(tag, mapX, mapY));
+                        if (active.tag.includes('chest')) this.containerManager.registerChest(newBlock);
+                    } else newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
@@ -146,21 +146,27 @@ class PlayerController {
                     }
                 }
             } else if (active.tag === 'pickaxe') {
-                if(/tile|craft/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
-                    let e = this.entityManager.getEntity(selected.id)
-                    e.components.lifespan.current -= 1
-                    if(e.components.lifespan.current <= 0) {
-                        selected.tag = 'air'
-                        selected.id = null
-                        delete e.components["boxCollider"]
-                        this.containerManager.addToInventory('player', resizeBlock(e))}
+                if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
+                    let destroyable = true;
+                    if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
+                    if (destroyable) {
+                        let e = this.entityManager.getEntity(selected.id)
+                        e.components.lifespan.current -= 1
+                        if(e.components.lifespan.current <= 0) {
+                            if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
+                            selected.tag = 'air'
+                            selected.id = null
+                            delete e.components["boxCollider"]
+                            this.containerManager.addToInventory('player', resizeBlock(e))
+                        }
+                    }
                 }
-            }
-            else if (active.name === 'weapon') {
+            } else if (active.name === 'weapon') {
                 this.#fireWeapon(active.tag, cursorTarget, tick);
             }
-        } else if (selected.tag.includes('craft')) {
-            console.log('open crafting menu')
+        } else if (selected.tag.includes('interact')) {
+            this.containerManager.unloadInventory();
+            console.log('attempting load:'+cleanTag(selected.tag))
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
