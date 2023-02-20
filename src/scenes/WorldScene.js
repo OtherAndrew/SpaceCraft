@@ -46,7 +46,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
-        this.craftingMenu = new CraftMenu(this.containerManager);
+        this.craftingMenu = new InteractiveMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
@@ -100,7 +100,7 @@ class WorldScene extends Scene {
                 this.player.components['stats'].invincible = true;
                 console.log("game over");
             } else {
-                this.containerManager.unloadInventory();
+                this.containerManager.reloadInventory();
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
             }
@@ -209,11 +209,98 @@ class WorldScene extends Scene {
 
     #isExposed(posY, posX) {
         return posY === 0
-               || /air|craft/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
-               || /air|craft/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
-               || /air|craft/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
-               || /air|craft/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
-               || /air|craft/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
+               || /air|interact/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
+               || /air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
+               || /air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
+               || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
+               || /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
+    }
+
+    // #handleClick(pos, player, terrainMap) {
+    //     let coords = this.#getGridCell(pos, player)
+    //     let mapY = coords.y || 0;
+    //     let mapX = coords.x || 0;
+    //     let selected = terrainMap[mapY][mapX];
+    //     console.log(selected.tag)
+    //     let active = this.hud.activeContainer.item;
+    //     if (active) {
+    //         if(/tile|interact/.test(active.tag)) {
+    //             if(selected.tag.includes('air')) {
+    //                 let tag = this.containerManager.removeFromPlayer(this.hud.activeContainer.slot);
+    //                 let newBlock;
+    //                 if (active.tag.includes('interact')) {
+    //                     newBlock = this.entityManager.addEntity(generateInteractive(tag, mapX, mapY));
+    //                     if (active.tag.includes('chest')) this.containerManager.registerChest(newBlock);
+    //                 } else newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+    //                 if (newBlock) {
+    //                     selected.tag = newBlock.tag
+    //                     selected.id = newBlock.id
+    //                     console.log(newBlock)
+    //                 }
+    //             }
+    //         } else if (active.tag === 'pickaxe') {
+    //             if(/tile|interact/.test(selected.tag)) {
+    //                 let destroyable = true;
+    //                 if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
+    //                 if (destroyable) {
+    //                     let e = this.entityManager.getEntity(selected.id)
+    //                     e.components.lifespan.current -= 1
+    //                     if(e.components.lifespan.current <= 0) {
+    //                         if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
+    //                         selected.tag = 'air'
+    //                         selected.id = null
+    //                         delete e.components["boxCollider"]
+    //                         this.containerManager.addToInventory('player', this.#resizeBlock(e))
+    //                     }
+    //                 }
+    //             }
+    //         } else if (active.tag === 'gun') {
+    //             this.projectileManager.shoot('bullet', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+    //         } else if (active.tag === 'flamethrower') {
+    //             this.projectileManager.shoot('fire', {x: pos.x + 25/2, y: pos.y + 25/2}, player)
+    //         }
+    //     } else if (selected.tag.includes('interact')) {
+    //         this.containerManager.unloadInventory();
+    //         console.log('attempting load:'+cleanTag(selected.tag))
+    //         this.containerManager.loadInventory(cleanTag(selected.tag));
+    //         this.game.activateMenu();
+    //     }
+    // }
+    
+    #getGridCell(pos, player) {
+        if(pos === null) return null
+        const pCollider = player.components["boxCollider"]
+        let offsetX = pCollider.center.x >= WIDTH/2 ?
+                      pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
+                      WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
+                      (pCollider.center.x - WIDTH/2) : 0
+        let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
+        let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
+        //if(mapY < 0) return mapY
+        return {
+            x: mapX,
+            y: mapY
+        }
+    }
+
+    #resizeBlock(e, mapX, mapY) {
+        if(e.isBroken) {
+            // e.components.sprite.dWidth *= 2
+            // e.components.sprite.dHeight *= 2
+            // e.components.transform.x = BLOCKSIZE * mapX
+            // e.components.transform.y = BLOCKSIZE * mapY
+            e.components.lifespan.current = e.components.lifespan.total
+            e.isBroken = false
+            e.isDrawable = true
+        } else {
+            e.components.sprite.dWidth *=  .5
+            e.components.sprite.dHeight = e.components.sprite.dHeight * .5
+            e.components.transform.velocityY = 10
+            e.isBroken = true
+            e.isDrawable = false
+        }
+
+        return e
     }
 
     #givePlayerPickAxe() {

@@ -1,7 +1,7 @@
 
 
 class CursorSystem {
-    constructor(canvas, terrainMap, hud, player) {
+    constructor(canvas, terrainMap, hud) {
         this.cursor = canvas.style
         this.terrainMap = terrainMap
         this.cursorList = []

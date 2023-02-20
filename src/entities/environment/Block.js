@@ -41,9 +41,8 @@ class Block {
                 frameY: props.frameY
             }),
             new CLifespan(props.lifespan)
-        ];
-        return this;
-    }
+        ]
+    };
 }
 
 /**
@@ -100,4 +99,34 @@ const resizeBlock = (e, mapX, mapY) => {
         e.isDrawable = false
     }
     return e
+}
+const generateInteractive = (tag, x, y) => {
+    let id = cleanTag(tag).toUpperCase();
+    if (id.includes('CHEST')) id = 'CHEST';
+    let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
+    return new Block({
+        tag: tag,
+        sprite: image,
+        lifespan: 20,
+        x: x * BLOCKSIZE,
+        y: y * BLOCKSIZE,
+        sWidth: image.width,
+        sHeight: image.height
+    });
+}
+
+const generateItem = (tag, x, y) => {
+    let id = cleanTag(tag).toUpperCase();
+    let index = id.lastIndexOf(' ');
+    id = id.slice(0, index);
+    let image = ASSET_MANAGER.cache[PROD_PATH[id]];
+    return new Block({
+        tag: tag,
+        sprite: image,
+        lifespan: 20,
+        x: x * BLOCKSIZE,
+        y: y * BLOCKSIZE,
+        sWidth: image.width,
+        sHeight: image.height
+    });
 }
