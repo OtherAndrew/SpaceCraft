@@ -39,7 +39,6 @@ class Wasp {
             yOffset: (sprite.dHeight - cDim),
         });
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
@@ -57,14 +56,6 @@ class Wasp {
         // aMap.set('death', new AnimationProps(0, 0,15));
 
     };
-
-    #addBehaviors(transform, stats) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, null));
-        bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('flyL', new BehaviorProps(stats.speed, null));
-        bMap.set('flyR', new BehaviorProps(-stats.speed, null));
-    }
 
     update(target, projectileFactory) {
         const collider = this.components['boxCollider']
