@@ -74,7 +74,7 @@ class PlayerController {
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
-        // if (input['w']) { // jetpack?
+        // if (key['w']) { // jetpack?
         //     if (this.jetpackTime < this.jetpackDuration) {
         //         this.pState.grounded = false
         //         this.pTransform.velocityY = -(GRAVITY + 10);

@@ -30,26 +30,13 @@ class HUD {
 
     draw(menuActive, ctx) {
         if (!menuActive) {
-            ctx.save();
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.fillStyle = "black";
-            ctx.rect(420,670, 183, 10);
-            ctx.fill();
-            ctx.beginPath();
-            let healthPercentage = Math.max(0,
-                this.player.components['stats'].currentHealth / this.player.components['stats'].maxHealth);
-            if (healthPercentage > 0.75) ctx.fillStyle = "green";
-            else if (healthPercentage > 0.50) ctx.fillStyle = "yellow";
-            else if (healthPercentage > 0.25) ctx.fillStyle = "orange";
-            else ctx.fillStyle = "red";
-            ctx.rect(420,670, 183 * healthPercentage, 10); // depends on player health rep
-            ctx.fill();
-            ctx.beginPath();
-            ctx.strokeStyle = "white";
-            ctx.rect(420,670, 183, 10);
-            ctx.stroke();
-            ctx.restore();
+            // drawHealthbar(ctx, this.player, 420, 670, 183, 10);
+            // ctx.save();
+            // ctx.beginPath();
+            // ctx.strokeStyle = "white";
+            // ctx.rect(420,670, 183, 10);
+            // ctx.stroke();
+            // ctx.restore();
             
             ctx.save();
             ctx.beginPath();

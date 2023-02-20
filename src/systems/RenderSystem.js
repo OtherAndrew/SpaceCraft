@@ -7,16 +7,14 @@ class RenderSystem {
     draw(ctx, camera) {
         const drawables = this.entities.filter(e => e.isDrawable)
         drawables.forEach(e => {
-            if(e.components.transform && e.components.sprite) {
+            if (e.components.transform && e.components.sprite) {
                 let sprite = e.components.sprite
                 let ySpeed = camera.y
                 let xSpeed = camera.x
-                // let index = e.tag.slice(-1)
-                // if (!isNaN(index)) xSpeed *= BG_SCROLL['SPEED_' + index]
-                
-                // ALTERNATELY YOU CAN HAVE BG_SCROLL USING SAME FIELD NAMES
-                // REFER TO CONSTANTS.JS 180
-                if(e.tag.toUpperCase() in BG_SCROLL) xSpeed *= BG_SCROLL[e.tag.toUpperCase()]
+                if (e.tag.toUpperCase() in BG_SCROLL) xSpeed *= BG_SCROLL[e.tag.toUpperCase()]
+
+                let destX = e.components.transform.x - xSpeed;
+                let destY = e.components.transform.y - ySpeed;
 
                 ctx.drawImage(
                     sprite.sprite,
@@ -24,11 +22,16 @@ class RenderSystem {
                     sprite.frameY * (sprite.sHeight + sprite.padding),
                     sprite.sWidth,
                     sprite.sHeight,
-                    e.components.transform.x - xSpeed,
-                    e.components.transform.y - ySpeed,
+                    destX,
+                    destY,
                     sprite.dWidth,
                     sprite.dHeight
                 )
+                
+                destX = destX + sprite.dWidth / 2 - 25;
+
+                if (/*!e.tag.includes('player') &&*/ e.components['stats'] && e.components.stats.isDamaged)
+                    drawHealthbar(ctx, e, destX, destY, 50, 5);
             }
         })
 
