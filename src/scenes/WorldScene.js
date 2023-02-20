@@ -55,7 +55,8 @@ class WorldScene extends Scene {
         this.particleFactory = new ParticleFactory(this.entityManager)
         this.healthSystem = new HealthSystem(this.entityManager.getEntities, this.particleFactory);
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
-        this.giveWeapons();
+        this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
+        this.giveWeapons2();
     }
 
     spawnTestEntities() {
@@ -70,16 +71,21 @@ class WorldScene extends Scene {
 
     }
 
-    giveWeapons() {
-        this.#givePlayerPickAxe()
-        this.#givePlayerLaserPistol()
-        this.#givePlayerLaserGun()
-        this.#givePlayerLaserRifle()
-        this.#givePlayerFlamethrower()
-        this.#givePlayerGrenadeLauncher()
-        this.#givePlayerHandCannon()
-        this.#givePlayerMinigun()
-        this.#givePlayerRailgun()
+    giveWeapons2() {
+        const weps = [
+            new Pickaxe(),
+            new LaserPistol(),
+            new LaserGun(),
+            new LaserRifle(),
+            new Flamethrower(),
+            new GrenadeLauncher(),
+            new HandCannon(),
+            new Minigun(),
+            new Railgun(),
+        ]
+        weps.forEach(w => {
+            this.containerManager.addToInventory('player', this.entityManager.addEntity(w))
+        });
     }
 
     update(menuActive, keys, mouseDown, mouse, deltaTime) {
@@ -123,7 +129,8 @@ class WorldScene extends Scene {
             //this.worldImages.update()
             this.collisionSystem.resolveAttack();
             this.healthSystem.update(deltaTime);
-            this.durationSystem.update(deltaTime)
+            this.durationSystem.update(deltaTime);
+            this.weaponSystem.update(deltaTime);
 
             // **draw**
             this.camera.update();
@@ -167,7 +174,7 @@ class WorldScene extends Scene {
      */
     #updateTileState() {
         this.entityManager.getEntities.forEach(e => {
-            if(e.tag !== 'player' && !e.tag.includes('background')) {
+            if(e.name !== 'player' && !e.tag.includes('background') && !this.#isItem(e)) {
                 if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
                 e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
@@ -183,16 +190,19 @@ class WorldScene extends Scene {
         })
     }
 
+    #isItem(e) {
+        return e.name === 'weapon' || e.name === 'tool' || e.name === "item";
+    }
+
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
      * A player will be able to collide with an exposed block, so they must be given colliders.
      * @param {Entity} e
      */
     #checkIfExposed(e) {
-        const posX = e.components.transform.x / BLOCKSIZE
-        const posY = e.components.transform.y / BLOCKSIZE
-
-        if(e.isDrawable && e.tag.includes('tile')) {
+        if(e.isDrawable && e.tag.includes('tile') && !this.#isItem(e)) {
+            const posX = e.components.transform.x / BLOCKSIZE
+            const posY = e.components.transform.y / BLOCKSIZE
             const collider = new CBoxCollider({
                 x: e.components.transform.x,
                 y: e.components.transform.y,
@@ -207,6 +217,7 @@ class WorldScene extends Scene {
         }
     }
 
+
     #isExposed(posY, posX) {
         return posY === 0
                || /air|craft/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
@@ -214,150 +225,6 @@ class WorldScene extends Scene {
                || /air|craft/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
                || /air|craft/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
                || /air|craft/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
-    }
-
-    #givePlayerPickAxe() {
-        let e = this.entityManager.addEntity({
-            tag: 'pickaxe',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[MISC_PATH.PICK],
-                    sWidth: BLOCKSIZE,
-                    sHeight: BLOCKSIZE
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerLaserPistol() {
-        let e = this.entityManager.addEntity({
-            tag: 'laserPistol',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_PISTOL],
-                    sWidth: 32,
-                    sHeight: 32
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerLaserGun() {
-        let e = this.entityManager.addEntity({
-            tag: 'laserGun',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_GUN],
-                    sWidth: 32,
-                    sHeight: 32
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerLaserRifle() {
-        let e = this.entityManager.addEntity({
-            tag: 'laserRifle',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.LASER_RIFLE],
-                    sWidth: 32,
-                    sHeight: 32
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerFlamethrower() {
-        let e = this.entityManager.addEntity({
-            tag: 'flamethrower',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.FLAMETHROWER],
-                    sWidth: 32,
-                    sHeight: 32
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerGrenadeLauncher() {
-        let e = this.entityManager.addEntity({
-            tag: 'grenadeLauncher',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.GRENADE_LAUNCHER],
-                    sWidth: 32,
-                    sHeight: 32
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerHandCannon() {
-        let e = this.entityManager.addEntity({
-            tag: 'handCannon',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.HAND_CANNON],
-                    sWidth: 32,
-                    sHeight: 32
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerMinigun() {
-        let e = this.entityManager.addEntity({
-            tag: 'minigun',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.MINIGUN],
-                    sWidth: 42,
-                    sHeight: 42,
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
-    }
-
-    #givePlayerRailgun() {
-        let e = this.entityManager.addEntity({
-            tag: 'railgun',
-            name: 'weapon',
-            components: [
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[WEAPON_PATH.RAILGUN],
-                    sWidth: 36,
-                    sHeight: 36,
-                }),
-                new CTransform(this.player.components.transform.x, this.player.components.transform.y)
-            ]
-        })
-        this.containerManager.addToInventory('player', e)
     }
     
     #checkWinCon() {

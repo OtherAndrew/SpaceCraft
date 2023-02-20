@@ -9,21 +9,6 @@ class PlayerController {
         this.acceleration = 1
         this.fastFall = 3;
         this.restrictMovement = false;
-        this.weaponMap = this.#buildWeaponMap();
-    }
-
-    #buildWeaponMap() {
-        const weaponMap = new Map();
-        weaponMap.set('laserPistol', new WeaponProps('weak_bullet', 0.5));
-        weaponMap.set('laserGun', new WeaponProps('mid_bullet', 0.33));
-        weaponMap.set('laserRifle', new WeaponProps('strong_bullet', 0.25));
-        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 1.25));
-        weaponMap.set("handCannon", new WeaponProps("mini_bomb", 1.33));
-        weaponMap.set("flamethrower", new WeaponProps('fire', 6, 3));
-        weaponMap.set('minigun', new WeaponProps('minigun_bullet', 7.5, 5));
-        weaponMap.set('railgun', new WeaponProps('railgun_bullet', 5));
-        // weaponMap.set('jetpack', new WeaponProps('smoke', 5, 5));
-        return weaponMap;
     }
 
     /**
@@ -42,27 +27,6 @@ class PlayerController {
         }
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
-        // if (this.pState.grounded) {
-            // if (this.elapsedTime >= this.jetpackCooldown) {
-            //     this.elapsedTime = 0;
-            //     this.jetpackTime = 0;
-            // } else {
-            //     this.elapsedTime += tick;
-            // }
-            this.weaponMap.forEach(w => {
-                if (w.fireTime > w.duration) {
-                    if (w.elapsedTime >= w.cooldown) {
-                        w.elapsedTime = 0;
-                        w.fireTime = 0;
-                    } else {
-                        w.elapsedTime += tick;
-                    }
-                }
-                // else if (!mouseDown) { // regen when not using
-                //     w.fireTime = clamp(w.fireTime - tick/3, 0, w.fireTime);
-                // }
-            });
-        // }
     }
 
     handleKeyboard(key, tick) {
@@ -157,7 +121,7 @@ class PlayerController {
                 }
             }
             else if (active.name === 'weapon') {
-                this.#fireWeapon(active.tag, cursorTarget, tick);
+                this.#fireWeapon(active, cursorTarget, tick);
             }
         } else if (selected.tag.includes('craft')) {
             console.log('open crafting menu')
@@ -167,19 +131,11 @@ class PlayerController {
     }
 
     #fireWeapon(activeWeapon, target, tick) {
-        const wProps = this.weaponMap.get(activeWeapon);
-        if (wProps.fireTime <= wProps.duration) {
+        // const wProps = this.weaponMap.get(activeWeapon);
+        const wProps = activeWeapon.components["weaponProps"];
+        if (wProps.readyToFire()) {
             this.projectileFactory.playerShoot(wProps.projectileType, target, this.player)
             wProps.fireTime += tick;
         }
-    }
-}
-
-class WeaponProps {
-    constructor(projectileType, cooldown, duration = 0) {
-        Object.assign(this, { projectileType, cooldown, duration })
-        this.elapsedTime = 0;
-        this.fireTime = 0;
-        return this;
     }
 }
