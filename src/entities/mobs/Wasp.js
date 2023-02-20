@@ -15,7 +15,7 @@ class Wasp {
     };
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 3,
+            speed: 5,
             maxHealth: 50
         });
         const sprite = new CSprite({
@@ -52,32 +52,7 @@ class Wasp {
         aMap.set('idleL', new AnimationProps(0, 0,3));
         aMap.set('flyR', new AnimationProps(0, 1,3));
         aMap.set('flyL', new AnimationProps(0, 0,3));
-
-        // aMap.set('death', new AnimationProps(0, 0,15));
-
     };
-
-    // update(target, projectileFactory) {
-    //     const collider = this.components['boxCollider']
-    //     const origin = collider.center;
-    //     const speed = this.components["stats"].speed;
-    //     const transform = this.components.transform;
-    //
-    //     const distance = getDistance(origin, target);
-    //     const dVector = normalize(origin, target)
-    //     if (distance <= 870) {
-    //         transform.velocityX = dVector.x * speed;
-    //         transform.velocityY = dVector.y * speed;
-    //     } else {
-    //         transform.velocityX = 0;
-    //         transform.velocityY = 0;
-    //     }
-    //     this.components.state.setState(target.center.x < origin.x ? "flyL" : "flyR");
-    //     if (checkCollision(collider, target)) {
-    //         this.components['stats'].currentHealth = 0;
-    //         projectileFactory.detonate('enemy_explosion', origin);
-    //     }
-    // }
 
     update(target, projectileFactory) {
         const collider = this.components['boxCollider']
@@ -91,7 +66,7 @@ class Wasp {
         let animState;
 
         if (distance > 200) {
-            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/3 : -speed/3;
+            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
             animState = transform.velocityX < 0 ? "flyL" : "flyR"
         } else {

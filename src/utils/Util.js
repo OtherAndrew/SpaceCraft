@@ -213,3 +213,7 @@ const isPlaceable = (player, coords, terrainMap) => {
         return !checkBlockOverlap(player, c) && checkCellConnectedToBlock(coords, terrainMap)
     }
 }
+
+const plusOrMinus = () => {
+    return Math.random() < 0.5 ? -1 : 1;
+}

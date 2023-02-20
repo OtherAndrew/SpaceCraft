@@ -17,7 +17,7 @@ class Bloodsucker {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.5,
-            speed: 2,
+            speed: 4,
             maxHealth: 70
         });
         const sprite = new CSprite({
@@ -86,7 +86,7 @@ class Bloodsucker {
         let animState;
 
         if (distance > 300) {
-            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/3 : -speed/3;
+            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
             animState = transform.velocityX < 0 ? "flyL" : "flyR"
         } else {
