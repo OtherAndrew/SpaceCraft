@@ -126,7 +126,7 @@ class PlayerController {
                     }
                 }
             } else if (active.name === 'weapon') {
-                this.#fireWeapon(active.tag, cursorTarget, tick);
+                this.#fireWeapon(active, cursorTarget, tick);
             }
         } else if (selected.tag.includes('interact')) {
             this.containerManager.unloadInventory();
