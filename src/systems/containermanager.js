@@ -399,10 +399,11 @@ class ContainerManager {
 
     registerChest(chest) {
         let index = this.reuseChest.shift();  // grab first value in queue
-        if (index.length === 0) {  // if there is no value, use chest counter to create a new inventory
+        if (index) chest.tag = chest.tag + index;
+        else {
             chest.tag = chest.tag + this.chestCount++;
             this.createInventory(cleanTag(chest.tag), 302, 408, 2, 9, 'blue');
-        } else chest.tag = chest.tag + index;
+        }
     }
 
     deregisterChest(chest) {  // interact_chest0, interact_chest1, ... , interact_chestX
