@@ -92,11 +92,10 @@ class Bloodsucker {
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
-                transform.velocityY = 0;
             } else {
                 transform.velocityX = dVector.x * speed;
-                transform.velocityY = dVector.y * speed;
             }
+            transform.velocityY = dVector.y * speed;
             animState = target.center.x < origin.x ? "flyL" : "flyR";
         }
         state.setState(animState);
