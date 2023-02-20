@@ -40,9 +40,6 @@ class Spore {
             xOffset: (sprite.dWidth - cWidth) / 2
         });
 
-        console.log('spore width', collider.width);
-        console.log('blocksize', BLOCKSIZE);
-
         this.#addAnimations(sprite);
         this.#addBehaviors(transform);
         transform.collider = collider

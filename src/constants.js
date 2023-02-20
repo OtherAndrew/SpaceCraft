@@ -65,19 +65,20 @@ const BG_SCROLL = {
 }
 
 const CHAR_PATH = {
+    BLOODSUCKER :	'./assets/sprites/bloodsucker.png',
+    BROODMOTHER :	'./assets/sprites/broodmother.png',
+    CREEPERILLA :	'./assets/sprites/creeperilla.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
+    MOSSAMBER   :	'./assets/sprites/mossamber.png',
     PLAYER      :	'./assets/sprites/player.png',
+    ROCKET      :	'./assets/sprites/rocket.png',
     SPORE       :	'./assets/sprites/spore2.png',
     WORMTANK    :	'./assets/sprites/wormtank.png',
-    ROCKET      :	'./assets/sprites/rocket.png',
-    MOSSAMBER   :	'./assets/sprites/mossamber.png',
-    BLOODSUCKER :	'./assets/sprites/bloodsucker.png',
-    CREEPERILLA :	'./assets/sprites/creeperilla.png',
-    BROODMOTHER :	'./assets/sprites/broodmother.png'
+    WASP        :   './assets/sprites/wasp.png'
 }
 
 const CRAFT_COLOR = {

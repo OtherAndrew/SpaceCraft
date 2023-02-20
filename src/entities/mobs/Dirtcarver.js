@@ -36,7 +36,7 @@ class Dirtcarver {
         });
         const cWidth = 2.2 * BLOCKSIZE;
         const collider = new CBoxCollider({
-            x: props.x + props.width / 2,
+            x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,

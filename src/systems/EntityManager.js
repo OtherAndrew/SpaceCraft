@@ -25,7 +25,9 @@ class EntityManager {
      * Creates and adds an entity to the manager
      * @param {Object} props          NPC properties
      * @param {string} props.tag      NPC tag
+     * @param {string} props.name     NPC name
      * @param {[]} props.components   NPC components
+     * @param {function} props.update Entity update function
      * @returns {Entity}              the created entity
      */
     addEntity(props) {
@@ -102,7 +104,6 @@ class Entity  {
      * @param {string} props.name     Entity name
      * @param {[]} props.components   Entity components
      * @param {function} props.update Entity update function
-     * @param {function} props.resize Entity resize function
      * @param {number} id             Entity ID
      */
     constructor(props, id) {
