@@ -15,11 +15,7 @@ class HUD {
         this.refreshActiveInfo();
 
         // TESTING
-        // this.add(new Entity(generateInteractive('interact_table', 0, 0), 0));
         this.add(new Entity(generateInteractive('interact_furnace', 0, 0), 0));
-        //this.add(new Entity(generateBlock('tile_iron', 0, 0, 'craftgen'),0), 10);
-        // this.add(new Entity(generateCrafter('craft_furnace', 0, 0), 0));
-        // this.add(new Entity(generateCrafter('craft_anvil', 0, 0), 0));
     };
 
     // TESTING
