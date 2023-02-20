@@ -4,8 +4,8 @@ class HUD {
         this.player = player;
 
         // create player inventory and trashcan
-        this.cm.createInventory("player", 420, 690, 4, 4, undefined, "reverse");
-        this.cm.createInventory(null, 561, 502, 1, 1, "red");
+        this.cm.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
+        this.cm.createInventory(null, 678, 502, 1, 1, "red");
         
         this.cm.activateInventory("player");
         this.cm.activateInventory(null);
@@ -72,6 +72,11 @@ class HUD {
             if (keys['2']) this.activeContainer = this.containers[1];
             if (keys['3']) this.activeContainer = this.containers[2];
             if (keys['4']) this.activeContainer = this.containers[3];
+            if (keys['5']) this.activeContainer = this.containers[4];
+            if (keys['6']) this.activeContainer = this.containers[5];
+            if (keys['7']) this.activeContainer = this.containers[6];
+            if (keys['8']) this.activeContainer = this.containers[7];
+            if (keys['9']) this.activeContainer = this.containers[8];
         }
     }
 }
