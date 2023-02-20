@@ -17,7 +17,7 @@ class Bloodsucker {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.5,
-            speed: 1.5,
+            speed: 2,
             maxHealth: 70
         });
         const sprite = new CSprite({
@@ -73,33 +73,33 @@ class Bloodsucker {
     }
 
     update(target, projectileManager) {
-        const targetX = target.center.x;
-        const targetY = target.center.y;
+        const collider = this.components['boxCollider']
+        const origin = collider.center;
+        const speed = this.components["stats"].speed;
+        const transform = this.components["transform"];
+        const state = this.components['state'];
+
         //TODO use A* to to find path
-        const x = this.components['boxCollider'].center.x;
-        const y = this.components['boxCollider'].center.y;
 
+        const distance = getDistance(origin, target.center);
+        const dVector = normalize(origin, target.center)
+        let animState;
 
-        const velocity = this.components["stats"].speed;
-
-        const transform = this.components.transform;
-        const distance = getDistance2(x, y, targetX, targetY);
-        // const angle = getAngle2(x, y, targetX, targetY);
-        if (distance <= 870) {
-            transform.velocityY = targetY < y ? -velocity : velocity;
-            transform.velocityX = targetX < x ? -velocity : velocity;
+        if (distance > 300) {
+            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/3 : -speed/3;
+            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
+            animState = transform.velocityX < 0 ? "flyL" : "flyR"
         } else {
-            transform.velocityX = 0;
-            transform.velocityY = 0;
+            if (checkCollision(collider, target)) {
+                transform.velocityX = 0;
+                transform.velocityY = 0;
+            } else {
+                transform.velocityX = dVector.x * speed;
+                transform.velocityY = dVector.y * speed;
+            }
+            animState = target.center.x < origin.x ? "flyL" : "flyR";
         }
-        this.components.state.setState(targetX < x ? "flyL" : "flyR");
-
-        // const origin = this.components['boxCollider'].center;
-        // const state = this.components['state'];
-        // if (state.elapsedTime > 2 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
-        //     projectileManager.entityShoot('spore', target.center, origin)
-        //     state.elapsedTime = 0;
-        // }
+        state.setState(animState);
     }
 
     #direction(x1,y1,x2,y2) {

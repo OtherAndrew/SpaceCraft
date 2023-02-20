@@ -57,23 +57,53 @@ class Wasp {
 
     };
 
+    // update(target, projectileFactory) {
+    //     const collider = this.components['boxCollider']
+    //     const origin = collider.center;
+    //     const speed = this.components["stats"].speed;
+    //     const transform = this.components.transform;
+    //
+    //     const distance = getDistance(origin, target);
+    //     const dVector = normalize(origin, target)
+    //     if (distance <= 870) {
+    //         transform.velocityX = dVector.x * speed;
+    //         transform.velocityY = dVector.y * speed;
+    //     } else {
+    //         transform.velocityX = 0;
+    //         transform.velocityY = 0;
+    //     }
+    //     this.components.state.setState(target.center.x < origin.x ? "flyL" : "flyR");
+    //     if (checkCollision(collider, target)) {
+    //         this.components['stats'].currentHealth = 0;
+    //         projectileFactory.detonate('enemy_explosion', origin);
+    //     }
+    // }
+
     update(target, projectileFactory) {
         const collider = this.components['boxCollider']
         const origin = collider.center;
-        const velocity = this.components["stats"].speed;
-        const transform = this.components.transform;
-        const distance = getDistance(origin, target);
-        if (distance <= 870) {
-            transform.velocityY = target.center.y < origin.y ? -velocity : velocity;
-            transform.velocityX = target.center.x < origin.x ? -velocity : velocity;
+        const speed = this.components["stats"].speed;
+        const transform = this.components["transform"];
+        const state = this.components['state'];
+
+        const distance = getDistance(origin, target.center);
+        const dVector = normalize(origin, target.center)
+        let animState;
+
+        if (distance > 200) {
+            transform.velocityX = Math.floor(state.elapsedTime / 5) % 2 === 0 ? speed/3 : -speed/3;
+            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
+            animState = transform.velocityX < 0 ? "flyL" : "flyR"
         } else {
-            transform.velocityX = 0;
-            transform.velocityY = 0;
+            if (checkCollision(collider, target)) {
+                this.components['stats'].currentHealth = 0;
+                projectileFactory.detonate('enemy_explosion', origin);
+            } else {
+                transform.velocityX = dVector.x * speed;
+                transform.velocityY = dVector.y * speed;
+            }
+            animState = target.center.x < origin.x ? "flyL" : "flyR";
         }
-        this.components.state.setState(target.center.x < origin.x ? "flyL" : "flyR");
-        if (checkCollision(collider, target)) {
-            this.components['stats'].currentHealth = 0;
-            projectileFactory.detonate('enemy_explosion', origin);
-        }
+        state.setState(animState);
     }
 }
