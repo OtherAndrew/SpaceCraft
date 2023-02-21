@@ -42,7 +42,7 @@ class HUD {
 
     update(menuActive, keys, wheel) {
         if (!menuActive) {
-            try { // edge case where player scrolls far too fast for system to track
+            try {
                 if (keys['1']) this.activeContainer = this.containers[0];
                 if (keys['2']) this.activeContainer = this.containers[1];
                 if (keys['3']) this.activeContainer = this.containers[2];
@@ -53,19 +53,13 @@ class HUD {
                 if (keys['8']) this.activeContainer = this.containers[7];
                 if (keys['9']) this.activeContainer = this.containers[8];
                 if (wheel) {
-                    let current = this.activeContainer.slot;
-                    let scroll = wheel.deltaY / 102; // reinterpret as scroll left and right on hotbar
-                    let alter;
-                    if (this.activeContainer.slot === 0 && scroll < 0) {
-                        alter = 8;
-                    } else {
-                        alter = (scroll + current) % 9;
-                    }
-                    this.activeContainer = this.containers[alter];
+                    let scroll = (wheel.deltaY < 0) ? -1 : 1;
+                    if (this.activeContainer.slot === 0 && scroll < 0) this.activeContainer = this.containers[8];
+                    else this.activeContainer = this.containers[(scroll + this.activeContainer.slot) % 9];
                 }
-                this.refreshActiveInfo();
-            } catch (e) {
+            } catch (e) {  // edge case where player scrolls far too fast for system to track
                 this.activeContainer = this.containers[0];
+            } finally {
                 this.refreshActiveInfo();
             }
         }
