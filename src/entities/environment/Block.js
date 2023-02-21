@@ -39,7 +39,12 @@ class Block {
                 firstFrameX: props.frameX,
                 frameY: props.frameY
             }),
-            new CStats({maxHealth: props.maxHealth || 30})
+            new CStats({
+                maxHealth: props.maxHealth,
+                regenCooldown: props.regenCooldown,
+                regenAmount: props.regenAmount,
+                invincible: props.invincible
+            })
         ]
     };
 }
@@ -70,7 +75,7 @@ const generateBlock = (tag, x, y, mode) => {
     return new Block({
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-        maxHealth: TILE_LIFE[id],
+        maxHealth: TILE_LIFE[id] || 30, // Placeholder 30
         x: tempX,
         y: tempY,
         sWidth: 16,
@@ -106,11 +111,13 @@ const generateInteractive = (tag, x, y) => {
     return new Block({
         tag: tag,
         sprite: image,
-        maxHealth: 50,
         x: x * BLOCKSIZE,
         y: y * BLOCKSIZE,
         sWidth: image.width,
-        sHeight: image.height
+        sHeight: image.height,
+        maxHealth: 50,
+        regenCooldown: 1,
+        regenAmount: 1
     });
 }
 
@@ -125,6 +132,7 @@ const generateItem = (tag, x, y) => {
         x: x * BLOCKSIZE,
         y: y * BLOCKSIZE,
         sWidth: image.width,
-        sHeight: image.height
+        sHeight: image.height,
+        invincible: true
     });
 }

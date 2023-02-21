@@ -130,7 +130,6 @@ class PlayerController {
             }
         } else if (selected.tag.includes('interact')) {
             this.containerManager.unloadInventory();
-            console.log('attempting load:'+cleanTag(selected.tag))
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
