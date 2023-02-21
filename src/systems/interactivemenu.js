@@ -103,15 +103,16 @@ class InteractiveMenu {
             );
             for (let j = 0; j < recipes[i].length; j++) {
                 let item = recipes[i][j];
+                let tag = item.tag;
                 let generate;
                 if (item.name && item.name.includes('weapon')) {
-                    generate = new Entity(this.generateWeapon(item), 0);
-                } else if (item.tag.includes('item')) {
-                    generate = new Entity(generateItem(item.tag, 0, 0), 0);
-                } else if (item.tag.includes('interact')) { // interactive
-                    generate = new Entity(generateInteractive(item.tag, 0, 0), 0);
+                    generate = new Entity(generateWeapon(item));
+                } else if (tag.includes('item')) {
+                    generate = new Entity(generateItem(tag));
+                } else if (tag.includes('interact')) { // interactive
+                    generate = new Entity(generateInteractive(tag));
                 } else { // tile
-                    generate = new Entity(generateBlock(item.tag, 0, 0, 'craftgen'), 0);
+                    generate = new Entity(generateBlock(tag, 0, 0, 'craftgen'));
                 }
                 this.cm.addToInventory(
                     id,
@@ -121,37 +122,6 @@ class InteractiveMenu {
             }
             this.recipes.push(id);
         }
-    }
-
-    generateWeapon(gun) {
-        let weapon;
-        switch (gun.tag) {
-            case "laserPistol":
-                weapon = new LaserPistol();
-                break;
-            case "laserGun":
-                weapon = new LaserGun();
-                break;
-            case "laserRifle":
-                weapon = new LaserRifle();
-                break;
-            case "flamethrower":
-                weapon = new Flamethrower();
-                break;
-            case "grenadeLauncher":
-                weapon = new GrenadeLauncher();
-                break;
-            case "handCannon":
-                weapon = new HandCannon();
-                break;
-            case "minigun":
-                weapon = new Minigun();
-                break;
-            case "railgun":
-                weapon = new Railgun();
-                break;
-        }
-        return weapon;
     }
 
     denoteRecipe(owner) {

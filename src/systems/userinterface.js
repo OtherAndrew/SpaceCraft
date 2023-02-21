@@ -15,7 +15,7 @@ class HUD {
         this.refreshActiveInfo();
 
         // TESTING
-        this.add(new Entity(generateInteractive('interact_table', 0, 0), 0));
+        this.add(new Entity(generateInteractive('interact_table')));
     }
 
     // TESTING
