@@ -6,7 +6,7 @@ class ContainerManager {
         this.slotCount = 0;             // universal slot number count
 
         this.activeInventory = [];      // interactive inventories
-        this.drawnInventory = [];       // inventories on screen TODO
+        this.drawnInventory = [];       // TODO inventories on screen
 
         this.playerCounts = new Map;    // keep track of player items and their counts
 
@@ -140,12 +140,32 @@ class ContainerManager {
     }
 
     swapViaContainer(swapContainer) {
-        // if (!swapContainer.owner) { // to trashcan
-        //     if (this.selectedContainer.owner === 'player')this.minusPlayerCount(swapContainer.item, swapContainer.count);
-        // } else if (!this.selectedContainer.owner) { // from trashcan
-        //     if (swapContainer.owner === 'player') this.addPlayerCount(swapContainer.item, swapContainer.count);
+        // TODO handle outside of inventory
+        // if (swapContainer.owner !== this.selectedContainer.owner) {  // two different inventories interacting
+        //     if (this.selectedContainer.owner === 'player') {  // from player
+        //         // note need to handle nulls as well
+        //
+        //         // handle stack: same items
+        //
+        //         // handle swap: different items
+        //         if (swapContainer.item && this.selectedContainer.item
+        //             && swapContainer.item.tag !== this.selectedContainer.item.tag) {
+        //             this.minusPlayerCount(this.selectedContainer.item, this.selectedContainer.count);
+        //             this.addPlayerCount(swapContainer.item, swapContainer.count);
+        //         }
+        //     } else if (swapContainer.owner === 'player') {  // to player
+        //         // note need to handle nulls as well
+        //
+        //         // handle stack: same items
+        //
+        //         // handle swap: different items
+        //         if (swapContainer.item)
+        //             this.addPlayerCount(swapContainer.item, swapContainer.count);
+        //         if (this.selectedContainer.item)
+        //             this.minusPlayerCount(this.selectedContainer.item, this.selectedContainer.count);
+        //     }
         // }
-        // TODO: ACCOUNT FOR TRASH CAN AND OUT OF PLAYER INVENTORY
+
         if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
             && swapContainer.item.tag === this.selectedContainer.item.tag) { // stack if same
             swapContainer.count = swapContainer.count + this.selectedContainer.count;
@@ -170,6 +190,8 @@ class ContainerManager {
     }
 
     splitViaContainer(splitContainer, click) {
+        // TODO handle outside of inventory
+
         splitContainer.item = this.selectedContainer.item; // possibly problematic
         splitContainer.count = this.splitCount;
         this.selectedContainer.count -= this.splitCount;
@@ -376,23 +398,18 @@ class ContainerManager {
     }
 
     registerChest(chest) {
-        let index = this.reuseChest.splice(0, 1);  // grab first value in queue
-        if (index.length === 0) {  // if there is no value, use chest counter to create a new inventory
-            console.log("No item in reuse");
+        let index = this.reuseChest.shift();  // grab first value in queue
+        if (index) chest.tag = chest.tag + index;
+        else {
             chest.tag = chest.tag + this.chestCount++;
-            console.log("new chest:" + chest.tag)
-            console.log("adding to inventory list:" + cleanTag(chest.tag))
             this.createInventory(cleanTag(chest.tag), 302, 408, 2, 9, 'blue');
-        } else chest.tag = chest.tag + index;
+        }
     }
 
     deregisterChest(chest) {  // interact_chest0, interact_chest1, ... , interact_chestX
-        console.log("deregistering:" + chest.tag)
         let index = chest.tag.match(/\d+$/);
-        console.log("removing index:" + index[0]);
         this.reuseChest.push(index[0]);
         chest.tag = 'interact_chest'
-        console.log("new tag:" + chest.tag)
     }
 
     checkChest(chest) {

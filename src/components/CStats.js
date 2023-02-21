@@ -22,6 +22,8 @@ class CStats {
         this.currentHealth = this.maxHealth;
         this.name = "stats"
         this.elapsedTime = this.regenCooldown;
+        this.isDamaged = false;
+        this.isDead = false;
         return this;
     }
 
@@ -33,6 +35,8 @@ class CStats {
         if (!this.invincible) {
             this.currentHealth -= damage;
             this.elapsedTime = 0;
+            this.isDamaged = true;
+            if (this.currentHealth <= 0) this.isDead = true;
         }
     }
 
@@ -42,6 +46,7 @@ class CStats {
      */
     heal(amount) {
         this.currentHealth = clamp(this.currentHealth + amount, 0, this.maxHealth);
+        if (this.currentHealth >= this.maxHealth) this.isDamaged = false;
     }
 
     /**
@@ -52,4 +57,11 @@ class CStats {
         return this.elapsedTime >= this.regenCooldown;
     }
 
+    // /**
+    //  * Determines if entity is dead, i.e. current health is 0 or less.
+    //  * @return {boolean} If entity is dead.
+    //  */
+    // isDead {
+    //     return this.currentHealth <= 0;
+    // }
 }

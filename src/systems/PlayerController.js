@@ -38,7 +38,7 @@ class PlayerController {
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
-        // if (input['w']) { // jetpack?
+        // if (key['w']) { // jetpack?
         //     if (this.jetpackTime < this.jetpackDuration) {
         //         this.pState.grounded = false
         //         this.pTransform.velocityY = -(GRAVITY + 10);
@@ -115,8 +115,8 @@ class PlayerController {
                     if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
                     if (destroyable) {
                         let e = this.entityManager.getEntity(selected.id)
-                        e.components.lifespan.current -= 1
-                        if(e.components.lifespan.current <= 0) {
+                        e.components.stats.applyDamage(1);
+                        if(e.components.stats.isDead) {
                             if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
                             selected.tag = 'air'
                             selected.id = null

@@ -11,7 +11,7 @@ class GameEngine {
         this.frames = 0
 
         //Scenes
-        this.terrainDemoScene = new WorldScene(this)
+        this.terrainScene = new WorldScene(this)
         // Information on the input
         this.click = null;
         this.mouseDown = null;
@@ -28,7 +28,7 @@ class GameEngine {
 
     init(ctx, assets, canvas) {
         this.ctx = ctx;
-        this.terrainDemoScene.init(assets, canvas)
+        this.terrainScene.init(assets, canvas)
         this.startInput();
         this.timer = new Timer();
     };
@@ -54,7 +54,7 @@ class GameEngine {
             t: this.timer.gameTime,
             w: e.which
         });
-        
+
         this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
@@ -82,7 +82,7 @@ class GameEngine {
             }
             this.mouseDown = null
         })
-
+        
         this.ctx.canvas.addEventListener("wheel", e => {
             if (this.options.debugging) {
                 console.log("WHEEL", getXandY(e), e.wheelDelta);
@@ -90,7 +90,7 @@ class GameEngine {
             e.preventDefault(); // Prevent Scrolling
             this.wheel = e;
         });
-
+        
         this.ctx.canvas.addEventListener("contextmenu", e => {
             if (this.options.debugging) {
                 console.log("RIGHT_CLICK", getXandY(e));
@@ -110,15 +110,15 @@ class GameEngine {
          ESC    : EXIT UI */
         const that = this;
         this.ctx.canvas.addEventListener("keyup", e => {
-                switch (e.code) {
-                    case "Escape":
-                        that.menuActive = false;
-                        break;
-                    case "Tab":
-                        this.activateMenu();
-                        break;
-                }
-            }, false);
+            switch (e.code) {
+                case "Escape":
+                    that.menuActive = false;
+                    break;
+                case "Tab":
+                    this.activateMenu();
+                    break;
+            }
+        }, false);
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
@@ -126,7 +126,7 @@ class GameEngine {
     activateMenu() {
         this.menuActive = !this.menuActive;
         if (this.menuActive) {
-            this.screenshot = this.ctx.getImageData(0,0,1024,768);
+            this.screenshot = this.ctx.getImageData(0, 0, 1024, 768);
             this.blur(this.screenshot, 2, 1);
         }
     }
@@ -243,8 +243,8 @@ class GameEngine {
         // this.ctx.fillStyle = 'rgb(159,109,50)'
         this.ctx.fillStyle = '#222222'
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-        this.terrainDemoScene.draw(this.menuActive, this.ctx, this.mouse)
-        if(this.currentTime > 1) {
+        this.terrainScene.draw(this.menuActive, this.ctx, this.mouse)
+        if (this.currentTime > 1) {
             this.currentTime = 0
             this.frames = this.renderedFrames
             this.renderedFrames = 0
@@ -255,12 +255,17 @@ class GameEngine {
         this.ctx.fillStyle = "white";
         this.ctx.textAlign = 'left'
         this.ctx.font = 'bold 15px Helvetica'
-        this.ctx.fillText(`FPS: ${this.frames}`, 10,20)
+        this.ctx.fillText(`FPS: ${this.frames}`, 10, 20)
     };
 
     update() {
-        this.terrainDemoScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.clockTick);
+        this.terrainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
+        this.refreshInput();
     };
+
+    refreshInput() {
+        this.wheel = null;
+    }
 
     loop() {
         this.clockTick = this.timer.tick();
