@@ -53,7 +53,7 @@ class WorldScene extends Scene {
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
         this.particleFactory = new ParticleFactory(this.entityManager)
-        this.healthSystem = new HealthSystem(this.entityManager.getEntities, this.particleFactory);
+        this.healthSystem = new HealthSystem(this.entityManager, this.particleFactory, this.containerManager);
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
         this.giveWeapons2();

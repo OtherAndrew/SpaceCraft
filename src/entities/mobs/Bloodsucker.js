@@ -44,13 +44,16 @@ class Bloodsucker {
             xOffset: (sprite.dWidth - cDim) / 2,
             yOffset: (sprite.dHeight - cDim),
         });
+        const drops = new CDrops([
+            new LaserPistol()
+        ]);
         this.#addAnimations(sprite);
         this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
 
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, drops];
     }
 
     #addAnimations(sprite) {

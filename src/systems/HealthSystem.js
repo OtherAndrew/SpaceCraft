@@ -1,11 +1,11 @@
 class HealthSystem {
 
-    constructor(entities, particleFactory) {
-        Object.assign(this, {entities, particleFactory});
+    constructor(entityManager, particleFactory, containerManager) {
+        Object.assign(this, {entityManager, particleFactory, containerManager});
     }
 
     update(tick) {
-        const updateList = this.entities.filter(e => e.isDrawable
+        const updateList = this.entityManager.getEntities.filter(e => e.isDrawable
             // && (e.tag.includes('mob') || e.tag.includes("player"))
             && e.components["stats"]);
         // console.log(updateList)
@@ -15,6 +15,11 @@ class HealthSystem {
                 const origin = e.components['boxCollider'].center;
                 this.particleFactory.generate('death', origin);
                 if (e.tag.includes('mob')) {
+                    if (e.components['drops']) {
+                        e.components['drops'].dropList.forEach(d => {
+                            this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
+                        });
+                    }
                     e.destroy();
                 }
             } else {
