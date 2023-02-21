@@ -36,7 +36,7 @@ class Bloodsucker {
             y: props.y
         });
         const cWidth = BLOCKSIZE * 1.75;
-        const cHeight = BLOCKSIZE
+        const cHeight = BLOCKSIZE * 0.8;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
