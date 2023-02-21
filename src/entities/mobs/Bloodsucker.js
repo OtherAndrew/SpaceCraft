@@ -22,33 +22,33 @@ class Bloodsucker {
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSUCKER],
-            sWidth: 166,
-            sHeight: 162,
-            scale: 0.5,
+            sWidth: 332,
+            sHeight: 326,
+            scale: BLOCKSIZE * 2.5 / 332,
+            // idleR
             firstFrameX: 0,
-            frameY: 0,
+            frameY: 1,
             lastFrameX: 4,
             fps: 20,
-            padding: 2
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y
         });
-        const cDim = BLOCKSIZE * 1.75
+        const cWidth = BLOCKSIZE * 1.75;
+        const cHeight = BLOCKSIZE
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: cDim,
-            height: cDim,
-            xOffset: (sprite.dWidth - cDim) / 2,
-            yOffset: (sprite.dHeight - cDim),
+            width: cWidth,
+            height: cHeight,
+            xOffset: (sprite.dWidth - cWidth) / 2,
+            yOffset: (sprite.dHeight - cHeight) * 3/4,
         });
         const drops = new CDrops([
             new LaserPistol()
         ]);
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
@@ -58,22 +58,11 @@ class Bloodsucker {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 1,3));
-        aMap.set('idleL', new AnimationProps(0, 0,1));
-        aMap.set('flyR', new AnimationProps(0, 1,4));
-        aMap.set('flyL', new AnimationProps(0, 0,4));
-
-        // aMap.set('death', new AnimationProps(0, 0,15));
-
+        aMap.set('idleL', new AnimationProps(0, 0,4));
+        aMap.set('idleR', new AnimationProps(0, 1,4));
+        aMap.set('attackL', new AnimationProps(0, 2,3));
+        aMap.set('attackR', new AnimationProps(0, 3,3));
     };
-
-    #addBehaviors(transform, stats) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, null));
-        bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('flyL', new BehaviorProps(stats.speed, null));
-        bMap.set('flyR', new BehaviorProps(-stats.speed, null));
-    }
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']
@@ -91,7 +80,8 @@ class Bloodsucker {
         if (distance > 300) {
             transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
-            animState = transform.velocityX < 0 ? "flyL" : "flyR"
+            console.log(transform.velocityX)
+            animState = transform.velocityX < 0 ? "idleL" : "idleR"
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
@@ -99,7 +89,7 @@ class Bloodsucker {
                 transform.velocityX = dVector.x * speed;
             }
             transform.velocityY = dVector.y * speed;
-            animState = target.center.x < origin.x ? "flyL" : "flyR";
+            animState = target.center.x < origin.x ? "attackL" : "attackR";
         }
         state.setState(animState);
     }

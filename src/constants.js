@@ -75,7 +75,7 @@ const BG_SCROLL = {
 }
 
 const CHAR_PATH = {
-    BLOODSUCKER :	'./assets/sprites/bloodsucker.png',
+    BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
     CREEPERILLA :	'./assets/sprites/creeperilla.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
