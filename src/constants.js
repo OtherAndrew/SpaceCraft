@@ -94,7 +94,7 @@ const CHAR_PATH = {
 const CRAFT_COLOR = {
     ANVIL_I     :   'black',
     ANVIL_P     :   'grey',
-    BUILTIN_I   :   'blue',
+    BUILTIN_I   :   'pink',
     BUILTIN_P   :   'purple',
     FURNACE_I   :   'orange',
     FURNACE_P   :   'red',

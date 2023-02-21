@@ -15,7 +15,7 @@ class HUD {
         this.refreshActiveInfo();
 
         // TESTING
-        this.add(new Entity(generateInteractive('interact_furnace', 0, 0), 0));
+        this.add(new Entity(generateInteractive('interact_table', 0, 0), 0));
     }
 
     // TESTING
@@ -79,6 +79,7 @@ class HUD {
                 this.activeContainer = this.containers[0];
             } finally {
                 this.refreshActiveInfo();
+                //this.game.refreshInput();
             }
         }
     }

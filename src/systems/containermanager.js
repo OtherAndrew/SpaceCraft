@@ -218,10 +218,10 @@ class ContainerManager {
     }
 
     reloadInventory() {
-        if (this.activeInventory.length !== 5) {
+        // if (this.activeInventory.length !== 5) {
             this.unloadInventory();
             this.loadInventory('builtin');
-        }
+        // }
     }
 
     draw(menuActive, ctx, mouse) {
