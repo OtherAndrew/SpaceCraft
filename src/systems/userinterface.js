@@ -52,8 +52,19 @@ class HUD {
                 // ctx.fill();
                 // ctx.beginPath();
                 ctx.drawImage(ASSET_MANAGER.cache[MISC_PATH.BULLETFRAME], 462, 650, 100, 30)
-                let cooldownPercentage = (weaponStats.cooldownTime === 0) ?
-                    1 : weaponStats.cooldownTime / weaponStats.cooldownDuration;
+                let cooldownPercentage;
+                // = (weaponStats.cooldownTime === 0) ?
+                //     1 : weaponStats.cooldownTime / weaponStats.cooldownDuration;
+                if (weaponStats.cooldownTime === 0 && weaponStats.fireDuration === 0) {
+                    cooldownPercentage = 1;
+                } else if (weaponStats.fireTime >= weaponStats.fireDuration) {
+                    cooldownPercentage = Math.max(0,
+                        weaponStats.cooldownTime / weaponStats.cooldownDuration);
+                } else {
+                    cooldownPercentage = 1 - Math.max(0,
+                        weaponStats.fireTime / weaponStats.fireDuration);
+                }
+
                 // let cooldownPercentage = (weaponStats.cooldownDuration - weaponStats.cooldownTime) / weaponStats.cooldownDuration;
                 // if (cooldownPercentage > 0.75) ctx.fillStyle = "green";
                 // else if (cooldownPercentage > 0.50) ctx.fillStyle = "yellow";
