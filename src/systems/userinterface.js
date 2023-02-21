@@ -38,31 +38,37 @@ class HUD {
             ctx.stroke();
             ctx.restore();
         }
-        // TODO refactor tag into an array
+
         if (this.activeContainer.item && this.activeContainer.item.name &&
             this.activeContainer.item.name.includes('weapon')) {
             let weaponStats = this.activeContainer.item.components.weaponProps;
-            
-            ctx.save();
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.fillStyle = "black";
-            ctx.rect(420, 670, 183, 10);
-            ctx.fill();
-            ctx.beginPath();
-            let cooldownPercentage = Math.max(0,
-                weaponStats.cooldownTime / weaponStats.cooldownDuration);
-            if (cooldownPercentage > 0.75) ctx.fillStyle = "green";
-            else if (cooldownPercentage > 0.50) ctx.fillStyle = "yellow";
-            else if (cooldownPercentage > 0.25) ctx.fillStyle = "orange";
-            else ctx.fillStyle = "red";
-            ctx.rect(420, 670, 183 * cooldownPercentage, 10); // depends on player health rep
-            ctx.fill();
-            ctx.beginPath();
-            ctx.strokeStyle = "white";
-            ctx.rect(420, 670, 183, 10);
-            ctx.stroke();
-            ctx.restore();
+
+            if (weaponStats.cooldownDuration > 1) {
+                // ctx.save();
+                // ctx.lineWidth = 2;
+                // ctx.beginPath();
+                // ctx.fillStyle = "black";
+                // ctx.rect(420, 670, 183, 10);
+                // ctx.fill();
+                // ctx.beginPath();
+                ctx.drawImage(ASSET_MANAGER.cache[MISC_PATH.BULLETFRAME], 462, 650, 100, 30)
+                let cooldownPercentage = (weaponStats.cooldownTime === 0) ?
+                    1 : weaponStats.cooldownTime / weaponStats.cooldownDuration;
+                // let cooldownPercentage = (weaponStats.cooldownDuration - weaponStats.cooldownTime) / weaponStats.cooldownDuration;
+                if (cooldownPercentage > 0.75) ctx.fillStyle = "green";
+                else if (cooldownPercentage > 0.50) ctx.fillStyle = "yellow";
+                else if (cooldownPercentage > 0.25) ctx.fillStyle = "orange";
+                else ctx.fillStyle = "red";
+                ctx.drawImage(ASSET_MANAGER.cache[MISC_PATH.BULLET], 0, 0, 495 * cooldownPercentage, 207, 462, 650,
+                    100 * cooldownPercentage, 30)
+                // ctx.rect(420, 670, 183 * cooldownPercentage, 10); // depends on player health rep
+                // ctx.fill();
+                // ctx.beginPath();
+                // ctx.strokeStyle = "white";
+                // ctx.rect(420, 670, 183, 10);
+                // ctx.stroke();
+                // ctx.restore();
+            }
         }
     }
 

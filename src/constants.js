@@ -128,6 +128,8 @@ const MISC_PATH = {
     CURSOR_CROSSHAIR    :   './assets/cursors/Crosshairs_Red.png',
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
+    BULLET              :   './assets/icons/bullets.png',
+    BULLETFRAME         :   './assets/icons/bullets_frame.png',
     DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
     PICK	            :	'./assets/icons/item_3485.png',
     BLOCK_PLACEMENT_GREEN     :   './assets/cursors/blockPlacementGreen.cur',
