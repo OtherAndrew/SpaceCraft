@@ -82,7 +82,7 @@ class WorldScene extends Scene {
         this.#givePlayerRailgun()
     }
 
-    update(menuActive, keys, mouseDown, mouse, deltaTime) {
+    update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon()) {
                 this.rocket.components["state"].setState("win");
@@ -92,7 +92,7 @@ class WorldScene extends Scene {
                 this.player.isDrawable = false;
                 this.player.components['stats'].invincible = true;
                 console.log("win");
-            } else if (this.player.components['stats'].isDead()) {
+            } else if (this.player.components['stats'].isDead) {
                 this.player.components["transform"].gravity = 0;
                 this.player.components["transform"].velocityX = 0;
                 this.player.components["transform"].velocityY = 0;
@@ -133,7 +133,7 @@ class WorldScene extends Scene {
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
-        this.hud.update(menuActive, keys);
+        this.hud.update(menuActive, keys, wheel);
     }
 
     draw(menuActive, ctx, mouse) {

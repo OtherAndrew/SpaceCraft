@@ -23,6 +23,7 @@ class CStats {
         this.name = "stats"
         this.elapsedTime = this.regenCooldown;
         this.isDamaged = false;
+        this.isDead = false;
         return this;
     }
 
@@ -35,6 +36,7 @@ class CStats {
             this.currentHealth -= damage;
             this.elapsedTime = 0;
             this.isDamaged = true;
+            if (this.currentHealth <= 0) this.isDead = true;
         }
     }
 
@@ -55,11 +57,11 @@ class CStats {
         return this.elapsedTime >= this.regenCooldown;
     }
 
-    /**
-     * Determines if entity is dead, i.e. current health is 0 or less.
-     * @return {boolean} If entity is dead.
-     */
-    isDead() {
-        return this.currentHealth <= 0;
-    }
+    // /**
+    //  * Determines if entity is dead, i.e. current health is 0 or less.
+    //  * @return {boolean} If entity is dead.
+    //  */
+    // isDead {
+    //     return this.currentHealth <= 0;
+    // }
 }

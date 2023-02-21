@@ -11,7 +11,7 @@ class HealthSystem {
         // console.log(updateList)
         updateList.forEach(e => {
             const eStats = e.components["stats"];
-            if (eStats.isDead()) {
+            if (eStats.isDead) {
                 const origin = e.components['boxCollider'].center;
                 this.particleFactory.generate('death', origin);
                 if (e.tag.includes('mob')) {
@@ -38,7 +38,7 @@ const drawHealthbar = (ctx, entity, x, y, w, h) => {
     ctx.beginPath();
     // let healthPercentage = Math.max(0,
     //     entity.components['stats'].currentHealth / entity.components['stats'].maxHealth);
-    let healthPercentage = entity.components['stats'].isDead() ?
+    let healthPercentage = entity.components['stats'].isDead ?
         0 : entity.components['stats'].currentHealth / entity.components['stats'].maxHealth
     if (healthPercentage > 0.75) ctx.fillStyle = "green";
     else if (healthPercentage > 0.50) ctx.fillStyle = "yellow";

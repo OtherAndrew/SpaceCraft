@@ -152,7 +152,7 @@ class PlayerController {
                     if (destroyable) {
                         let e = this.entityManager.getEntity(selected.id)
                         e.components.stats.applyDamage(1);
-                        if(e.components.stats.isDead()) {
+                        if(e.components.stats.isDead) {
                             if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
                             selected.tag = 'air'
                             selected.id = null
