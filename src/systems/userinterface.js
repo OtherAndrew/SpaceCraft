@@ -6,7 +6,7 @@ class HUD {
         // create player inventory and trashcan
         this.cm.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
         this.cm.createInventory(null, 678, 502, 1, 1, "red");
-        
+
         this.cm.activateInventory("player");
         this.cm.activateInventory(null);
 
@@ -16,18 +16,18 @@ class HUD {
 
         // TESTING
         this.add(new Entity(generateInteractive('interact_furnace', 0, 0), 0));
-    };
+    }
 
     // TESTING
     add(entity) {
         this.cm.addToInventory("player", entity);
-    };
+    }
 
     refreshActiveInfo() {
         this.x = this.activeContainer.x;
         this.y = this.activeContainer.y;
     }
-    
+
     draw(menuActive, ctx) {
         if (!menuActive) {
             ctx.save();
@@ -35,6 +35,32 @@ class HUD {
             ctx.lineWidth = 3;
             ctx.strokeStyle = "yellow";
             ctx.rect(this.x, this.y, 42, 42);
+            ctx.stroke();
+            ctx.restore();
+        }
+        // TODO refactor tag into an array
+        if (this.activeContainer.item && this.activeContainer.item.name &&
+            this.activeContainer.item.name.includes('weapon')) {
+            let weaponStats = this.activeContainer.item.components.weaponProps;
+            
+            ctx.save();
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(420, 670, 183, 10);
+            ctx.fill();
+            ctx.beginPath();
+            let cooldownPercentage = Math.max(0,
+                weaponStats.cooldownTime / weaponStats.cooldownDuration);
+            if (cooldownPercentage > 0.75) ctx.fillStyle = "green";
+            else if (cooldownPercentage > 0.50) ctx.fillStyle = "yellow";
+            else if (cooldownPercentage > 0.25) ctx.fillStyle = "orange";
+            else ctx.fillStyle = "red";
+            ctx.rect(420, 670, 183 * cooldownPercentage, 10); // depends on player health rep
+            ctx.fill();
+            ctx.beginPath();
+            ctx.strokeStyle = "white";
+            ctx.rect(420, 670, 183, 10);
             ctx.stroke();
             ctx.restore();
         }
@@ -54,8 +80,8 @@ class HUD {
                 if (keys['9']) this.activeContainer = this.containers[8];
                 if (wheel) {
                     let scroll = (wheel.deltaY < 0) ? -1 : 1;
-                    if (this.activeContainer.slot === 0 && scroll < 0) this.activeContainer = this.containers[8];
-                    else this.activeContainer = this.containers[(scroll + this.activeContainer.slot) % 9];
+                    this.activeContainer = this.containers[(this.activeContainer.slot === 0 && scroll < 0) ?
+                        8 : (this.activeContainer.slot + scroll) % 9];
                 }
             } catch (e) {  // edge case where player scrolls far too fast for system to track
                 this.activeContainer = this.containers[0];
