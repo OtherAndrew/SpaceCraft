@@ -79,7 +79,7 @@ const CHAR_PATH = {
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
     CREEPERILLA :	'./assets/sprites/creeperilla.png',
-    DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
+    DIRTCARVER  :	'./assets/sprites/dirtcarver2.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
