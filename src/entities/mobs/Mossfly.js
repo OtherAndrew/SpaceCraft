@@ -84,7 +84,7 @@ class Mossfly {
             }
         } else { //panic
             transform.velocityX = -dVector.x * speed;
-            transform.velocityY = -(Math.abs(dVector.y) * speed * 1.5);
+            transform.velocityY = -(Math.abs(dVector.y) * speed);
             animState = target.center.x < origin.x ? "idleR" : "idleL";
             state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
 
