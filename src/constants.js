@@ -108,6 +108,7 @@ const CRAFT_PATH = {
 
 const ITEM_PATH = {
     BROKEN_GRENADE: './assets/items/broken_grenade_launcher.png',
+    BROKEN_HAND_CANNON: './assets/items/broken_tech_pistol.png',
     BROKEN_MINIGUN: './assets/items/broken_minigun.png',
     BROKEN_RAILGUN: './assets/items/broken_sniper.png',
     BISMUTH: './assets/interactives/products/bismuth_bar.png',
