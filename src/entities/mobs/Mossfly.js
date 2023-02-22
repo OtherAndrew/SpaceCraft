@@ -72,7 +72,7 @@ class Mossfly {
         let animState;
         const interval = 20;
 
-        if (distance > BLOCKSIZE * 12) { //idle
+        if (distance > BLOCKSIZE * 10) { //idle
             transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
             transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 4}).y * speed;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
