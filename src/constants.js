@@ -22,20 +22,20 @@ const MAXBLOODSUCKER = 2;
 const MAXWORMTANK = 5;
 
 const GENSTATS = {
-    BISMUTH	    :	3.0,
-    COAL	    :	7.0,
-    COBALT	    :	3.0,
-    COPPER	    :	7.0,
-    FERRITE	    :	3.0,
-    GOLD	    :	6.0,
-    IRON	    :	7.0,
-    PARAFFIN	:	3.0,
-    RUBY	    :	2.0,
-    SAND	    :	15.0,
-    SILICA	    :	5.0,
-    TIN	        :	2.5,
-    TITANITE	:	1.5,
-    TUNGSTEN	:	3.0
+    BISMUTH	    :	6,
+    COAL	    :	13,
+    COBALT	    :	8,
+    COPPER	    :	10,
+    FERRITE	    :	5,
+    GOLD	    :	8,
+    IRON	    :	11,
+    PARAFFIN	:	4,
+    RUBY	    :	3,
+    SAND	    :	16,
+    SILICA	    :	9,
+    TIN	        :	7,
+    TITANITE	:	3,
+    TUNGSTEN	:	6
 }
 
 const BG_PATH = {
@@ -133,9 +133,9 @@ const TEST_PATH = {
 }
 
 const TILE_LIFE = {
-    DIRT    :   20,
-    RUBY    :   50,
-    STONE   :   30
+    DIRT    :   2,
+    RUBY    :   5,
+    STONE   :   3
 }
 
 const TILE_PATH = {

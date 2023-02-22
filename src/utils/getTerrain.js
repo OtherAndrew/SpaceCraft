@@ -1,11 +1,12 @@
 
 
-const getTerrain = (entityManager) => {
+const getTerrain = (entityManager, mobFactory) => {
 
     let noiseMap = []
     let terrainMap = []
     let spawnMap = []
     let airPockets = []
+    let platforms = []
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = {
@@ -144,6 +145,7 @@ const getTerrain = (entityManager) => {
     }
     let blocksPerChunk = 23
     let startRow = 226
+    let oreCount = {}
 
         /**
      * Private class function. Generates a (2*gridSize) * (2*gridSize) matrix of perlin noise values
@@ -200,6 +202,7 @@ const getTerrain = (entityManager) => {
             })
             terrainMap.push(r)
         })
+        console.log(oreCount)
     }
 
     function generateSpawnLocations() {
@@ -281,8 +284,20 @@ const getTerrain = (entityManager) => {
         if(index === 'null') {
             return {tag: 'air', id: null}
         }
+        index = randomize(index)
         let block = 'tile_' + index
+        oreCount[index] ? oreCount[index]++ : oreCount[index] = 1
         return entityManager.addEntity(generateBlock(block, props.x, props.y, 'terraingen'));
+    }
+
+    function randomize(str) {
+        let result = str
+        let replacement =  randomInt(30) > 15 ? 'stone' : 'dirt'
+        let chance = GENSTATS[result.toUpperCase()]
+        if(chance) {
+            result = randomInt(30) > chance ? replacement : str
+        }
+        return result
     }
 
 
@@ -469,12 +484,16 @@ const getTerrain = (entityManager) => {
         
     }
     function chooseRandomLocation(width, height) {
-        entityManager.update()
-        let x = clamp(randomInt(terrainMap[0].length), 16, terrainMap[0].length - width -1)
+        let x = clamp(randomInt(terrainMap[0].length), 16 , terrainMap[0].length - width - 16)
         let y = clamp(randomInt(terrainMap.length) + startRow, 333, terrainMap.length - height - 20)
-        console.log(x, y)
-        for(let i = y; i < y + height; i++) {
-            for(let j = x; j < x + width; j++) {
+        let pos = {x:x,y:y}
+        punchHole(pos, width, height)
+        return  pos
+    }
+    function punchHole(pos, width, height) {
+        entityManager.update()
+        for(let i = pos.y; i < pos.y + height; i++) {
+            for(let j = pos.x; j < pos.x + width; j++) {
                 let cell = terrainMap[i][j]
                 if(cell.tag !== 'air') {
                     let e =entityManager.getEntity(cell.id)
@@ -484,7 +503,44 @@ const getTerrain = (entityManager) => {
             }
         }
         entityManager.update()
-        return {x:x,y:y}
+    }
+
+    function getPlatformsList() {
+        let yMax = terrainMap.length - 20
+        let xMax = terrainMap[0].length - 16
+        console.log("yMax: ", yMax, "xMax: ", xMax)
+        for(let y = startRow + (blocksPerChunk * 2); y < yMax; y++) {
+            for(let x = 16; x < xMax; x++) {
+                let length = 0
+                while(terrainMap[y][x].tag.includes('tile') && terrainMap[y-1][x].tag === 'air' && x < xMax) {
+                    length++
+                    x++
+                }
+                if(length > 2) {
+                    let c = {
+                        x: x,
+                        y: y,
+                        length: length
+                    }
+                    console.log(c)
+                    platforms.push(c)
+                    console.log(platforms)
+                }
+            }
+        }
+        console.log(platforms)
+    }
+    function spawnStationaryMobs() {
+        console.log(platforms)
+        for(let i = 0; i < 100; i++) {
+            let pos = platforms[randomInt(platforms.length)]
+            console.log(pos)
+            pos.y = pos.y - 3
+            punchHole(pos, 2, 3)
+            pos.x = pos.x * BLOCKSIZE
+            pos.y = pos.y * BLOCKSIZE
+            mobFactory.build('spore', pos.x, pos.y)
+        }
     }
 
     generateBackgrounds()
@@ -493,7 +549,8 @@ const getTerrain = (entityManager) => {
     generateBorders()
     generateSpawnLocations()
     generateStatues()
-    //prepareListForDFS()
+    //getPlatformsList()
+    //spawnStationaryMobs()
     return [terrainMap, spawnMap]
 
 }

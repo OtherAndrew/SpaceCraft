@@ -20,9 +20,9 @@ class WorldScene extends Scene {
      * @param assets
      */
     init(assets, canvas) {
-        let spawnMap
-        [this.terrainMap, spawnMap] = getTerrain(this.entityManager)
         this.mobFactory = new MobFactory(this.entityManager);
+        let spawnMap
+        [this.terrainMap, spawnMap] = getTerrain(this.entityManager, this.mobFactory)
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
@@ -62,12 +62,12 @@ class WorldScene extends Scene {
         this.mobFactory.build("bloodsucker", this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
         this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
         this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
-        this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
+        let e = this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
 
         this.mobFactory.build('creeperilla', this.player.components.transform.x + 1500, this.player.components.transform.y - 350);
         this.mobFactory.build('spiderboss', this.player.components.transform.x + 800, this.player.components.transform.y - 550);
         // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 350);
-
+        console.log(e)
     }
 
     giveWeapons() {
@@ -128,7 +128,6 @@ class WorldScene extends Scene {
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime);
-            console.log(this.player.components.transform.x/BLOCKSIZE, this.player.components.transform.y/BLOCKSIZE)
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
