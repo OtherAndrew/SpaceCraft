@@ -79,7 +79,7 @@ class Dirtcarver {
         const dVector = normalize(origin, target.center)
         let animState;
 
-        if (distance > BLOCKSIZE * 12) {
+        if (distance > BLOCKSIZE * 14) {
             transform.velocityX = switchInterval(state.elapsedTime, 10) ? speed/3 : -speed/3;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         } else {

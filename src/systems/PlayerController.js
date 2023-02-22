@@ -34,7 +34,7 @@ class PlayerController {
 
         if ((key[' '] || key['w']) && this.pState.grounded && !this.restrictMovement) { //jump
             this.pState.grounded = false
-            this.pTransform.velocityY = -(GRAVITY + 15);
+            this.pTransform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
