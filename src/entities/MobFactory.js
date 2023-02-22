@@ -4,25 +4,27 @@ class MobFactory {
         this.entityManager = entityManager;
     }
 
-    build(mob, x, y) {
-        let out = null;
-        switch (mob) {
-            case 'player': out = this.entityManager.addEntity(new Player({ x: x, y: y })); break;
-            case 'spore': out = this.entityManager.addEntity(new Spore({ x: x, y: y })); break;
-            case 'dirtcarver': out = this.entityManager.addEntity(new Dirtcarver({ x: x, y: y })); break;
-            case 'lightbug': out = this.entityManager.addEntity(new Lightbug({ x: x, y: y })); break;
-            case 'lightjelly': out = this.entityManager.addEntity(new Lightjelly({ x: x, y: y })); break;
-            case 'grapebomb': out = this.entityManager.addEntity(new Grapebomb({ x: x, y: y })); break;
-            case 'wormtank': out = this.entityManager.addEntity(new Wormtank({ x: x, y: y })); break;
-            case 'mossamber': out = this.entityManager.addEntity(new Mossamber({ x: x, y: y })); break;
-            case 'mossfly': out = this.entityManager.addEntity(new Mossfly({ x: x, y: y })); break;
-            case 'bloodsucker': out = this.entityManager.addEntity(new Bloodsucker({ x: x, y: y })); break;
-            case 'rocket': out = this.entityManager.addEntity(new Rocket({ x: x, y: y })); break;
-            case 'creeperilla': out = this.entityManager.addEntity(new Creeperilla({ x: x, y: y })); break;
-            case 'spiderboss': out = this.entityManager.addEntity(new Spiderboss({ x: x, y: y })); break;
-            case 'wasp': out = this.entityManager.addEntity(new Wasp({ x: x, y: y })); break;
-            default: console.log(`Invalid mob name: ${mob}.`);
+    build(type, x, y) {
+        let mob;
+        const position = { x: x, y: y };
+        switch (type) {
+            case 'bloodsucker': mob = new Bloodsucker(position); break;
+            case 'creeperilla': mob = new Creeperilla(position); break;
+            case 'dirtcarver': mob = new Dirtcarver(position); break;
+            case 'grapebomb': mob = new Grapebomb(position); break;
+            case 'lightbug': mob = new Lightbug(position); break;
+            case 'lightjelly': mob = new Lightjelly(position); break;
+            case 'mossamber': mob = new Mossamber(position); break;
+            case 'mossfly': mob = new Mossfly(position); break;
+            case 'player': mob = new Player(position); break;
+            case 'rocket': mob = new Rocket(position); break;
+            case 'silverfish': mob = new Silverfish(position); break;
+            case 'spore': mob = new Spore(position); break;
+            case 'spiderboss': mob = new Spiderboss(position); break;
+            case 'wasp': mob = new Wasp(position); break;
+            case 'wormtank': mob = new Wormtank(position); break;
+            default: console.log(`Invalid mob name: ${type}.`);
         }
-        return out;
+        return mob ? this.entityManager.addEntity(mob) : null;
     }
 }

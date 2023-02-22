@@ -40,11 +40,9 @@ class Grapebomb {
         });
 
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-        state.transform = transform;
         return [stats, sprite, transform, collider, state];
     }
 
@@ -62,9 +60,5 @@ class Grapebomb {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,3));
     };
-    #addBehaviors(transform) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, 0));
-    }
 
 }

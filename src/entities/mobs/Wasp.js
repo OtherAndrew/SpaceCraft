@@ -48,10 +48,10 @@ class Wasp {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 1,3));
-        aMap.set('idleL', new AnimationProps(0, 0,3));
-        aMap.set('flyR', new AnimationProps(0, 1,3));
-        aMap.set('flyL', new AnimationProps(0, 0,3));
+        aMap.set('idleR', new AnimationProps(0, 1,3, 20));
+        aMap.set('idleL', new AnimationProps(0, 0,3, 20));
+        aMap.set('flyR', new AnimationProps(0, 1,3, 40));
+        aMap.set('flyL', new AnimationProps(0, 0,3, 40));
     };
 
     update(target, projectileFactory) {
@@ -65,7 +65,7 @@ class Wasp {
         const dVector = normalize(origin, target.center)
         let animState;
 
-        if (distance > 200) {
+        if (distance > BLOCKSIZE * 8) {
             transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
             animState = transform.velocityX < 0 ? "flyL" : "flyR"
