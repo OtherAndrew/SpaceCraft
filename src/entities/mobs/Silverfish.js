@@ -60,19 +60,21 @@ class Silverfish {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 12) {
+        if (distance > BLOCKSIZE * 6) {
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
+                state.direction = transform.velocityX < 0 ? "left" : "right"
             } else {
                 transform.velocityX = 0;
-                animState = state.currentState;
+                animState = state.direction === 'left' ? "idleL" : "idleR";
             }
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
             } else {
                 transform.velocityX = dVector.x * speed;
+                state.direction = transform.velocityX < 0 ? "left" : "right"
             }
             animState = target.center.x < origin.x ? "walkL" : "walkR";
         }
