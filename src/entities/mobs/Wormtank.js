@@ -43,12 +43,12 @@ class Wormtank {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: (sprite.dHeight - cHeight) * 3/4
         });
-
+        const state = new CState();
+        const duration = new CDuration();
         this.#addAnimations(sprite);
         transform.collider = collider
-        const state = new CState();
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, duration];
     }
 
     update(target, projectileManager) {

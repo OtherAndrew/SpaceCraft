@@ -38,12 +38,13 @@ class Wasp {
             xOffset: (sprite.dWidth - cDim) / 2,
             yOffset: (sprite.dHeight - cDim),
         });
+        const state = new CState();
+        const duration = new CDuration();
         this.#addAnimations(sprite);
         transform.collider = collider
-        const state = new CState();
         state.sprite = sprite;
 
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, duration];
     }
 
     #addAnimations(sprite) {

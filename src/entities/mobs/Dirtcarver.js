@@ -42,13 +42,12 @@ class Dirtcarver {
             height: cHeight,
             yOffset: BLOCKSIZE * 0.05
         });
-        this.#addAnimations(sprite);
-        // this.#addBehaviors(transform, stats);
-        transform.collider = collider
         const state = new CState();
+        const duration = new CDuration();
+        this.#addAnimations(sprite);
+        transform.collider = collider
         state.sprite = sprite;
-        // state.transform = transform;
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, duration];
     }
 
     // update(target, projectileManager) {

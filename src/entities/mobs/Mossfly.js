@@ -47,12 +47,13 @@ class Mossfly {
         const drops = new CDrops([
             new LaserPistol()
         ]);
+        const state = new CState();
+        const duration = new CDuration();
         this.#addAnimations(sprite);
         transform.collider = collider
-        const state = new CState();
         state.sprite = sprite;
 
-        return [stats, sprite, transform, collider, state, drops];
+        return [stats, sprite, transform, collider, state, drops, duration];
     }
 
     #addAnimations(sprite) {
