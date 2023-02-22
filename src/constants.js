@@ -52,20 +52,6 @@ const BG_PATH = {
     UNDERGROUND_6	:	'./assets/backgrounds/underground_6.png'
 }
 
-const SOUND_PATH = {
-    BOSS            : './assets/music/themes/boss_battle.mp3'
-}
-
-// const BG_SCROLL = {
-//     SPEED_0 :	.03,
-//     SPEED_1	:	.05,
-//     SPEED_2	:	.06,
-//     SPEED_3	:	.07,
-//     SPEED_4	:	.08,
-//     SPEED_5	:	.09
-// }
-
-// ALT SOLUTION
 const BG_SCROLL = {
     BACKGROUND_0    :   .03,
     BACKGROUND_1	:	.05,
@@ -120,32 +106,32 @@ const CRAFT_PATH = {
 }
 
 const ITEM_PATH = {
-    BROKEN_GRENADE_LAUNCHER : './assets/items/broken_grenade_launcher.png',
-    BROKEN_MINIGUN          : './assets/items/broken_minigun.png',
-    BROKEN_RAILGUN          : './assets/items/broken_sniper.png',
-    BISMUTH	    :	'./assets/interactives/products/bismuth_bar.png',
-    COBALT	    :	'./assets/interactives/products/cobalt_bar.png',
-    COPPER	    :	'./assets/interactives/products/copper_bar.png',
-    FERRITE	    :	'./assets/interactives/products/ferrite_bar.png',
-    GOLD	    :	'./assets/interactives/products/gold_bar.png',
-    IRON	    :	'./assets/interactives/products/iron_bar.png',
-    PARAFFIN	:	'./assets/interactives/products/paraffin_bar.png',
-    STEEL       :   './assets/interactives/products/steel_bar.png',
-    TIN	        :	'./assets/interactives/products/tin_bar.png',
-    TITANITE	:	'./assets/interactives/products/titanite_bar.png',
-    TUNGSTEN	:	'./assets/interactives/products/tungsten_bar.png'
+    BROKEN_GRENADE: './assets/items/broken_grenade_launcher.png',
+    BROKEN_MINIGUN: './assets/items/broken_minigun.png',
+    BROKEN_RAILGUN: './assets/items/broken_sniper.png',
+    BISMUTH: './assets/interactives/products/bismuth_bar.png',
+    COBALT: './assets/interactives/products/cobalt_bar.png',
+    COPPER: './assets/interactives/products/copper_bar.png',
+    FERRITE: './assets/interactives/products/ferrite_bar.png',
+    GOLD: './assets/interactives/products/gold_bar.png',
+    IRON: './assets/interactives/products/iron_bar.png',
+    PARAFFIN: './assets/interactives/products/paraffin_bar.png',
+    STEEL: './assets/interactives/products/steel_bar.png',
+    TIN: './assets/interactives/products/tin_bar.png',
+    TITANITE: './assets/interactives/products/titanite_bar.png',
+    TUNGSTEN: './assets/interactives/products/tungsten_bar.png'
 }
 
 const MISC_PATH = {
-    CURSOR_CROSSHAIR    :   './assets/cursors/Crosshairs_Red.png',
-    CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
-    CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
-    BULLET              :   './assets/icons/bullets.png',
-    BULLETFRAME         :   './assets/icons/bullets_frame.png',
-    DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
-    PICK	            :	'./assets/icons/item_3485.png',
-    BLOCK_PLACEMENT_GREEN     :   './assets/cursors/blockPlacementGreen.cur',
-    BLOCK_PLACEMENT_RED     :   './assets/cursors/blockPlacementRed.cur'
+    CURSOR_CROSSHAIR: './assets/cursors/Crosshairs_Red.png',
+    CURSOR_HAND: './assets/cursors/inventoryhand.png',
+    CURSOR_PICK: './assets/cursors/pickCursor.cur',
+    BULLET: './assets/icons/bullets.png',
+    BULLETFRAME: './assets/icons/bullets_frame.png',
+    DEATH_EFFECT: './assets/projectiles/death_explosion.png',
+    PICK: './assets/icons/item_3485.png',
+    BLOCK_PLACEMENT_GREEN: './assets/cursors/blockPlacementGreen.cur',
+    BLOCK_PLACEMENT_RED: './assets/cursors/blockPlacementRed.cur'
 }
 
 const OVERLAY_PATH = {
@@ -164,8 +150,8 @@ const PROJECTILE_PATH = {
     ORB      :   './assets/projectiles/orb.png'
 }
 
-const TEST_PATH = {
-    // FOR TEST ASSETS
+const SOUND_PATH = {
+    BOSS: './assets/music/themes/boss_battle.mp3'
 }
 
 const TILE_LIFE = {
@@ -208,7 +194,7 @@ const WEAPON_PATH = {
 }
 
 const ENV_PATH = {
-    CHOZO_STATUE        :   './assets/environment/chozoStatue.png'
+    CHOZO_STATUE: './assets/environment/chozoStatue.png'
 }
 
 const PATHS = {
@@ -219,11 +205,10 @@ const PATHS = {
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
     PROJECTILES :   PROJECTILE_PATH,
-    TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
     WEAPONS     :   WEAPON_PATH,
     SOUNDS      :   SOUND_PATH,
-    ENV_PATH    :   ENV_PATH
+    ENVS: ENV_PATH
 }
 
 const CONSTANTS = {
@@ -237,11 +222,10 @@ const CONSTANTS = {
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
     PROJECTILES :   PROJECTILE_PATH,
-    TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
     WEAPONS     :   WEAPON_PATH,
     SOUNDS      :   SOUND_PATH,
-    ENV_PATH    :   ENV_PATH
+    ENVS: ENV_PATH
 }
 
 for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])

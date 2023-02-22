@@ -10,7 +10,7 @@ class ContainerManager {
 
         this.playerCounts = new Map;    // keep track of player items and their counts
 
-        this.selectedContainer = null;  // player selected container
+        this.activeContainer = null;  // player selected container
         this.lastClick = null;          // tracks last mouse click
 
         this.hoverText = null           // provides information
@@ -140,68 +140,56 @@ class ContainerManager {
     }
 
     swapViaContainer(swapContainer) {
-        // TODO handle outside of inventory
-        // if (swapContainer.owner !== this.selectedContainer.owner) {  // two different inventories interacting
-        //     if (this.selectedContainer.owner === 'player') {  // from player
-        //         // note need to handle nulls as well
-        //
-        //         // handle stack: same items
-        //
-        //         // handle swap: different items
-        //         if (swapContainer.item && this.selectedContainer.item
-        //             && swapContainer.item.tag !== this.selectedContainer.item.tag) {
-        //             this.minusPlayerCount(this.selectedContainer.item, this.selectedContainer.count);
-        //             this.addPlayerCount(swapContainer.item, swapContainer.count);
-        //         }
-        //     } else if (swapContainer.owner === 'player') {  // to player
-        //         // note need to handle nulls as well
-        //
-        //         // handle stack: same items
-        //
-        //         // handle swap: different items
-        //         if (swapContainer.item)
-        //             this.addPlayerCount(swapContainer.item, swapContainer.count);
-        //         if (this.selectedContainer.item)
-        //             this.minusPlayerCount(this.selectedContainer.item, this.selectedContainer.count);
-        //     }
-        // }
+        let focus = this.analyzeInteraction(swapContainer);
 
-        if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
-            && swapContainer.item.tag === this.selectedContainer.item.tag) { // stack if same
-            swapContainer.count = swapContainer.count + this.selectedContainer.count;
-            this.clearContainer(this.selectedContainer)
-        } else if (!swapContainer.owner && this.selectedContainer.item) { // to trashcan
-            swapContainer.item = this.selectedContainer.item;
-            swapContainer.count = this.selectedContainer.count;
-            this.clearContainer(this.selectedContainer)
-        } else if (!this.selectedContainer.owner && !swapContainer.item) { // from trashcan
-            swapContainer.item = this.selectedContainer.item;
-            swapContainer.count = this.selectedContainer.count;
-            this.clearContainer(this.selectedContainer)
+        if (swapContainer !== this.activeContainer && swapContainer.item && this.activeContainer.item
+            && swapContainer.item.tag === this.activeContainer.item.tag) { // stack if same
+            swapContainer.count = swapContainer.count + this.activeContainer.count;
+            this.clearContainer(this.activeContainer)
+        } else if (!swapContainer.owner && this.activeContainer.item) { // to trashcan
+            swapContainer.item = this.activeContainer.item;
+            swapContainer.count = this.activeContainer.count;
+            this.clearContainer(this.activeContainer)
+        } else if (!this.activeContainer.owner && !swapContainer.item) { // from trashcan
+            swapContainer.item = this.activeContainer.item;
+            swapContainer.count = this.activeContainer.count;
+            this.clearContainer(this.activeContainer)
         } else { // swap
-            let placeholder = this.selectedContainer.item;
-            this.selectedContainer.item = swapContainer.item;
+            let placeholder = this.activeContainer.item;
+            this.activeContainer.item = swapContainer.item;
             swapContainer.item = placeholder;
-            placeholder = this.selectedContainer.count;
-            this.selectedContainer.count = swapContainer.count;
+            placeholder = this.activeContainer.count;
+            this.activeContainer.count = swapContainer.count;
             swapContainer.count = placeholder;
         }
         this.deselectContainer();
+
+        if (focus && focus.item) this.addPlayerCount(focus.item, focus.count);
     }
 
     splitViaContainer(splitContainer, click) {
-        // TODO handle outside of inventory
+        let focus = this.analyzeInteraction(splitContainer);
 
-        splitContainer.item = this.selectedContainer.item; // possibly problematic
+        splitContainer.item = this.activeContainer.item; // possibly problematic
         splitContainer.count = this.splitCount;
-        this.selectedContainer.count -= this.splitCount;
-        if (this.selectedContainer.count === 0) this.clearContainer(this.selectedContainer);
+        this.activeContainer.count -= this.splitCount;
+        if (this.activeContainer.count === 0) this.clearContainer(this.activeContainer);
         this.deselectContainer();
         this.clearSplit();
         this.lastClick = click;
+
+        if (focus && focus.item) this.addPlayerCount(focus.item, focus.count);
     }
 
-    // this ent's inventory is being drawn to the screen
+    analyzeInteraction(to) {
+        let playerContainer;
+        if (to.owner === 'player' && this.activeContainer.owner !== 'player') playerContainer = to;
+        else if (this.activeContainer.owner === 'player' && to.owner !== 'player') playerContainer = this.activeContainer;
+        if (playerContainer && playerContainer.item) this.minusPlayerCount(playerContainer.item, playerContainer.count);
+        return playerContainer;
+    }
+
+
     activateInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
         console.log(this.owners[owner]);
@@ -272,7 +260,7 @@ class ContainerManager {
                                 this.selectContainer(hit, click);
                             } else if (hit.item == null) { // split into empty container
                                 this.splitViaContainer(hit, click);
-                            } else if (hit.item.tag === this.selectedContainer.item.tag) { // split on similar container
+                            } else if (hit.item.tag === this.activeContainer.item.tag) { // split on similar container
                                 this.swapViaContainer(hit);
                                 this.clearSplit();
                                 this.lastClick = click;
@@ -290,9 +278,9 @@ class ContainerManager {
                             this.clearSplit();
                         }
                     }
-                } else if (click.w === 3 && this.selectedContainer && this.selectedContainer.item) { // right click
+                } else if (click.w === 3 && this.activeContainer && this.activeContainer.item) { // right click
                     this.splitMode = true;
-                    if (this.selectedContainer.count > this.splitCount) this.splitCount++;
+                    if (this.activeContainer.count > this.splitCount) this.splitCount++;
                     this.hoverText = this.splitCount;
                     this.lastClick = click;
                 }
@@ -373,16 +361,16 @@ class ContainerManager {
     }
 
     deselectContainer() {
-        if (this.selectedContainer) {
-            this.selectedContainer.selected = false;
-            this.selectedContainer = null;
+        if (this.activeContainer) {
+            this.activeContainer.selected = false;
+            this.activeContainer = null;
         }
     }
 
     selectContainer(hit, click) {
-        if (!this.selectedContainer) { // no current container
+        if (!this.activeContainer) { // no current container
             hit.selected = true;
-            this.selectedContainer = hit;
+            this.activeContainer = hit;
         } else this.swapViaContainer(hit); // there is already a selected container
         this.lastClick = click;
     }
