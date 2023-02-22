@@ -20,13 +20,14 @@ class CSprite {
      *                             firstFrameX by default.
      * @param {number} fps         Frames per second of sprite animation, 1 by default.
      * @param {number} padding     Pixels of sprite padding, 0 by default.
+     * @param {boolean} loop       If sprite animation loops, true by default.
      * @returns {CSprite}          The CSprite component
      * @constructor
      */
     constructor({sprite, sWidth, sHeight, scale = 1,
                     firstFrameX = 0, frameY = 0, lastFrameX = firstFrameX,
-                    fps = 1, padding = 0 }) {
-        Object.assign(this, { sprite, sWidth, sHeight, firstFrameX, frameY, lastFrameX, fps, padding });
+                    fps = 1, padding = 0, loop = true }) {
+        Object.assign(this, { sprite, sWidth, sHeight, firstFrameX, frameY, lastFrameX, fps, padding, loop });
         this.name = 'sprite';
         this.currentFrame = this.firstFrameX;
         this.frameDuration = 0;

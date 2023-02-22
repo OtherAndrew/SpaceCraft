@@ -47,10 +47,10 @@ class RenderSystem {
             const s = e.components.sprite;
             if (s.lastFrameX !== s.firstFrameX) { // has animations
                 if (s.elapsedTime >= s.frameDuration) {
-                    if (s.currentFrame === s.lastFrameX) { // reset frame
+                    if (s.currentFrame === s.lastFrameX && s.loop) { // reset frame
                         s.currentFrame = s.firstFrameX;
                     } else {
-                        s.currentFrame++;
+                        s.currentFrame = clamp(s.currentFrame + 1, 0, s.lastFrameX);
                     }
                     s.elapsedTime = 0;
                 } else {
