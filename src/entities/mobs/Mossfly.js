@@ -87,7 +87,7 @@ class Mossfly {
             animState = target.center.x < origin.x ? "idleR" : "idleL";
             state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
 
-            if (state.attackTime > 0.5 && distance <= BLOCKSIZE * 16) {
+            if (state.attackTime > 0.33 && distance <= BLOCKSIZE * 16) {
                 projectileManager.entityShoot('spore', target.center, origin)
                 state.attackTime = 0;
             }
