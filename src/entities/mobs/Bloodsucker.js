@@ -2,9 +2,9 @@
 class Bloodsucker {
     /**
      * Initializes bloodsucker (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
+     * @param {Object} props
+     * @param {number} props.x       X spawn position
+     * @param {number} props.y       Y spawn position
      * @returns {Object}             return enemy
      * @constructor
      */
@@ -80,7 +80,6 @@ class Bloodsucker {
         if (distance > 300) {
             transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
-            console.log(transform.velocityX)
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         } else {
             if (checkCollision(collider, target)) {

@@ -65,11 +65,17 @@ class CollisionSystem {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     const tCollider = tile.components["boxCollider"];
-                    mTransform.velocityY = 0
-                    mTransform.y = mTransform.last.y
                     if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
                         mob.components.state.grounded = true;
+                        const fallDamage = mTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
+                        // console.log(Math.floor(fallDamage));
+                        if (mob.components["stats"] && mTransform.hasGravity && fallDamage !== 0){
+                            mob.components["stats"].applyDamage(fallDamage);
+                        }
+                        mTransform.fallDamageTime = 0;
                     }
+                    mTransform.velocityY = 0
+                    mTransform.y = mTransform.last.y
                     mCollider.setPosition(mTransform.x, mTransform.y)
                 }
             });

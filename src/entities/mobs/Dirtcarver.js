@@ -64,9 +64,9 @@ class Dirtcarver {
         } else {
             let height = Math.floor(Math.random()*(15 - 3) + 3);
             this.components.transform.velocityY -= height;
-            this.components.transform.velocityX = state == "walkL" ? -2: 2;
+            this.components.transform.velocityX = state === "walkL" ? -2: 2;
         }
-        console.log('dc num', this.rand);
+        // console.log('dc num', this.rand);
     }
 
     #addAnimations(sprite) {

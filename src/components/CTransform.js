@@ -25,16 +25,17 @@ class CTransform {
                     velocityX = 0, velocityY = 0,
                     rotation = 0,
                     maxVelocityX = BLOCKSIZE, maxVelocityY = BLOCKSIZE }) {
-        Object.assign(this, {x, y, velocityX, velocityY, rotation, maxVelocityX, maxVelocityY});
+        Object.assign(this, {x, y, hasGravity, velocityX, velocityY, rotation, maxVelocityX, maxVelocityY});
         this.name = 'transform'
         this.collider = null;
         this.behaviorMap = new Map();
-        this.gravity = hasGravity ? GRAVITY : 0;
+        // this.gravity = this.hasGravity ? GRAVITY : 0;
         this.last = {
             x: this.x,
             y: this.y
         }
         this.currentState = 'idleR'
+        this.fallDamageTime = 0;
         return this;
     }
 

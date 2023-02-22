@@ -59,8 +59,10 @@ class MovementSystem {
     #moveEntityY(entity, tick) {
         const t = entity.components.transform;
         t.last.y = t.y;
-        t.velocityY = clamp(t.velocityY + t.gravity, -t.maxVelocityY, t.maxVelocityY);
+        if (t.hasGravity) t.velocityY += GRAVITY;
+        t.velocityY = clamp(t.velocityY, -t.maxVelocityY, t.maxVelocityY);
         t.y += t.velocityY * BLOCKSIZE * 2 * tick;
         if (t.collider) t.collider.setPosition(t.x, t.y);
+        if (t.velocityY >= t.maxVelocityY) t.fallDamageTime += tick;
     }
 }
