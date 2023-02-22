@@ -25,7 +25,7 @@ class CBoxCollider {
         this.x = x + this.xOffset;
         this.y = y + this.yOffset
         this.name = "boxCollider";
-        this.collisions = {};
+        this.sideCollision = false;
 
         this.top = this.y;
         this.bottom = this.y + this.height;

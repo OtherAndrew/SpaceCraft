@@ -85,6 +85,12 @@ class Wormtank {
             }
             animState = target.center.x < origin.x ? "walkL" : "walkR";
         }
+
+        // climb
+        if (collider.sideCollision) {
+            transform.velocityY = -(GRAVITY + speed);
+        }
+
         state.setState(animState);
     }
 

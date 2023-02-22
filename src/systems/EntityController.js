@@ -11,6 +11,7 @@ class EntityController {
         updateList.forEach(e => {
             e.components['state'].elapsedTime += tick;
             e.update(pCollider, this.projectileFactory);
+            e.components['boxCollider'].sideCollision = false;
         });
     }
 }

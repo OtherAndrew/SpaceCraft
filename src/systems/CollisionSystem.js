@@ -47,6 +47,7 @@ class CollisionSystem {
                 if (checkCollision(mob, tile)) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
+                    mCollider.sideCollision = true;
                     mTransform.velocityX = 0
                     mTransform.x = mTransform.last.x
                     mCollider.setPosition(mTransform.x, mTransform.y)
