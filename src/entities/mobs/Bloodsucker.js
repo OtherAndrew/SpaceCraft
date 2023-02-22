@@ -2,9 +2,9 @@
 class Bloodsucker {
     /**
      * Initializes bloodsucker (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
+     * @param {Object} props
+     * @param {number} props.x       X spawn position
+     * @param {number} props.y       Y spawn position
      * @returns {Object}             return enemy
      * @constructor
      */
