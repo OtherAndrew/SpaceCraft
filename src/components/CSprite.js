@@ -29,7 +29,8 @@ class CSprite {
         Object.assign(this, { sprite, sWidth, sHeight, firstFrameX, frameY, lastFrameX, fps, padding });
         this.name = 'sprite';
         this.currentFrame = this.firstFrameX;
-        this.frameDuration = 1 / fps;
+        this.frameDuration = 0;
+        this.setFPS(fps);
         this.dWidth = this.sWidth;
         this.dHeight = this.sHeight;
         this.setScale(scale);
@@ -48,6 +49,10 @@ class CSprite {
         this.dHeight = this.sHeight * scale;
     }
 
+    setFPS(fps) {
+        if (fps) this.frameDuration = 1 / fps;
+    }
+
     /**
      * Sets sprite animation properties.
      * @param {string} state
@@ -59,6 +64,7 @@ class CSprite {
             this.currentFrame = this.firstFrameX;
             this.frameY = aProps.frameY;
             this.lastFrameX = aProps.lastFrameX;
+            this.setFPS(aProps.fps)
             this.currentState = state;
         }
     }

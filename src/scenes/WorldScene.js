@@ -160,7 +160,7 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);

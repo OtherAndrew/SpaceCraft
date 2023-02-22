@@ -20,46 +20,36 @@ class Wormtank {
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.WORMTANK],
-            sWidth: 159,
-            sHeight: 106,
-            scale: 0.5,
+            sWidth: 160,
+            sHeight: 108,
+            scale: BLOCKSIZE * 2.5 / 160,
             firstFrameX: 0,
-            frameY: 0,
+            frameY: 1,
             lastFrameX: 5,
-            fps: 10,
-            padding: 3
+            fps: 5,
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y,
             hasGravity: true,
         });
-        const cWidth = 1.25 * BLOCKSIZE;
+        const cWidth = BLOCKSIZE * 1.5;
+        const cHeight = BLOCKSIZE * 1.25;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
+            height: cHeight,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            height: sprite.dHeight
+            yOffset: (sprite.dHeight - cHeight) * 3/4
         });
 
         this.#addAnimations(sprite);
-        // this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-        // state.transform = transform;
         return [stats, sprite, transform, collider, state];
     }
-
-    // update(target, projectileManager) {
-    //     const targetX = target.center.x;
-    //     const x = this.components['boxCollider'].center.x;
-    //     const state = targetX < x ? "walkL" : "walkR";
-    //     this.components.state.setState(state);
-    //     //walk back and forth if no block or hit a collision
-    //     // if (this.components.collider)
-    // }
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']
@@ -74,9 +64,9 @@ class Wormtank {
         const dVector = normalize(origin, target.center)
         let animState;
 
-        if (distance > 300) {
-            transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
-            animState = transform.velocityX < 0 ? "walkL" : "walkR"
+        if (distance > BLOCKSIZE * 12) {
+            transform.velocityX = switchInterval(state.elapsedTime, 20) ? speed/5 : -speed/5;
+            animState = transform.velocityX < 0 ? "idleL" : "idleR"
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
@@ -88,7 +78,7 @@ class Wormtank {
 
         // climb
         if (collider.sideCollision) {
-            transform.velocityY = -(GRAVITY + speed);
+            transform.velocityY = -(GRAVITY + speed/2.5);
         }
 
         state.setState(animState);
@@ -96,18 +86,10 @@ class Wormtank {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 1, 0));
-        aMap.set('idleL', new AnimationProps(0, 0,0));
-        aMap.set('walkR', new AnimationProps(0, 1, 5));
-        aMap.set('walkL', new AnimationProps(0, 0, 5));
+        aMap.set('idleR', new AnimationProps(0, 1, 5, 5));
+        aMap.set('idleL', new AnimationProps(0, 0,5, 5));
+        aMap.set('walkR', new AnimationProps(0, 1, 5, 10));
+        aMap.set('walkL', new AnimationProps(0, 0, 5, 10));
     };
-    #addBehaviors(transform, stats) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, null));
-        bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('walkR', new BehaviorProps(stats.speed, null));
-        bMap.set('walkL', new BehaviorProps(-stats.speed, null));
-    }
-
 }
 

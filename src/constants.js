@@ -88,7 +88,7 @@ const CHAR_PATH = {
     PLAYER      :	'./assets/sprites/player.png',
     ROCKET      :	'./assets/sprites/rocket.png',
     SPORE       :	'./assets/sprites/spore2.png',
-    WORMTANK    :	'./assets/sprites/wormtank.png',
+    WORMTANK    :	'./assets/sprites/wormtank2.png',
     WASP        :   './assets/sprites/wasp.png'
 }
 
