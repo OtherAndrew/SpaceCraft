@@ -16,7 +16,7 @@ class Wormtank {
     #buildComponents(props) {
         const stats = new CStats({
             speed: 0.5,
-            maxHealth: 300
+            maxHealth: 500
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.WORMTANK],

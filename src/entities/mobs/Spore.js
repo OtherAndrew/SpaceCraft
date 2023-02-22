@@ -23,7 +23,7 @@ class Spore {
             sWidth: 138,
             sHeight: 196,
             scale: 0.5,
-            fps: 10,
+            fps: 7.5,
             lastFrameX: 7
         });
         const transform = new CTransform({
@@ -36,25 +36,23 @@ class Spore {
             x: props.x,
             y: props.y,
             width: cWidth,
-            height: sprite.dHeight - BLOCKSIZE / 2,   //-15
+            height: sprite.dHeight - BLOCKSIZE / 2,
             xOffset: (sprite.dWidth - cWidth) / 2
         });
 
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-        state.transform = transform;
         return [stats, sprite, transform, collider, state];
     }
 
     update(target, projectileManager) {
         const origin = this.components['boxCollider'].center;
         const state = this.components['state'];
-        if (state.elapsedTime > 2 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
+        if (state.attackTime > 2 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
             projectileManager.entityShoot('spore', target.center, origin)
-            state.elapsedTime = 0;
+            state.attackTime = 0;
         }
     }
 
@@ -62,9 +60,4 @@ class Spore {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,7));
     };
-    #addBehaviors(transform) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, 0));
-    }
-
 }

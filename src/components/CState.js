@@ -22,7 +22,7 @@ class CState {
         this.transform = null;
         // this.elapsedTime = 0;
         this.elapsedTime = randomInt(100);
-        this.stateSequence = [];
+        this.attackTime = randomInt(100)
         return this;
     }
 
