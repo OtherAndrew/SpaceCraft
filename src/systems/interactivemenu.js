@@ -5,18 +5,38 @@ class InteractiveMenu {
             {tag: 'tile_dirt', count: 10},
             {tag: 'tile_stone', count: 20}],
         [{tag: 'interact_anvil'},
-            {tag: 'tile_copper', count: 10},  // item_bar_copper
+            {tag: 'item_copper bar', count: 10},
             {tag: 'tile_dirt', count: 20},
             {tag: 'tile_stone', count: 5}],
         [{tag: 'interact_table'},
-            {tag: 'tile_iron', count: 10},  // item_bar_iron
-            {tag: 'tile_copper', count: 5}]
+            {tag: 'item_iron bar', count: 10},
+            {tag: 'tile_copper', count: 5}],
+        [{tag: 'interact_station'},
+            {tag: 'interact_table'},
+            {tag: 'tile_stone', count: 200},
+            {tag: 'tile_copper'}], // trader plan
+        [{tag: 'interact_hub'},
+            {tag: 'interact_table'},
+            {tag: 'tile_stone', count: 200},
+            {tag: 'tile_copper'}], // trader plan
     ];
 
     table_recipes = [
         [{tag: 'interact_trader'},
             {tag: 'tile_stone', count: 80},
-            {tag: 'item_copper bar', count: 20}]
+            {tag: 'item_copper bar', count: 20}],
+        [{tag: 'laserGun', name: 'weapon'},
+            {tag: 'laserPistol', name: 'weapon'},
+            {tag: 'item_ferrite bar', count: 10},
+            {tag: 'tile_coal', count: 20}],
+        [{tag: 'laserRifle', name: 'weapon'},
+            {tag: 'laserGun', name: 'weapon'},
+            {tag: 'item_iron bar', count: 10},
+            {tag: 'tile_coal', count: 20}],
+        [{tag: 'flamethrower', name: 'weapon'},
+            {tag: 'laserGun', name: 'weapon'},
+            {tag: 'item_bismuth bar', count: 10},
+            {tag: 'tile_coal', count: 20}]
         // refined silica 1:1 silica
         // circuit 1 goldbar, 5 amber
     ];
@@ -49,7 +69,7 @@ class InteractiveMenu {
             {tag: 'tile_coal'},
             {tag: 'tile_silica'}],
     ];
-    
+
     constructor(containManager) {
         this.cm = containManager;
         this.recipes = [];
@@ -59,13 +79,13 @@ class InteractiveMenu {
         this.x = 30;
         this.y = 30;
         this.spacer = 54;
-        
+
         this.buildRecipe('builtin', this.builtin_recipes);
         this.buildRecipe('table', this.table_recipes);
         this.buildRecipe('furnace', this.furnace_recipes);
-        
+
         this.recipes.forEach(recipe => this.denoteRecipe(recipe));
-        
+
         // this.cm.loadInventory('builtin');
     }
 
@@ -83,13 +103,16 @@ class InteractiveMenu {
             );
             for (let j = 0; j < recipes[i].length; j++) {
                 let item = recipes[i][j];
+                let tag = item.tag;
                 let generate;
-                if (item.tag.includes('interact')) { // interactive
-                    generate = new Entity(generateInteractive(item.tag, 0, 0), 0);
-                } else if (item.tag.includes('item')) {
-                    generate = new Entity(generateItem(item.tag, 0, 0), 0);
+                if (item.name && item.name.includes('weapon')) {
+                    generate = new Entity(generateWeapon(tag));
+                } else if (tag.includes('item')) {
+                    generate = new Entity(generateItem(tag));
+                } else if (tag.includes('interact')) { // interactive
+                    generate = new Entity(generateInteractive(tag));
                 } else { // tile
-                    generate = new Entity(generateBlock(item.tag, 0, 0, 'craftgen'), 0);
+                    generate = new Entity(generateBlock(tag, 0, 0, 'craftgen'));
                 }
                 this.cm.addToInventory(
                     id,
