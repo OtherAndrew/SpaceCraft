@@ -73,7 +73,7 @@ class Mossfly {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 10) { //idle
+        if (distance > BLOCKSIZE * 12) { //idle
             transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
             transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 4}).y * speed;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
@@ -83,8 +83,8 @@ class Mossfly {
                 state.attackTime = 0;
             }
         } else { //panic
-            transform.velocityX = -dVector.x * speed;
-            transform.velocityY = -(Math.abs(dVector.y) * speed);
+            transform.velocityX = target.center.x < origin.x ? speed : -speed
+            transform.velocityY = -speed/3
             animState = target.center.x < origin.x ? "idleR" : "idleL";
             state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
 
