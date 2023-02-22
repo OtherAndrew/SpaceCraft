@@ -23,7 +23,7 @@ class Dirtcarver {
             sprite: ASSET_MANAGER.cache[CHAR_PATH.DIRTCARVER],
             sWidth: 262,
             sHeight: 84,
-            scale: BLOCKSIZE * 2 / 262,
+            scale: BLOCKSIZE * 3 / 262,
             lastFrameX: 3,
             fps: 9,
         });
@@ -32,14 +32,15 @@ class Dirtcarver {
             y: props.y,
             hasGravity: true,
         });
-        const cWidth = BLOCKSIZE * 0.8;
-        const cHeight = sprite.dHeight - 2;
+        const cWidth = BLOCKSIZE * 1.8;
+        const cHeight = BLOCKSIZE * 0.8;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
             height: cHeight,
+            yOffset: BLOCKSIZE * 0.05
         });
         this.#addAnimations(sprite);
         // this.#addBehaviors(transform, stats);

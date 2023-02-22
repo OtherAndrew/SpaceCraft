@@ -10,6 +10,7 @@ class EntityController {
         const updateList = this.entities.filter(e => e.isDrawable && e.tag.includes('mob'));
         updateList.forEach(e => {
             e.components['state'].elapsedTime += tick;
+            e.components['state'].attackTime += tick;
             e.update(pCollider, this.projectileFactory);
             e.components['boxCollider'].sideCollision = false;
         });

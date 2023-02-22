@@ -1,7 +1,7 @@
 
-class Bloodsucker {
+class Mossfly {
     /**
-     * Initializes bloodsucker (enemy)
+     * Initializes
      * @param {Object} props
      * @param {number} props.x       X spawn position
      * @param {number} props.y       Y spawn position
@@ -9,41 +9,40 @@ class Bloodsucker {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob enemy';
-        this.name = 'bloodsucker';
+        this.tag = 'mob';
+        this.name = 'mossfly';
         this.components = this.#buildComponents(props);
     };
-    
+
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.5,
-            speed: 4,
-            maxHealth: 100
+            speed: 2.5,
+            maxHealth: 200
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSUCKER],
-            sWidth: 332,
-            sHeight: 326,
-            scale: BLOCKSIZE * 2.5 / 332,
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSFLY],
+            sWidth: 122,
+            sHeight: 137,
+            scale: BLOCKSIZE * 2 / 122,
             // idleR
             firstFrameX: 0,
             frameY: 1,
-            lastFrameX: 4,
+            lastFrameX: 3,
             fps: 20,
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y
         });
-        const cWidth = BLOCKSIZE * 1.75;
-        const cHeight = BLOCKSIZE * 0.8;
+        const cWidth = BLOCKSIZE * 1.5;
+        const cHeight = BLOCKSIZE * 1.5;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
             height: cHeight,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            yOffset: (sprite.dHeight - cHeight) * 3/4,
+            yOffset: (sprite.dHeight - cHeight) * 2/3,
         });
         const drops = new CDrops([
             new LaserPistol()
@@ -58,10 +57,8 @@ class Bloodsucker {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleL', new AnimationProps(0, 0,4));
-        aMap.set('idleR', new AnimationProps(0, 1,4));
-        aMap.set('attackL', new AnimationProps(0, 2,3));
-        aMap.set('attackR', new AnimationProps(0, 3,3));
+        aMap.set('idleL', new AnimationProps(0, 0,3, 20));
+        aMap.set('idleR', new AnimationProps(0, 1,3, 20));
     };
 
     update(target, projectileManager) {
@@ -71,38 +68,32 @@ class Bloodsucker {
         const transform = this.components["transform"];
         const state = this.components['state'];
 
-        //TODO use A* to to find path
-
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
+        const interval = 10;
 
-        if (distance > BLOCKSIZE * 12) {
-            transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
-            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
+        if (distance > BLOCKSIZE * 10) { //idle
+            transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
+            transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 4}).y * speed;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
-        } else {
-            if (checkCollision(collider, target)) {
-                transform.velocityX = 0;
-            } else {
-                transform.velocityX = dVector.x * speed;
+
+            if (state.attackTime > 2 && distance <= BLOCKSIZE * 16) {
+                projectileManager.entityShoot('spore', target.center, origin)
+                state.attackTime = 0;
             }
-            transform.velocityY = dVector.y * speed;
-            animState = target.center.x < origin.x ? "attackL" : "attackR";
+        } else { //panic
+            transform.velocityX = -dVector.x * speed;
+            transform.velocityY = -(Math.abs(dVector.y) * speed * 1.5);
+            animState = target.center.x < origin.x ? "idleR" : "idleL";
+            state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
+
+            if (state.attackTime > 0.5 && distance <= BLOCKSIZE * 16) {
+                projectileManager.entityShoot('spore', target.center, origin)
+                state.attackTime = 0;
+            }
         }
+
         state.setState(animState);
-    }
-
-    #direction(x1,y1,x2,y2) {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const length = getDistance2(x1, y1, x2, y2);
-        return [dx/length, dy/length];
-    }
-
-    #moveCloser(mover, target, blocksize) {
-        const [x,y] = mover;
-        const [dx,dy] = target;
-        return [x + dx * blocksize, y + dy * blocksize];
     }
 }
