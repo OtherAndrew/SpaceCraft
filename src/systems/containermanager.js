@@ -1,27 +1,30 @@
 class ContainerManager {
     constructor() {
         this.owners = {};               // owners and their inventory
-        
+
         this.slots = [];                // every container by their universal slot number
         this.slotCount = 0;             // universal slot number count
 
         this.activeInventory = [];      // interactive inventories
-        this.drawnInventory = [];       // inventories on screen TODO
+        this.drawnInventory = [];       // TODO inventories on screen
 
         this.playerCounts = new Map;    // keep track of player items and their counts
-        
+
         this.selectedContainer = null;  // player selected container
         this.lastClick = null;          // tracks last mouse click
-        
+
         this.hoverText = null           // provides information
-        
+
         this.splitMode = false;         // stack splitting
         this.splitCount = 0;            // new stack count
+
+        this.chestCount = 0;            // counter for new chests
+        this.reuseChest = [];           // reusable chest inventories
     }
 
     /**
      * Creates an inventory based off given arguments and registers it using owners catalogue and uni-slot
-     * 
+     *
      * @param owner     String representation of whom the inventory will belong to
      * @param x         The starting x-coordinate for the first container when the inventory is drawn
      * @param y         The starting y-coordinate for the first container when the inventory is drawn
@@ -31,7 +34,7 @@ class ContainerManager {
      * @param keyword   String to denote a container is special in some manner
      * @returns {*[]}   Returns the newly created inventory
      */
-    createInventory(owner, x, y, row, col, color="blue", keyword=null) {
+    createInventory(owner, x, y, row, col, color = 'blue', keyword = null) {
         let newInventory = [];
         let internalCount = 0;
         for (let i = 0; i < row; i++) {
@@ -39,13 +42,13 @@ class ContainerManager {
                 if (keyword == null) { // ordinary container
                     newInventory[internalCount] = new Container(
                         owner, x + (47 * j), y + (47 * i), this.slotCount++, color);
-                } else if (keyword === "reverse") { // player main inventory
+                } else if (keyword === 'reverse') { // player main inventory
                     newInventory[internalCount] = new Container(
                         owner, x + (47 * j), y - (47 * i), this.slotCount++, color);
                 } else { // other special container
                     newInventory[internalCount] = new Container(
                         owner, x + (47 * j), y + (47 * i), this.slotCount++, color, undefined, keyword);
-                }                    
+                }
                 this.slots.push(newInventory[internalCount++]); // register with uni-slot
             }
         }
@@ -57,27 +60,31 @@ class ContainerManager {
         return this.owners[owner];
     }
 
-    addToInventory(owner, item, count=1) {
+    getPlayerCounts(tag) {
+        return this.playerCounts.get(tag);
+    }
+
+    addToInventory(owner, item, count = 1) {
         let firstNull;
         let inventory = this.getInventory(owner);
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 inventory[i].count += count;
-                if(owner === 'player') this.addPlayerCount(item, count);
+                if (owner === 'player') this.addPlayerCount(item, count);
                 return 0;
             } else if (firstNull === undefined && inventory[i].item == null) firstNull = inventory[i];
         }
         if (firstNull) {
             firstNull.item = item;
             firstNull.count = count;
-            if(owner === 'player') this.addPlayerCount(item, count);
+            if (owner === 'player') this.addPlayerCount(item, count);
             return 1;
         } else return -1;
     }
-    
+
     addPlayerCount(item, count) {
         let current = this.playerCounts.get(item.tag);
-        if (current) this.playerCounts.set(item.tag, current + count); 
+        if (current) this.playerCounts.set(item.tag, current + count);
         else this.playerCounts.set(item.tag, count);
     }
 
@@ -85,8 +92,8 @@ class ContainerManager {
         let current = this.playerCounts.get(item.tag);
         if (current) {
             let newCount = current - count;
-            this.playerCounts.set(item.tag, newCount);
             if (!newCount) this.playerCounts.delete(item.tag);
+            else this.playerCounts.set(item.tag, newCount);
         }
     }
 
@@ -94,9 +101,8 @@ class ContainerManager {
         let inventory = this.getInventory(owner);
         let ent = inventory[index];
         if (ent.item) {
-            if (--ent.count) {
-                return structuredClone(ent.item);
-            } else {
+            if (--ent.count) return structuredClone(ent.item);
+            else {
                 let item = ent.item;
                 ent.item = null;
                 return item;
@@ -113,8 +119,8 @@ class ContainerManager {
             return active;
         }
     }
-    
-    removeForCrafting(requisite, owner="player") {
+
+    removeForCrafting(requisite, owner = "player") {
         let item = requisite.item;
         let cost = requisite.count;
         let inventory = this.getInventory(owner);
@@ -134,14 +140,42 @@ class ContainerManager {
     }
 
     swapViaContainer(swapContainer) {
-        // TODO: ACCOUNT FOR TRASH CAN AND OUT OF PLAYER INVENTORY
+        // TODO handle outside of inventory
+        // if (swapContainer.owner !== this.selectedContainer.owner) {  // two different inventories interacting
+        //     if (this.selectedContainer.owner === 'player') {  // from player
+        //         // note need to handle nulls as well
+        //
+        //         // handle stack: same items
+        //
+        //         // handle swap: different items
+        //         if (swapContainer.item && this.selectedContainer.item
+        //             && swapContainer.item.tag !== this.selectedContainer.item.tag) {
+        //             this.minusPlayerCount(this.selectedContainer.item, this.selectedContainer.count);
+        //             this.addPlayerCount(swapContainer.item, swapContainer.count);
+        //         }
+        //     } else if (swapContainer.owner === 'player') {  // to player
+        //         // note need to handle nulls as well
+        //
+        //         // handle stack: same items
+        //
+        //         // handle swap: different items
+        //         if (swapContainer.item)
+        //             this.addPlayerCount(swapContainer.item, swapContainer.count);
+        //         if (this.selectedContainer.item)
+        //             this.minusPlayerCount(this.selectedContainer.item, this.selectedContainer.count);
+        //     }
+        // }
+
         if (swapContainer !== this.selectedContainer && swapContainer.item && this.selectedContainer.item
             && swapContainer.item.tag === this.selectedContainer.item.tag) { // stack if same
             swapContainer.count = swapContainer.count + this.selectedContainer.count;
             this.clearContainer(this.selectedContainer)
-        } else if (!swapContainer.owner && this.selectedContainer.item) { // trashcan (need check for selling?)
-            // TODO address count of previous item in trashcan
-            swapContainer.item = this.selectedContainer.item; 
+        } else if (!swapContainer.owner && this.selectedContainer.item) { // to trashcan
+            swapContainer.item = this.selectedContainer.item;
+            swapContainer.count = this.selectedContainer.count;
+            this.clearContainer(this.selectedContainer)
+        } else if (!this.selectedContainer.owner && !swapContainer.item) { // from trashcan
+            swapContainer.item = this.selectedContainer.item;
             swapContainer.count = this.selectedContainer.count;
             this.clearContainer(this.selectedContainer)
         } else { // swap
@@ -156,6 +190,8 @@ class ContainerManager {
     }
 
     splitViaContainer(splitContainer, click) {
+        // TODO handle outside of inventory
+
         splitContainer.item = this.selectedContainer.item; // possibly problematic
         splitContainer.count = this.splitCount;
         this.selectedContainer.count -= this.splitCount;
@@ -172,23 +208,28 @@ class ContainerManager {
     }
 
     loadInventory(tag) {
-        for (const owner in this.owners) {
+        for (const owner in this.owners)
             if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
-        }
-    }
-    
-    // no inventory is being drawn to the screen
-    unloadInventory() {
-        this.activeInventory.length = 2;
     }
 
-    draw(uiActive, ctx, mouse) {
-        if (uiActive) {
+    // no inventory is being drawn to the screen
+    unloadInventory() {
+        if (this.activeInventory.length !== 2) this.activeInventory.length = 2;
+    }
+
+    reloadInventory() {
+        // if (this.activeInventory.length !== 5) {
+            this.unloadInventory();
+            this.loadInventory('builtin');
+        // }
+    }
+
+    draw(menuActive, ctx, mouse) {
+        if (menuActive) {
             ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.INVENTORY), 0, 0);
             ctx.drawImage(ASSET_MANAGER.getAsset(OVERLAY_PATH.VIGNETTE), 0, 0);
-            for (let i = 0; i < this.activeInventory.length; i++) {
+            for (let i = 0; i < this.activeInventory.length; i++)
                 for (let c = 0; c < this.activeInventory[i].length; c++) this.activeInventory[i][c].draw(ctx);
-            }
             if (this.hoverText) {
                 ctx.save();
                 ctx.globalAlpha = 0.75;
@@ -197,8 +238,8 @@ class ContainerManager {
                 ctx.strokeStyle = 'white';
                 ctx.fillStyle = 'black';
                 ctx.lineWidth = 3;
-                ctx.lineJoin="round";
-                ctx.miterLimit=2;
+                ctx.lineJoin = "round";
+                ctx.miterLimit = 2;
                 ctx.strokeText(this.hoverText, mouse.x, mouse.y);
                 ctx.lineWidth = 1;
                 ctx.fillText(this.hoverText, mouse.x, mouse.y);
@@ -207,22 +248,19 @@ class ContainerManager {
         } else {
             ctx.save();
             ctx.globalAlpha = 0.7;
-            for (let c = 0; c < 4; c++) this.activeInventory[0][c].draw(ctx);
+            for (let c = 0; c < 9; c++) this.activeInventory[0][c].draw(ctx);
             ctx.restore();
         }
     }
-    
-    update(uiActive, click, mouse) {
-        for (let i = 0; i < this.activeInventory.length; i++) { // update every active container
-            for (let j = 0; j < this.activeInventory[i].length; j++) {
-                this.activeInventory[i][j].update();
-            }
-        }
 
-        if (uiActive) { // ui is active
+    update(menuActive, click, mouse) {
+        for (let i = 0; i < this.activeInventory.length; i++) { // update every active container
+            for (let j = 0; j < this.activeInventory[i].length; j++) this.activeInventory[i][j].update();
+        }
+        if (menuActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check && check.item) this.hoverText = cleanTag(check.item.tag);
+                if (check && check.item) this.hoverText = check.item.tag; // cleanTag(check.item.tag);
                 else this.hoverText = null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique
@@ -243,10 +281,13 @@ class ContainerManager {
                                 this.clearSplit();
                                 this.lastClick = click;
                             }
-                        } else if (hit.keyword !== "recipe") { // product container
+                        } else if (hit.keyword !== 'recipe') { // product container
                             this.deselectContainer();
                             this.clearSplit();
                             this.craftContainerItem(hit, click);
+                        } else {
+                            this.deselectContainer();
+                            this.clearSplit();
                         }
                     }
                 } else if (click.w === 3 && this.selectedContainer && this.selectedContainer.item) { // right click
@@ -261,13 +302,13 @@ class ContainerManager {
             if (hit && click.w === 1) { // left click on container
                 if (hit.keyword == null) { // container isn't special
                     if (this.lastClick == null || click.t !== this.lastClick.t) this.selectContainer(hit, click);
-                } else if (hit.keyword !== "recipe") { // product container
+                } else if (hit.keyword !== 'recipe') { // product container
                     this.deselectContainer();
                     if (this.lastClick == null || click.t !== this.lastClick.t) this.craftContainerItem(hit, click);
                 }
             } else if (this.selectedContainer && click && click.w === 3) { // something selected, right click stack split
                 this.splitMode = true;
-                console.log("splitting");
+                console.log('splitting');
                 //     if (click.w === 3) this.splitCount++;
                 //     console.log(this.splitCount);
                 //     // need to add way to decrease split
@@ -295,28 +336,28 @@ class ContainerManager {
                     let width = container.width;
                     if (click.x >= container.x && click.x <= container.x + width &&
                         click.y >= container.y && click.y <= container.y + width) {
-                            return this.activeInventory[i][c];
+                        return this.activeInventory[i][c];
                     }
                 }
             }
         }
     }
 
-    checkSufficient(recipe, owner="player") {
+    checkSufficient(recipe, owner = 'player') {
         let craftable = true;
         for (let i = 1; i < recipe.length && craftable; i++) craftable = this.checkCount(recipe[i], owner);
         return craftable;
     }
 
-    checkCount(requisite, owner="player") {
+    checkCount(requisite, owner = 'player') {
         let item = requisite.item;
         let cost = requisite.count;
-        if (owner === "player") return (this.playerCounts.get(item.tag) ? this.playerCounts.get(item.tag) >= cost : false);
+        if (owner === 'player')
+            return (this.playerCounts.get(item.tag) ? this.playerCounts.get(item.tag) >= cost : false);
         let count = 0;
         let inventory = this.getInventory(owner)
-        for (let i = 0; i < inventory.length; i++) {
+        for (let i = 0; i < inventory.length; i++)
             if (inventory[i].item && inventory[i].item.tag === item.tag) count += inventory[i].count;
-        }
         return count >= cost;
     }
 
@@ -330,7 +371,7 @@ class ContainerManager {
         container.item = null;
         container.count = 0;
     }
-    
+
     deselectContainer() {
         if (this.selectedContainer) {
             this.selectedContainer.selected = false;
@@ -345,25 +386,48 @@ class ContainerManager {
         } else this.swapViaContainer(hit); // there is already a selected container
         this.lastClick = click;
     }
-    
+
     craftContainerItem(product, click) {
         let recipe = this.getInventory(product.keyword);
         if (this.checkSufficient(recipe)) {
             for (let i = 1; i < recipe.length; i++) this.removeForCrafting(recipe[i]);
-            this.addToInventory("player", recipe[0].item, recipe[0].count);
+            let product = recipe[0];
+            this.addToInventory('player', product.item, product.count);
         }
         this.lastClick = click;
+    }
+
+    registerChest(chest) {
+        let index = this.reuseChest.shift();  // grab first value in queue
+        if (index) chest.tag = chest.tag + index;
+        else {
+            chest.tag = chest.tag + this.chestCount++;
+            this.createInventory(cleanTag(chest.tag), 302, 408, 2, 9, 'blue');
+        }
+    }
+
+    deregisterChest(chest) {  // interact_chest0, interact_chest1, ... , interact_chestX
+        let index = chest.tag.match(/\d+$/);
+        this.reuseChest.push(index[0]);
+        chest.tag = 'interact_chest'
+    }
+
+    checkChest(chest) {
+        let empty = true;
+        let linked = this.getInventory(cleanTag(chest.tag));
+        for (let i = 0; i < linked.length && empty; i++) if (linked[i].item) empty = false;
+        return empty;
     }
 }
 
 class Container {
-    constructor(owner, x, y, slot, fillColor, strokeColor="white", keyword) {
+    constructor(owner, x, y, slot, fillColor, strokeColor = 'white', keyword) {
         Object.assign(this, {owner, x, y, slot, fillColor, strokeColor, keyword});
         this.width = 42;
         this.calculateMiddle();
-        this.textColor = "black";
-        this.font = "bold 15";
-        
+        this.textColor = 'black';
+        this.font = 'bold 15';
+
         this.item = null;
         this.count = 0;
         this.selected = false;
@@ -380,13 +444,12 @@ class Container {
     }
 
     draw(ctx) {
-        if (this.selected) this.roundRect(ctx, this.x, this.y, "orange"); 
+        if (this.selected) this.roundRect(ctx, this.x, this.y, 'orange');
         else this.roundRect(ctx, this.x, this.y, this.fillColor);
         if (this.item) {
             let sprite = this.item.components.sprite;
             ctx.save();
-            if (this.uncraftable)
-                ctx.globalAlpha = 0.40;
+            if (this.uncraftable) ctx.globalAlpha = 0.40;
             ctx.drawImage(
                 sprite.sprite,
                 0,
@@ -398,12 +461,6 @@ class Container {
                 sprite.sWidth,
                 sprite.sHeight
             );
-            
-            // testing
-            // let itemImage = ASSET_MANAGER.getAsset(this.item.sprite);
-            // let shrunkX = itemImage.width * (0.015 * this.width);
-            // let shrunkY = itemImage.height * (0.015 * this.width);
-            // ctx.drawImage(itemImage, this.midx - shrunkX / 2, this.midy - shrunkY / 2, shrunkX, shrunkY);
             this.drawStrokedText(ctx, this.x + Math.round(0.2 * this.width), this.y + Math.round(0.8 * this.width));
             ctx.restore();
         }
@@ -412,38 +469,36 @@ class Container {
     // credit: https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
     drawStrokedText(ctx, x, y) {
         ctx.save();
-        // ctx.globalAlpha = 1;
-        ctx.font = this.font + "px Helvetica";
+        ctx.font = this.font + 'px Helvetica';
         ctx.strokeStyle = this.strokeColor;
         ctx.lineWidth = 3;
-        ctx.lineJoin="round";
-        ctx.miterLimit=2;
+        ctx.lineJoin = 'round';
+        ctx.miterLimit = 2;
         ctx.strokeText(this.displayText, x, y);
         ctx.fillStyle = this.textColor;
-        if (this.insufficient)
-            ctx.fillStyle = "red";
+        if (this.insufficient) ctx.fillStyle = 'red';
         ctx.lineWidth = 1;
         ctx.fillText(this.displayText, x, y);
         ctx.restore();
     }
 
     // credit: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
-    roundRect(ctx, x, y, color, radius=15) {
+    roundRect(ctx, x, y, color, radius = 15) {
         let r = x + this.width;
         let b = y + this.width;
         ctx.beginPath();
         ctx.fillStyle = color;
         ctx.strokeStyle = this.strokeColor;
-        ctx.lineWidth="2";
-        ctx.moveTo(x+radius, y);
-        ctx.lineTo(r-radius, y);
-        ctx.quadraticCurveTo(r, y, r, y+radius);
-        ctx.lineTo(r, y+this.width-radius);
-        ctx.quadraticCurveTo(r, b, r-radius, b);
-        ctx.lineTo(x+radius, b);
-        ctx.quadraticCurveTo(x, b, x, b-radius);
-        ctx.lineTo(x, y+radius);
-        ctx.quadraticCurveTo(x, y, x+radius, y);
+        ctx.lineWidth = '2';
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(r - radius, y);
+        ctx.quadraticCurveTo(r, y, r, y + radius);
+        ctx.lineTo(r, y + this.width - radius);
+        ctx.quadraticCurveTo(r, b, r - radius, b);
+        ctx.lineTo(x + radius, b);
+        ctx.quadraticCurveTo(x, b, x, b - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.fill();
         ctx.stroke();
     }
@@ -453,15 +508,15 @@ class Container {
 /*function drawStrokedText(ctx, x, y) {
     ctx.save();
     // ctx.globalAlpha = 1;
-    ctx.font = this.font + "px Helvetica";
+    ctx.font = this.font + 'px Helvetica';
     ctx.strokeStyle = this.strokeColor;
     ctx.lineWidth = 3;
-    ctx.lineJoin="round";
+    ctx.lineJoin='round';
     ctx.miterLimit=2;
     ctx.strokeText(this.displayText, x, y);
     ctx.fillStyle = this.textColor;
     if (this.insufficient)
-        ctx.fillStyle = "red";
+        ctx.fillStyle = 'red';
     ctx.lineWidth = 1;
     ctx.fillText(this.displayText, x, y);
     ctx.restore();

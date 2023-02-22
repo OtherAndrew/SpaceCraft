@@ -55,53 +55,92 @@ const SOUND_PATH = {
     BOSS            : './assets/music/themes/boss_battle.mp3'
 }
 
+// const BG_SCROLL = {
+//     SPEED_0 :	.03,
+//     SPEED_1	:	.05,
+//     SPEED_2	:	.06,
+//     SPEED_3	:	.07,
+//     SPEED_4	:	.08,
+//     SPEED_5	:	.09
+// }
+
+// ALT SOLUTION
 const BG_SCROLL = {
-    SPEED_0 :	.03,
-    SPEED_1	:	.05,
-    SPEED_2	:	.06,
-    SPEED_3	:	.07,
-    SPEED_4	:	.08,
-    SPEED_5	:	.09
+    BACKGROUND_0    :   .03,
+    BACKGROUND_1	:	.05,
+    BACKGROUND_2	:	.06,
+    BACKGROUND_3	:	.07,
+    BACKGROUND_4	:	.08,
+    BACKGROUND_5	:	.09
 }
 
 const CHAR_PATH = {
+    BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
+    BROODMOTHER :	'./assets/sprites/broodmother.png',
+    CREEPERILLA :	'./assets/sprites/creeperilla.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
+    MOSSAMBER   :	'./assets/sprites/mossamber.png',
     PLAYER      :	'./assets/sprites/player.png',
+    ROCKET      :	'./assets/sprites/rocket.png',
     SPORE       :	'./assets/sprites/spore2.png',
     WORMTANK    :	'./assets/sprites/wormtank.png',
-    ROCKET      :	'./assets/sprites/rocket.png',
-    MOSSAMBER   :	'./assets/sprites/mossamber.png',
-    BLOODSUCKER :	'./assets/sprites/bloodsucker.png',
-    CREEPERILLA :	'./assets/sprites/creeperilla.png',
-    BROODMOTHER :	'./assets/sprites/broodmother.png'
+    WASP        :   './assets/sprites/wasp.png'
 }
 
 const CRAFT_COLOR = {
-    ANVIL   :   'black',
-    FURNACE :   'orange',
-    TABLE   :   'brown'
+    ANVIL_I     :   'black',
+    ANVIL_P     :   'grey',
+    BUILTIN_I   :   'pink',
+    BUILTIN_P   :   'purple',
+    FURNACE_I   :   'orange',
+    FURNACE_P   :   'red',
+    HUB_I       :   'orange',
+    HUB_P       :   'black',
+    STATION_I   :   'red',
+    STATION_P   :   'yellow',
+    TABLE_I     :   'brown',
+    TABLE_P     :   'green',
+    TRADER_I    :   'yellow',
+    TRADER_P    :   'pink'
 }
 
 const CRAFT_PATH = {
-    ANVIL   :   './assets/crafting/stations/anvil.png',
-    FURNACE :   './assets/crafting/stations/furnace.png',
-    TABLE   :   './assets/crafting/stations/table.png'
+    ANVIL   :   './assets/interactives/furniture/anvil.png',
+    CHEST   :   './assets/interactives/furniture/chest.png',
+    FURNACE :   './assets/interactives/furniture/furnace.png',
+    HUB     :   './assets/interactives/furniture/hub.png',
+    STATION :   './assets/interactives/furniture/station.png',
+    TABLE   :   './assets/interactives/furniture/table.png',
+    TRADER  :   './assets/interactives/furniture/trader.png'
 }
 
 const ITEM_PATH = {
     BROKEN_GRENADE_LAUNCHER : './assets/items/broken_grenade_launcher.png',
     BROKEN_MINIGUN          : './assets/items/broken_minigun.png',
-    BROKEN_RAILGUN          : './assets/items/broken_sniper.png'
+    BROKEN_RAILGUN          : './assets/items/broken_sniper.png',
+    BISMUTH	    :	'./assets/interactives/products/bismuth_bar.png',
+    COBALT	    :	'./assets/interactives/products/cobalt_bar.png',
+    COPPER	    :	'./assets/interactives/products/copper_bar.png',
+    FERRITE	    :	'./assets/interactives/products/ferrite_bar.png',
+    GOLD	    :	'./assets/interactives/products/gold_bar.png',
+    IRON	    :	'./assets/interactives/products/iron_bar.png',
+    PARAFFIN	:	'./assets/interactives/products/paraffin_bar.png',
+    STEEL       :   './assets/interactives/products/steel_bar.png',
+    TIN	        :	'./assets/interactives/products/tin_bar.png',
+    TITANITE	:	'./assets/interactives/products/titanite_bar.png',
+    TUNGSTEN	:	'./assets/interactives/products/tungsten_bar.png'
 }
 
 const MISC_PATH = {
     CURSOR_CROSSHAIR    :   './assets/cursors/Crosshairs_Red.png',
     CURSOR_HAND         :   './assets/cursors/inventoryhand.png',
     CURSOR_PICK	        :	'./assets/cursors/pickCursor.cur',
+    BULLET              :   './assets/icons/bullets.png',
+    BULLETFRAME         :   './assets/icons/bullets_frame.png',
     DEATH_EFFECT	    :	'./assets/projectiles/death_explosion.png',
     PICK	            :	'./assets/icons/item_3485.png',
     BLOCK_PLACEMENT_GREEN     :   './assets/cursors/blockPlacementGreen.cur',
@@ -109,13 +148,9 @@ const MISC_PATH = {
 }
 
 const OVERLAY_PATH = {
-    INVENTORY   :   './assets/overlay/inventory.png',
-    VIGNETTE    :   './assets/overlay/vignette.png',
-    FOV         :   './assets/overlay/fov.png'
-}
-
-const PROD_PATH = {
-    
+    INVENTORY   :   './assets/overlays/inventory.png',
+    VIGNETTE    :   './assets/overlays/vignette.png',
+    FOV         :   './assets/overlays/fov.png'
 }
 
 const PROJECTILE_PATH = {
@@ -179,9 +214,9 @@ const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
+    ITEMS       :   ITEM_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
-    PRODS       :   PROD_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
@@ -196,10 +231,10 @@ const CONSTANTS = {
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
     CRAFTCOLORS :   CRAFT_COLOR,
+    ITEMS       :   ITEM_PATH,
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
-    PRODS       :   PROD_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,

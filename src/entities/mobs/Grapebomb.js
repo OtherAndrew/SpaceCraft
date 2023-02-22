@@ -49,9 +49,10 @@ class Grapebomb {
     }
 
     update(target, projectileFactory) {
-        const origin = this.components['boxCollider'].center;
-        if (checkCollision(this, target)) {
-        // if (getDistance(origin, target) <= BLOCKSIZE * 3.5) {
+        const collider = this.components['boxCollider']
+        const origin = collider.center;
+        // if (checkCollision(collider, target)) {
+        if (getDistance(origin, target) <= BLOCKSIZE * 3.5) {
             this.components['stats'].currentHealth = 0;
             projectileFactory.detonate('enemy_explosion', origin);
         }

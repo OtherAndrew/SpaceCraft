@@ -8,7 +8,7 @@ class Creeperilla {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'creeperilla mob';
+        this.tag = 'mob';
         this.name = 'creeperilla';
         this.components = this.#buildComponents(props);
         this.rand = Math.floor(Math.random()*(60-10) + 10);
@@ -36,7 +36,7 @@ class Creeperilla {
         });
         const cWidth = 1.8 * BLOCKSIZE;
         const collider = new CBoxCollider({
-            x: props.x + props.width / 2,
+            x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,

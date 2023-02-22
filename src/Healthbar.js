@@ -2,7 +2,7 @@
  * Healthbar component
  * @author Jeep Naarkom
  */
-class CHealthbar {
+class Healthbar {
     constructor({x, y, maxWidth, offsetY, currentHp, maxHp}) {
         Object.assign(this, { x,y, maxWidth, offsetY, currentHp, maxHp });
         this.name = 'healthbar';

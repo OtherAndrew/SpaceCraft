@@ -17,82 +17,81 @@ class Bloodsucker {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.5,
-            speed: 1.5,
+            speed: 4,
             maxHealth: 70
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSUCKER],
-            sWidth: 166,
-            sHeight: 162,
-            scale: 0.5,
+            sWidth: 332,
+            sHeight: 326,
+            scale: BLOCKSIZE * 2.5 / 332,
+            // idleR
             firstFrameX: 0,
-            frameY: 0,
+            frameY: 1,
             lastFrameX: 4,
             fps: 20,
-            padding: 2
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y
         });
-        const cDim = BLOCKSIZE * 1.75
+        const cWidth = BLOCKSIZE * 1.75;
+        const cHeight = BLOCKSIZE * 0.8;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: cDim,
-            height: cDim,
-            xOffset: (sprite.dWidth - cDim) / 2,
-            yOffset: (sprite.dHeight - cDim),
+            width: cWidth,
+            height: cHeight,
+            xOffset: (sprite.dWidth - cWidth) / 2,
+            yOffset: (sprite.dHeight - cHeight) * 3/4,
         });
+        const drops = new CDrops([
+            new LaserPistol()
+        ]);
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
 
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, drops];
     }
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 1,3));
-        aMap.set('idleL', new AnimationProps(0, 0,1));
-        aMap.set('flyR', new AnimationProps(0, 1,4));
-        aMap.set('flyL', new AnimationProps(0, 0,4));
-
-        // aMap.set('death', new AnimationProps(0, 0,15));
-
+        aMap.set('idleL', new AnimationProps(0, 0,4));
+        aMap.set('idleR', new AnimationProps(0, 1,4));
+        aMap.set('attackL', new AnimationProps(0, 2,3));
+        aMap.set('attackR', new AnimationProps(0, 3,3));
     };
 
-    #addBehaviors(transform, stats) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, null));
-        bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('flyL', new BehaviorProps(stats.speed, null));
-        bMap.set('flyR', new BehaviorProps(-stats.speed, null));
-    }
-
     update(target, projectileManager) {
-        const targetX = target.center.x;
-        const targetY = target.center.y;
+        const collider = this.components['boxCollider']
+        const origin = collider.center;
+        const speed = this.components["stats"].speed;
+        const transform = this.components["transform"];
+        const state = this.components['state'];
+
         //TODO use A* to to find path
-        const x = this.components['boxCollider'].center.x;
-        const y = this.components['boxCollider'].center.y;
 
+        const distance = getDistance(origin, target.center);
+        const dVector = normalize(origin, target.center)
+        let animState;
 
-        const velocity = this.components["stats"].speed;
-
-        const transform = this.components.transform;
-        const distance = getDistance2(x, y, targetX, targetY);
-        // const angle = getAngle2(x, y, targetX, targetY);
-        if (distance <= 870) {
-            transform.velocityY = targetY < y ? -velocity : velocity;
-            transform.velocityX = targetX < x ? -velocity : velocity;
+        if (distance > 300) {
+            transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
+            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
+            console.log(transform.velocityX)
+            animState = transform.velocityX < 0 ? "idleL" : "idleR"
         } else {
-            transform.velocityX = 0;
-            transform.velocityY = 0;
+            if (checkCollision(collider, target)) {
+                transform.velocityX = 0;
+            } else {
+                transform.velocityX = dVector.x * speed;
+            }
+            transform.velocityY = dVector.y * speed;
+            animState = target.center.x < origin.x ? "attackL" : "attackR";
         }
-        this.components.state.setState(targetX < x ? "flyL" : "flyR");
+        state.setState(animState);
     }
 
     #direction(x1,y1,x2,y2) {

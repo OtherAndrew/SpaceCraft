@@ -9,21 +9,6 @@ class PlayerController {
         this.acceleration = 1
         this.fastFall = 3;
         this.restrictMovement = false;
-        this.weaponMap = this.#buildWeaponMap();
-    }
-
-    #buildWeaponMap() {
-        const weaponMap = new Map();
-        weaponMap.set('laserPistol', new WeaponProps('weak_bullet', 0.5));
-        weaponMap.set('laserGun', new WeaponProps('mid_bullet', 0.33));
-        weaponMap.set('laserRifle', new WeaponProps('strong_bullet', 0.25));
-        weaponMap.set("grenadeLauncher", new WeaponProps('bomb', 1.25));
-        weaponMap.set("handCannon", new WeaponProps("mini_bomb", 1.33));
-        weaponMap.set("flamethrower", new WeaponProps('fire', 6, 3));
-        weaponMap.set('minigun', new WeaponProps('minigun_bullet', 7.5, 5));
-        weaponMap.set('railgun', new WeaponProps('railgun_bullet', 5));
-        // weaponMap.set('jetpack', new WeaponProps('smoke', 5, 5));
-        return weaponMap;
     }
 
     /**
@@ -42,27 +27,6 @@ class PlayerController {
         }
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
-        // if (this.pState.grounded) {
-            // if (this.elapsedTime >= this.jetpackCooldown) {
-            //     this.elapsedTime = 0;
-            //     this.jetpackTime = 0;
-            // } else {
-            //     this.elapsedTime += tick;
-            // }
-            this.weaponMap.forEach(w => {
-                if (w.fireTime > w.duration) {
-                    if (w.elapsedTime >= w.cooldown) {
-                        w.elapsedTime = 0;
-                        w.fireTime = 0;
-                    } else {
-                        w.elapsedTime += tick;
-                    }
-                }
-                // else if (!mouseDown) { // regen when not using
-                //     w.fireTime = clamp(w.fireTime - tick/3, 0, w.fireTime);
-                // }
-            });
-        // }
     }
 
     handleKeyboard(key, tick) {
@@ -74,7 +38,7 @@ class PlayerController {
             state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
-        // if (input['w']) { // jetpack?
+        // if (key['w']) { // jetpack?
         //     if (this.jetpackTime < this.jetpackDuration) {
         //         this.pState.grounded = false
         //         this.pTransform.velocityY = -(GRAVITY + 10);
@@ -121,8 +85,8 @@ class PlayerController {
 
     handleMouse(pos, activeContainer, tick) {
         let coords = getGridCell(pos, this.player)
-        let mapY = coords.y
-        let mapX = coords.x
+        let mapY = coords.y || 0;
+        let mapX = coords.x || 0;
         let selected = this.terrainMap[mapY][mapX];
         const cursorTarget = {
             x: pos.x + 25/2,
@@ -131,14 +95,14 @@ class PlayerController {
         console.log(selected.tag)
         let active = activeContainer.item;
         if (active) {
-            if(/tile|craft/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
+            if(/tile|interact/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
                 if(selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(activeContainer.slot);
                     let newBlock;
-                    if (active.tag.includes('craft'))
-                        newBlock = this.entityManager.addEntity(generateCrafter(tag, mapX, mapY));
-                    else
-                        newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+                    if (active.tag.includes('interact')) {
+                        newBlock = this.entityManager.addEntity(generateInteractive(tag, mapX, mapY));
+                        if (active.tag.includes('chest')) this.containerManager.registerChest(newBlock);
+                    } else newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
@@ -146,40 +110,37 @@ class PlayerController {
                     }
                 }
             } else if (active.tag === 'pickaxe') {
-                if(/tile|craft/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
-                    let e = this.entityManager.getEntity(selected.id)
-                    e.components.lifespan.current -= 1
-                    if(e.components.lifespan.current <= 0) {
-                        selected.tag = 'air'
-                        selected.id = null
-                        delete e.components["boxCollider"]
-                        this.containerManager.addToInventory('player', resizeBlock(e))}
+                if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
+                    let destroyable = true;
+                    if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
+                    if (destroyable) {
+                        let e = this.entityManager.getEntity(selected.id)
+                        e.components.stats.applyDamage(1);
+                        if(e.components.stats.isDead) {
+                            if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
+                            selected.tag = 'air'
+                            selected.id = null
+                            delete e.components["boxCollider"]
+                            this.containerManager.addToInventory('player', resizeBlock(e))
+                        }
+                    }
                 }
+            } else if (active.name === 'weapon') {
+                this.#fireWeapon(active, cursorTarget, tick);
             }
-            else if (active.name === 'weapon') {
-                this.#fireWeapon(active.tag, cursorTarget, tick);
-            }
-        } else if (selected.tag.includes('craft')) {
-            console.log('open crafting menu')
+        } else if (selected.tag.includes('interact')) {
+            this.containerManager.unloadInventory();
             this.containerManager.loadInventory(cleanTag(selected.tag));
             this.game.activateMenu();
         }
     }
 
     #fireWeapon(activeWeapon, target, tick) {
-        const wProps = this.weaponMap.get(activeWeapon);
-        if (wProps.fireTime <= wProps.duration) {
+        // const wProps = this.weaponMap.get(activeWeapon);
+        const wProps = activeWeapon.components["weaponProps"];
+        if (wProps.readyToFire()) {
             this.projectileFactory.playerShoot(wProps.projectileType, target, this.player)
             wProps.fireTime += tick;
         }
-    }
-}
-
-class WeaponProps {
-    constructor(projectileType, cooldown, duration = 0) {
-        Object.assign(this, { projectileType, cooldown, duration })
-        this.elapsedTime = 0;
-        this.fireTime = 0;
-        return this;
     }
 }

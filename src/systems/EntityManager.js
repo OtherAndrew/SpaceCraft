@@ -10,11 +10,11 @@ NPC - any object within the game. Components are attached to the entities to giv
 
 /**
  * Manages the Game entities.
- * 
+ *
  */
 class EntityManager {
 
-    constructor(){
+    constructor() {
         this.entities = []
         this.entityMap = new Map()
         this.totalEntities = 0
@@ -25,7 +25,9 @@ class EntityManager {
      * Creates and adds an entity to the manager
      * @param {Object} props          NPC properties
      * @param {string} props.tag      NPC tag
+     * @param {string} props.name     NPC name
      * @param {[]} props.components   NPC components
+     * @param {function} props.update Entity update function
      * @returns {Entity}              the created entity
      */
     addEntity(props) {
@@ -43,12 +45,12 @@ class EntityManager {
 
     /**
      * Returns an entity by id
-     * 
+     *
      * @param {Number} id
      * @returns an entity group with tag argument or entity with id argument
      */
     getEntity(arg) {
-        if(typeof arg === 'number') return this.entityMap.get(arg)
+        if (typeof arg === 'number') return this.entityMap.get(arg)
     }
 
     /**
@@ -63,22 +65,22 @@ class EntityManager {
         })
         let removed = this.#removeDeadEntities()
         this.toAddEntities.length = 0
-        for(let id in removed) {
+        for (let id in removed) {
             this.entityMap.delete(id)
         }
     }
 
     /**
      * Private Helper function for update.
-     * 
+     *
      * @returns the dead entities
      */
     #removeDeadEntities() {
-        if(this.entities.length) {
+        if (this.entities.length) {
             let removed = []
-            for(let i = this.entities.length - 1; i >= 0; i--) {
+            for (let i = this.entities.length - 1; i >= 0; i--) {
                 let e = this.entities[i]
-                if(!e.isAlive) {
+                if (!e.isAlive) {
                     removed.push(e.id)
                     this.entities.splice(i, 1)
                 }
@@ -91,9 +93,9 @@ class EntityManager {
 
 /**
  * NPC class. Only the EntityManager should be able to create entities.
- * 
+ *
  */
-class Entity  {
+class Entity {
 
     /**
      *
@@ -102,10 +104,9 @@ class Entity  {
      * @param {string} props.name     Entity name
      * @param {[]} props.components   Entity components
      * @param {function} props.update Entity update function
-     * @param {function} props.resize Entity resize function
      * @param {number} id             Entity ID
      */
-    constructor(props, id) {
+    constructor(props, id = 0) {
         this.id = id
         this.tag = props.tag
         this.name = props.name

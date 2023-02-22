@@ -20,7 +20,8 @@ class CState {
         this.grounded = true;
         this.sprite = null;
         this.transform = null;
-        this.elapsedTime = 0;
+        // this.elapsedTime = 0;
+        this.elapsedTime = randomInt(100);
         this.stateSequence = [];
         return this;
     }

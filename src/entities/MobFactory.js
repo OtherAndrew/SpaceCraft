@@ -19,6 +19,7 @@ class MobFactory {
             case 'rocket': out = this.entityManager.addEntity(new Rocket({ x: x, y: y })); break;
             case 'creeperilla': out = this.entityManager.addEntity(new Creeperilla({ x: x, y: y })); break;
             case 'spiderboss': out = this.entityManager.addEntity(new Spiderboss({ x: x, y: y })); break;
+            case 'wasp': out = this.entityManager.addEntity(new Wasp({ x: x, y: y })); break;
             default: console.log(`Invalid mob name: ${mob}.`);
         }
         return out;

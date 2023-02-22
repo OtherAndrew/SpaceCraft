@@ -213,3 +213,19 @@ const isPlaceable = (player, coords, terrainMap) => {
         return !checkBlockOverlap(player, c) && checkCellConnectedToBlock(coords, terrainMap)
     }
 }
+
+const plusOrMinus = () => {
+    return Math.random() < 0.5 ? -1 : 1;
+}
+
+/**
+ * Swap between true and false every interval.
+ *
+ * @param {number} time     Elapsed time.
+ * @param {number} interval Swap time interval.
+ * @return {boolean} true if time is between even and odd intervals,
+ *                   false if time is between odd and even intervals.
+ */
+const switchInterval = (time, interval) => {
+    return Math.floor(time / interval) % 2 === 0;
+}

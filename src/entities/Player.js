@@ -44,7 +44,7 @@ class Player {
             maxVelocityX: stats.speed,
             maxVelocityY: BLOCKSIZE * .9
         });
-        const cWidth = BLOCKSIZE * .75;
+        const cWidth = BLOCKSIZE * .8;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
