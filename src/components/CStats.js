@@ -12,12 +12,12 @@ class CStats {
      * @param {number} speed         Entity speed. 0 by default.
      * @param {number} regenCooldown Time it takes since last damaged for entity to start
      *                               regenerating health. 10 by default.
-     * @param {number} regenAmount   Health regenerated per tick. 0.25 by default.
+     * @param {number} regenAmount   Health regenerated per tick. 0.5% of max health by default.
      * @param {boolean} invincible   If entity is invincible. false by default.
      * @return {CStats} This CStats component.
      */
     constructor({ damage = 0, maxHealth = 1, speed = 0,
-                    regenCooldown = 10, regenAmount = 0.25, invincible = false }) {
+                    regenCooldown = 10, regenAmount = maxHealth / 500, invincible = false }) {
         Object.assign(this, { damage, maxHealth, speed, regenCooldown, regenAmount, invincible })
         this.currentHealth = this.maxHealth;
         this.name = "stats"
