@@ -80,7 +80,6 @@ class Bloodsucker {
         if (distance > 300) {
             transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
-            console.log(transform.velocityX)
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         } else {
             if (checkCollision(collider, target)) {
