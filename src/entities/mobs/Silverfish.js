@@ -58,10 +58,16 @@ class Silverfish {
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
+        const interval = 10;
 
         if (distance > BLOCKSIZE * 12) {
-            transform.velocityX = switchInterval(state.elapsedTime, 10) ? speed/3 : -speed/3;
-            animState = transform.velocityX < 0 ? "idleL" : "idleR"
+            if (switchInterval(state.elapsedTime, interval/2)) {
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
+                animState = transform.velocityX < 0 ? "idleL" : "idleR"
+            } else {
+                transform.velocityX = 0;
+                animState = state.currentState;
+            }
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
