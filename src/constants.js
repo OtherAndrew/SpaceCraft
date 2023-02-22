@@ -121,7 +121,18 @@ const CRAFT_PATH = {
 const ITEM_PATH = {
     BROKEN_GRENADE_LAUNCHER : './assets/items/broken_grenade_launcher.png',
     BROKEN_MINIGUN          : './assets/items/broken_minigun.png',
-    BROKEN_RAILGUN          : './assets/items/broken_sniper.png'
+    BROKEN_RAILGUN          : './assets/items/broken_sniper.png',
+    BISMUTH	    :	'./assets/interactives/products/bismuth_bar.png',
+    COBALT	    :	'./assets/interactives/products/cobalt_bar.png',
+    COPPER	    :	'./assets/interactives/products/copper_bar.png',
+    FERRITE	    :	'./assets/interactives/products/ferrite_bar.png',
+    GOLD	    :	'./assets/interactives/products/gold_bar.png',
+    IRON	    :	'./assets/interactives/products/iron_bar.png',
+    PARAFFIN	:	'./assets/interactives/products/paraffin_bar.png',
+    STEEL       :   './assets/interactives/products/steel_bar.png',
+    TIN	        :	'./assets/interactives/products/tin_bar.png',
+    TITANITE	:	'./assets/interactives/products/titanite_bar.png',
+    TUNGSTEN	:	'./assets/interactives/products/tungsten_bar.png'
 }
 
 const MISC_PATH = {
@@ -140,20 +151,6 @@ const OVERLAY_PATH = {
     INVENTORY   :   './assets/overlays/inventory.png',
     VIGNETTE    :   './assets/overlays/vignette.png',
     FOV         :   './assets/overlays/fov.png'
-}
-
-const PROD_PATH = {
-    BISMUTH	    :	'./assets/interactives/products/bismuth_bar.png',
-    COBALT	    :	'./assets/interactives/products/cobalt_bar.png',
-    COPPER	    :	'./assets/interactives/products/copper_bar.png',
-    FERRITE	    :	'./assets/interactives/products/ferrite_bar.png',
-    GOLD	    :	'./assets/interactives/products/gold_bar.png',
-    IRON	    :	'./assets/interactives/products/iron_bar.png',
-    PARAFFIN	:	'./assets/interactives/products/paraffin_bar.png',
-    STEEL       :   './assets/interactives/products/steel_bar.png',
-    TIN	        :	'./assets/interactives/products/tin_bar.png',
-    TITANITE	:	'./assets/interactives/products/titanite_bar.png',
-    TUNGSTEN	:	'./assets/interactives/products/tungsten_bar.png'
 }
 
 const PROJECTILE_PATH = {
@@ -217,9 +214,9 @@ const PATHS = {
     BGS         :   BG_PATH,
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
+    ITEMS       :   ITEM_PATH,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
-    PRODS       :   PROD_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,
@@ -234,10 +231,10 @@ const CONSTANTS = {
     CHARS       :   CHAR_PATH,
     CRAFTS      :   CRAFT_PATH,
     CRAFTCOLORS :   CRAFT_COLOR,
+    ITEMS       :   ITEM_PATH,
     LIVES       :   TILE_LIFE,
     MISCS       :   MISC_PATH,
     OVERLAYS    :   OVERLAY_PATH,
-    PRODS       :   PROD_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TESTS       :   TEST_PATH,
     TILES       :   TILE_PATH,

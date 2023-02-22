@@ -125,7 +125,7 @@ const generateItem = (tag) => {
     let id = cleanTag(tag).toUpperCase();
     let index = id.lastIndexOf(' ');
     id = id.slice(0, index);
-    let image = ASSET_MANAGER.cache[PROD_PATH[id]];
+    let image = ASSET_MANAGER.cache[ITEM_PATH[id]];
     return new Blueprint({
         tag: tag,
         sprite: image,
@@ -135,33 +135,33 @@ const generateItem = (tag) => {
     });
 }
 
-const generateWeapon = (gun) => {
-    let weapon;
-    switch (gun.tag) {
+const generateWeapon = (tag) => {
+    let gun;
+    switch (tag) {
         case "laserPistol":
-            weapon = new LaserPistol();
+            gun = new LaserPistol();
             break;
         case "laserGun":
-            weapon = new LaserGun();
+            gun = new LaserGun();
             break;
         case "laserRifle":
-            weapon = new LaserRifle();
+            gun = new LaserRifle();
             break;
         case "flamethrower":
-            weapon = new Flamethrower();
+            gun = new Flamethrower();
             break;
         case "grenadeLauncher":
-            weapon = new GrenadeLauncher();
+            gun = new GrenadeLauncher();
             break;
         case "handCannon":
-            weapon = new HandCannon();
+            gun = new HandCannon();
             break;
         case "minigun":
-            weapon = new Minigun();
+            gun = new Minigun();
             break;
         case "railgun":
-            weapon = new Railgun();
+            gun = new Railgun();
             break;
     }
-    return weapon;
+    return gun;
 }

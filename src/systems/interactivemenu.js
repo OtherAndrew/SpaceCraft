@@ -106,7 +106,7 @@ class InteractiveMenu {
                 let tag = item.tag;
                 let generate;
                 if (item.name && item.name.includes('weapon')) {
-                    generate = new Entity(generateWeapon(item));
+                    generate = new Entity(generateWeapon(tag));
                 } else if (tag.includes('item')) {
                     generate = new Entity(generateItem(tag));
                 } else if (tag.includes('interact')) { // interactive
