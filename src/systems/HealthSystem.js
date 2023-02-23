@@ -12,9 +12,8 @@ class HealthSystem {
         updateList.forEach(e => {
             const eStats = e.components["stats"];
             if (eStats.isDead) {
-                const origin = e.components['boxCollider'].center;
-                this.particleFactory.generate('death', origin);
-                if (e.tag.includes('mob')) {
+                if (e.tag.includes('mob') || e.name === "player") {
+                    this.particleFactory.generate('death', e.components['boxCollider'].center);
                     if (e.components['drops']) {
                         e.components['drops'].dropList.forEach(d => {
                             this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
@@ -22,6 +21,11 @@ class HealthSystem {
                     }
                     e.destroy();
                 }
+                // else if (e.name === 'block') {
+                //     e.tag = 'air'
+                //     e.id = null
+                //     delete e.components["boxCollider"]
+                // }
             } else {
                 if (eStats.canRegen()) {
                     eStats.heal(eStats.regenAmount);

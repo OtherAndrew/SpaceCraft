@@ -138,7 +138,7 @@ class CollisionSystem {
             this.tileList.forEach(tile => {
                 if (checkCollision(e, tile)) {
                     if (e.tag.includes("destroyBlock")) {
-                        // tile.destroy();
+                        // tile.components["stats"].applyDamage(e.components["stats"].damage);
                     }
                 }
             });
