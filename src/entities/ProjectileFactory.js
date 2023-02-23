@@ -99,7 +99,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack ignoreTile pierce',
                     sprite: this.orbSprite(4),
-                    damage: 225,
+                    damage: 150,
                     speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
                     origin: projectileOrigin,
