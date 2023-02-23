@@ -16,7 +16,7 @@ class Spikejumper {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 1.25,
-            maxHealth: 400,
+            maxHealth: 350,
             hasFallDamage: false
         });
         const sprite = new CSprite({
@@ -25,7 +25,7 @@ class Spikejumper {
             sHeight: 228,
             scale: BLOCKSIZE * 2 / 188,
             lastFrameX: 1,
-            fps: 9,
+            fps: 15,
             loop: false
         });
         const transform = new CTransform({
