@@ -140,17 +140,11 @@ class ContainerManager {
     }
 
     swapViaContainer(swapContainer) {
-        let focus = this.analyzeInteraction(swapContainer);
-
         if (swapContainer !== this.activeContainer && swapContainer.item && this.activeContainer.item
             && swapContainer.item.tag === this.activeContainer.item.tag) { // stack if same
             swapContainer.count = swapContainer.count + this.activeContainer.count;
             this.clearContainer(this.activeContainer)
-        } else if (!swapContainer.owner && this.activeContainer.item) { // to trashcan
-            swapContainer.item = this.activeContainer.item;
-            swapContainer.count = this.activeContainer.count;
-            this.clearContainer(this.activeContainer)
-        } else if (!this.activeContainer.owner && !swapContainer.item) { // from trashcan
+        } else if (!swapContainer.owner && this.activeContainer.item) { // trashcan
             swapContainer.item = this.activeContainer.item;
             swapContainer.count = this.activeContainer.count;
             this.clearContainer(this.activeContainer)
@@ -163,32 +157,25 @@ class ContainerManager {
             swapContainer.count = placeholder;
         }
         this.deselectContainer();
-
-        if (focus && focus.item) this.addPlayerCount(focus.item, focus.count);
     }
 
-    splitViaContainer(splitContainer, click) {
-        let focus = this.analyzeInteraction(splitContainer);
-
+    splitViaContainer(splitContainer) {
         splitContainer.item = this.activeContainer.item; // possibly problematic
         splitContainer.count = this.splitCount;
         this.activeContainer.count -= this.splitCount;
         if (this.activeContainer.count === 0) this.clearContainer(this.activeContainer);
         this.deselectContainer();
         this.clearSplit();
-        this.lastClick = click;
-
-        if (focus && focus.item) this.addPlayerCount(focus.item, focus.count);
     }
 
-    analyzeInteraction(to) {
+    inspectInteraction(container, interaction) {
         let playerContainer;
-        if (to.owner === 'player' && this.activeContainer.owner !== 'player') playerContainer = to;
-        else if (this.activeContainer.owner === 'player' && to.owner !== 'player') playerContainer = this.activeContainer;
+        if (container.owner === 'player' && this.activeContainer.owner !== 'player') playerContainer = container;
+        else if (this.activeContainer.owner === 'player' && container.owner !== 'player') playerContainer = this.activeContainer;
         if (playerContainer && playerContainer.item) this.minusPlayerCount(playerContainer.item, playerContainer.count);
-        return playerContainer;
+        interaction(container);
+        if (playerContainer && playerContainer.item) this.addPlayerCount(playerContainer.item, playerContainer.count);
     }
-
 
     activateInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
@@ -200,7 +187,6 @@ class ContainerManager {
             if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
     }
 
-    // no inventory is being drawn to the screen
     unloadInventory() {
         if (this.activeInventory.length !== 2) this.activeInventory.length = 2;
     }
@@ -257,22 +243,20 @@ class ContainerManager {
                     if (hit) { // container
                         if (hit.keyword == null) { // normal container
                             if (!this.splitMode) {
-                                this.selectContainer(hit, click);
+                                this.selectContainer(hit);
                             } else if (hit.item == null) { // split into empty container
-                                this.splitViaContainer(hit, click);
+                                this.inspectInteraction(hit, this.splitViaContainer.bind(this));
                             } else if (hit.item.tag === this.activeContainer.item.tag) { // split on similar container
-                                this.swapViaContainer(hit);
+                                this.inspectInteraction(hit, this.swapViaContainer.bind(this));
                                 this.clearSplit();
-                                this.lastClick = click;
                             } else { // cancel split mode
                                 this.deselectContainer();
                                 this.clearSplit();
-                                this.lastClick = click;
                             }
                         } else if (hit.keyword !== 'recipe') { // product container
                             this.deselectContainer();
                             this.clearSplit();
-                            this.craftContainerItem(hit, click);
+                            this.craftContainerItem(hit); // click
                         } else {
                             this.deselectContainer();
                             this.clearSplit();
@@ -282,28 +266,9 @@ class ContainerManager {
                     this.splitMode = true;
                     if (this.activeContainer.count > this.splitCount) this.splitCount++;
                     this.hoverText = this.splitCount;
-                    this.lastClick = click;
                 }
+                this.lastClick = click;
             }
-            // Old code if we decide to go for button hold feature
-            /*let hit = this.checkHit(click); // what was click: container or nothing
-            if (hit && click.w === 1) { // left click on container
-                if (hit.keyword == null) { // container isn't special
-                    if (this.lastClick == null || click.t !== this.lastClick.t) this.selectContainer(hit, click);
-                } else if (hit.keyword !== 'recipe') { // product container
-                    this.deselectContainer();
-                    if (this.lastClick == null || click.t !== this.lastClick.t) this.craftContainerItem(hit, click);
-                }
-            } else if (this.selectedContainer && click && click.w === 3) { // something selected, right click stack split
-                this.splitMode = true;
-                console.log('splitting');
-                //     if (click.w === 3) this.splitCount++;
-                //     console.log(this.splitCount);
-                //     // need to add way to decrease split
-                //     // separate off left click functionality
-                //     // check: can only split non-null
-                //     // check: can only split up to max count
-            }*/
         } else { // ui is not active
             this.deselectContainer(); // if something is selected deselect it
             this.clearSplit();
@@ -367,22 +332,20 @@ class ContainerManager {
         }
     }
 
-    selectContainer(hit, click) {
+    selectContainer(hit) {
         if (!this.activeContainer) { // no current container
             hit.selected = true;
             this.activeContainer = hit;
-        } else this.swapViaContainer(hit); // there is already a selected container
-        this.lastClick = click;
+        } else this.inspectInteraction(hit, this.swapViaContainer.bind(this)); // there is already a selected container
     }
 
-    craftContainerItem(product, click) {
+    craftContainerItem(product) {
         let recipe = this.getInventory(product.keyword);
         if (this.checkSufficient(recipe)) {
             for (let i = 1; i < recipe.length; i++) this.removeForCrafting(recipe[i]);
             let product = recipe[0];
             this.addToInventory('player', product.item, product.count);
         }
-        this.lastClick = click;
     }
 
     registerChest(chest) {
