@@ -63,12 +63,10 @@ class WorldScene extends Scene {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
 
-        this.mobFactory.build('spikejumper', px + 300, py - 200);
-        this.mobFactory.build('spikejumper', px - 300, py - 200);
-        this.mobFactory.build('spikejumper', px + 600, py - 200);
-        this.mobFactory.build('spikejumper', px - 600, py - 200);
-
-
+        this.mobFactory.build('mossfly', px + 300, py - 200);
+        this.mobFactory.build('mossfly', px - 300, py - 200);
+        this.mobFactory.build('mossfly', px + 600, py - 200);
+        this.mobFactory.build('mossfly', px - 600, py - 200);
     }
 
     giveWeapons2() {

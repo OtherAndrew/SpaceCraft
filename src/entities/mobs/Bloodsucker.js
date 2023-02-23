@@ -77,11 +77,18 @@ class Bloodsucker {
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
+        const interval = 10;
 
         if (distance > BLOCKSIZE * 12) {
-            transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
-            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
-            animState = transform.velocityX < 0 ? "idleL" : "idleR"
+            if (switchInterval(state.elapsedTime, interval/2)) {
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/5 : -speed/5;
+                animState = transform.velocityX < 0 ? "idleL" : "idleR"
+                state.direction = transform.velocityX < 0 ? "left" : "right"
+            } else {
+                transform.velocityX = 0;
+                animState = state.direction === 'left' ? "idleL" : "idleR";
+            }
+            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - BLOCKSIZE * 2 }).y * speed;
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
@@ -90,6 +97,7 @@ class Bloodsucker {
             }
             transform.velocityY = dVector.y * speed;
             animState = target.center.x < origin.x ? "attackL" : "attackR";
+            state.direction = transform.velocityX < 0 ? "left" : "right"
         }
         state.setState(animState);
     }

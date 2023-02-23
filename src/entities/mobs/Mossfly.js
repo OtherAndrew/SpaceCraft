@@ -76,7 +76,9 @@ class Mossfly {
         if (distance <= BLOCKSIZE * 10 || collider.attackCollision) { //panic
             transform.velocityX = target.center.x < origin.x ? speed : -speed
             transform.velocityY = -speed/3
-            animState = target.center.x < origin.x ? "idleR" : "idleL";
+            // animState = target.center.x < origin.x ? "idleR" : "idleL";
+            state.direction = transform.velocityX < 0 ? "left" : "right"
+            animState = state.direction === 'left' ? "idleL" : "idleR";
             state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
 
             if (state.attackTime > 0.33 && distance <= BLOCKSIZE * 16) {
@@ -84,9 +86,20 @@ class Mossfly {
                 state.attackTime = 0;
             }
         } else { //idle
-            transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
-            transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 4}).y * speed;
-            animState = transform.velocityX < 0 ? "idleL" : "idleR"
+            // transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
+            // transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 4}).y * speed;
+            // animState = transform.velocityX < 0 ? "idleL" : "idleR"
+
+
+            if (switchInterval(state.elapsedTime, interval/2)) {
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/5 : -speed/5;
+                animState = transform.velocityX < 0 ? "idleL" : "idleR"
+                state.direction = transform.velocityX < 0 ? "left" : "right"
+            } else {
+                transform.velocityX = 0;
+                animState = state.direction === 'left' ? "idleL" : "idleR";
+            }
+            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - BLOCKSIZE * 4 }).y * speed;
 
             if (state.attackTime > 2 && distance <= BLOCKSIZE * 16) {
                 projectileManager.entityShoot('spore', target.center, origin)
