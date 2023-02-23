@@ -73,24 +73,19 @@ class Mossfly {
         let animState;
         const interval = 20;
 
+        const attackDistance = BLOCKSIZE * 16;
         if (distance <= BLOCKSIZE * 10 || collider.attackCollision) { //panic
             transform.velocityX = target.center.x < origin.x ? speed : -speed
             transform.velocityY = -speed/3
-            // animState = target.center.x < origin.x ? "idleR" : "idleL";
             state.direction = transform.velocityX < 0 ? "left" : "right"
             animState = state.direction === 'left' ? "idleL" : "idleR";
             state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
 
-            if (state.attackTime > 0.33 && distance <= BLOCKSIZE * 16) {
+            if (state.attackTime > 0.33 && distance <= attackDistance) {
                 projectileManager.entityShoot('spore', target.center, origin)
                 state.attackTime = 0;
             }
         } else { //idle
-            // transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
-            // transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 4}).y * speed;
-            // animState = transform.velocityX < 0 ? "idleL" : "idleR"
-
-
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/5 : -speed/5;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
@@ -101,7 +96,7 @@ class Mossfly {
             }
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - BLOCKSIZE * 4 }).y * speed;
 
-            if (state.attackTime > 2 && distance <= BLOCKSIZE * 16) {
+            if (state.attackTime > 2 && distance <= attackDistance) {
                 projectileManager.entityShoot('spore', target.center, origin)
                 state.attackTime = 0;
             }

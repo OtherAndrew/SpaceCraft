@@ -155,6 +155,9 @@ class CollisionSystem {
                 if (atk.tag.includes("explosive")) {
                     this.#handleExplosions(atk);
                 }
+                if (atk.tag.includes("stun")) {
+                    this.#stun(this.player);
+                }
                 if (atk.name === "projectile" && !atk.tag.includes("pierce")) {
                     atk.destroy();
                 }

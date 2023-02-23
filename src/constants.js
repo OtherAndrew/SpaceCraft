@@ -67,6 +67,7 @@ const CHAR_PATH = {
     BROODMOTHER :	'./assets/sprites/broodmother.png',
     CREEPERILLA :	'./assets/sprites/creeperilla.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver2.png',
+    ELECTROJELLY:	'./assets/sprites/electrojelly.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
@@ -146,13 +147,14 @@ const OVERLAY_PATH = {
 }
 
 const PROJECTILE_PATH = {
-    BOMB     :   './assets/projectiles/bomb.png',
-    DARK_ORB :   './assets/projectiles/orb_invert.png',
-    EXPLOSION:   './assets/projectiles/explosion.png',
-    FIRE     :   './assets/projectiles/fire.png',
-    LASER    :   './assets/projectiles/laser.png',
-    MINI_BOMB:   './assets/projectiles/red_bomb.png',
-    ORB      :   './assets/projectiles/orb.png'
+    BOMB        :   './assets/projectiles/bomb.png',
+    DARK_ORB    :   './assets/projectiles/orb_invert.png',
+    ELECTRICITY :   './assets/projectiles/electricity.png',
+    EXPLOSION   :   './assets/projectiles/explosion.png',
+    FIRE        :   './assets/projectiles/fire.png',
+    LASER       :   './assets/projectiles/laser.png',
+    MINI_BOMB   :   './assets/projectiles/red_bomb.png',
+    ORB         :   './assets/projectiles/orb.png'
 }
 
 const SOUND_PATH = {

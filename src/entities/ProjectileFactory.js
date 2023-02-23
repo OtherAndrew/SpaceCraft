@@ -24,7 +24,7 @@ class ProjectileFactory {
                 projectileOrigin.y += directionVector.y * 15
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
-                    sprite: this.bulletSprite(8),
+                    sprite: this.orbSprite(8),
                     damage: 12.5,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
@@ -42,7 +42,7 @@ class ProjectileFactory {
                 projectileOrigin.y += directionVector.y * 15
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
-                    sprite: this.bulletSprite(11),
+                    sprite: this.orbSprite(11),
                     damage: 15,
                     speed: BLOCKSIZE * 0.5,
                     dVector: directionVector,
@@ -60,7 +60,7 @@ class ProjectileFactory {
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
-                    sprite: this.bulletSprite(2),
+                    sprite: this.orbSprite(2),
                     damage: 20,
                     speed: BLOCKSIZE * 0.75,
                     dVector: directionVector,
@@ -79,7 +79,7 @@ class ProjectileFactory {
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
                         tag: 'playerAttack',
-                        sprite: this.bulletSprite(14, 0, 0.8),
+                        sprite: this.orbSprite(14, 0, 0.8),
                         damage: 2.5,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
@@ -98,7 +98,7 @@ class ProjectileFactory {
                 projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack ignoreTile pierce',
-                    sprite: this.bulletSprite(4),
+                    sprite: this.orbSprite(4),
                     damage: 120,
                     speed: BLOCKSIZE * 0.9,
                     dVector: directionVector,
@@ -191,6 +191,21 @@ class ProjectileFactory {
                     spread: 0
                 }));
                 break;
+            case 'electroball':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                projectileQueue.push(new Projectile({
+                    tag: 'enemy ignoreTile pierce stun',
+                    sprite: this.electricitySprite(),
+                    damage: 0.5,
+                    speed: BLOCKSIZE * 0.05,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: 5,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             default: console.log(`ProjectileManager.entityShoot: Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
@@ -228,7 +243,7 @@ class ProjectileFactory {
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
     }
 
-    bulletSprite(frameX = 0, frameY = 0, scale = 1) {
+    orbSprite(frameX = 0, frameY = 0, scale = 1) {
         return new CSprite({
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ORB),
             sWidth: 16,
@@ -291,6 +306,17 @@ class ProjectileFactory {
             scale: scale,
             firstFrameX: frameX,
             frameY: frameY
+        });
+    }
+
+    electricitySprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ELECTRICITY),
+            sWidth: 65,
+            sHeight: 66,
+            scale: BLOCKSIZE / 65,
+            lastFrameX: 10,
+            fps: 30
         });
     }
 }

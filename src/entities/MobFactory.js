@@ -11,6 +11,7 @@ class MobFactory {
             case 'bloodsucker': mob = new Bloodsucker(position); break;
             case 'creeperilla': mob = new Creeperilla(position); break;
             case 'dirtcarver': mob = new Dirtcarver(position); break;
+            case 'electrojelly': mob = new Electrojelly(position); break;
             case 'grapebomb': mob = new Grapebomb(position); break;
             case 'lightbug': mob = new Lightbug(position); break;
             case 'lightjelly': mob = new Lightjelly(position); break;
