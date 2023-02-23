@@ -60,45 +60,13 @@ class WorldScene extends Scene {
     }
 
     spawnTestEntities() {
-        // this.mobFactory.build("wasp", this.player.components.transform.x + 250, this.player.components.transform.y - 200);
-        // this.mobFactory.build("wasp", this.player.components.transform.x + 250, this.player.components.transform.y - 200);
-        // this.mobFactory.build("wasp", this.player.components.transform.x + 250, this.player.components.transform.y - 200);
-        // this.mobFactory.build("wasp", this.player.components.transform.x + 250, this.player.components.transform.y - 200);
-        //
-        // this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        // this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        // this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        // this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        //
-        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        const px = this.player.components['boxCollider'].center.x;
+        const py = this.player.components['boxCollider'].center.y;
 
-        // this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
-        // this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
-        // this.mobFactory.build('spore', this.player.components.transform.x + 1000, this.player.components.transform.y - 200);
-        this.mobFactory.build('mossfly', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('mossfly', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('mossfly', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('mossfly', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        //
-        // this.mobFactory.build('creeperilla', this.player.components.transform.x + 1500, this.player.components.transform.y - 350);
-        // this.mobFactory.build('spiderboss', this.player.components.transform.x + 800, this.player.components.transform.y - 550);
-        // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-
-        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        //
-        // this.mobFactory.build('spikejumper', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('spikejumper', this.player.components.transform.x - 300, this.player.components.transform.y - 200);
-        // this.mobFactory.build('spikejumper', this.player.components.transform.x + 600, this.player.components.transform.y - 200);
-        this.mobFactory.build('spikejumper', this.player.components.transform.x - 600, this.player.components.transform.y - 200);
+        this.mobFactory.build('spikejumper', px + 300, py - 200);
+        this.mobFactory.build('spikejumper', px - 300, py - 200);
+        this.mobFactory.build('spikejumper', px + 600, py - 200);
+        this.mobFactory.build('spikejumper', px - 600, py - 200);
 
 
     }

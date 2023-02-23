@@ -34,7 +34,7 @@ class Spikejumper {
             hasGravity: true,
         });
         const cWidth = BLOCKSIZE * 1.5;
-        const cHeight = BLOCKSIZE * 1.2;
+        const cHeight = BLOCKSIZE * 1.25;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
@@ -63,7 +63,7 @@ class Spikejumper {
         const vX = (target.center.x - origin.x) / (BLOCKSIZE * 2/3);
 
         if (state.grounded) {
-            if ((distance < BLOCKSIZE * 14 || collider.attackCollision) && state.elapsedTime > interval) { // jump
+            if ((distance < BLOCKSIZE * 12 || collider.attackCollision) && state.elapsedTime > interval) { // jump
                 state.grounded = false;
                 transform.velocityX = vX;
                 transform.velocityY = -(GRAVITY + 1.8 * Math.abs(vX));
