@@ -12,10 +12,11 @@ class AnimationProps {
      * @param {number} frameY      Y position of start frame (not pixel position!)
      * @param {number} lastFrameX  X position of last frame (not pixel position!), firstFrameX by default
      * @param {number | null} fps  Frames per second of animation clip, null by default (retain fps).
+     * @param {boolean} loop       If animation clip loops, true by default.
      */
-    constructor(firstFrameX, frameY , lastFrameX = firstFrameX, fps = null) {
+    constructor(firstFrameX, frameY , lastFrameX = firstFrameX, fps = null, loop = true) {
         this.name = 'animationProps';
-        Object.assign(this, { firstFrameX, frameY, lastFrameX, fps });
+        Object.assign(this, { firstFrameX, frameY, lastFrameX, fps, loop });
         return this;
     }
 }

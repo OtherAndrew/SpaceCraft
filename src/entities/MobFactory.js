@@ -21,6 +21,7 @@ class MobFactory {
             case 'silverfish': mob = new Silverfish(position); break;
             case 'spore': mob = new Spore(position); break;
             case 'spiderboss': mob = new Spiderboss(position); break;
+            case 'spikejumper': mob = new Spikejumper(position); break;
             case 'wasp': mob = new Wasp(position); break;
             case 'wormtank': mob = new Wormtank(position); break;
             default: console.log(`Invalid mob name: ${type}.`);

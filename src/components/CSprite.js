@@ -65,7 +65,8 @@ class CSprite {
             this.currentFrame = this.firstFrameX;
             this.frameY = aProps.frameY;
             this.lastFrameX = aProps.lastFrameX;
-            this.setFPS(aProps.fps)
+            this.setFPS(aProps.fps);
+            this.loop = aProps.loop;
             this.currentState = state;
         }
     }

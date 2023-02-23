@@ -70,10 +70,10 @@ class WorldScene extends Scene {
         // this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
         // this.mobFactory.build("bloodsucker", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
         //
-        this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
-        this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
+        // this.mobFactory.build("wormtank", this.player.components.transform.x + 400, this.player.components.transform.y - 200);
 
         // this.mobFactory.build('mossamber', this.player.components.transform.x + 250, this.player.components.transform.y - 200);
         // this.mobFactory.build('grapebomb', this.player.components.transform.x + 500, this.player.components.transform.y - 200);
@@ -90,10 +90,16 @@ class WorldScene extends Scene {
         // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
         // this.mobFactory.build('dirtcarver', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
 
-        this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+        // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+
+        this.mobFactory.build('spikejumper', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+        this.mobFactory.build('spikejumper', this.player.components.transform.x - 300, this.player.components.transform.y - 200);
+        this.mobFactory.build('spikejumper', this.player.components.transform.x + 600, this.player.components.transform.y - 200);
+        this.mobFactory.build('spikejumper', this.player.components.transform.x - 600, this.player.components.transform.y - 200);
+
 
     }
 
@@ -172,7 +178,7 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
