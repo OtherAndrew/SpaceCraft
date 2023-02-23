@@ -60,7 +60,7 @@ class Spikejumper {
         const distance = getDistance(origin, target.center);
         let animState = state.currentState;
         const interval = 5;
-        const vX = (target.center.x - origin.x) / (BLOCKSIZE * 2/3);
+        const vX = (target.center.x - origin.x) / (BLOCKSIZE * 0.5);
 
         if (state.grounded) {
             if ((distance < BLOCKSIZE * 12 || collider.attackCollision) && state.elapsedTime > interval) { // jump
