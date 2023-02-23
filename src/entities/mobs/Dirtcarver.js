@@ -16,7 +16,7 @@ class Dirtcarver {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.75,
-            speed: 1.5,
+            speed: 2,
             maxHealth: 100
         });
         const sprite = new CSprite({
@@ -33,7 +33,7 @@ class Dirtcarver {
             hasGravity: true,
         });
         const cWidth = BLOCKSIZE * 1.8;
-        const cHeight = BLOCKSIZE * 0.8;
+        const cHeight = BLOCKSIZE * 0.85;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
@@ -60,34 +60,32 @@ class Dirtcarver {
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
-        const interval = 5;
+        const interval = 10;
         const vX = (target.center.x - origin.x) / (BLOCKSIZE/2);
 
         if (state.grounded) {
-            if (distance > BLOCKSIZE * 14) {
-                transform.velocityX = switchInterval(state.elapsedTime, 10) ? speed/3 : -speed/3;
-                animState = transform.velocityX < 0 ? "idleL" : "idleR"
-            } else if (distance > BLOCKSIZE * 8 && state.elapsedTime > interval) {
-                state.grounded = false;
-                transform.velocityX = vX;
-                transform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
-                animState = transform.velocityX < 0 ? "idleL" : "idleR"
-                state.elapsedTime = 0;
-            } else {
-                if (checkCollision(collider, target)) {
+            if (distance <= BLOCKSIZE * 12) {
+                if (checkCollision(collider, target)) { // attack
                     transform.velocityX = 0;
-                } else {
+                } else if (distance <= BLOCKSIZE * 6 && state.elapsedTime > interval/2) { // pounce
+                    state.grounded = false;
+                    transform.velocityX = vX;
+                    transform.velocityY = -(GRAVITY + BLOCKSIZE/2);
+                    state.elapsedTime = 0;
+                } else { // chase
                     transform.velocityX = dVector.x * speed;
                 }
                 animState = target.center.x < origin.x ? "walkL" : "walkR";
+            } else { // idle
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 3 : -speed / 3;
+                animState = transform.velocityX < 0 ? "idleL" : "idleR"
             }
-        } else {
+        } else { // airborne
             transform.velocityX = vX;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         }
 
-        // climb
-        if (collider.sideCollision) {
+        if (collider.sideCollision) { // climb
             transform.velocityY = -(GRAVITY + speed);
         }
 
@@ -101,13 +99,5 @@ class Dirtcarver {
         aMap.set('walkR', new AnimationProps(0, 0, 3, 18));
         aMap.set('walkL', new AnimationProps(0, 1, 3, 18));
     };
-    // #addBehaviors(transform, stats) {
-    //     const bMap = transform.behaviorMap;
-    //     bMap.set('idleR', new BehaviorProps(0, null));
-    //     bMap.set('idleL', new BehaviorProps(0, null));
-    //     bMap.set('walkR', new BehaviorProps(stats.speed, null));
-    //     bMap.set('walkL', new BehaviorProps(-stats.speed, null));
-    // }
-
 }
 
