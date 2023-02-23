@@ -75,6 +75,7 @@ const generateBlock = (tag, x, y, mode) => {
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
         maxHealth: TILE_LIFE[id] || 30, // Placeholder 30
+        invincible: tag.includes('bedrock'),
         x: tempX,
         y: tempY,
         sWidth: 16,
