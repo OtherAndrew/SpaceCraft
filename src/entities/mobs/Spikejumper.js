@@ -63,7 +63,7 @@ class Spikejumper {
         const vX = (target.center.x - origin.x) / (BLOCKSIZE * 2/3);
 
         if (state.grounded) {
-            if (distance < BLOCKSIZE * 14 && state.elapsedTime > interval) { // jump
+            if ((distance < BLOCKSIZE * 14 || collider.attackCollision) && state.elapsedTime > interval) { // jump
                 state.grounded = false;
                 transform.velocityX = vX;
                 transform.velocityY = -(GRAVITY + 1.8 * Math.abs(vX));

@@ -13,6 +13,7 @@ class EntityController {
             e.components['state'].attackTime += tick;
             e.update(pCollider, this.projectileFactory);
             e.components['boxCollider'].sideCollision = false;
+            e.components['boxCollider'].attackCollision = false;
         });
     }
 }

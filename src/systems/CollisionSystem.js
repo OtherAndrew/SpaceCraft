@@ -100,6 +100,7 @@ class CollisionSystem {
             this.mobList.forEach(mob => {
                if (checkCollision(atk, mob) && !mob.tag.includes('ignoreAttack')) {
                    mob.components["stats"].applyDamage(atk.components["stats"].damage);
+                   mob.components["boxCollider"].attackCollision = true;
                    this.#stun(mob);
                    if (atk.tag.includes("explosive")) {
                        this.#handleExplosions(atk);
