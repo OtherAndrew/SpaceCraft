@@ -94,10 +94,10 @@ class WorldScene extends Scene {
         // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
         // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
         // this.mobFactory.build('silverfish', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-
-        this.mobFactory.build('spikejumper', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('spikejumper', this.player.components.transform.x - 300, this.player.components.transform.y - 200);
-        this.mobFactory.build('spikejumper', this.player.components.transform.x + 600, this.player.components.transform.y - 200);
+        //
+        // this.mobFactory.build('spikejumper', this.player.components.transform.x + 300, this.player.components.transform.y - 200);
+        // this.mobFactory.build('spikejumper', this.player.components.transform.x - 300, this.player.components.transform.y - 200);
+        // this.mobFactory.build('spikejumper', this.player.components.transform.x + 600, this.player.components.transform.y - 200);
         this.mobFactory.build('spikejumper', this.player.components.transform.x - 600, this.player.components.transform.y - 200);
 
 

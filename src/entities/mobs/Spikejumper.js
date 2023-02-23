@@ -15,9 +15,9 @@ class Spikejumper {
 
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 10,
-            // damage: 0.5,
-            maxHealth: 400
+            damage: 1.25,
+            maxHealth: 400,
+            hasFallDamage: false
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPIKEJUMPER],
@@ -44,7 +44,6 @@ class Spikejumper {
             yOffset: BLOCKSIZE * 3/8
         });
         const state = new CState();
-        state.grounded = false;
         const duration = new CDuration();
         this.#addAnimations(sprite);
         transform.collider = collider
@@ -55,20 +54,19 @@ class Spikejumper {
     update(target, projectileManager) {
         const collider = this.components['boxCollider']
         const origin = collider.center;
-        const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
 
         const distance = getDistance(origin, target.center);
-        const dVector = normalize(origin, target.center)
         let animState = state.currentState;
         const interval = 5;
+        const vX = (target.center.x - origin.x) / (BLOCKSIZE * 2/3);
 
         if (state.grounded) {
-            if (state.elapsedTime > interval) { // jump
+            if (distance < BLOCKSIZE * 14 && state.elapsedTime > interval) { // jump
                 state.grounded = false;
-                transform.velocityX = (target.center.x - origin.x) / BLOCKSIZE
-                transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.75);
+                transform.velocityX = vX;
+                transform.velocityY = -(GRAVITY + 1.8 * Math.abs(vX));
                 animState = 'jumpR'
                 state.elapsedTime = 0;
             } else { // land/wait
@@ -76,8 +74,7 @@ class Spikejumper {
                 animState = 'idleR'
             }
         } else { // airborne
-            animState = state.currentState
-            transform.velocityX = (target.center.x - origin.x) / BLOCKSIZE
+            transform.velocityX = vX;
         }
         state.setState(animState);
     }

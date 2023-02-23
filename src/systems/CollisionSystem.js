@@ -69,8 +69,8 @@ class CollisionSystem {
                     if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
                         mob.components.state.grounded = true;
                         const fallDamage = mTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
-                        // console.log(Math.floor(fallDamage));
-                        if (mob.components["stats"] && mTransform.hasGravity && fallDamage !== 0){
+                        if (mob.components["stats"] && mob.components["stats"].hasFallDamage
+                                && mTransform.hasGravity && fallDamage !== 0) {
                             mob.components["stats"].applyDamage(fallDamage);
                         }
                         mTransform.fallDamageTime = 0;
@@ -176,7 +176,7 @@ class CollisionSystem {
         const mTransform = mob.components["transform"];
         mTransform.velocityY = 0;
         mTransform.x = mTransform.last.x;
-        if (!mTransform.gravity) {
+        if (!mTransform.hasGravity) {
             mTransform.velocityY = 0;
             mTransform.y = mTransform.last.y;
         }

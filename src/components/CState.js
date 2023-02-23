@@ -15,12 +15,10 @@ class CState {
     constructor() {
         this.name = "state";
         this.currentState = 'idleR';
-        // this.input = '';
         this.direction = 'right';
-        this.grounded = true;
+        this.grounded = false;
         this.sprite = null;
         this.transform = null;
-        // this.elapsedTime = 0;
         this.elapsedTime = randomInt(100);
         this.attackTime = randomInt(100)
         return this;
