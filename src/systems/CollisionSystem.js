@@ -27,7 +27,7 @@ class CollisionSystem {
     refresh() {
         this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
         this.tileCollideList = this.collideList.filter(e =>
-                e.name === "player" || e.name === "rocket"
+                e.name === "player" || e.name === "rocket" || e.tag.includes("fire")
                 || (e.tag.includes("mob") && !e.tag.includes("ghost"))
         );
         this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
@@ -67,7 +67,7 @@ class CollisionSystem {
                     const mCollider = mob.components["boxCollider"];
                     const tCollider = tile.components["boxCollider"];
                     if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
-                        mob.components.state.grounded = true;
+                        if (mob.components.state) mob.components.state.grounded = true;
                         const fallDamage = mTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
                         if (mob.components["stats"] && mob.components["stats"].hasFallDamage
                                 && mTransform.hasGravity && fallDamage !== 0) {

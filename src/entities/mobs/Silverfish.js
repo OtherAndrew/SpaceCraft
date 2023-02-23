@@ -16,8 +16,8 @@ class Silverfish {
     #buildComponents(props) {
         const stats = new CStats({
             speed: 2,
-            damage: 0.1,
-            maxHealth: 30
+            damage: 0.25,
+            maxHealth: 40
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SILVERFISH],
@@ -61,7 +61,7 @@ class Silverfish {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 9) {
+        if (distance > BLOCKSIZE * 12) {
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"

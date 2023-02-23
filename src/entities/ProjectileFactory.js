@@ -112,7 +112,7 @@ class ProjectileFactory {
                 projectileOrigin.x += directionVector.x * 30
                 projectileOrigin.y += directionVector.y * 30
                 projectileQueue.push(new Projectile({
-                    tag: 'playerAttack pierce',
+                    tag: 'playerAttack pierce fire',
                     sprite: this.fireSprite(),
                     damage: 0.15,
                     speed: BLOCKSIZE * 0.1,
@@ -182,7 +182,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'enemy',
                     sprite: this.darkOrbSprite(4, 1),
-                    damage: 10,
+                    damage: 25,
                     speed: BLOCKSIZE * 0.05,
                     dVector: directionVector,
                     origin: origin,
@@ -197,8 +197,8 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'enemy ignoreTile pierce stun',
                     sprite: this.electricitySprite(),
-                    damage: 0.25,
-                    speed: BLOCKSIZE * 0.05,
+                    damage: 1,
+                    speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: origin,
                     duration: 5,

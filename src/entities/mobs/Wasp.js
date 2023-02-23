@@ -16,7 +16,7 @@ class Wasp {
     #buildComponents(props) {
         const stats = new CStats({
             speed: 4,
-            maxHealth: 50
+            maxHealth: 30
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.WASP],

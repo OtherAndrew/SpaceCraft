@@ -16,9 +16,9 @@ class Electrojelly {
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.25,
+            damage: 1,
             speed: 0.5,
-            maxHealth: 75
+            maxHealth: 60
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.ELECTROJELLY],
@@ -75,8 +75,8 @@ class Electrojelly {
             transform.velocityY = dVector.y * speed;
         }
 
-        if ((distance <= BLOCKSIZE * 8 || collider.attackCollision)
-                && state.attackTime > 4 && !checkCollision(collider, target)) {
+        if ((distance <= BLOCKSIZE * 10 || collider.attackCollision)
+                && state.attackTime > 2.5 && !checkCollision(collider, target)) {
             projectileFactory.entityShoot('electroball', target.center, origin)
             state.attackTime = 0;
         }

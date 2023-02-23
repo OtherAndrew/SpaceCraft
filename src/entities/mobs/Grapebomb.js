@@ -15,7 +15,7 @@ class Grapebomb {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 30
+            maxHealth: 40
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),

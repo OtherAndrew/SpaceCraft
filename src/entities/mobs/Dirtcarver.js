@@ -8,16 +8,16 @@ class Dirtcarver {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob';
+        this.tag = 'mob enemy';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
-        this.rand = Math.floor(Math.random()*(60 - 10) + 10);
     };
 
     #buildComponents(props) {
         const stats = new CStats({
+            damage: 0.75,
             speed: 1.5,
-            maxHealth: 50
+            maxHealth: 100
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.DIRTCARVER],
@@ -49,23 +49,6 @@ class Dirtcarver {
         state.sprite = sprite;
         return [stats, sprite, transform, collider, state, duration];
     }
-
-    // update(target, projectileManager) {
-    //     const targetX = target.center.x;
-    //     const x = this.components['boxCollider'].center.x;
-    //     const state = targetX < x ? "walkL" : "walkR";
-    //     this.components.state.setState(state);
-    //
-    //     if (this.rand > 0) {
-    //         this.rand--;
-    //
-    //     } else {
-    //         let height = Math.floor(Math.random()*(15 - 3) + 3);
-    //         this.components.transform.velocityY -= height;
-    //         this.components.transform.velocityX = state === "walkL" ? -2: 2;
-    //     }
-    //     // console.log('dc num', this.rand);
-    // }
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']

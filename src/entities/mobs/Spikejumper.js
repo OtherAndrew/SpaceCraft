@@ -16,7 +16,7 @@ class Spikejumper {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 1.25,
-            maxHealth: 350,
+            maxHealth: 250,
             hasFallDamage: false
         });
         const sprite = new CSprite({
@@ -63,7 +63,7 @@ class Spikejumper {
         const vX = (target.center.x - origin.x) / (BLOCKSIZE * 0.5);
 
         if (state.grounded) {
-            if ((distance < BLOCKSIZE * 12 || collider.attackCollision) && state.elapsedTime > interval) { // jump
+            if ((distance < BLOCKSIZE * 14 || collider.attackCollision) && state.elapsedTime > interval) { // jump
                 state.grounded = false;
                 transform.velocityX = vX;
                 transform.velocityY = -(GRAVITY + clamp(2 * Math.abs(vX), BLOCKSIZE * 0.3, BLOCKSIZE * 0.9));
