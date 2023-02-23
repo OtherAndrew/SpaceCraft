@@ -15,7 +15,7 @@ class Wasp {
     };
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 5,
+            speed: 4,
             maxHealth: 50
         });
         const sprite = new CSprite({
