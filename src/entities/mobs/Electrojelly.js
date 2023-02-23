@@ -75,7 +75,8 @@ class Electrojelly {
             transform.velocityY = dVector.y * speed;
         }
 
-        if (state.attackTime > 4 && distance <= BLOCKSIZE * 8 && !checkCollision(collider, target)) {
+        if ((distance <= BLOCKSIZE * 8 || collider.attackCollision)
+                && state.attackTime > 4 && !checkCollision(collider, target)) {
             projectileFactory.entityShoot('electroball', target.center, origin)
             state.attackTime = 0;
         }

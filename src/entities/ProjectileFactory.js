@@ -197,7 +197,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'enemy ignoreTile pierce stun',
                     sprite: this.electricitySprite(),
-                    damage: 0.33,
+                    damage: 0.25,
                     speed: BLOCKSIZE * 0.05,
                     dVector: directionVector,
                     origin: origin,
@@ -314,7 +314,7 @@ class ProjectileFactory {
             sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.ELECTRICITY),
             sWidth: 65,
             sHeight: 66,
-            scale: BLOCKSIZE / 65,
+            scale: BLOCKSIZE * 1.5 / 65,
             lastFrameX: 10,
             fps: 30
         });

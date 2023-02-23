@@ -36,7 +36,7 @@ class Grapebomb {
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            height: BLOCKSIZE * 1.4
+            height: BLOCKSIZE * 1.5
         });
         const state = new CState();
         const duration = new CDuration();

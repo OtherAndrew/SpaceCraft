@@ -66,7 +66,7 @@ class Wasp {
         const dVector = normalize(origin, target.center)
         let animState;
 
-        if (distance > BLOCKSIZE * 8) {
+        if (distance > BLOCKSIZE * 10) {
             transform.velocityX = switchInterval(state.elapsedTime, 5) ? speed/5 : -speed/5;
             transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - 50 }).y * speed;
             animState = transform.velocityX < 0 ? "flyL" : "flyR"

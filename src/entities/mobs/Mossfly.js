@@ -79,7 +79,7 @@ class Mossfly {
             transform.velocityY = -speed/3
             state.direction = transform.velocityX < 0 ? "left" : "right"
             animState = state.direction === 'left' ? "idleL" : "idleR";
-            state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval);
+            state.elapsedTime = (target.center.x < origin.x ? 0 : interval) + randomInt(interval/2);
 
             if (state.attackTime > 0.33 && distance <= attackDistance) {
                 projectileManager.entityShoot('spore', target.center, origin)
