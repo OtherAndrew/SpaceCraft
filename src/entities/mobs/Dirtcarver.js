@@ -60,17 +60,30 @@ class Dirtcarver {
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
+        const interval = 5;
+        const vX = (target.center.x - origin.x) / (BLOCKSIZE/2);
 
-        if (distance > BLOCKSIZE * 14) {
-            transform.velocityX = switchInterval(state.elapsedTime, 10) ? speed/3 : -speed/3;
-            animState = transform.velocityX < 0 ? "idleL" : "idleR"
-        } else {
-            if (checkCollision(collider, target)) {
-                transform.velocityX = 0;
+        if (state.grounded) {
+            if (distance > BLOCKSIZE * 14) {
+                transform.velocityX = switchInterval(state.elapsedTime, 10) ? speed/3 : -speed/3;
+                animState = transform.velocityX < 0 ? "idleL" : "idleR"
+            } else if (distance > BLOCKSIZE * 8 && state.elapsedTime > interval) {
+                state.grounded = false;
+                transform.velocityX = vX;
+                transform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
+                animState = transform.velocityX < 0 ? "idleL" : "idleR"
+                state.elapsedTime = 0;
             } else {
-                transform.velocityX = dVector.x * speed;
+                if (checkCollision(collider, target)) {
+                    transform.velocityX = 0;
+                } else {
+                    transform.velocityX = dVector.x * speed;
+                }
+                animState = target.center.x < origin.x ? "walkL" : "walkR";
             }
-            animState = target.center.x < origin.x ? "walkL" : "walkR";
+        } else {
+            transform.velocityX = vX;
+            animState = transform.velocityX < 0 ? "idleL" : "idleR"
         }
 
         // climb
