@@ -66,7 +66,7 @@ class Spikejumper {
             if ((distance < BLOCKSIZE * 12 || collider.attackCollision) && state.elapsedTime > interval) { // jump
                 state.grounded = false;
                 transform.velocityX = vX;
-                transform.velocityY = -(GRAVITY + 1.8 * Math.abs(vX));
+                transform.velocityY = -(GRAVITY + clamp(2 * Math.abs(vX), BLOCKSIZE * 0.3, BLOCKSIZE * 0.9));
                 animState = 'jumpR'
                 state.elapsedTime = 0;
             } else { // land/wait

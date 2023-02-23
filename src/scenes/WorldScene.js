@@ -63,12 +63,14 @@ class WorldScene extends Scene {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
 
-        this.mobFactory.build('spikejumper', px + 300, py - 200);
-        this.mobFactory.build('mossfly', px - 300, py - 200);
-        this.mobFactory.build('silverfish', px + 600, py - 200);
-        this.mobFactory.build('electrojelly', px - 600, py - 200);
-        this.mobFactory.build('wasp', px + 900, py - 200);
-        this.mobFactory.build('grapebomb', px - 900, py - 200);
+        // this.mobFactory.build('spikejumper', px + 300, py - 200);
+        // this.mobFactory.build('spikejumper', px - 300, py - 200);
+
+        // this.mobFactory.build('mossfly', px - 300, py - 200);
+        // this.mobFactory.build('silverfish', px + 600, py - 200);
+        // this.mobFactory.build('electrojelly', px - 600, py - 200);
+        // this.mobFactory.build('wasp', px + 900, py - 200);
+        // this.mobFactory.build('grapebomb', px - 900, py - 200);
 
     }
 
@@ -136,6 +138,7 @@ class WorldScene extends Scene {
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime);
+            console.log(this.rocket.components["transform"].velocityY);
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);

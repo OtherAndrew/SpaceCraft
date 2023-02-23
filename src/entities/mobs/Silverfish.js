@@ -61,7 +61,7 @@ class Silverfish {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 6) {
+        if (distance > BLOCKSIZE * 9) {
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
