@@ -93,7 +93,7 @@ class HandCannon {
                 sWidth: 32,
                 sHeight: 32
             }),
-            new CWeaponProps("mini_bomb", 1.33)
+            new CWeaponProps("mini_bomb", 1.5)
         ];
         return this;
     }

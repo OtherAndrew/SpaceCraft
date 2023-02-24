@@ -24,8 +24,9 @@ class ParticleFactory {
             sWidth: 64,
             sHeight: 64,
             scale: 2,
+            firstFrameX: 8,
             lastFrameX: 10,
-            fps: 30
+            fps: 6
         })
     }
 }
@@ -53,7 +54,7 @@ class Particle {
             y: props.origin.y - sprite.dHeight / 2,
             hasGravity: false,
         });
-        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
+        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1));
         return [sprite, transform, duration];
     }
 }

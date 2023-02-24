@@ -206,6 +206,22 @@ class ProjectileFactory {
                     spread: 0
                 }));
                 break;
+            case 'impact':
+                origin.x += directionVector.x * 20;
+                origin.y += directionVector.y * 20;
+                const sprite = this.impactSprite();
+                projectileQueue.push(new Projectile({
+                    tag: 'enemy ignoreTile pierce stun',
+                    sprite: sprite,
+                    damage: 5,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1),
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             default: console.log(`ProjectileManager.entityShoot: Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
@@ -218,7 +234,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile destroyBlock',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 12,
+                    damage: 10,
                     origin: position,
                 }));
                 break;
@@ -226,7 +242,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 3,
+                    damage: 2.5,
                     origin: position,
                 }));
                 break;
@@ -234,7 +250,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 2.5,
+                    damage: 1.5,
                     origin: position,
                 }));
                 break;
@@ -294,7 +310,7 @@ class ProjectileFactory {
             scale: size / 64,
             firstFrameX: 0,
             lastFrameX: 5,
-            fps: 30
+            fps: 24
         });
     }
 
@@ -316,6 +332,17 @@ class ProjectileFactory {
             sHeight: 66,
             scale: BLOCKSIZE * 1.5 / 65,
             lastFrameX: 10,
+            fps: 30
+        });
+    }
+
+    impactSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.IMPACT),
+            sWidth: 78,
+            sHeight: 69,
+            scale: BLOCKSIZE * 2 / 78,
+            lastFrameX: 5,
             fps: 30
         });
     }
@@ -404,7 +431,7 @@ class Explosion {
             width: sprite.dWidth,
             height: sprite.dHeight,
         });
-        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
+        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1));
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }

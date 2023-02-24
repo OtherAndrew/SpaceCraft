@@ -15,7 +15,7 @@ class Wormtank {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1.5,
+            damage: 0.25,
             speed: 0.5,
             maxHealth: 500
         });
@@ -69,6 +69,9 @@ class Wormtank {
             if (checkCollision(collider, target)) { // attack
                 transform.velocityX = 0;
                 animState = target.center.x < origin.x ? "walkL" : "walkR";
+                if (state.attackTime > 5) {
+                    projectileManager.entityShoot("impact", target.center, origin);
+                }
                 state.attackTime = 0;
             } else if (distance <= BLOCKSIZE * 6 && state.attackTime > 5) { // charge
                 transform.velocityX = vX;
