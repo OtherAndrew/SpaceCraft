@@ -41,16 +41,15 @@ const GENSTATS = {
 }
 
 const BG_PATH = {
-    DIRT	        :	'./assets/backgrounds/background_dirt.png',
     SURFACE_0       :   './assets/backgrounds/surface_background_0.png',
     SURFACE_1       :   './assets/backgrounds/surface_background_1.png',
     UNDERGROUND_0	:	'./assets/backgrounds/underground_0.png',
-    UNDERGROUND_1	:	'./assets/backgrounds/underground_1.png',
-    UNDERGROUND_2	:	'./assets/backgrounds/underground_2.png',
     UNDERGROUND_3	:	'./assets/backgrounds/underground_3.png',
     UNDERGROUND_4	:	'./assets/backgrounds/underground_4.png',
-    UNDERGROUND_5	:	'./assets/backgrounds/underground_5.png',
-    UNDERGROUND_6	:	'./assets/backgrounds/underground_6.png'
+    CAVE_0          :   './assets/backgrounds/cave_0.png',
+    CAVE_1          :   './assets/backgrounds/cave_1.png',
+    CAVE_2          :   './assets/backgrounds/cave_2.png',
+    CAVE_3          :   './assets/backgrounds/cave_3.png'
 }
 
 const BG_SCROLL = {
@@ -201,7 +200,8 @@ const WEAPON_PATH = {
 }
 
 const ENV_PATH = {
-    CHOZO_STATUE: './assets/environment/chozoStatue.png'
+    CHOZO_STATUE        :   './assets/environment/chozoStatue.png',
+    RED_PLANET          :   './assets/environment/planet.png'
 }
 
 const PATHS = {

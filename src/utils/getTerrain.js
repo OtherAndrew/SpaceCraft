@@ -331,22 +331,6 @@ const getTerrain = (entityManager, mobFactory) => {
                 ]
             })
             entityManager.addEntity({
-                tag: 'background_0',
-                components: [
-                    new CTransform({
-                        x: (1920 * i * 1),
-                        y:  HEIGHT_PIXELS * .5 + (1080 * 1),
-                        maxVelocity: 0
-                    }),
-                    new CSprite({
-                        sprite: ASSET_MANAGER.cache[BG_PATH.DIRT],
-                        sWidth: 960,
-                        sHeight: 540,
-                        scale: 2,
-                    })
-                ]
-            })
-            entityManager.addEntity({
                 tag: 'background_1',
                 components: [
                     new CTransform({
@@ -542,13 +526,126 @@ const getTerrain = (entityManager, mobFactory) => {
             mobFactory.build('spore', pos.x, pos.y)
         }
     }
+    function generatePlanet() {
+        let e = entityManager.addEntity({
+            tag: 'background_',
+            components: [
+                new CTransform({
+                    x: WIDTH_PIXELS * .5,
+                    y: HEIGHT_PIXELS * .5 - 500,
+                    velocity: 0
+                }),
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[ENV_PATH.RED_PLANET],
+                    sWidth: 1070,
+                    sHeight: 1070,
+                    scale: .6,
+                })
+            ]
+        })
+        console.log(e.components.transform)
+    }
 
+    function generateCaveBackgrounds() {
+        let width = 160
+        let height = 96
+        let scale = 2
+        for(let j = 0; j < 8; j++) {
+            for(let i = 0; i < 22; i++) {
+                entityManager.addEntity({
+                    tag: 'cave_background',
+                    components: [
+                        new CTransform({
+                            x: width * scale * i,
+                            y: (HEIGHT_PIXELS * .5 + BLOCKSIZE) + (j * height * scale),
+                            velocity: 0
+                        }),
+                        new CSprite({
+                            sprite: ASSET_MANAGER.cache[BG_PATH.CAVE_0],
+                            sWidth: 160,
+                            sHeight: 96,
+                            scale: scale,
+                        })
+                    ]
+                })
+            }
+        }
+
+        for(let j = 8; j < 16; j++) {
+            for(let i = 0; i < 22; i++) {
+                entityManager.addEntity({
+                    tag: 'cave_background',
+                    components: [
+                        new CTransform({
+                            x: width * scale * i,
+                            y: (HEIGHT_PIXELS * .5 + BLOCKSIZE) + (j * height * scale),
+                            velocity: 0
+                        }),
+                        new CSprite({
+                            sprite: ASSET_MANAGER.cache[BG_PATH.CAVE_1],
+                            sWidth: 160,
+                            sHeight: 96,
+                            scale: scale,
+                        })
+                    ]
+                })
+            }
+        }
+
+        for(let j = 16; j < 24; j++) {
+            for(let i = 0; i < 22; i++) {
+                entityManager.addEntity({
+                    tag: 'cave_background',
+                    components: [
+                        new CTransform({
+                            x: width * scale * i,
+                            y: (HEIGHT_PIXELS * .5 + BLOCKSIZE) + (j * height * scale),
+                            velocity: 0
+                        }),
+                        new CSprite({
+                            sprite: ASSET_MANAGER.cache[BG_PATH.CAVE_2],
+                            sWidth: 160,
+                            sHeight: 96,
+                            scale: scale,
+                        })
+                    ]
+                })
+            }
+        }
+
+        for(let j = 24; j < 29; j++) {
+            for(let i = 0; i < 22; i++) {
+                entityManager.addEntity({
+                    tag: 'cave_background',
+                    components: [
+                        new CTransform({
+                            x: width * scale * i,
+                            y: (HEIGHT_PIXELS * .5 + BLOCKSIZE) + (j * height * scale),
+                            velocity: 0
+                        }),
+                        new CSprite({
+                            sprite: ASSET_MANAGER.cache[BG_PATH.CAVE_3],
+                            sWidth: 160,
+                            sHeight: 96,
+                            scale: scale,
+                        })
+                    ]
+                })
+            }
+        }
+        
+        
+    }
+
+    generatePlanet()
     generateBackgrounds()
+    generateCaveBackgrounds()
     generateNoiseMap()
     generateTerrain()
     generateBorders()
     generateSpawnLocations()
     generateStatues()
+    //generateCaveBackgrounds()
     //getPlatformsList()
     //spawnStationaryMobs()
     return [terrainMap, spawnMap]

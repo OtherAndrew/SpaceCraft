@@ -5,7 +5,7 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-
+        this.mid = HEIGHT_PIXELS * .5 + WIDTH
         //other game stats --- display during win condition (rocket scene)
         //add total each mob kills
         //total blocks mined
@@ -149,6 +149,8 @@ class WorldScene extends Scene {
     }
 
     draw(menuActive, ctx, mouse) {
+        ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
+        ctx.fillRect(0, 0, WIDTH, HEIGHT)
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else this.renderSystem.draw(ctx, this.camera);
 

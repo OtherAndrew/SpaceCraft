@@ -15,7 +15,6 @@ class RenderSystem {
 
                 let destX = e.components.transform.x - xSpeed;
                 let destY = e.components.transform.y - ySpeed;
-
                 ctx.drawImage(
                     sprite.sprite,
                     sprite.currentFrame * (sprite.sWidth + sprite.padding),
