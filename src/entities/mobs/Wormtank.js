@@ -77,9 +77,9 @@ class Wormtank {
                     projectileManager.entityShoot("strongimpact", target.center, origin);
                 }
                 state.attackTime = 0;
-            } else if ((distance <= attackDistance/2 || state.currentState.includes("charge"))
+            } else if ((distance <= attackDistance * 2/3 || state.currentState.includes("charge"))
                        && state.attackTime > attackInterval) { // charge
-                transform.velocityX = dVector.x * speed * 10;
+                transform.velocityX = dVector.x * speed * 13;
                 animState = target.center.x < origin.x ? "chargeL" : "chargeR";
             } else { // chase
                 transform.velocityX = dVector.x * speed;

@@ -15,7 +15,7 @@ class Dirtcarver {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.75,
+            damage: 0.33,
             speed: 2,
             maxHealth: 100
         });
@@ -81,6 +81,10 @@ class Dirtcarver {
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
             }
         } else { // airborne
+            if (checkCollision(collider, target) && state.attackTime > interval) {
+                projectileManager.entityShoot("weakimpact", target.center, origin);
+                state.attackTime = 0;
+            }
             transform.velocityX = vX;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         }

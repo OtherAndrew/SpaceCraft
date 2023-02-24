@@ -76,7 +76,7 @@ class Spikejumper {
             }
         } else { // airborne
             if (checkCollision(collider, target) && state.attackTime > interval) {
-                projectileManager.entityShoot("weakimpact", target.center, origin);
+                projectileManager.entityShoot("strongimpact", target.center, origin);
                 state.attackTime = 0;
             }
             transform.velocityX = vX;
