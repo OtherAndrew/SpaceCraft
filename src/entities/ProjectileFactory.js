@@ -175,6 +175,7 @@ class ProjectileFactory {
     entityShoot(type, targetPos, origin) {
         const directionVector = normalize(origin, targetPos);
         const projectileQueue = [];
+        let sprite;
         switch (type) {
             case 'spore':
                 origin.x += directionVector.x * 10;
@@ -206,10 +207,26 @@ class ProjectileFactory {
                     spread: 0
                 }));
                 break;
-            case 'impact':
+            case 'strongimpact':
                 origin.x += directionVector.x * 20;
                 origin.y += directionVector.y * 20;
-                const sprite = this.impactSprite();
+                sprite = this.impactSprite();
+                projectileQueue.push(new Projectile({
+                    tag: 'enemy ignoreTile pierce stun',
+                    sprite: sprite,
+                    damage: 5,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1),
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'weakimpact':
+                origin.x += directionVector.x * 20;
+                origin.y += directionVector.y * 20;
+                sprite = this.impactSprite();
                 projectileQueue.push(new Projectile({
                     tag: 'enemy ignoreTile pierce stun',
                     sprite: sprite,

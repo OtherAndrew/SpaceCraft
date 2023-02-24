@@ -64,21 +64,22 @@ class Wormtank {
         let animState;
         const interval = 30
         const attackInterval = 5;
-        const vX = (target.center.x - origin.x) / (BLOCKSIZE/3);
+        const attackDistance = BLOCKSIZE * 12;
 
-        if (state.attackTime > attackInterval + 0.5) {
+        if (state.attackTime > attackInterval + 1) {
             state.attackTime = 0;
         }
-        if (distance <= BLOCKSIZE * 12) {
+        if (distance <= attackDistance) {
             if (checkCollision(collider, target)) { // attack
                 transform.velocityX = 0;
                 animState = target.center.x < origin.x ? "walkL" : "walkR";
                 if (state.attackTime > attackInterval) {
-                    projectileManager.entityShoot("impact", target.center, origin);
+                    projectileManager.entityShoot("strongimpact", target.center, origin);
                 }
                 state.attackTime = 0;
-            } else if (distance <= BLOCKSIZE * 8 && state.attackTime > attackInterval) { // charge
-                transform.velocityX = vX;
+            } else if ((distance <= attackDistance/2 || state.currentState.includes("charge"))
+                       && state.attackTime > attackInterval) { // charge
+                transform.velocityX = dVector.x * speed * 10;
                 animState = target.center.x < origin.x ? "chargeL" : "chargeR";
             } else { // chase
                 transform.velocityX = dVector.x * speed;
