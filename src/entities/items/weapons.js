@@ -109,7 +109,7 @@ class Minigun {
                 sWidth: 42,
                 sHeight: 42,
             }),
-            new CWeaponProps('minigun_bullet', 7.5, 5)
+            new CWeaponProps('minigun_bullet', 10, 2.5)
         ];
         return this;
     }
