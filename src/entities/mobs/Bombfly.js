@@ -1,5 +1,5 @@
 
-class Wasp {
+class Bombfly {
     /**
      * Initializes
      * @param {Object} props         enemy position and display properties
@@ -10,7 +10,7 @@ class Wasp {
      */
     constructor(props) {
         this.tag = 'mob';
-        this.name = 'wasp';
+        this.name = 'bombfly';
         this.components = this.#buildComponents(props);
     };
     #buildComponents(props) {
@@ -19,7 +19,7 @@ class Wasp {
             maxHealth: 30
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.WASP],
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.BOMBFLY],
             sWidth: 83,
             sHeight: 90,
             scale: 0.5,

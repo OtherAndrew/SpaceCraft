@@ -49,7 +49,7 @@ class RenderSystem {
                     if (s.currentFrame === s.lastFrameX && s.loop) { // reset frame
                         s.currentFrame = s.firstFrameX;
                     } else {
-                        s.currentFrame = clamp(s.currentFrame + 1, 0, s.lastFrameX);
+                        s.currentFrame = clamp(s.currentFrame + 1, s.firstFrameX, s.lastFrameX);
                     }
                     s.elapsedTime = 0;
                 } else {
