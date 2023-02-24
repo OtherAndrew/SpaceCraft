@@ -70,7 +70,6 @@ const CHAR_PATH = {
     ELECTROJELLY:	'./assets/sprites/electrojelly.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
-    JAWFLY      :   './assets/sprites/jawfly.png',
     LIGHTBUG    :	'./assets/sprites/lightbug.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     MOSSAMBER   :	'./assets/sprites/mossamber.png',
@@ -80,6 +79,7 @@ const CHAR_PATH = {
     SILVERFISH  :   './assets/sprites/silverfish.png',
     SPIKEJUMPER :   './assets/sprites/spikejumper2.png',
     SPORE       :	'./assets/sprites/spore2.png',
+    VENGEFLY    :   './assets/sprites/vengefly.png',
     WORMTANK    :	'./assets/sprites/wormtank2.png'
 }
 

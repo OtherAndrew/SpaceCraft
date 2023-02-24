@@ -1,5 +1,5 @@
 
-class Jawfly {
+class Vengefly {
     /**
      * Initializes bloodsucker (enemy)
      * @param {Object} props
@@ -10,7 +10,7 @@ class Jawfly {
      */
     constructor(props) {
         this.tag = 'mob enemy';
-        this.name = 'jawfly';
+        this.name = 'vengefly';
         this.components = this.#buildComponents(props);
     };
     
@@ -21,7 +21,7 @@ class Jawfly {
             maxHealth: 30
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.JAWFLY],
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.VENGEFLY],
             sWidth: 143,
             sHeight: 137,
             scale: BLOCKSIZE * 1.5 / 143,
