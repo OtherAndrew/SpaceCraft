@@ -65,12 +65,12 @@ class WorldScene extends Scene {
 
         // this.mobFactory.build('spikejumper', px + 300, py - 200);
         // this.mobFactory.build('bloodsucker', px - 300, py - 200);
-        // this.mobFactory.build('dirtcarver', px + 300, py - 200);
+        this.mobFactory.build('dirtcarver', px + 300, py - 200);
         this.mobFactory.build('jawfly', px - 300, py - 200);
         this.mobFactory.build('wormtank', px - 300, py - 200);
         // this.mobFactory.build('mossfly', px - 300, py - 200);
-        // this.mobFactory.build('silverfish', px + 600, py - 200);
-        // this.mobFactory.build('electrojelly', px - 600, py - 200);
+        this.mobFactory.build('silverfish', px + 600, py - 200);
+        this.mobFactory.build('electrojelly', px - 600, py - 200);
         // this.mobFactory.build('bombfly', px + 900, py - 200);
         // this.mobFactory.build('grapebomb', px - 900, py - 200);
         // this.mobFactory.build('spore', px + 1200, py - 200);

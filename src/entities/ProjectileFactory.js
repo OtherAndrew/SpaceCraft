@@ -234,7 +234,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile destroyBlock',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 10,
+                    damage: 12,
                     origin: position,
                 }));
                 break;
@@ -242,7 +242,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 2.5,
+                    damage: 4,
                     origin: position,
                 }));
                 break;
