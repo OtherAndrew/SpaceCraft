@@ -46,10 +46,10 @@ const BG_PATH = {
     UNDERGROUND_0	:	'./assets/backgrounds/underground_0.png',
     UNDERGROUND_3	:	'./assets/backgrounds/underground_3.png',
     UNDERGROUND_4	:	'./assets/backgrounds/underground_4.png',
-    CAVE_0          :   './assets/backgrounds/cave_0.png',
-    CAVE_1          :   './assets/backgrounds/cave_1.png',
-    CAVE_2          :   './assets/backgrounds/cave_2.png',
-    CAVE_3          :   './assets/backgrounds/cave_3.png'
+    CAVE_0          :   './assets/backgrounds/cave_0_50.png',
+    CAVE_1          :   './assets/backgrounds/cave_1_50.png',
+    CAVE_2          :   './assets/backgrounds/cave_2_50.png',
+    CAVE_3          :   './assets/backgrounds/cave_3_50.png'
 }
 
 const BG_SCROLL = {
