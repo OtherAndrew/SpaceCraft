@@ -16,36 +16,38 @@ class SpawnerManager {
         this.currentMossamber = 0;
         this.currentGrapebomb = 0;
 
-        this.timer = 0
+        this.waspTimer = 0
+        this.bloodSuckerTimer = 0
         this.spawnTime = 5
     }
 
     update(deltaTime) {
         
-        this.timer += deltaTime
-        if(this.timer > this.spawnTime) {
-            this.timer = 0
-            console.log('spawning')
-            //this.spawnMob()
+        this.waspTimer += deltaTime * .1
+        this.bloodSuckerTimer += deltaTime * .2
+        if(this.waspTimer > this.spawnTime) {
+            this.waspTimer = 0
+            console.log('spawning wasp')
+            this.spawnMob('wasp', 3)
+        }
+        if(this.bloodSuckerTimer > this.spawnTime) {
+            this.bloodSuckerTimer = 0
+            console.log('spawning bloodsucker')
+            this.spawnMob('mossfly', 2)
         }
     }
 
-    spawnMob() {
-        let closestNode = Math.floor(getDistance(this.player.components.transform, {x: this.spawnMap[0].x * BLOCKSIZE, y: this.spawnMap[0].y * BLOCKSIZE}))
-        let index = 0
-        this.spawnMap.forEach((node, i) => {
-            let distance = Math.floor(getDistance(this.player.components.transform, {x: node.x * BLOCKSIZE, y: node.y * BLOCKSIZE}))
-            // console.log('distance', distance);
-            if(distance < closestNode) {
-                closestNode = distance
-                index = i
+    spawnMob(mob, max) {
+        let playerPos = {
+            x: this.player.components.transform.x,
+            y: this.player.components.transform.y
+        }
+        if(playerPos.y < HEIGHT_PIXELS * .5) {
+            let amount = randomNumber(1, max)
+            for(let i = 0; i < amount; i++) {
+                this.mobFactory.build(mob, playerPos.x - ( WIDTH * plusOrMinus()), playerPos.y - BLOCKSIZE * 3)
             }
-        })
-        let node = this.spawnMap[index]
-        console.log('node', node)
-        this.mobFactory.build('wormtank', node.x * BLOCKSIZE, node.y * BLOCKSIZE);
-
-        return this.spawnMap[index]
+        }
     }
 
     

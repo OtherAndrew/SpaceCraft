@@ -140,7 +140,6 @@ class WorldScene extends Scene {
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime);
-            console.log(this.rocket.components["transform"].velocityY);
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);

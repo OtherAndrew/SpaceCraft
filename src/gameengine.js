@@ -241,8 +241,6 @@ class GameEngine {
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         // this.ctx.fillStyle = 'rgb(159,109,50)'
-        this.ctx.fillStyle = '#222222'
-        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
         this.terrainScene.draw(this.menuActive, this.ctx, this.mouse)
         if (this.currentTime > 1) {
             this.currentTime = 0

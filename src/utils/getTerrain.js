@@ -6,7 +6,7 @@ const getTerrain = (entityManager, mobFactory) => {
     let terrainMap = []
     let spawnMap = []
     let airPockets = []
-    let platforms = []
+    let spawnSpots = []
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
         // Ranges from 0 to 10 ish
     let blockValues = {
@@ -203,74 +203,6 @@ const getTerrain = (entityManager, mobFactory) => {
             terrainMap.push(r)
         })
         console.log(oreCount)
-    }
-
-    function generateSpawnLocations() {
-        let yOffset = 5
-        //generate surface level locations
-        for(let i = WIDTH/BLOCKSIZE; i < terrainMap.length/2 - 2; i += WIDTH/BLOCKSIZE) {
-            spawnMap.push({x: i, y: startRow - yOffset})
-        }
-        //generate cave spawn locations
-        for(let currentChunk = startRow + 2 * blocksPerChunk; currentChunk < terrainMap.length; currentChunk += blocksPerChunk) {
-            for(let i = WIDTH/BLOCKSIZE; i < terrainMap.length/2 - 2; i += WIDTH/BLOCKSIZE) {
-                spawnMap.push({x: i, y: currentChunk})
-            }
-        }
-    }
-    function prepareListForDFS() {
-        let adjMap = new Map()
-        for(let i = startRow + blocksPerChunk; i < terrainMap.length; i++) {
-            for(let j = 0; j < terrainMap[i].length; j++) {
-                if(terrainMap[i][j].tag === 'air') {
-                    let key = JSON.stringify({x:i,y:j})
-                    if(!adjMap.has(key)) {
-                        let obj = {
-                            marked: false,
-                            vertices: []
-                        }
-                        // check four directions for connected air blocks
-                        if(terrainMap[clamp(i - 1,startRow + blocksPerChunk,terrainMap.length-1)][j].tag === 'air') {
-                            obj.vertices.push(JSON.stringify({x:i-1, y: j}))
-                        }
-                        if(terrainMap[clamp(i + 1,0,terrainMap.length-1)][j].tag === 'air') {
-                            obj.vertices.push(JSON.stringify({x:i+1, y: j}))
-                        }
-                        if(terrainMap[i][clamp(j - 1,0,terrainMap[0].length-1)].tag === 'air') {
-                            obj.vertices.push(JSON.stringify({x:i, y: j -1}))
-                        }
-                        if(terrainMap[i][clamp(j+1,0,terrainMap[0].length-1)].tag === 'air') {
-                            obj.vertices.push(JSON.stringify({x:i, y: j +1}))
-                        }
-                        adjMap.set(key, obj)
-                    }
-                }
-            }
-        }
-        generateAirPockets(adjMap)
-    }
-    function generateAirPockets(adjMap) {
-        adjMap.forEach((val, key) => {
-            if(!val.marked) {
-                val.marked = true
-                let size = modifiedDFS(adjMap, val)
-                airPockets.push(size)
-            }
-        })
-        airPockets = airPockets.sort((a,b) => b - a)
-        console.log(airPockets)
-    }
-
-    function modifiedDFS(adjMap, val) {
-        let size = 1
-        val.vertices.forEach(key => {
-            let obj = adjMap.get(key)
-            if(obj && !obj.marked) {
-                obj.marked = true
-                size += modifiedDFS(adjMap, obj)
-            }
-        })
-        return size
     }
 
     /**
@@ -489,42 +421,17 @@ const getTerrain = (entityManager, mobFactory) => {
         entityManager.update()
     }
 
-    function getPlatformsList() {
-        let yMax = terrainMap.length - 20
-        let xMax = terrainMap[0].length - 16
-        console.log("yMax: ", yMax, "xMax: ", xMax)
-        for(let y = startRow + (blocksPerChunk * 2); y < yMax; y++) {
-            for(let x = 16; x < xMax; x++) {
-                let length = 0
-                while(terrainMap[y][x].tag.includes('tile') && terrainMap[y-1][x].tag === 'air' && x < xMax) {
-                    length++
-                    x++
-                }
-                if(length > 2) {
-                    let c = {
-                        x: x,
-                        y: y,
-                        length: length
-                    }
-                    console.log(c)
-                    platforms.push(c)
-                    console.log(platforms)
-                }
-            }
-        }
-        console.log(platforms)
-    }
     function spawnStationaryMobs() {
-        console.log(platforms)
-        for(let i = 0; i < 100; i++) {
-            let pos = platforms[randomInt(platforms.length)]
-            console.log(pos)
-            pos.y = pos.y - 3
-            punchHole(pos, 2, 3)
-            pos.x = pos.x * BLOCKSIZE
-            pos.y = pos.y * BLOCKSIZE
-            mobFactory.build('spore', pos.x, pos.y)
+
+        let y = terrainMap.length * .5 - 5
+        for(let x = 20; x < terrainMap[0].length - 20; x++) {
+            console.log(x, y)
+            x += randomInt(15) + 15
+            mobFactory.build('mossamber', x * BLOCKSIZE, y * BLOCKSIZE)
         }
+
+        
+            
     }
     function generatePlanet() {
         let e = entityManager.addEntity({
@@ -643,11 +550,8 @@ const getTerrain = (entityManager, mobFactory) => {
     generateNoiseMap()
     generateTerrain()
     generateBorders()
-    generateSpawnLocations()
     generateStatues()
-    //generateCaveBackgrounds()
-    //getPlatformsList()
-    //spawnStationaryMobs()
+    spawnStationaryMobs()
     return [terrainMap, spawnMap]
 
 }
