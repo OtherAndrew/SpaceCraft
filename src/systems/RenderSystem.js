@@ -15,6 +15,9 @@ class RenderSystem {
 
                 let destX = e.components.transform.x - xSpeed;
                 let destY = e.components.transform.y - ySpeed;
+                // if (e.tag.includes('tile') && !e.components['boxCollider']) {
+                //    
+                // } else {
                 ctx.drawImage(
                     sprite.sprite,
                     sprite.currentFrame * (sprite.sWidth + sprite.padding),
@@ -26,10 +29,11 @@ class RenderSystem {
                     sprite.dWidth,
                     sprite.dHeight
                 )
-                
+                // }
+
                 destX += sprite.dWidth / 2 - 25;
 
-                if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged) 
+                if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged)
                     drawHealthbar(ctx, e, destX, destY, 50, 5);
             }
         })
