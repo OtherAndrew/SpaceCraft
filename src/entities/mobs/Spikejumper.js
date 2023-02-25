@@ -32,6 +32,7 @@ class Spikejumper {
             x: props.x,
             y: props.y,
             hasGravity: true,
+            maxVelocityY: BLOCKSIZE * 0.9
         });
         const cWidth = BLOCKSIZE * 1.5;
         const cHeight = BLOCKSIZE * 1.25;

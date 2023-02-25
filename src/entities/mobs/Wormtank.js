@@ -32,8 +32,7 @@ class Wormtank {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: true,
-            maxVelocityY: BLOCKSIZE * 0.9
+            hasGravity: true
         });
         const cWidth = BLOCKSIZE * 1.6;
         const cHeight = BLOCKSIZE * 1.25;
