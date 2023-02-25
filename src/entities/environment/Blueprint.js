@@ -86,25 +86,6 @@ const generateBlock = (tag, x, y, mode) => {
     });
 }
 
-const resizeBlock = (e, mapX, mapY) => {
-    if (e.isBroken) {
-        // e.components.sprite.dWidth *= 2
-        // e.components.sprite.dHeight *= 2
-        // e.components.transform.x = BLOCKSIZE * mapX
-        // e.components.transform.y = BLOCKSIZE * mapY
-        e.components.stats.currentHealth = e.components.stats.maxHealth
-        e.isBroken = false
-        e.isDrawable = true
-    } else {
-        e.components.sprite.dWidth *= .5
-        e.components.sprite.dHeight = e.components.sprite.dHeight * .5
-        e.components.transform.velocityY = 10
-        e.isBroken = true
-        e.isDrawable = false
-    }
-    return e
-}
-
 const generateInteractive = (tag, x=0, y=0) => {
     let id = cleanTag(tag).toUpperCase();
     if (id.includes('CHEST')) id = 'CHEST';

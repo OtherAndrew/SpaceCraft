@@ -1,68 +1,64 @@
 /**
- * Bloodsucker is an aggressive flying mob.
- * Flies at high speed towards the player to do damage.
+ * Vengefly is a weak flying mob.
+ * Chases after the player if they get too close but mostly minds its own business.
  *
- * @author Jeep Naarkom
  * @author Andrew Nguyen
  */
 
-class Bloodsucker {
+class Vengefly {
     /**
-     * Initializes Bloodsucker
+     * Initializes Vengefly
      * @param {Object} props   Position properties.
      * @param {number} props.x X spawn position.
      * @param {number} props.y Y spawn position.
-     * @returns {Bloodsucker} Bloodsucker blueprint.
+     * @returns {Vengefly} Vengefly blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
-        this.name = 'bloodsucker';
+        this.name = 'vengefly';
         this.components = this.#buildComponents(props);
         return this;
     };
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
-            speed: 3,
-            maxHealth: 80
+            damage: 0.2,
+            speed: 2,
+            maxHealth: 30
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSUCKER],
-            sWidth: 332,
-            sHeight: 326,
-            scale: BLOCKSIZE * 2.5 / 332,
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.VENGEFLY],
+            sWidth: 143,
+            sHeight: 137,
+            scale: BLOCKSIZE * 1.5 / 143,
             // idleR
             firstFrameX: 0,
             frameY: 1,
             lastFrameX: 4,
-            fps: 20,
+            fps: 30,
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y
         });
-        const cWidth = BLOCKSIZE * 1.75;
-        const cHeight = BLOCKSIZE * 0.8;
+        const cWidth = BLOCKSIZE * 0.8;
+        const cHeight = BLOCKSIZE * 0.5;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
             height: cHeight,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            yOffset: (sprite.dHeight - cHeight) * 3/4,
+            yOffset: (sprite.dHeight - cHeight) * 2/3,
         });
-        const drops = new CDrops([
-            new LaserPistol()
-        ]);
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
 
-        return [stats, sprite, transform, collider, state, drops, duration];
+        return [stats, sprite, transform, collider, state, duration];
     }
 
     #addAnimations(sprite) {
@@ -85,16 +81,16 @@ class Bloodsucker {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 12) {
-            if (switchInterval(state.elapsedTime, interval/2)) {
-                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/5 : -speed/5;
+        if (distance > BLOCKSIZE * 6) {
+            if (switchInterval(state.elapsedTime, interval / 2)) {
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 5 : -speed / 5;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
                 state.direction = transform.velocityX < 0 ? "left" : "right"
             } else {
                 transform.velocityX = 0;
                 animState = state.direction === 'left' ? "idleL" : "idleR";
             }
-            transform.velocityY = normalize(origin, { x: target.center.x, y: target.top - BLOCKSIZE * 2 }).y * speed;
+            transform.velocityY = normalize(origin, {x: target.center.x, y: target.top - BLOCKSIZE * 2}).y * speed;
         } else {
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
@@ -106,18 +102,5 @@ class Bloodsucker {
             state.direction = transform.velocityX < 0 ? "left" : "right"
         }
         state.setState(animState);
-    }
-
-    #direction(x1,y1,x2,y2) {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const length = getDistance2(x1, y1, x2, y2);
-        return [dx/length, dy/length];
-    }
-
-    #moveCloser(mover, target, blocksize) {
-        const [x,y] = mover;
-        const [dx,dy] = target;
-        return [x + dx * blocksize, y + dy * blocksize];
     }
 }

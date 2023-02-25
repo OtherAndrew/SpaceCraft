@@ -1,17 +1,24 @@
-
+/**
+ * Spore is a stationary, but aggressive mob.
+ * Fires spores at the player if they're within range.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
 class Spore {
     /**
-     * Initializes Spore (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Spore
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Spore} Spore blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob';
         this.name = 'spore';
         this.components = this.#buildComponents(props);
+        return this;
     };
     #buildComponents(props) {
         const stats = new CStats({

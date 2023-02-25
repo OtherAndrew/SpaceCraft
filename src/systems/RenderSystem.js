@@ -27,7 +27,7 @@ class RenderSystem {
                     sprite.dHeight
                 )
                 
-                destX = destX + sprite.dWidth / 2 - 25;
+                destX += sprite.dWidth / 2 - 25;
 
                 if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged) 
                     drawHealthbar(ctx, e, destX, destY, 50, 5);
@@ -49,7 +49,7 @@ class RenderSystem {
                     if (s.currentFrame === s.lastFrameX && s.loop) { // reset frame
                         s.currentFrame = s.firstFrameX;
                     } else {
-                        s.currentFrame = clamp(s.currentFrame + 1, 0, s.lastFrameX);
+                        s.currentFrame = clamp(s.currentFrame + 1, s.firstFrameX, s.lastFrameX);
                     }
                     s.elapsedTime = 0;
                 } else {

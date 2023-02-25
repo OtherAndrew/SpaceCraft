@@ -46,10 +46,10 @@ const BG_PATH = {
     UNDERGROUND_0	:	'./assets/backgrounds/underground_0.png',
     UNDERGROUND_3	:	'./assets/backgrounds/underground_3.png',
     UNDERGROUND_4	:	'./assets/backgrounds/underground_4.png',
-    CAVE_0          :   './assets/backgrounds/cave_0.png',
-    CAVE_1          :   './assets/backgrounds/cave_1.png',
-    CAVE_2          :   './assets/backgrounds/cave_2.png',
-    CAVE_3          :   './assets/backgrounds/cave_3.png'
+    CAVE_0          :   './assets/backgrounds/cave_0_50.png',
+    CAVE_1          :   './assets/backgrounds/cave_1_50.png',
+    CAVE_2          :   './assets/backgrounds/cave_2_50.png',
+    CAVE_3          :   './assets/backgrounds/cave_3_50.png'
 }
 
 const BG_SCROLL = {
@@ -63,6 +63,7 @@ const BG_SCROLL = {
 
 const CHAR_PATH = {
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
+    BOMBFLY     :   './assets/sprites/bombfly.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
     CREEPERILLA :	'./assets/sprites/creeperilla.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver2.png',
@@ -73,13 +74,13 @@ const CHAR_PATH = {
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     MOSSAMBER   :	'./assets/sprites/mossamber.png',
     MOSSFLY     :	'./assets/sprites/mossfly.png',
-    PLAYER      :	'./assets/sprites/player.png',
+    PLAYER      :	'./assets/sprites/amogus.png',
     ROCKET      :	'./assets/sprites/rocket.png',
     SILVERFISH  :   './assets/sprites/silverfish.png',
     SPIKEJUMPER :   './assets/sprites/spikejumper2.png',
     SPORE       :	'./assets/sprites/spore2.png',
-    WORMTANK    :	'./assets/sprites/wormtank2.png',
-    WASP        :   './assets/sprites/wasp.png'
+    VENGEFLY    :   './assets/sprites/vengefly.png',
+    WORMTANK    :	'./assets/sprites/wormtank2.png'
 }
 
 const CRAFT_COLOR = {
@@ -151,6 +152,7 @@ const PROJECTILE_PATH = {
     ELECTRICITY :   './assets/projectiles/electricity.png',
     EXPLOSION   :   './assets/projectiles/explosion.png',
     FIRE        :   './assets/projectiles/fire.png',
+    IMPACT      :   './assets/projectiles/impact2.png',
     LASER       :   './assets/projectiles/laser.png',
     MINI_BOMB   :   './assets/projectiles/red_bomb.png',
     ORB         :   './assets/projectiles/orb.png'

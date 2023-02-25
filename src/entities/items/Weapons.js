@@ -3,6 +3,11 @@
  *
  * @author Andrew Nguyen
  */
+
+/**
+ * The player's starter pistol. Weak but does the job.
+ * T1 weapon.
+ */
 class LaserPistol {
     constructor() {
         this.tag = "laserPistol";
@@ -19,6 +24,10 @@ class LaserPistol {
     }
 }
 
+/**
+ * An upgrade from the starter pistol. Fires slightly faster and has slightly longer range.
+ * T2 weapon.
+ */
 class LaserGun {
     constructor() {
         this.tag = "laserGun";
@@ -35,6 +44,10 @@ class LaserGun {
     }
 }
 
+/**
+ * An upgrade from the Laser Gun. Fires even faster and has even longer range.
+ * T3 weapon.
+ */
 class LaserRifle {
     constructor() {
         this.tag = "laserRifle";
@@ -51,6 +64,10 @@ class LaserRifle {
     }
 }
 
+/**
+ * Shoots flames at short range to do continuous damage. Pierces mobs.
+ * T2 weapon.
+ */
 class Flamethrower {
     constructor() {
         this.tag = "flamethrower";
@@ -67,6 +84,10 @@ class Flamethrower {
     }
 }
 
+/**
+ * Shoots arcing grenades that cause a large explosion, dealing massive damage.
+ * T4 weapon.
+ */
 class GrenadeLauncher {
     constructor() {
         this.tag = "grenadeLauncher";
@@ -83,6 +104,10 @@ class GrenadeLauncher {
     }
 }
 
+/**
+ * Fires a volley of three mini bombs, dealing massive damage but with a small explosion.
+ * T3 weapon.
+ */
 class HandCannon {
     constructor() {
         this.tag = "handCannon";
@@ -93,12 +118,17 @@ class HandCannon {
                 sWidth: 32,
                 sHeight: 32
             }),
-            new CWeaponProps("mini_bomb", 1.33)
+            new CWeaponProps("mini_bomb", 1.5)
         ];
         return this;
     }
 }
 
+/**
+ * Fires a continuous stream of bullets, dealing massive damage.
+ * Restricts the player's movement when active and has a long cooldown.
+ * T4 weapon.
+ */
 class Minigun {
     constructor() {
         this.tag = "minigun";
@@ -109,12 +139,17 @@ class Minigun {
                 sWidth: 42,
                 sHeight: 42,
             }),
-            new CWeaponProps('minigun_bullet', 7.5, 5)
+            new CWeaponProps('minigun_bullet', 7.5, 2.5)
         ];
         return this;
     }
 }
 
+/**
+ * Fires a single bullet that deals massive damage and pierces mobs and blocks.
+ * Restricts the player's movement when active and has a long cooldown.
+ * T4 weapon.
+ */
 class Railgun {
     constructor() {
         this.tag = "railgun";

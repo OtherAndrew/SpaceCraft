@@ -1,21 +1,30 @@
+/**
+ * Dirtcarver is an aggressive crawling mob.
+ * Chases after the player at moderate speed and pounces at them to do damage.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
+
 class Dirtcarver {
     /**
-     * Initializes Dirtcarver (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Dirtcarver
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Dirtcarver} Dirtcarver blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'dirtcarver';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.75,
+            damage: 0.33,
             speed: 2,
             maxHealth: 100
         });
@@ -81,6 +90,10 @@ class Dirtcarver {
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
             }
         } else { // airborne
+            if (checkCollision(collider, target) && state.attackTime > interval) {
+                projectileManager.entityShoot("weakimpact", target.center, origin);
+                state.attackTime = 0;
+            }
             transform.velocityX = vX;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         }

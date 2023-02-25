@@ -175,6 +175,7 @@ class ProjectileFactory {
     entityShoot(type, targetPos, origin) {
         const directionVector = normalize(origin, targetPos);
         const projectileQueue = [];
+        let sprite;
         switch (type) {
             case 'spore':
                 origin.x += directionVector.x * 10;
@@ -206,6 +207,38 @@ class ProjectileFactory {
                     spread: 0
                 }));
                 break;
+            case 'strongimpact':
+                origin.x += directionVector.x * 20;
+                origin.y += directionVector.y * 20;
+                sprite = this.impactSprite();
+                projectileQueue.push(new Projectile({
+                    tag: 'enemy ignoreTile pierce stun',
+                    sprite: sprite,
+                    damage: 3.5,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1),
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
+            case 'weakimpact':
+                origin.x += directionVector.x * 20;
+                origin.y += directionVector.y * 20;
+                sprite = this.impactSprite();
+                projectileQueue.push(new Projectile({
+                    tag: 'enemy ignoreTile pierce stun',
+                    sprite: sprite,
+                    damage: 1,
+                    speed: 0,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1),
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             default: console.log(`ProjectileManager.entityShoot: Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
@@ -226,7 +259,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 1.5),
-                    damage: 3,
+                    damage: 4,
                     origin: position,
                 }));
                 break;
@@ -234,7 +267,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 2.5,
+                    damage: 1.5,
                     origin: position,
                 }));
                 break;
@@ -294,7 +327,7 @@ class ProjectileFactory {
             scale: size / 64,
             firstFrameX: 0,
             lastFrameX: 5,
-            fps: 30
+            fps: 24
         });
     }
 
@@ -316,6 +349,17 @@ class ProjectileFactory {
             sHeight: 66,
             scale: BLOCKSIZE * 1.5 / 65,
             lastFrameX: 10,
+            fps: 30
+        });
+    }
+
+    impactSprite() {
+        return new CSprite({
+            sprite: ASSET_MANAGER.getAsset(PROJECTILE_PATH.IMPACT),
+            sWidth: 78,
+            sHeight: 69,
+            scale: BLOCKSIZE * 2 / 78,
+            lastFrameX: 5,
             fps: 30
         });
     }
@@ -378,7 +422,7 @@ class Explosion {
      * @param {CSprite} props.sprite           Explosion sprite
      * @param {number} props.damage            Explosion damage
      * @param {{number, number}} props.origin  Explosion origin point (x, y)
-     * @return {Explosion} Projectile blueprint.
+     * @return {Explosion} Explosion blueprint.
      */
     constructor(props) {
         this.tag = props.tag;
@@ -404,7 +448,7 @@ class Explosion {
             width: sprite.dWidth,
             height: sprite.dHeight,
         });
-        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX + 2));
+        const duration = new CDuration(sprite.frameDuration * (sprite.lastFrameX - sprite.firstFrameX + 1));
         transform.collider = collider
         return [stats, sprite, transform, collider, duration];
     }

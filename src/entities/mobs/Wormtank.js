@@ -1,21 +1,31 @@
+/**
+ * Wormtank is a slow, but extremely tough crawling mob.
+ * Chases after the player at slow speed, but charges at them at high speed
+ * when they get too close, dealing high damage.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
+
 class Wormtank {
     /**
-     * Initializes Wormtank (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Wormtank
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Wormtank} Wormtank blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'wormtank';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.5,
+            damage: 0.25,
             speed: 0.5,
             maxHealth: 500
         });
@@ -32,9 +42,9 @@ class Wormtank {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: true,
+            hasGravity: true
         });
-        const cWidth = BLOCKSIZE * 1.5;
+        const cWidth = BLOCKSIZE * 1.6;
         const cHeight = BLOCKSIZE * 1.25;
         const collider = new CBoxCollider({
             x: props.x,
@@ -59,35 +69,49 @@ class Wormtank {
         const transform = this.components["transform"];
         const state = this.components['state'];
 
-        //TODO use A* to to find path
-
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
         const interval = 30
+        const attackInterval = 5;
+        const attackDistance = BLOCKSIZE * 12;
 
-        if (distance > BLOCKSIZE * 12) {
+        if (state.attackTime > attackInterval + 1) {
+            state.attackTime = 0;
+        }
+        if (distance <= attackDistance) {
+            if (checkCollision(collider, target)) { // attack
+                transform.velocityX = 0;
+                animState = target.center.x < origin.x ? "walkL" : "walkR";
+                if (state.attackTime > attackInterval) {
+                    projectileManager.entityShoot("strongimpact", target.center, origin);
+                }
+                state.attackTime = 0;
+            } else if ((state.currentState.includes("charge")
+                        || isBetween(distance, attackDistance * 0.33, attackDistance * 0.66))
+                    && state.attackTime > attackInterval) { // charge
+                transform.velocityX = dVector.x * speed * 13;
+                animState = target.center.x < origin.x ? "chargeL" : "chargeR";
+            } else { // chase
+                transform.velocityX = dVector.x * speed;
+                animState = target.center.x < origin.x ? "walkL" : "walkR";
+            }
+            state.direction = transform.velocityX < 0 ? "left" : "right"
+        } else { // idle
             if (switchInterval(state.elapsedTime, interval/2)) {
-                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/5 : -speed/5;
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
                 state.direction = transform.velocityX < 0 ? "left" : "right"
             } else {
                 transform.velocityX = 0;
                 animState = state.direction === 'left' ? "idleL" : "idleR";
             }
-        } else {
-            if (checkCollision(collider, target)) {
-                transform.velocityX = 0;
-            } else {
-                transform.velocityX = dVector.x * speed;
-                state.direction = transform.velocityX < 0 ? "left" : "right"
-            }
-            animState = target.center.x < origin.x ? "walkL" : "walkR";
         }
 
         // climb
         if (collider.sideCollision) {
             transform.velocityY = -(GRAVITY + speed/2.5);
+            state.attackTime = 0;
         }
 
         state.setState(animState);
@@ -99,6 +123,8 @@ class Wormtank {
         aMap.set('idleL', new AnimationProps(0, 0,5, 5));
         aMap.set('walkR', new AnimationProps(0, 1, 5, 10));
         aMap.set('walkL', new AnimationProps(0, 0, 5, 10));
+        aMap.set('chargeR', new AnimationProps(0, 1, 5, 30));
+        aMap.set('chargeL', new AnimationProps(0, 0, 5, 30));
     };
 }
 

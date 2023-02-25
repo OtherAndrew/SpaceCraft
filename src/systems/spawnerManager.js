@@ -27,13 +27,13 @@ class SpawnerManager {
         this.bloodSuckerTimer += deltaTime * .2
         if(this.waspTimer > this.spawnTime) {
             this.waspTimer = 0
-            console.log('spawning wasp')
-            this.spawnMob('wasp', 3)
+            console.log('spawning vengefly')
+            this.spawnMob('vengefly', 3)
         }
         if(this.bloodSuckerTimer > this.spawnTime) {
             this.bloodSuckerTimer = 0
             console.log('spawning bloodsucker')
-            this.spawnMob('mossfly', 2)
+            this.spawnMob('bloodsucker', 2)
         }
     }
 

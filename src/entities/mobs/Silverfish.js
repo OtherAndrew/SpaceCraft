@@ -1,16 +1,24 @@
+/**
+ * Silverfish is a weak crawling mob.
+ * Chases after the player if they get too close but mostly minds its own business.
+ *
+ * @author Andrew Nguyen
+ */
+
 class Silverfish {
     /**
-     * Initializes
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Silverfish
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Silverfish} Silverfish blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'silverfish';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
@@ -61,7 +69,7 @@ class Silverfish {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 12) {
+        if (distance > BLOCKSIZE * 6) {
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"

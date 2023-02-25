@@ -28,7 +28,6 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.spawnManager = new SpawnerManager(this.mobFactory, spawnMap, this.player)
-        this.spawnTestEntities();
 
         /*
     this.spawnManager.spawnTestEntities({
@@ -56,7 +55,9 @@ class WorldScene extends Scene {
         this.healthSystem = new HealthSystem(this.entityManager, this.particleFactory, this.containerManager);
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
+
         this.giveWeapons2();
+        this.spawnTestEntities();
     }
 
     spawnTestEntities() {
@@ -65,13 +66,14 @@ class WorldScene extends Scene {
 
         // this.mobFactory.build('spikejumper', px + 300, py - 200);
         // this.mobFactory.build('bloodsucker', px - 300, py - 200);
-        this.mobFactory.build('dirtcarver', px + 300, py - 200);
-        // this.mobFactory.build('wormtank', px - 300, py - 200);
+        // this.mobFactory.build('dirtcarver', px + 300, py - 200);
+        this.mobFactory.build('vengefly', px - 300, py - 200);
+        this.mobFactory.build('wormtank', px - 300, py - 200);
         // this.mobFactory.build('mossfly', px - 300, py - 200);
-        // this.mobFactory.build('silverfish', px + 600, py - 200);
+        this.mobFactory.build('silverfish', px + 600, py - 200);
         // this.mobFactory.build('electrojelly', px - 600, py - 200);
-        // this.mobFactory.build('wasp', px + 900, py - 200);
-        // this.mobFactory.build('grapebomb', px - 900, py - 200);
+        // this.mobFactory.build('bombfly', px + 900, py - 200);
+        // this.mobFactory.build('grapebomb', px + 300, py - 200);
         // this.mobFactory.build('spore', px + 1200, py - 200);
 
     }
@@ -120,7 +122,7 @@ class WorldScene extends Scene {
             this.entityManager.update();
             this.renderBox.update();
             this.#updateTileState();
-            this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.refresh();
 
             this.mobController.update(deltaTime);
@@ -148,11 +150,13 @@ class WorldScene extends Scene {
     }
 
     draw(menuActive, ctx, mouse) {
-        ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
-        ctx.fillRect(0, 0, WIDTH, HEIGHT)
-        if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
-        else this.renderSystem.draw(ctx, this.camera);
 
+        if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
+        else {
+            ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
+            ctx.fillRect(0, 0, WIDTH, HEIGHT)
+            this.renderSystem.draw(ctx, this.camera);
+        }
         // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
@@ -180,26 +184,43 @@ class WorldScene extends Scene {
      * @todo performance optimization
      */
     #updateTileState() {
-        this.entityManager.getEntities.forEach(e => {
-            if(e.name !== 'player' && !e.tag.includes('background') && !this.#isItem(e)) {
-                if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
-                e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
-                e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
-                e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
-                    if(!e.isBroken) {
-                        e.isDrawable = true
-                    }
-                    this.#checkIfExposed(e)
+        // this.entityManager.getEntities.forEach(e => {
+        //     if(e.name !== 'player' && !e.tag.includes('background') && !this.#isItem(e)) {
+        //         if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
+        //         e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
+        //         e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
+        //         e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
+        //             if(!e.isBroken) {
+        //                 e.isDrawable = true
+        //             }
+        //             this.#checkIfExposed(e)
+        //         } else {
+        //             e.isDrawable = false
+        //         }
+        //     }
+        // })
+
+        let entities = this.entityManager.getEntities;
+        let length = entities.length;
+        for (let i = 0; i < length; i++) {
+            let e = entities[i];
+            if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
+                    e.isDrawable = !e.isBroken
+                    if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
                 } else {
                     e.isDrawable = false
                 }
             }
-        })
+        }
     }
 
-    #isItem(e) {
-        return e.name === 'weapon' || e.name === 'tool' || e.name === "item";
-    }
+    // #isItem(e) {
+    //     return e.name === 'weapon' || e.name === 'tool' || e.name === "item";
+    // }
 
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
@@ -207,23 +228,40 @@ class WorldScene extends Scene {
      * @param {Entity} e
      */
     #checkIfExposed(e) {
-        if(e.isDrawable && e.tag.includes('tile') && !this.#isItem(e)) {
-            const posX = e.components.transform.x / BLOCKSIZE
-            const posY = e.components.transform.y / BLOCKSIZE
-            if (this.#isExposed(posY, posX)) {
-                if (!e.components["boxCollider"]) {
-                    e.addComponent([
-                        new CBoxCollider({
-                            x: e.components.transform.x,
-                            y: e.components.transform.y,
-                            width: BLOCKSIZE,
-                            height: BLOCKSIZE
-                        })
-                    ]);
-                }
-            } else {
-                delete e.components["boxCollider"];
+        // if(e.isDrawable && e.tag.includes('tile') && !this.#isItem(e)) {
+        //     const posX = e.components.transform.x / BLOCKSIZE
+        //     const posY = e.components.transform.y / BLOCKSIZE
+        //     if (this.#isExposed(posY, posX)) {
+        //         if (!e.components["boxCollider"]) {
+        //             e.addComponent([
+        //                 new CBoxCollider({
+        //                     x: e.components.transform.x,
+        //                     y: e.components.transform.y,
+        //                     width: BLOCKSIZE,
+        //                     height: BLOCKSIZE
+        //                 })
+        //             ]);
+        //         }
+        //     } else {
+        //         delete e.components["boxCollider"];
+        //     }
+        // }
+
+        const posX = e.components.transform.x / BLOCKSIZE
+        const posY = e.components.transform.y / BLOCKSIZE
+        if (this.#isExposed(posY, posX)) {
+            if (!e.components["boxCollider"]) {
+                e.addComponent([
+                    new CBoxCollider({
+                        x: e.components.transform.x,
+                        y: e.components.transform.y,
+                        width: BLOCKSIZE,
+                        height: BLOCKSIZE
+                    })
+                ]);
             }
+        } else {
+            delete e.components["boxCollider"];
         }
     }
 

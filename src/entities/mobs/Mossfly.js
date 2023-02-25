@@ -1,17 +1,24 @@
+/**
+ * Mossfly is a flying mob that fires spores at the player.
+ * Slow, but can take a few hits, and flies away from the player when they approach.
+ *
+ * @author Andrew Nguyen
+ */
 
 class Mossfly {
     /**
-     * Initializes
-     * @param {Object} props
-     * @param {number} props.x       X spawn position
-     * @param {number} props.y       Y spawn position
-     * @returns {Object}             return enemy
+     * Initializes Mossfly mob.
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Mossfly} Mossfly blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob';
         this.name = 'mossfly';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {

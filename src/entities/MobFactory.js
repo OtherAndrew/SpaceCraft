@@ -9,6 +9,7 @@ class MobFactory {
         const position = { x: x, y: y };
         switch (type) {
             case 'bloodsucker': mob = new Bloodsucker(position); break;
+            case 'bombfly': mob = new Bombfly(position); break;
             case 'creeperilla': mob = new Creeperilla(position); break;
             case 'dirtcarver': mob = new Dirtcarver(position); break;
             case 'electrojelly': mob = new Electrojelly(position); break;
@@ -23,7 +24,7 @@ class MobFactory {
             case 'spore': mob = new Spore(position); break;
             case 'spiderboss': mob = new Spiderboss(position); break;
             case 'spikejumper': mob = new Spikejumper(position); break;
-            case 'wasp': mob = new Wasp(position); break;
+            case 'vengefly': mob = new Vengefly(position); break;
             case 'wormtank': mob = new Wormtank(position); break;
             default: console.log(`Invalid mob name: ${type}.`);
         }

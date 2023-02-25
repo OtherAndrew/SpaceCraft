@@ -1,21 +1,29 @@
+/**
+ * Spikejumper is a jumping ambush mob.
+ * Has high damage and survivability, but is vulnerable between jumps.
+ *
+ * @author Andrew Nguyen
+ */
+
 class Spikejumper {
     /**
-     * Initializes
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Spikejumper mob.
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Spikejumper} Spikejumper blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'spikejumper';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1.25,
+            damage: 0.75,
             maxHealth: 250,
             hasFallDamage: false
         });
@@ -31,7 +39,7 @@ class Spikejumper {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: true,
+            hasGravity: true
         });
         const cWidth = BLOCKSIZE * 1.5;
         const cHeight = BLOCKSIZE * 1.25;
@@ -66,7 +74,8 @@ class Spikejumper {
             if ((distance < BLOCKSIZE * 14 || collider.attackCollision) && state.elapsedTime > interval) { // jump
                 state.grounded = false;
                 transform.velocityX = vX;
-                transform.velocityY = -(GRAVITY + clamp(2 * Math.abs(vX), BLOCKSIZE * 0.3, BLOCKSIZE * 0.9));
+                transform.velocityY =
+                        -(GRAVITY + clamp(2 * Math.abs(vX), BLOCKSIZE * 0.3, BLOCKSIZE * 0.9));
                 animState = 'jumpR'
                 state.elapsedTime = 0;
             } else { // land/wait
@@ -74,6 +83,10 @@ class Spikejumper {
                 animState = 'idleR'
             }
         } else { // airborne
+            if (checkCollision(collider, target) && state.attackTime > interval) {
+                projectileManager.entityShoot("strongimpact", target.center, origin);
+                state.attackTime = 0;
+            }
             transform.velocityX = vX;
         }
         state.setState(animState);
