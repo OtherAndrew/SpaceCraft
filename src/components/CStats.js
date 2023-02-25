@@ -35,7 +35,7 @@ class CStats {
      */
     applyDamage(damage) {
         if (!this.invincible) {
-            this.currentHealth -= damage;
+            this.currentHealth = clamp(this.currentHealth - damage, 0, this.maxHealth);
             this.elapsedTime = 0;
             this.isDamaged = true;
             if (this.currentHealth <= 0) this.isDead = true;

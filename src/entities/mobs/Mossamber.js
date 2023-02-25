@@ -9,57 +9,47 @@ class Mossamber {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob';
+        this.tag = 'mob enemy';
         this.name = 'mossamber';
         this.components = this.#buildComponents(props);
     };
     
     #buildComponents(props) {
         const stats = new CStats({
+            damage: -0.1,
             maxHealth: 100
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
-            sWidth: 141,
-            sHeight: 159,
-            scale: .66,
-            padding: 1
+            sWidth: 110,
+            sHeight: 121,
+            scale: BLOCKSIZE * 3 / 110,
+            lastFrameX: 3,
+            fps: 5
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y,
             hasGravity: true
         });
-        const cWidth = 2 * BLOCKSIZE;
+        const cWidth = BLOCKSIZE * 2.4;
+        const xOffset = BLOCKSIZE * 0.25
+        const yOffset = BLOCKSIZE * 1.5
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
-            xOffset: (sprite.dWidth - cWidth) / 2,
-            height: sprite.dHeight
+            xOffset: xOffset,
+            height: sprite.dHeight - yOffset,
+            yOffset: yOffset
         });
-
-        this.#addAnimations(sprite);
-        this.#addBehaviors(transform);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-        state.transform = transform;
         return [stats, sprite, transform, collider, state];
-
-
     }
 
     update(target, projectileManager) {
-    }
-
-    #addAnimations(sprite) {
-        const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,0));
-    };
-    #addBehaviors(transform) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, 0));
     }
 
 }
