@@ -65,18 +65,18 @@ class ContainerManager {
     }
 
     addToInventory(owner, item, count = 1) {
-        let firstNull;
+        let firstEmpty;
         let inventory = this.getInventory(owner);
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 inventory[i].count += count;
                 if (owner === 'player') this.addPlayerCount(item, count);
                 return 0;
-            } else if (firstNull === undefined && inventory[i].item == null) firstNull = inventory[i];
+            } else if (firstEmpty === undefined && inventory[i].item == null) firstEmpty = inventory[i];
         }
-        if (firstNull) {
-            firstNull.item = item;
-            firstNull.count = count;
+        if (firstEmpty) {
+            firstEmpty.item = item;
+            firstEmpty.count = count;
             if (owner === 'player') this.addPlayerCount(item, count);
             return 1;
         } else return -1;
@@ -97,18 +97,18 @@ class ContainerManager {
         }
     }
 
-    removeFromInventory(owner, index) {
-        let inventory = this.getInventory(owner);
-        let ent = inventory[index];
-        if (ent.item) {
-            if (--ent.count) return structuredClone(ent.item);
-            else {
-                let item = ent.item;
-                ent.item = null;
-                return item;
-            }
-        }
-    }
+    // removeFromInventory(owner, index) {
+    //     let inventory = this.getInventory(owner);
+    //     let ent = inventory[index];
+    //     if (ent.item) {
+    //         if (--ent.count) return structuredClone(ent.item);
+    //         else {
+    //             let item = ent.item;
+    //             ent.item = null;
+    //             return item;
+    //         }
+    //     }
+    // }
 
     removeFromPlayer(index) {
         let ent = this.slots[index];
@@ -298,7 +298,7 @@ class ContainerManager {
 
     checkSufficient(recipe, owner = 'player') {
         let craftable = true;
-        for (let i = 1; i < recipe.length && craftable; i++) craftable = this.checkCount(recipe[i], owner);
+        for (let i = 1; craftable && i < recipe.length; i++) craftable = this.checkCount(recipe[i], owner);
         return craftable;
     }
 
@@ -309,7 +309,7 @@ class ContainerManager {
             return (this.playerCounts.get(item.tag) ? this.playerCounts.get(item.tag) >= cost : false);
         let count = 0;
         let inventory = this.getInventory(owner)
-        for (let i = 0; i < inventory.length; i++)
+        for (let i = 0; count < cost && i < inventory.length; i++)
             if (inventory[i].item && inventory[i].item.tag === item.tag) count += inventory[i].count;
         return count >= cost;
     }
@@ -350,9 +350,9 @@ class ContainerManager {
 
     registerChest(chest) {
         let index = this.reuseChest.shift();  // grab first value in queue
-        if (index) chest.tag = chest.tag + index;
+        if (index) chest.tag += index;
         else {
-            chest.tag = chest.tag + this.chestCount++;
+            chest.tag += this.chestCount++;
             this.createInventory(cleanTag(chest.tag), 302, 408, 2, 9, 'blue');
         }
     }
@@ -366,7 +366,7 @@ class ContainerManager {
     checkChest(chest) {
         let empty = true;
         let linked = this.getInventory(cleanTag(chest.tag));
-        for (let i = 0; i < linked.length && empty; i++) if (linked[i].item) empty = false;
+        for (let i = 0; empty && i < linked.length; i++) empty = !(linked[i].item);
         return empty;
     }
 }

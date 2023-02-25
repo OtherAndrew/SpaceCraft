@@ -121,7 +121,9 @@ class PlayerController {
                             selected.tag = 'air'
                             selected.id = null
                             delete e.components["boxCollider"]
-                            this.containerManager.addToInventory('player', resizeBlock(e))
+                            e.isBroken = true;
+                            e.isDrawable = false;
+                            this.containerManager.addToInventory('player', e /*resizeBlock(e)*/)
                         }
                     }
                 }
