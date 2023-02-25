@@ -1,16 +1,24 @@
+/**
+ * Spikejumper is a jumping ambush mob.
+ * Has high damage and survivability, but is vulnerable between jumps.
+ *
+ * @author Andrew Nguyen
+ */
+
 class Spikejumper {
     /**
-     * Initializes
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Spikejumper mob.
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Spikejumper} Spikejumper blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'spikejumper';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {

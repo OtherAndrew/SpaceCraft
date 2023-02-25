@@ -1,17 +1,24 @@
+/**
+ * Electrojelly is a flying mob that can go through blocks.
+ * Slowly chases after the player, firing electricity that stuns.
+ *
+ * @author Andrew Nguyen
+ */
 
 class Electrojelly {
     /**
-     * Initializes bloodsucker (enemy)
-     * @param {Object} props
-     * @param {number} props.x       X spawn position
-     * @param {number} props.y       Y spawn position
-     * @returns {Object}             return enemy
+     * Initializes Electrojelly mob.
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Electrojelly} Electrojelly blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy ghost';
         this.name = 'electrojelly';
         this.components = this.#buildComponents(props);
+        return this;
     };
     
     #buildComponents(props) {

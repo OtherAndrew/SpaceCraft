@@ -1,17 +1,25 @@
+/**
+ * Bloodsucker is an aggressive flying mob.
+ * Flies at high speed towards the player to do damage.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
 
 class Bloodsucker {
     /**
-     * Initializes bloodsucker (enemy)
-     * @param {Object} props
-     * @param {number} props.x       X spawn position
-     * @param {number} props.y       Y spawn position
-     * @returns {Object}             return enemy
+     * Initializes Bloodsucker
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Bloodsucker} Bloodsucker blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'bloodsucker';
         this.components = this.#buildComponents(props);
+        return this;
     };
     
     #buildComponents(props) {
@@ -71,8 +79,6 @@ class Bloodsucker {
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
-
-        //TODO use A* to to find path
 
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)

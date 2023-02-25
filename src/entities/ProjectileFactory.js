@@ -422,7 +422,7 @@ class Explosion {
      * @param {CSprite} props.sprite           Explosion sprite
      * @param {number} props.damage            Explosion damage
      * @param {{number, number}} props.origin  Explosion origin point (x, y)
-     * @return {Explosion} Projectile blueprint.
+     * @return {Explosion} Explosion blueprint.
      */
     constructor(props) {
         this.tag = props.tag;

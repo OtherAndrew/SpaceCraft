@@ -1,17 +1,24 @@
+/**
+ * Vengefly is a weak flying mob.
+ * Chases after the player if they get too close but mostly minds its own business.
+ *
+ * @author Andrew Nguyen
+ */
 
 class Vengefly {
     /**
-     * Initializes bloodsucker (enemy)
-     * @param {Object} props
-     * @param {number} props.x       X spawn position
-     * @param {number} props.y       Y spawn position
-     * @returns {Object}             return enemy
+     * Initializes Vengefly
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Vengefly} Vengefly blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'vengefly';
         this.components = this.#buildComponents(props);
+        return this;
     };
     
     #buildComponents(props) {

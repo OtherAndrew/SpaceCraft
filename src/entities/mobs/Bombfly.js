@@ -1,18 +1,27 @@
+/**
+ * Bombfly is a flying mob that chases after the player
+ * and explodes on contact, dealing massive damage.
+ * Speedy, but easy to take down.
+ *
+ * @author Andrew Nguyen
+ */
 
 class Bombfly {
     /**
-     * Initializes
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of starting frame
-     * @param {number} props.y       Y position of the starting frame
-     * @returns {Object}             return enemy
+     * Initializes Bombfly
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Bombfly} Bombfly blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob';
         this.name = 'bombfly';
         this.components = this.#buildComponents(props);
+        return this;
     };
+
     #buildComponents(props) {
         const stats = new CStats({
             speed: 4,

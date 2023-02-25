@@ -9,10 +9,10 @@ class Player {
 
     /**
      * Initializes new Player
-     * @param {Object} props         Player position and display properties
-     * @param {number} props.x       X position on canvas to draw player sprite
-     * @param {number} props.y       Y position on canvas to draw player sprite
-     * @returns {Object}             The player properties.
+     * @param {Object} props   Player position properties
+     * @param {number} props.x X position on canvas to draw player sprite
+     * @param {number} props.y Y position on canvas to draw player sprite
+     * @returns {Player} Player blueprint.
      * @constructor
      */
     constructor(props) {

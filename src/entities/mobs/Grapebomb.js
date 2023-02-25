@@ -1,28 +1,37 @@
+/**
+ * Grapebomb is a stationary mob that explodes
+ * when the player gets too close or when damaged, dealing massive damage.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
+
 class Grapebomb {
     /**
-     * Initializes
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Grapebomb
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Grapebomb} Grapebomb blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob';
         this.name = 'grapebomb';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 40
+            maxHealth: 20
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
             sWidth: 155,
             sHeight: 171,
-            scale: 0.33,
-            fps: 4,
+            scale: BLOCKSIZE * 1.5 / 155,
+            fps: 5,
             lastFrameX: 3
         });
         const transform = new CTransform({
@@ -30,13 +39,15 @@ class Grapebomb {
             y: props.y,
             hasGravity: true
         });
-        const cWidth = 1.5 * BLOCKSIZE;
+        const cWidth = BLOCKSIZE * 1.25;
+        const cHeight = BLOCKSIZE * 1.2;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            height: BLOCKSIZE * 1.6
+            height: cHeight,
+            yOffset: BLOCKSIZE * 0.33,
         });
         const state = new CState();
         const duration = new CDuration();
@@ -49,8 +60,7 @@ class Grapebomb {
     update(target, projectileFactory) {
         const collider = this.components['boxCollider']
         const origin = collider.center;
-        // if (checkCollision(collider, target)) {
-        if (getDistance(origin, target) <= BLOCKSIZE * 3.5) {
+        if (getDistance(origin, target) <= BLOCKSIZE * 3.5 || collider.attackCollision) {
             this.components['stats'].currentHealth = 0;
             projectileFactory.detonate('enemy_explosion', origin);
         }

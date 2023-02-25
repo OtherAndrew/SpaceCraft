@@ -1,16 +1,26 @@
+/**
+ * Wormtank is a slow, but extremely tough crawling mob.
+ * Chases after the player at slow speed, but charges at them at high speed
+ * when they get too close, dealing high damage.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
+
 class Wormtank {
     /**
-     * Initializes Wormtank (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Wormtank
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Wormtank} Wormtank blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'wormtank';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
