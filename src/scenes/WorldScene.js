@@ -68,6 +68,7 @@ class WorldScene extends Scene {
         // this.mobFactory.build('bloodsucker', px - 300, py - 200);
         // this.mobFactory.build('dirtcarver', px + 300, py - 200);
         this.mobFactory.build('vengefly', px - 300, py - 200);
+        this.mobFactory.build('lightbug', px + 300, py - 200);
         this.mobFactory.build('wormtank', px - 300, py - 200);
         // this.mobFactory.build('mossfly', px - 300, py - 200);
         this.mobFactory.build('silverfish', px + 600, py - 200);

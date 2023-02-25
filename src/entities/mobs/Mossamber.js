@@ -1,23 +1,31 @@
+/**
+ * Lightbug is a beneficial stationary mob that heals the player on contact.
+ * Can be defeated to procure wood.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
 
 class Mossamber {
     /**
-     * Initializes mossamber (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Mossamber
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Mossamber} Mossamber blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
         this.name = 'mossamber';
         this.components = this.#buildComponents(props);
+        return this;
     };
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: -0.1,
-            maxHealth: 100
+            damage: -0.2,
+            maxHealth: 100,
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
