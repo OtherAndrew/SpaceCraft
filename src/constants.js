@@ -13,6 +13,7 @@ const GRAVITY = 1
 const BLOCK_PLACEMENT_DISTANCE = 3.2
 const FALL_DAMAGE_MULTIPLIER = 200;
 const MOB_TIMEOUT = 900;
+const CHEST_SPAWN_COUNT = 30
 
 const MAXCREEPERILA = 2;
 const MAXDIRTCARVER = 5;
@@ -24,20 +25,20 @@ const MAXBLOODSUCKER = 2;
 const MAXWORMTANK = 5;
 
 const GENSTATS = {
-    BISMUTH	    :	6,
-    COAL	    :	13,
-    COBALT	    :	8,
-    COPPER	    :	10,
-    FERRITE	    :	5,
-    GOLD	    :	8,
-    IRON	    :	11,
-    PARAFFIN	:	4,
-    RUBY	    :	3,
-    SAND	    :	16,
-    SILICA	    :	9,
-    TIN	        :	7,
-    TITANITE	:	3,
-    TUNGSTEN	:	6
+    BISMUTH	    :	12,
+    COAL	    :	15,
+    COBALT	    :	13,
+    COPPER	    :	12,
+    FERRITE	    :	8,
+    GOLD	    :	12,
+    IRON	    :	13,
+    PARAFFIN	:	12,
+    RUBY	    :	10,
+    SAND	    :	18,
+    SILICA	    :	11,
+    TIN	        :	10,
+    TITANITE	:	11,
+    TUNGSTEN	:	9
 }
 
 const BG_PATH = {
