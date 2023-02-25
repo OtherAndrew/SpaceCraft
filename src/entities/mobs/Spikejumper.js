@@ -15,7 +15,7 @@ class Spikejumper {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.5,
+            damage: 0.75,
             maxHealth: 250,
             hasFallDamage: false
         });

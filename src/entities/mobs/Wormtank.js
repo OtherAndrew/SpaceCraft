@@ -33,6 +33,7 @@ class Wormtank {
             x: props.x,
             y: props.y,
             hasGravity: true,
+            maxVelocityY: BLOCKSIZE * 0.9
         });
         const cWidth = BLOCKSIZE * 1.6;
         const cHeight = BLOCKSIZE * 1.25;
@@ -77,8 +78,9 @@ class Wormtank {
                     projectileManager.entityShoot("strongimpact", target.center, origin);
                 }
                 state.attackTime = 0;
-            } else if ((distance <= attackDistance * 2/3 || state.currentState.includes("charge"))
-                       && state.attackTime > attackInterval) { // charge
+            } else if ((state.currentState.includes("charge")
+                        || isBetween(distance, attackDistance * 0.33, attackDistance * 0.66))
+                    && state.attackTime > attackInterval) { // charge
                 transform.velocityX = dVector.x * speed * 13;
                 animState = target.center.x < origin.x ? "chargeL" : "chargeR";
             } else { // chase
