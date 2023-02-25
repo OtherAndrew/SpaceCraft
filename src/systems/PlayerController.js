@@ -30,17 +30,14 @@ class PlayerController {
     }
 
     handleKeyboard(key, tick) {
-        let state = this.pSprite.currentState;
+        let animState = this.pSprite.currentState;
 
         if ((key[' '] || key['w']) && this.pState.grounded && !this.restrictMovement) { //jump
-            this.pState.grounded = false
             this.pTransform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
-            state = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
         }
 
         // if (key['w']) { // jetpack?
         //     if (this.jetpackTime < this.jetpackDuration) {
-        //         this.pState.grounded = false
         //         this.pTransform.velocityY = -(GRAVITY + 10);
         //         this.jetpackTime += tick;
         //         state = this.pState.direction === 'right' ? 'flyR' : 'flyL';
@@ -53,34 +50,37 @@ class PlayerController {
             this.pState.direction = 'left'
             if (key['s'] || this.restrictMovement) {
                 this.pTransform.velocityX = -this.pStats.speed / 3;
-                state = this.pState.grounded ? 'walkL' : 'crouchL';
+                animState = this.pState.grounded ? 'walkL' : 'crouchL';
             } else {
                 this.pTransform.velocityX -= this.acceleration;
-                state = this.pState.grounded ? 'walkL' : 'jumpL';
+                animState = this.pState.grounded ? 'walkL' : 'jumpL';
             }
         } else if (key['d']) {
             this.pState.direction = "right"
             if (key['s'] || this.restrictMovement) {
                 this.pTransform.velocityX = this.pStats.speed / 3;
-                state = this.pState.grounded ? 'walkR' : 'crouchR';
+                animState = this.pState.grounded ? 'walkR' : 'crouchR';
             } else {
                 this.pTransform.velocityX += this.acceleration;
-                state = this.pState.grounded ? 'walkR' : 'jumpR';
+                animState = this.pState.grounded ? 'walkR' : 'jumpR';
             }
         } else {
             if (key['s']) {
                 // fast fall/crouch
                 this.pTransform.velocityY += this.fastFall
                 this.pTransform.velocityX = 0;
-                state = this.pState.direction === 'right' ? 'crouchR' : 'crouchL';
+                animState = this.pState.direction === 'right' ? 'crouchR' : 'crouchL';
             } else { // no input
                 this.pTransform.velocityX = 0;
                 if (this.pState.grounded) {
-                    state = this.pState.direction === 'right' ? 'idleR' : 'idleL';
+                    animState = this.pState.direction === 'right' ? 'idleR' : 'idleL';
+                } else {
+                    animState = this.pState.direction === 'right' ? 'jumpR' : 'jumpL';
                 }
             }
         }
-        return state;
+        this.pState.grounded = false; // collision system will check after
+        return animState;
     }
 
     handleMouse(pos, activeContainer, tick) {

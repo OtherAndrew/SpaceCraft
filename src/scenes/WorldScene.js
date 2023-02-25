@@ -28,7 +28,6 @@ class WorldScene extends Scene {
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.spawnManager = new SpawnerManager(this.mobFactory, spawnMap, this.player)
-        this.spawnTestEntities();
 
         /*
     this.spawnManager.spawnTestEntities({
@@ -56,7 +55,9 @@ class WorldScene extends Scene {
         this.healthSystem = new HealthSystem(this.entityManager, this.particleFactory, this.containerManager);
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
+
         this.giveWeapons2();
+        this.spawnTestEntities();
     }
 
     spawnTestEntities() {
