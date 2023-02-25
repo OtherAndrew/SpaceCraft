@@ -396,6 +396,7 @@ const getTerrain = (entityManager, mobFactory) => {
                 }
                 
             }
+            entityManager.addEntity(generateInteractive('chest', pos.x+1, pos.y+3))
         }
         
     }
@@ -425,13 +426,25 @@ const getTerrain = (entityManager, mobFactory) => {
 
         let y = terrainMap.length * .5 - 5
         for(let x = 20; x < terrainMap[0].length - 20; x++) {
-            console.log(x, y)
             x += randomInt(15) + 15
             mobFactory.build('mossamber', x * BLOCKSIZE, y * BLOCKSIZE)
         }
 
         
             
+    }
+
+    function spawnChests() {
+        for(let i = 0; i < CHEST_SPAWN_COUNT; i++) {
+            let x,y
+            do {
+                x = Math.floor(randomNumber(20, terrainMap[0].length - 20))
+                y = Math.floor(randomNumber(startRow + blocksPerChunk, terrainMap.length - blocksPerChunk))
+            } while(!terrainMap[y+1][x].tag.includes('tile'))
+            punchHole({x:x,y:y}, 1, 1)
+            let e = entityManager.addEntity(generateInteractive('chest', x, y))
+        }
+        
     }
     function generatePlanet() {
         let e = entityManager.addEntity({
@@ -552,6 +565,7 @@ const getTerrain = (entityManager, mobFactory) => {
     generateBorders()
     generateStatues()
     spawnStationaryMobs()
+    spawnChests()
     return [terrainMap, spawnMap]
 
 }
