@@ -74,7 +74,7 @@ const CHAR_PATH = {
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     MOSSAMBER   :	'./assets/sprites/mossamber.png',
     MOSSFLY     :	'./assets/sprites/mossfly.png',
-    PLAYER      :	'./assets/sprites/player.png',
+    PLAYER      :	'./assets/sprites/amogus.png',
     ROCKET      :	'./assets/sprites/rocket.png',
     SILVERFISH  :   './assets/sprites/silverfish.png',
     SPIKEJUMPER :   './assets/sprites/spikejumper2.png',
