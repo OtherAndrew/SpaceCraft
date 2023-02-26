@@ -28,7 +28,7 @@ class Spore {
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
             sWidth: 138,
-            sHeight: 196,
+            sHeight: 170,
             scale: 0.5,
             fps: 7.5,
             lastFrameX: 7
@@ -38,14 +38,15 @@ class Spore {
             y: props.y,
             hasGravity: true
         });
-        const cWidth = BLOCKSIZE;
+
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: cWidth,
-            height: sprite.dHeight - BLOCKSIZE / 2,
-            xOffset: (sprite.dWidth - cWidth) / 2
+            width: Math.floor(sprite.dWidth / BLOCKSIZE) * BLOCKSIZE,
+            height: sprite.dHeight,
+            // xOffset: sprite.dWidth
         });
+
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
