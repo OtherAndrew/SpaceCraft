@@ -1,4 +1,3 @@
-
 class WorldScene extends Scene {
 
 
@@ -38,7 +37,7 @@ class WorldScene extends Scene {
 
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
-                                                     this.projectileFactory, this.terrainMap);
+            this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
@@ -158,7 +157,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
         }
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -179,7 +178,7 @@ class WorldScene extends Scene {
     }
 
     /**
-     * This method checks to see what is in the bounds of the view screen. 
+     * This method checks to see what is in the bounds of the view screen.
      * Entities that are within the view screen are marked as drawable so they can be drawn to the ctx.
      * Also, calls check if exposed method to save a loop routine.
      * @todo performance optimization
@@ -250,7 +249,7 @@ class WorldScene extends Scene {
 
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
-        if (this.#isExposed(posY, posX)) {
+        if (this.#isExposed(posY, posX).exposed) {
             if (!e.components["boxCollider"]) {
                 e.addComponent([
                     new CBoxCollider({
@@ -267,16 +266,39 @@ class WorldScene extends Scene {
     }
 
     #isExposed(posY, posX) {
-        return posY === 0
-               || /air|interact/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
-               || /air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
-               || /air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
-               || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
-               || /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
+        let visCode = this.#checkCardinal(posY, posX);
+        let exposed = posY === 0 || visCode.includes('1') || this.#checkOrdinal(posY, posX);
+        return {exposed: exposed, visCode: visCode};
     }
-    
+
+    #checkCardinal(posY, posX) {
+        let visCode = ['o'];
+
+        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][posX].tag)) { // N
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)) { // W
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // E
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)) { // S
+            visCode.push('1');
+        } else visCode.push('0');
+
+        return visCode;
+    }
+
+    #checkOrdinal(posY, posX) {
+        return /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag) // NW
+            || /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag) // NE
+            || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)].tag) // SW
+            || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag); // SE
+    }
+
     #checkWinCon() {
-        let requisite = { item : { tag : 'tile_iron' }, count : 10 }
+        let requisite = {item: {tag: 'tile_iron'}, count: 10}
         return (this.containerManager.checkCount(requisite) && checkCollision(this.player, this.rocket))
     }
 }
