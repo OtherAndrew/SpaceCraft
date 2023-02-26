@@ -68,15 +68,15 @@ class WorldScene extends Scene {
         // this.mobFactory.build('spikejumper', px + 300, py - 200);
         // this.mobFactory.build('bloodsucker', px - 300, py - 200);
         // this.mobFactory.build('dirtcarver', px + 300, py - 200);
-        this.mobFactory.build('vengefly', px - 300, py - 200);
-        this.mobFactory.build('lightbug', px + 300, py - 200);
+        // this.mobFactory.build('vengefly', px - 300, py - 200);
+        // this.mobFactory.build('lightbug', px + 300, py - 200);
         // this.mobFactory.build('wormtank', px - 300, py - 200);
         // this.mobFactory.build('mossfly', px - 300, py - 200);
-        this.mobFactory.build('silverfish', px + 600, py - 200);
+        // this.mobFactory.build('silverfish', px + 600, py - 200);
         // this.mobFactory.build('electrojelly', px - 600, py - 200);
         // this.mobFactory.build('bombfly', px + 900, py - 200);
         // this.mobFactory.build('grapebomb', px + 300, py - 200);
-        // this.mobFactory.build('spore', px + 1200, py - 200);
+        this.mobFactory.build('spore', px + 3*BLOCKSIZE, py - 3*BLOCKSIZE);
         // this.mobFactory.build('silverfish', px + 600, py - 200);
     }
 
@@ -159,7 +159,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
         }
-        // this.#drawColliders(ctx);
+        this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
