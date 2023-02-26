@@ -18,6 +18,7 @@ class GameEngine {
         this.mouse = null;
         this.wheel = null;
         this.menuActive = false;
+        this.pausemenuActive = false;
         this.keys = {};
 
         // Options and the Details
@@ -100,9 +101,18 @@ class GameEngine {
         });
 
         this.ctx.canvas.addEventListener("keydown", e => {
-            if (e.code === "Tab") {  // PREVENT TABBING OUT
-                e.preventDefault();
+            switch (e.code) {
+                case "Tab":
+                    e.preventDefault();
+                    break;
+                case "c":
+                    e.preventDefault();
+                    break;
+
             }
+            // if (e.code === "Tab") {  // PREVENT TABBING OUT
+            //     e.preventDefault();
+            // }
         });
 
         /* KEY LISTENERS FOR:
@@ -117,6 +127,10 @@ class GameEngine {
                 case "Tab":
                     this.activateMenu();
                     break;
+                case "c":
+                    // this.activatePausemenu();
+                    console.log("key c pressed");
+                    break;
             }
         }, false);
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
@@ -130,6 +144,20 @@ class GameEngine {
             this.blur(this.screenshot, 2, 1);
         }
     }
+
+    // activatePausemenu() {
+    //     this.pausemenuActive = !this.pausemenuActive;
+    //     if (this.pausemenuActive) {
+    //         let sprite = "./assets/menu/splashscreen_pausemenu.png";
+    //         this.ctx.drawImage(sprite,
+    //             0,
+    //             0,
+    //             sprite.sWidth,
+    //             sprite.sHeight
+    //         );
+    //
+    //     }
+    // }
 
     // credit: https://gist.github.com/tieleman/6028023
     blur(imageData, radius, quality) {

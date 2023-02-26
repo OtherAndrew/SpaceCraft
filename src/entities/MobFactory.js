@@ -26,6 +26,7 @@ class MobFactory {
             case 'spikejumper': mob = new Spikejumper(position); break;
             case 'vengefly': mob = new Vengefly(position); break;
             case 'wormtank': mob = new Wormtank(position); break;
+            case 'nativenpc': mob = new Nativenpc(position); break;
             default: console.log(`Invalid mob name: ${type}.`);
         }
         return mob ? this.entityManager.addEntity(mob) : null;

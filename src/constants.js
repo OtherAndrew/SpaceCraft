@@ -74,13 +74,14 @@ const CHAR_PATH = {
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     MOSSAMBER   :	'./assets/sprites/mossamber.png',
     MOSSFLY     :	'./assets/sprites/mossfly.png',
-    PLAYER      :	'./assets/sprites/amogus.png',
+    PLAYER      :	'./assets/sprites/player2.png',
     ROCKET      :	'./assets/sprites/rocket.png',
     SILVERFISH  :   './assets/sprites/silverfish.png',
     SPIKEJUMPER :   './assets/sprites/spikejumper2.png',
     SPORE       :	'./assets/sprites/spore2.png',
     VENGEFLY    :   './assets/sprites/vengefly.png',
-    WORMTANK    :	'./assets/sprites/wormtank2.png'
+    WORMTANK    :	'./assets/sprites/wormtank2.png',
+    NATIVENPC    :	'./assets/sprites/nativenpc.png'
 }
 
 const CRAFT_COLOR = {

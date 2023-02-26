@@ -27,6 +27,8 @@ class WorldScene extends Scene {
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
+        this.nativenpc =
+            this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
         this.spawnManager = new SpawnerManager(this.mobFactory, spawnMap, this.player)
 
         /*
@@ -75,7 +77,7 @@ class WorldScene extends Scene {
         // this.mobFactory.build('bombfly', px + 900, py - 200);
         // this.mobFactory.build('grapebomb', px + 300, py - 200);
         // this.mobFactory.build('spore', px + 1200, py - 200);
-
+        // this.mobFactory.build('silverfish', px + 600, py - 200);
     }
 
     giveWeapons2() {
@@ -278,4 +280,14 @@ class WorldScene extends Scene {
         let requisite = { item : { tag : 'tile_iron' }, count : 10 }
         return (this.containerManager.checkCount(requisite) && checkCollision(this.player, this.rocket))
     }
+    #gameContinue() {
+        this.player.isDrawable = true;
+        this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.player.components["transform"].hasGravity = true;
+        // this.player.components["transform"].velocityX = 0;
+        // this.player.components["transform"].velocityY = 0;
+        this.player.components['stats'].invincible = false;
+    }
+
+
 }

@@ -23,7 +23,9 @@ class Mossamber {
             sWidth: 141,
             sHeight: 159,
             scale: .66,
-            padding: 1
+            lastFrameX: 4,
+            padding: 5,
+            fps: 12
         });
         const transform = new CTransform({
             x: props.x,
@@ -55,11 +57,11 @@ class Mossamber {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,0));
+        aMap.set('idleR', new AnimationProps(0, 0,3));
     };
     #addBehaviors(transform) {
         const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, 0));
+        bMap.set('idleR', new BehaviorProps(0, 3));
     }
 
 }
