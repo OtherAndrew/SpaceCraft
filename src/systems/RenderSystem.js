@@ -15,21 +15,39 @@ class RenderSystem {
 
                 let destX = e.components.transform.x - xSpeed;
                 let destY = e.components.transform.y - ySpeed;
-                ctx.drawImage(
-                    sprite.sprite,
-                    sprite.currentFrame * (sprite.sWidth + sprite.padding),
-                    sprite.frameY * (sprite.sHeight + sprite.padding),
-                    sprite.sWidth,
-                    sprite.sHeight,
-                    destX,
-                    destY,
-                    sprite.dWidth,
-                    sprite.dHeight
-                )
-                
+                if (e.tag.includes('tile') && !e.components['boxCollider']) {
+                    ctx.drawImage(
+                        sprite.sprite,
+                        sprite.currentFrame * (sprite.sWidth + sprite.padding),
+                        sprite.frameY * (sprite.sHeight + sprite.padding),
+                        sprite.sWidth,
+                        sprite.sHeight,
+                        destX,
+                        destY,
+                        sprite.dWidth,
+                        sprite.dHeight
+                    )
+                    ctx.save();
+                    ctx.globalAlpha = 0.90;
+                    ctx.drawImage(ASSET_MANAGER.cache[OVERLAY_PATH.OBSCURED], destX, destY)
+                    ctx.restore();
+                } else {
+                    ctx.drawImage(
+                        sprite.sprite,
+                        sprite.currentFrame * (sprite.sWidth + sprite.padding),
+                        sprite.frameY * (sprite.sHeight + sprite.padding),
+                        sprite.sWidth,
+                        sprite.sHeight,
+                        destX,
+                        destY,
+                        sprite.dWidth,
+                        sprite.dHeight
+                    )
+                }
+
                 destX += sprite.dWidth / 2 - 25;
 
-                if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged) 
+                if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged)
                     drawHealthbar(ctx, e, destX, destY, 50, 5);
             }
         })

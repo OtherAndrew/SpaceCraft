@@ -213,7 +213,7 @@ class WorldScene extends Scene {
                     e.isDrawable = !e.isBroken
                     if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
                 } else {
-                    e.isDrawable = false
+                    e.isDrawable = false;
                 }
             }
         }
