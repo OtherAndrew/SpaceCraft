@@ -28,7 +28,7 @@ class Wormwood {
             maxHealth: 200,
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.WORMWOOD],
             sWidth: 110,
             sHeight: 121,
             scale: BLOCKSIZE * 3 / 110,

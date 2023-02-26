@@ -19,7 +19,7 @@ class Mossamber {
             maxHealth: 100
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.WORMWOOD],
             sWidth: 141,
             sHeight: 159,
             scale: .66,
