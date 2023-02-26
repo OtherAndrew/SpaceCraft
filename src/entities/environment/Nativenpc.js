@@ -31,7 +31,7 @@ class Nativenpc {
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.NATIVENPC],
             sWidth: 109,
-            sHeight: 161,
+            sHeight: 159,
             scale: BLOCKSIZE * 2 / 109,
             lastFrameX: 5,
             fps: 9,
@@ -42,15 +42,15 @@ class Nativenpc {
             y: props.y,
             hasGravity: true,
         });
-        const cWidth = BLOCKSIZE * 1.8;
-        const cHeight = BLOCKSIZE * 0.85;
+        const cWidth = BLOCKSIZE * 2.5;
+        // const cHeight = BLOCKSIZE * 2.5;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            height: cHeight,
-            yOffset: BLOCKSIZE * 0.05
+            height: sprite.dHeight,
+
         });
         const state = new CState();
         const duration = new CDuration();

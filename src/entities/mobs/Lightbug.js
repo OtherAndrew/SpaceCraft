@@ -34,7 +34,7 @@ class Lightbug {
             sWidth: 51,
             sHeight: 51,
             lastFrameX: 7,
-            fps: 24
+            fps: 30
         });
         const transform = new CTransform({
             x: props.x,
@@ -64,7 +64,7 @@ class Lightbug {
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
-
+        target.center.y -= 50;
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         const interval = 20;
