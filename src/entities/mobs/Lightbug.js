@@ -64,9 +64,13 @@ class Lightbug {
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
-        target.center.y -= 50;
-        const distance = getDistance(origin, target.center);
-        const dVector = normalize(origin, target.center)
+
+        const targetPos = {
+            x: target.center.x,
+            y: target.top
+        }
+        const distance = getDistance(origin, targetPos);
+        const dVector = normalize(origin, targetPos)
         const interval = 20;
 
         if (distance > BLOCKSIZE * 16) {
