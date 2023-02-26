@@ -33,7 +33,7 @@ const GENSTATS = {
     GOLD	    :	12,
     IRON	    :	13,
     PARAFFIN	:	12,
-    RUBY	    :	10,
+    RUBY	    :	.01,
     SAND	    :	18,
     SILICA	    :	11,
     TIN	        :	10,
@@ -71,10 +71,10 @@ const CHAR_PATH = {
     ELECTROJELLY:	'./assets/sprites/electrojelly.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
-    LIGHTBUG    :	'./assets/sprites/lightbug2.png',
+    LIGHTBUG    :	'./assets/sprites/lightbug.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
-    MOSSAMBER   :	'./assets/sprites/wormwood.png',
     MOSSFLY     :	'./assets/sprites/mossfly.png',
+    NATIVENPC    :	'./assets/sprites/nativenpc.png',
     PLAYER      :	'./assets/sprites/player2.png',
     ROCKET      :	'./assets/sprites/rocket.png',
     SILVERFISH  :   './assets/sprites/silverfish.png',
@@ -82,7 +82,7 @@ const CHAR_PATH = {
     SPORE       :	'./assets/sprites/spore2.png',
     VENGEFLY    :   './assets/sprites/vengefly.png',
     WORMTANK    :	'./assets/sprites/wormtank2.png',
-    NATIVENPC    :	'./assets/sprites/nativenpc.png'
+    WORMWOOD   :	'./assets/sprites/wormwood.png'
 }
 
 const CRAFT_COLOR = {

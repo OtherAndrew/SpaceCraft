@@ -9,7 +9,7 @@
 class Lightbug {
 
     /**
-     * Initializes Lightbug
+     * Initializes Lightbug green (hp boost)
      * @param {Object} props   Position properties.
      * @param {number} props.x X spawn position.
      * @param {number} props.y Y spawn position.
@@ -30,17 +30,18 @@ class Lightbug {
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTBUG],
-            sWidth: 51,
-            sHeight: 51,
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTBUGG],
+            sWidth: 50,
+            sHeight: 48,
             lastFrameX: 7,
-            fps: 30
+            fps: 30,
+            padding: 2
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y,
         });
-        const cDim = BLOCKSIZE * .25;
+        const cDim = BLOCKSIZE * 0.66;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
@@ -60,16 +61,23 @@ class Lightbug {
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']
-        const origin = collider.center;
+        const origin = {
+            x: collider.center.x,
+            y: collider.bottom
+        };
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
-        target.center.y -= 50;
-        const distance = getDistance(origin, target.center);
-        const dVector = normalize(origin, target.center)
+
+        const targetPos = {
+            x: target.center.x,
+            y: target.top - BLOCKSIZE * 0.1
+        }
+        const distance = getDistance(origin, targetPos);
+        const dVector = normalize(origin, targetPos)
         const interval = 20;
 
-        if (distance > BLOCKSIZE * 16) {
+        if (distance > BLOCKSIZE * 8) {
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed : -speed;
             } else {
@@ -92,7 +100,7 @@ class Lightbug {
     };
 
     #gettingTint() {
-        let imageData = this.lightbug.components.sprite
+        let imageData = this.lightbugG.components.sprite
         for (let i = 0; i < imageData.length; i += 4) {
             // Update the red, green, and blue values
             imageData.data[i] += 1; // red
@@ -100,7 +108,7 @@ class Lightbug {
             imageData.data[i + 2] = 0; // blue
         }
 
-        this.lightbug.components.sprite.putImageData(imageData,0,0);
+        this.lightbugG.components.sprite.putImageData(imageData,0,0);
 
     }
 }
