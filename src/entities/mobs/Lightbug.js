@@ -40,7 +40,7 @@ class Lightbug {
             x: props.x,
             y: props.y,
         });
-        const cDim = BLOCKSIZE * .25;
+        const cDim = BLOCKSIZE * 0.66;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
@@ -60,7 +60,10 @@ class Lightbug {
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']
-        const origin = collider.center;
+        const origin = {
+            x: collider.center.x,
+            y: collider.bottom - BLOCKSIZE * 0.1
+        };
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
