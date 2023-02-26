@@ -20,15 +20,15 @@ class WorldScene extends Scene {
      */
     init(assets, canvas) {
         this.mobFactory = new MobFactory(this.entityManager);
-        let spawnMap
-        [this.terrainMap, spawnMap] = getTerrain(this.entityManager, this.mobFactory)
+        let airTileMap
+        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.mobFactory)
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.nativenpc =
             this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
-        this.spawnManager = new SpawnerManager(this.mobFactory, spawnMap, this.player)
+        this.spawnManager = new SpawnerManager(this.mobFactory, this.terrainMap, this.player)
 
         /*
     this.spawnManager.spawnTestEntities({

@@ -4,7 +4,7 @@
 class SpawnerManager {
     constructor(factory, map, player) {
 
-        this.spawnMap = map
+        this.terrainMap = map
         this.player = player
         this.mobFactory = factory
 
@@ -18,13 +18,33 @@ class SpawnerManager {
 
         this.waspTimer = 0
         this.bloodSuckerTimer = 0
-        this.spawnTime = 5
+        this.caveTimer = 0
+        this.playerLocationTimer = 0
+
+        this.caveSpawnTimer = 5
+        this.setPlayerLocationTime = 10
+        this.playerPos = null
+
+        this.spawnTime = 10
+        this.mobList = [
+            'creeperilla',
+            'dirtcarver',
+            'electrojelly',
+            'lightjelly',
+            'mossfly',
+            'silverfish',
+            'spikejumper',
+            'wormtank',
+        ]
     }
 
     update(deltaTime) {
         
-        this.waspTimer += deltaTime * .1
-        this.bloodSuckerTimer += deltaTime * .2
+        this.waspTimer += deltaTime * .5
+        this.bloodSuckerTimer += deltaTime * .5
+        this.caveTimer += deltaTime
+        this.playerLocationTimer += deltaTime
+
         if(this.waspTimer > this.spawnTime) {
             this.waspTimer = 0
             console.log('spawning vengefly')
@@ -35,18 +55,40 @@ class SpawnerManager {
             console.log('spawning bloodsucker')
             this.spawnMob('bloodsucker', 2)
         }
+        if (this.playerLocationTimer > this.setPlayerLocationTime) {
+            this.playerLocationTimer = 0
+            if(!this.playerPos || 
+                getDistance({x:this.player.components.transform.x,
+                             y:this.player.components.transform.y},
+                              this.playerPos) > HEIGHT * 1.5) {
+                console.log("setting new pos")
+                this.playerPos = {
+                    x: this.player.components.transform.x,
+                    y: this.player.components.transform.y
+                }
+            }
+            this.spawnMob(this.mobList[randomInt(this.mobList.length)])
+        }
+
     }
 
     spawnMob(mob, max) {
-        let playerPos = {
+        let playerCurrentPos = {
             x: this.player.components.transform.x,
             y: this.player.components.transform.y
         }
-        if(playerPos.y < HEIGHT_PIXELS * .5) {
+        let dist = getDistance(playerCurrentPos, this.playerPos)
+        console.log(dist)
+        console.log(playerCurrentPos.y, HEIGHT_PIXELS * .5)
+        if(playerCurrentPos.y < HEIGHT_PIXELS * .5) {
             let amount = randomNumber(1, max)
             for(let i = 0; i < amount; i++) {
-                this.mobFactory.build(mob, playerPos.x - ( WIDTH * plusOrMinus()), playerPos.y - BLOCKSIZE * 3)
+                console.log('spawned')
+                this.mobFactory.build(mob, playerCurrentPos.x - ( WIDTH * plusOrMinus()), playerCurrentPos.y - BLOCKSIZE * 3)
             }
+        } else if(this.playerPos && dist > HEIGHT) {
+            console.log("spawning on player pos...")
+            this.mobFactory.build(mob, this.playerPos.x, this.playerPos.y)
         }
     }
 
