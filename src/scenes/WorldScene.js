@@ -157,7 +157,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
         }
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -249,7 +249,9 @@ class WorldScene extends Scene {
 
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
-        if (this.#isExposed(posY, posX).exposed) {
+        let visCheck = this.#isExposed(posY, posX);
+        if (visCheck.exposed) {
+            e.visCode = visCheck.visCode; // placeholder
             if (!e.components["boxCollider"]) {
                 e.addComponent([
                     new CBoxCollider({
@@ -261,19 +263,22 @@ class WorldScene extends Scene {
                 ]);
             }
         } else {
+            delete e.visCode; // placeholder
             delete e.components["boxCollider"];
         }
     }
 
     #isExposed(posY, posX) {
-        let visCode = this.#checkCardinal(posY, posX);
-        let exposed = posY === 0 || visCode.includes('1') || this.#checkOrdinal(posY, posX);
-        return {exposed: exposed, visCode: visCode};
+        let visCodeC = this.#checkCardinal(posY, posX);
+        let visCodeO = this.#checkOrdinal(posY, posX);
+        let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
+        return {exposed: exposed, visCode: /*visCodeC*/ visCodeC === 'c0000' ? visCodeO : visCodeC};
     }
 
-    #checkCardinal(posY, posX) {
-        let visCode = ['o'];
+    // TODO: meld check cardinal and ordinal to get correct obfuscation
 
+    #checkCardinal(posY, posX) {
+        let visCode = ['c'];
         if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][posX].tag)) { // N
             visCode.push('1');
         } else visCode.push('0');
@@ -286,15 +291,24 @@ class WorldScene extends Scene {
         if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)) { // S
             visCode.push('1');
         } else visCode.push('0');
-
-        return visCode;
+        return visCode.join('');
     }
-
+    
     #checkOrdinal(posY, posX) {
-        return /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag) // NW
-            || /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag) // NE
-            || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)].tag) // SW
-            || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag); // SE
+        let visCode = ['o'];
+        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag)) { // NW
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // NE
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)].tag)) { // SW
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // SE
+            visCode.push('1');
+        } else visCode.push('0');
+        return visCode.join('');
     }
 
     #checkWinCon() {
