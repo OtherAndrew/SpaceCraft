@@ -62,7 +62,7 @@ class Lightbug {
         const collider = this.components['boxCollider']
         const origin = {
             x: collider.center.x,
-            y: collider.bottom - BLOCKSIZE * 0.1
+            y: collider.bottom
         };
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
@@ -70,7 +70,7 @@ class Lightbug {
 
         const targetPos = {
             x: target.center.x,
-            y: target.top
+            y: target.top - BLOCKSIZE * 0.1
         }
         const distance = getDistance(origin, targetPos);
         const dVector = normalize(origin, targetPos)
