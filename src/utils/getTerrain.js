@@ -427,7 +427,7 @@ const getTerrain = (entityManager, mobFactory) => {
         let y = terrainMap.length * .5 - 5
         for(let x = 20; x < terrainMap[0].length - 20; x++) {
             x += randomInt(15) + 15
-            mobFactory.build('mossamber', x * BLOCKSIZE, y * BLOCKSIZE)
+            mobFactory.build('wormwood', x * BLOCKSIZE, y * BLOCKSIZE)
         }
 
         

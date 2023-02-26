@@ -1,23 +1,23 @@
 /**
- * Lightbug is a beneficial stationary mob that heals the player on contact.
+ * Wormwood is a beneficial stationary mob that heals the player on contact.
  * Can be defeated to procure wood.
  *
  * @author Jeep Naarkom
  * @author Andrew Nguyen
  */
 
-class Mossamber {
+class Wormwood {
     /**
-     * Initializes Mossamber
+     * Initializes Wormwood
      * @param {Object} props   Position properties.
      * @param {number} props.x X spawn position.
      * @param {number} props.y Y spawn position.
-     * @returns {Mossamber} Mossamber blueprint.
+     * @returns {Wormwood} Wormwood blueprint.
      * @constructor
      */
     constructor(props) {
         this.tag = 'mob enemy';
-        this.name = 'mossamber';
+        this.name = 'wormwood';
         this.components = this.#buildComponents(props);
         return this;
     };
@@ -25,7 +25,7 @@ class Mossamber {
     #buildComponents(props) {
         const stats = new CStats({
             damage: -0.2,
-            maxHealth: 100,
+            maxHealth: 200,
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.MOSSAMBER],
@@ -51,8 +51,8 @@ class Mossamber {
             height: sprite.dHeight - yOffset,
             yOffset: yOffset
         });
-        transform.collider = collider
         const state = new CState();
+        transform.collider = collider
         state.sprite = sprite;
         return [stats, sprite, transform, collider, state];
     }
