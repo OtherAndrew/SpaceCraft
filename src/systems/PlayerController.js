@@ -123,6 +123,7 @@ class PlayerController {
                             delete e.components["boxCollider"]
                             e.isBroken = true;
                             e.isDrawable = false;
+                            e.destroy(); // deregister item from entity list
                             this.containerManager.addToInventory('player', e /*resizeBlock(e)*/)
                         }
                     }

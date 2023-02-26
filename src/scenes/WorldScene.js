@@ -1,4 +1,3 @@
-
 class WorldScene extends Scene {
 
 
@@ -40,7 +39,7 @@ class WorldScene extends Scene {
 
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
-                                                     this.projectileFactory, this.terrainMap);
+            this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
@@ -70,7 +69,8 @@ class WorldScene extends Scene {
         // this.mobFactory.build('bloodsucker', px - 300, py - 200);
         // this.mobFactory.build('dirtcarver', px + 300, py - 200);
         this.mobFactory.build('vengefly', px - 300, py - 200);
-        this.mobFactory.build('wormtank', px - 300, py - 200);
+        this.mobFactory.build('lightbug', px + 300, py - 200);
+        // this.mobFactory.build('wormtank', px - 300, py - 200);
         // this.mobFactory.build('mossfly', px - 300, py - 200);
         this.mobFactory.build('silverfish', px + 600, py - 200);
         // this.mobFactory.build('electrojelly', px - 600, py - 200);
@@ -180,7 +180,7 @@ class WorldScene extends Scene {
     }
 
     /**
-     * This method checks to see what is in the bounds of the view screen. 
+     * This method checks to see what is in the bounds of the view screen.
      * Entities that are within the view screen are marked as drawable so they can be drawn to the ctx.
      * Also, calls check if exposed method to save a loop routine.
      * @todo performance optimization
@@ -214,7 +214,7 @@ class WorldScene extends Scene {
                     e.isDrawable = !e.isBroken
                     if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
                 } else {
-                    e.isDrawable = false
+                    e.isDrawable = false;
                 }
             }
         }
@@ -251,7 +251,9 @@ class WorldScene extends Scene {
 
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
-        if (this.#isExposed(posY, posX)) {
+        let visCheck = this.#isExposed(posY, posX);
+        if (visCheck.exposed) {
+            e.visCode = visCheck.visCode; // placeholder
             if (!e.components["boxCollider"]) {
                 e.addComponent([
                     new CBoxCollider({
@@ -263,21 +265,56 @@ class WorldScene extends Scene {
                 ]);
             }
         } else {
+            delete e.visCode; // placeholder
             delete e.components["boxCollider"];
         }
     }
 
     #isExposed(posY, posX) {
-        return posY === 0
-               || /air|interact/.test(this.terrainMap[clamp(posY-1,0,posY)][posX].tag)
-               || /air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)
-               || /air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)
-               || /air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)
-               || /air|interact/.test(this.terrainMap[clamp(posY - 1, 0, this.terrainMap.length - 1)][posX].tag);
+        let visCodeC = this.#checkCardinal(posY, posX);
+        let visCodeO = this.#checkOrdinal(posY, posX);
+        let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
+        return {exposed: exposed, visCode: /*visCodeC*/ visCodeC === 'c0000' ? visCodeO : visCodeC};
+    }
+
+    // TODO: meld check cardinal and ordinal to get correct obfuscation
+
+    #checkCardinal(posY, posX) {
+        let visCode = ['c'];
+        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][posX].tag)) { // N
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)) { // W
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // E
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)) { // S
+            visCode.push('1');
+        } else visCode.push('0');
+        return visCode.join('');
     }
     
+    #checkOrdinal(posY, posX) {
+        let visCode = ['o'];
+        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag)) { // NW
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // NE
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)].tag)) { // SW
+            visCode.push('1');
+        } else visCode.push('0');
+        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // SE
+            visCode.push('1');
+        } else visCode.push('0');
+        return visCode.join('');
+    }
+
     #checkWinCon() {
-        let requisite = { item : { tag : 'tile_iron' }, count : 10 }
+        let requisite = {item: {tag: 'tile_iron'}, count: 10}
         return (this.containerManager.checkCount(requisite) && checkCollision(this.player, this.rocket))
     }
     #gameContinue() {

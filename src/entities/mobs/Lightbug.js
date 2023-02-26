@@ -1,34 +1,40 @@
+/**
+ * Lightbug is a beneficial flying mob that heals the player on contact.
+ * Cannot be damaged, but will disappear after touching the player for a few seconds.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
+
 class Lightbug {
 
     /**
-     * Initializes Lightbug (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Lightbug
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Lightbug} Lightbug blueprint.
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob ignoreAttack';
+        this.tag = 'mob enemy ignoreAttack';
         this.name = 'lightbug';
         this.components = this.#buildComponents(props);
+        return this;
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 2.2,
+            damage: -0.5,
+            speed: BLOCKSIZE * 0.05,
             invincible: true
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTBUG],
-            sWidth: 50,
-            sHeight: 49,
-            scale: 1,
-            firstFrameX: 0,
-            frameY: 0,
+            sWidth: 51,
+            sHeight: 51,
             lastFrameX: 7,
-            fps: 25,
-            padding: 2
+            fps: 24
         });
         const transform = new CTransform({
             x: props.x,
@@ -43,39 +49,41 @@ class Lightbug {
             xOffset: (sprite.dWidth - cDim) / 2,
             yOffset: (sprite.dHeight - cDim) / 2
         });
+        const state = new CState();
+        const duration = new CDuration();
 
         this.#addAnimations(sprite);
         transform.collider = collider
-        const state = new CState();
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, duration];
     }
 
     update(target, projectileManager) {
-        const targetX = target.center.x;
-        const targetY = target.center.y;
-        const x = this.components['boxCollider'].center.x;
-        const y = this.components['boxCollider'].center.y;
-        const velocity = this.components["stats"].speed;
-        const offsetX = 0
-        const offsetY = -28
+        const collider = this.components['boxCollider']
+        const origin = collider.center;
+        const speed = this.components["stats"].speed;
+        const transform = this.components["transform"];
+        const state = this.components['state'];
 
-        const transform = this.components.transform;
+        const distance = getDistance(origin, target.center);
+        const dVector = normalize(origin, target.center)
+        const interval = 20;
 
-        //despawn after x range from player position
-
-        const distance = getDistance2(x, y, targetX, targetY);
-        const angle = getAngle2(x + offsetX, y + offsetY, targetX, targetY);
-        if (distance <= 400) {
-            // transform.velocityX = Math.cos(angle) * velocity;
-            // transform.velocityY = Math.sin(angle) * velocity;
-            transform.velocityY = targetY + offsetY < y ? -velocity : velocity;
-            transform.velocityX = targetX + offsetX < x ? -velocity : velocity;
-        } else {
-            transform.velocityX = 0;
+        if (distance > BLOCKSIZE * 16) {
+            if (switchInterval(state.elapsedTime, interval/2)) {
+                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed : -speed;
+            } else {
+                transform.velocityX = 0;
+            }
             transform.velocityY = 0;
+        } else {
+            transform.velocityX = dVector.x * speed;
+            transform.velocityY = dVector.y * speed;
         }
-        //adding tint
+
+        if (checkCollision(target, collider)) {
+            this.components['duration'].time -= 2;
+        }
     }
 
     #addAnimations(sprite) {

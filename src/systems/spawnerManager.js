@@ -13,7 +13,7 @@ class SpawnerManager {
         this.currentLightbug = 0;
         this.currentWormtank = 0;
         this.currentSpore = 0;
-        this.currentMossamber = 0;
+        this.currentWormwood = 0;
         this.currentGrapebomb = 0;
 
         this.waspTimer = 0
@@ -62,7 +62,7 @@ class SpawnerManager {
         //spawn 10k y-position and below (height)
         this.mobFactory.build('wormtank', pos.x + 800, pos.y - 200);
         //spawn first 20 block height
-        this.mobFactory.build('mossamber', pos.x - 400, pos.y - 200);
+        this.mobFactory.build('wormwood', pos.x - 400, pos.y - 200);
         this.mobFactory.build('bloodsucker', pos.x + +500,
             pos.y -500);
         //creeperilla can jump and shoot projectile, spawn 10k and below

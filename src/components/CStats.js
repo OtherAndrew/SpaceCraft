@@ -8,17 +8,17 @@ class CStats {
     /**
      * Initializes CStats component.
      * @param {number} damage         Entity damage. 0 by default.
-     * @param {number} maxHealth      Entity max health. 0 by default.
+     * @param {number} maxHealth      Entity max health. 1 by default.
      * @param {number} speed          Entity speed. 0 by default.
      * @param {number} regenCooldown  Time since last damaged before entity starts
      *                                regenerating health. 10 by default.
-     * @param {number} regenAmount    Health regenerated per tick. 0.5% of max health by default.
+     * @param {number} regenAmount    Health regenerated per tick. 0.1% of max health by default.
      * @param {boolean} invincible    If entity is invincible. false by default.
      * @param {boolean} hasFallDamage If entity can suffer fall damage. true by default.
      * @return {CStats} This CStats component.
      */
     constructor({ damage = 0, maxHealth = 1, speed = 0,
-                    regenCooldown = 10, regenAmount = maxHealth / 500,
+                    regenCooldown = 10, regenAmount = maxHealth * 0.001,
                     invincible = false, hasFallDamage = true }) {
         Object.assign(this, { damage, maxHealth, speed, regenCooldown, regenAmount, invincible, hasFallDamage })
         this.currentHealth = this.maxHealth;
@@ -35,7 +35,7 @@ class CStats {
      */
     applyDamage(damage) {
         if (!this.invincible) {
-            this.currentHealth -= damage;
+            this.currentHealth = clamp(this.currentHealth - damage, 0, this.maxHealth);
             this.elapsedTime = 0;
             this.isDamaged = true;
             if (this.currentHealth <= 0) this.isDead = true;

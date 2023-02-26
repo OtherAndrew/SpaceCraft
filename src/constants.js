@@ -13,6 +13,7 @@ const GRAVITY = 1
 const BLOCK_PLACEMENT_DISTANCE = 3.2
 const FALL_DAMAGE_MULTIPLIER = 200;
 const MOB_TIMEOUT = 900;
+const CHEST_SPAWN_COUNT = 30
 
 const MAXCREEPERILA = 2;
 const MAXDIRTCARVER = 5;
@@ -24,20 +25,20 @@ const MAXBLOODSUCKER = 2;
 const MAXWORMTANK = 5;
 
 const GENSTATS = {
-    BISMUTH	    :	6,
-    COAL	    :	13,
-    COBALT	    :	8,
-    COPPER	    :	10,
-    FERRITE	    :	5,
-    GOLD	    :	8,
-    IRON	    :	11,
-    PARAFFIN	:	4,
-    RUBY	    :	3,
-    SAND	    :	16,
-    SILICA	    :	9,
-    TIN	        :	7,
-    TITANITE	:	3,
-    TUNGSTEN	:	6
+    BISMUTH	    :	12,
+    COAL	    :	15,
+    COBALT	    :	13,
+    COPPER	    :	12,
+    FERRITE	    :	8,
+    GOLD	    :	12,
+    IRON	    :	13,
+    PARAFFIN	:	12,
+    RUBY	    :	10,
+    SAND	    :	18,
+    SILICA	    :	11,
+    TIN	        :	10,
+    TITANITE	:	11,
+    TUNGSTEN	:	9
 }
 
 const BG_PATH = {
@@ -70,9 +71,9 @@ const CHAR_PATH = {
     ELECTROJELLY:	'./assets/sprites/electrojelly.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
-    LIGHTBUG    :	'./assets/sprites/lightbug.png',
+    LIGHTBUG    :	'./assets/sprites/lightbug2.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
-    MOSSAMBER   :	'./assets/sprites/mossamber.png',
+    MOSSAMBER   :	'./assets/sprites/wormwood.png',
     MOSSFLY     :	'./assets/sprites/mossfly.png',
     PLAYER      :	'./assets/sprites/player2.png',
     ROCKET      :	'./assets/sprites/rocket.png',
@@ -142,9 +143,23 @@ const MISC_PATH = {
 }
 
 const OVERLAY_PATH = {
-    INVENTORY   :   './assets/overlays/inventory.png',
-    VIGNETTE    :   './assets/overlays/vignette.png',
-    FOV         :   './assets/overlays/fov.png'
+    FOV: './assets/overlays/fov.png',
+    INVENTORY: './assets/overlays/inventory.png',
+    OBSCURED: './assets/overlays/obscured.png',
+    c0000: './assets/overlays/obscured.png',
+    c1100: './assets/overlays/obscuredc_nw.png',
+    c1000: './assets/overlays/obscuredc_n.png',
+    c1010: './assets/overlays/obscuredc_ne.png',
+    c0100: './assets/overlays/obscuredc_w.png',
+    c0010: './assets/overlays/obscuredc_e.png',
+    c0101: './assets/overlays/obscuredc_sw.png',
+    c0001: './assets/overlays/obscuredc_s.png',
+    c0011: './assets/overlays/obscuredc_se.png',
+    o1000: './assets/overlays/obscuredo_nw.png',
+    o0100: './assets/overlays/obscuredo_ne.png',
+    o0010: './assets/overlays/obscuredo_sw.png',
+    o0001: './assets/overlays/obscuredo_se.png',
+    VIGNETTE: './assets/overlays/vignette.png'
 }
 
 const PROJECTILE_PATH = {
@@ -164,9 +179,9 @@ const SOUND_PATH = {
 }
 
 const TILE_LIFE = {
-    DIRT    :   2,
-    RUBY    :   5,
-    STONE   :   3
+    DIRT: 1,
+    RUBY: 1,
+    STONE: 1
 }
 
 const TILE_PATH = {
