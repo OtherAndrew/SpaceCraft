@@ -74,7 +74,7 @@ const generateBlock = (tag, x, y, mode) => {
     return new Blueprint({
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-        maxHealth: TILE_LIFE[id] || 30, // Placeholder 30
+        maxHealth: TILE_LIFE[id] || 1, // Placeholder 1
         invincible: tag.includes('bedrock'),
         x: tempX,
         y: tempY,

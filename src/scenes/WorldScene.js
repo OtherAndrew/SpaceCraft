@@ -205,11 +205,15 @@ class WorldScene extends Scene {
         for (let i = 0; i < length; i++) {
             let e = entities[i];
             if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
-                e.isDrawable = e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
                     e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
                     e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE;
-                if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
+                    e.isDrawable = !e.isBroken
+                    if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
+                } else {
+                    e.isDrawable = false;
+                }
             }
         }
     }

@@ -141,9 +141,19 @@ const MISC_PATH = {
 }
 
 const OVERLAY_PATH = {
-    INVENTORY   :   './assets/overlays/inventory.png',
-    VIGNETTE    :   './assets/overlays/vignette.png',
-    FOV         :   './assets/overlays/fov.png'
+    FOV: './assets/overlays/fov.png',
+    INVENTORY: './assets/overlays/inventory.png',
+    OBSCURED: './assets/overlays/obscured.png',
+    o0000: './assets/overlays/obscured.png',
+    o1100: './assets/overlays/obscured_nw.png',
+    o1000: './assets/overlays/obscured_n.png',
+    o1010: './assets/overlays/obscured_ne.png',
+    o0100: './assets/overlays/obscured_w.png',
+    o0010: './assets/overlays/obscured_e.png',
+    o0101: './assets/overlays/obscured_sw.png',
+    o0001: './assets/overlays/obscured_s.png',
+    o0011: './assets/overlays/obscured_se.png',
+    VIGNETTE: './assets/overlays/vignette.png'
 }
 
 const PROJECTILE_PATH = {
@@ -163,9 +173,9 @@ const SOUND_PATH = {
 }
 
 const TILE_LIFE = {
-    DIRT    :   2,
-    RUBY    :   5,
-    STONE   :   3
+    DIRT: 1,
+    RUBY: 1,
+    STONE: 1
 }
 
 const TILE_PATH = {
