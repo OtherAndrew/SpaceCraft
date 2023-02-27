@@ -4,11 +4,11 @@ class HUD {
         this.player = player;
 
         // create player inventory and trashcan
-        this.cm.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
-        this.cm.createInventory(null, 678, 502, 1, 1, "red");
-
-        this.cm.activateInventory("player");
-        this.cm.activateInventory(null);
+        // this.cm.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
+        // this.cm.createInventory(null, 678, 502, 1, 1, "red");
+        //
+        // this.cm.activateInventory("player");
+        // this.cm.activateInventory(null);
 
         this.containers = this.cm.getInventory("player");
         this.activeContainer = this.containers[0];

@@ -396,7 +396,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 }
 
             }
-            // entityManager.addEntity(generateInteractive('chest', pos.x+1, pos.y+3))
             generateChest(pos.x + 1, pos.y + 3)
         }
         
@@ -440,7 +439,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         terrainMap[y][x] = {tag: e.tag, id: e.id};
 
         let owner = cleanTag(e.tag);
-        containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar')));
+        containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar'))); // Example
+        // Could randomize number of random rolls on loot table (random count for each result as well if desired)
     }
 
     function spawnChests() {
@@ -451,7 +451,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 y = Math.floor(randomNumber(startRow + blocksPerChunk, terrainMap.length - blocksPerChunk))
             } while (!terrainMap[y + 1][x].tag.includes('tile'))
             punchHole({x: x, y: y}, 1, 1)
-            // let e = entityManager.addEntity(generateInteractive('chest', x, y))
             generateChest(x, y);
         }
         
