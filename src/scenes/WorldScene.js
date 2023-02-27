@@ -21,7 +21,7 @@ class WorldScene extends Scene {
     init(assets, canvas) {
         this.mobFactory = new MobFactory(this.entityManager);
         let airTileMap
-        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.mobFactory)
+        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
@@ -46,7 +46,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
-        this.craftingMenu = new InteractiveMenu(this.containerManager);
+        this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
@@ -57,7 +57,7 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
 
-        this.giveWeapons2();
+        // this.giveWeapons2();
         this.spawnTestEntities();
         ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
     }
@@ -160,7 +160,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
         }
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -271,7 +271,8 @@ class WorldScene extends Scene {
         let visCodeC = this.#checkCardinal(posY, posX);
         let visCodeO = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
-        return {exposed: exposed, visCode: /*visCodeC*/ visCodeC === 'c0000' ? visCodeO : visCodeC};
+        return {exposed: exposed, visCode: visCodeC};
+        // return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
     }
 
     // TODO: meld check cardinal and ordinal to get correct obfuscation
@@ -311,8 +312,8 @@ class WorldScene extends Scene {
     }
 
     #checkWinCon() {
-        let requisite = {item: {tag: 'tile_iron'}, count: 10}
-        return (this.containerManager.checkCount(requisite) && checkCollision(this.player, this.rocket))
+        let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
+        return (this.containerManager.checkSufficient(requisite, 'player') && checkCollision(this.player, this.rocket))
     }
     #gameContinue() {
         this.player.isDrawable = true;
@@ -322,6 +323,4 @@ class WorldScene extends Scene {
         // this.player.components["transform"].velocityY = 0;
         this.player.components['stats'].invincible = false;
     }
-
-
 }

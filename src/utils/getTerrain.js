@@ -1,6 +1,6 @@
 
 
-const getTerrain = (entityManager, mobFactory) => {
+const getTerrain = (entityManager, containerManager, mobFactory) => {
 
     let noiseMap = []
     let terrainMap = []
@@ -8,7 +8,7 @@ const getTerrain = (entityManager, mobFactory) => {
     let airPockets = []
     let spawnSpots = []
     //Sets numerical value ranges to blocks so we can map them to the terrainMap
-        // Ranges from 0 to 10 ish
+    // Ranges from 0 to 10 ish
     let blockValues = {
         CHUNK_0: [
             'copper',
@@ -387,16 +387,16 @@ const getTerrain = (entityManager, mobFactory) => {
                         scale: 3,
                     })
                 ]
-            })
-            for(let i = 0, j = 0; i < 6 * BLOCKSIZE; i += BLOCKSIZE) {
+           })
+            for (let i = 0, j = 0; i < 6 * BLOCKSIZE; i += BLOCKSIZE) {
                 let e = entityManager.addEntity(generateBlock('tile_bedrock', pos2.x + i, pos2.y + (BLOCKSIZE * 6), 'terraingen'))
                 terrainMap[pos.y + 6][pos.x + j++] = {
                     tag: e.tag,
                     id: e.id
                 }
-                
+
             }
-            entityManager.addEntity(generateInteractive('chest', pos.x+1, pos.y+3))
+            generateChest(pos.x + 1, pos.y + 3)
         }
         
     }
@@ -425,24 +425,33 @@ const getTerrain = (entityManager, mobFactory) => {
     function spawnStationaryMobs() {
 
         let y = terrainMap.length * .5 - 5
-        for(let x = 20; x < terrainMap[0].length - 20; x++) {
+        for (let x = 20; x < terrainMap[0].length - 20; x++) {
             x += randomInt(15) + 15
             mobFactory.build('wormwood', x * BLOCKSIZE, y * BLOCKSIZE)
         }
 
-        
-            
+
+    }
+
+    function generateChest(x, y) {
+        let e = entityManager.addEntity(generateInteractive('interact_chest', x, y));
+        containerManager.registerChest(e);
+        terrainMap[y][x] = {tag: e.tag, id: e.id};
+
+        let owner = cleanTag(e.tag);
+        containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar'))); // Example
+        // Could randomize number of random rolls on loot table (random count for each result as well if desired)
     }
 
     function spawnChests() {
-        for(let i = 0; i < CHEST_SPAWN_COUNT; i++) {
-            let x,y
+        for (let i = 0; i < CHEST_SPAWN_COUNT; i++) {
+            let x, y
             do {
                 x = Math.floor(randomNumber(20, terrainMap[0].length - 20))
                 y = Math.floor(randomNumber(startRow + blocksPerChunk, terrainMap.length - blocksPerChunk))
-            } while(!terrainMap[y+1][x].tag.includes('tile'))
-            punchHole({x:x,y:y}, 1, 1)
-            let e = entityManager.addEntity(generateInteractive('chest', x, y))
+            } while (!terrainMap[y + 1][x].tag.includes('tile'))
+            punchHole({x: x, y: y}, 1, 1)
+            generateChest(x, y);
         }
         
     }

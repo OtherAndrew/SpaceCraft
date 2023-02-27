@@ -106,7 +106,7 @@ const generateInteractive = (tag, x=0, y=0) => {
 const generateItem = (tag) => {
     let id = cleanTag(tag).toUpperCase();
     let index = id.lastIndexOf(' ');
-    id = id.slice(0, index);
+    if (index !== -1) id = id.slice(0, index);
     let image = ASSET_MANAGER.cache[ITEM_PATH[id]];
     return new Blueprint({
         tag: tag,

@@ -20,6 +20,12 @@ class ContainerManager {
 
         this.chestCount = 0;            // counter for new chests
         this.reuseChest = [];           // reusable chest inventories
+
+        this.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
+        this.createInventory(null, 678, 502, 1, 1, "red");
+
+        this.loadInventory("player");
+        this.loadInventory(null);
     }
 
     /**
@@ -177,14 +183,13 @@ class ContainerManager {
         if (playerContainer && playerContainer.item) this.addPlayerCount(playerContainer.item, playerContainer.count);
     }
 
-    activateInventory(owner) {
+    loadInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
         console.log(this.owners[owner]);
     }
 
-    loadInventory(tag) {
-        for (const owner in this.owners)
-            if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
+    loadInventories(tag) {
+        for (const owner in this.owners) if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
     }
 
     unloadInventory() {
@@ -193,8 +198,8 @@ class ContainerManager {
 
     reloadInventory() {
         // if (this.activeInventory.length !== 5) {
-            this.unloadInventory();
-            this.loadInventory('builtin');
+        this.unloadInventory();
+        this.loadInventories('builtin');
         // }
     }
 
@@ -234,7 +239,7 @@ class ContainerManager {
         if (menuActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check && check.item) this.hoverText = check.item.tag; // cleanTag(check.item.tag);
+                if (check && check.item) this.hoverText = /*check.item.tag;*/ cleanTag(check.item.tag);
                 else this.hoverText = null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique
