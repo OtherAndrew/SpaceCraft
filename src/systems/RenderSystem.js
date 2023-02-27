@@ -47,14 +47,12 @@ class RenderSystem {
                     )
                 }
 
-
                 destX += sprite.dWidth / 2 - 25;
 
                 if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged)
                     drawHealthbar(ctx, e, destX, destY, 50, 5);
             }
         })
-
     }
 
     /**

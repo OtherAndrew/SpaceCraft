@@ -57,7 +57,7 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
 
-        this.giveWeapons2();
+        // this.giveWeapons2();
         this.spawnTestEntities();
     }
 
@@ -315,8 +315,8 @@ class WorldScene extends Scene {
     }
 
     #checkWinCon() {
-        let requisite = {item: {tag: 'tile_iron'}, count: 10}
-        return (this.containerManager.checkCount(requisite) && checkCollision(this.player, this.rocket))
+        let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
+        return (this.containerManager.checkSufficient(requisite, 'player') && checkCollision(this.player, this.rocket))
     }
     #gameContinue() {
         this.player.isDrawable = true;
@@ -326,6 +326,4 @@ class WorldScene extends Scene {
         // this.player.components["transform"].velocityY = 0;
         this.player.components['stats'].invincible = false;
     }
-
-
 }

@@ -239,7 +239,7 @@ class ContainerManager {
         if (menuActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check && check.item) this.hoverText = check.item.tag; // cleanTag(check.item.tag);
+                if (check && check.item) this.hoverText = /*check.item.tag;*/ cleanTag(check.item.tag);
                 else this.hoverText = null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique

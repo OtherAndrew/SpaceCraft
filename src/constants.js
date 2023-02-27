@@ -86,20 +86,20 @@ const CHAR_PATH = {
 }
 
 const CRAFT_COLOR = {
-    ANVIL_I     :   'black',
-    ANVIL_P     :   'grey',
-    BUILTIN_I   :   'pink',
-    BUILTIN_P   :   'purple',
-    FURNACE_I   :   'orange',
-    FURNACE_P   :   'red',
-    HUB_I       :   'orange',
-    HUB_P       :   'black',
-    STATION_I   :   'red',
-    STATION_P   :   'yellow',
-    TABLE_I     :   'brown',
-    TABLE_P     :   'green',
-    TRADER_I    :   'yellow',
-    TRADER_P    :   'pink'
+    ANVIL_I: 'black',
+    ANVIL_P: 'grey',
+    BUILTIN_I: 'pink',
+    BUILTIN_P: 'purple',
+    FURNACE_I: 'orange',
+    FURNACE_P: 'red',
+    HUB_I: 'orange',
+    HUB_P: 'black',
+    STATION_I: 'brown',
+    STATION_P: 'grey',
+    TABLE_I: 'brown',
+    TABLE_P: 'green',
+    TRADER_I: 'yellow',
+    TRADER_P: 'pink'
 }
 
 const CRAFT_PATH = {
@@ -113,21 +113,44 @@ const CRAFT_PATH = {
 }
 
 const ITEM_PATH = {
-    BROKEN_GRENADE: './assets/items/broken_grenade_launcher.png',
-    BROKEN_HAND_CANNON: './assets/items/broken_tech_pistol.png',
-    BROKEN_MINIGUN: './assets/items/broken_minigun.png',
-    BROKEN_RAILGUN: './assets/items/broken_sniper.png',
-    BISMUTH: './assets/interactives/products/bismuth_bar.png',
-    COBALT: './assets/interactives/products/cobalt_bar.png',
-    COPPER: './assets/interactives/products/copper_bar.png',
-    FERRITE: './assets/interactives/products/ferrite_bar.png',
-    GOLD: './assets/interactives/products/gold_bar.png',
-    IRON: './assets/interactives/products/iron_bar.png',
-    PARAFFIN: './assets/interactives/products/paraffin_bar.png',
-    STEEL: './assets/interactives/products/steel_bar.png',
-    TIN: './assets/interactives/products/tin_bar.png',
-    TITANITE: './assets/interactives/products/titanite_bar.png',
-    TUNGSTEN: './assets/interactives/products/tungsten_bar.png'
+    GRENADELAUNCHER: './assets/items/broken_grenade_launcher.png',
+    HANDCANNON: './assets/items/broken_tech_pistol.png',
+    MINIGUN: './assets/items/broken_minigun.png',
+    RAILGUN: './assets/items/broken_sniper.png',
+
+    BISMUTH: './assets/items/bismuth_bar.png',
+    COBALT: './assets/items/cobalt_bar.png',
+    COPPER: './assets/items/copper_bar.png',
+    FERRITE: './assets/items/ferrite_bar.png',
+    GOLD: './assets/items/gold_bar.png',
+    IRON: './assets/items/iron_bar.png',
+    PARAFFIN: './assets/items/paraffin_bar.png',
+    STEEL: './assets/items/steel_bar.png',
+    TIN: './assets/items/tin_bar.png',
+    TITANITE: './assets/items/titanite_bar.png',
+    TUNGSTEN: './assets/items/tungsten_bar.png',
+
+    AMBER: './assets/items/amber.png',
+    DIRTCARVER: './assets/items/mob_dirtCarver.png',
+    WORMTANK: './assets/items/mob_wormTank.png',
+    STICKY: './assets/items/mob_stickySlime.png',
+    SPIDER: './assets/items/spiderSilk.png',
+
+    CIRCUIT: './assets/items/circuit.png',
+    SMART: './assets/items/smartCircuit.png',
+    CHARCOAL: './assets/items/coal.png',
+    GLASS: './assets/items/glass.png',
+    PLEXIGLASS: './assets/items/plexiglass.png',
+    REFINED: './assets/items/silica_refined.png',
+    WOOD: './assets/items/wood.png',
+
+    HUB: './assets/items/plan_hub.png',
+    STATION: './assets/items/plan_station.png',
+    PARAFFINTANK: './assets/items/paraffintank.png',
+    PARAFFINTANKPLAN: './assets/items/plan_paraffintank.png',
+    MEDICAL: './assets/items/medicalBay.png',
+    FUEL: './assets/items/fueltank.png',
+    FUELTOWER: './assets/items/fueltower.png',
 }
 
 const MISC_PATH = {
