@@ -438,6 +438,9 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let e = entityManager.addEntity(generateInteractive('interact_chest', x, y));
         containerManager.registerChest(e);
         terrainMap[y][x] = {tag: e.tag, id: e.id};
+
+        let owner = cleanTag(e.tag);
+        containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar')));
     }
 
     function spawnChests() {
