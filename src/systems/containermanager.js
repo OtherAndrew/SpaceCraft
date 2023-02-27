@@ -24,8 +24,8 @@ class ContainerManager {
         this.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
         this.createInventory(null, 678, 502, 1, 1, "red");
 
-        this.activateInventory("player");
-        this.activateInventory(null);
+        this.loadInventory("player");
+        this.loadInventory(null);
     }
 
     /**
@@ -183,14 +183,13 @@ class ContainerManager {
         if (playerContainer && playerContainer.item) this.addPlayerCount(playerContainer.item, playerContainer.count);
     }
 
-    activateInventory(owner) {
+    loadInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
         console.log(this.owners[owner]);
     }
 
-    loadInventory(tag) {
-        for (const owner in this.owners)
-            if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
+    loadInventories(tag) {
+        for (const owner in this.owners) if (owner.includes(tag)) this.activeInventory.push(this.owners[owner]);
     }
 
     unloadInventory() {
@@ -199,8 +198,8 @@ class ContainerManager {
 
     reloadInventory() {
         // if (this.activeInventory.length !== 5) {
-            this.unloadInventory();
-            this.loadInventory('builtin');
+        this.unloadInventory();
+        this.loadInventories('builtin');
         // }
     }
 

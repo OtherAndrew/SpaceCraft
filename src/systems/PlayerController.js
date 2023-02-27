@@ -89,14 +89,18 @@ class PlayerController {
         let mapX = coords.x || 0;
         let selected = this.terrainMap[mapY][mapX];
         const cursorTarget = {
-            x: pos.x + 25/2,
-            y: pos.y + 25/2
+            x: pos.x + 25 / 2,
+            y: pos.y + 25 / 2
         };
-        console.log(selected.tag)
+        console.log(selected.tag) // DEBUGGING
+        if (selected.tag.includes('chest')) {
+            console.log(selected);
+            console.log(this.containerManager.getInventory(cleanTag(selected.tag)));
+        }
         let active = activeContainer.item;
         if (active) {
-            if(/tile|interact/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
-                if(selected.tag.includes('air')) {
+            if (/tile|interact/.test(active.tag) && isPlaceable(this.player, coords, this.terrainMap)) {
+                if (selected.tag.includes('air')) {
                     let tag = this.containerManager.removeFromPlayer(activeContainer.slot);
                     let newBlock;
                     if (active.tag.includes('interact')) {
@@ -133,7 +137,8 @@ class PlayerController {
             }
         } else if (selected.tag.includes('interact')) {
             this.containerManager.unloadInventory();
-            this.containerManager.loadInventory(cleanTag(selected.tag));
+            if (selected.tag.includes('chest')) this.containerManager.loadInventory(cleanTag(selected.tag));
+            else this.containerManager.loadInventories(cleanTag(selected.tag));
             this.game.activateMenu();
         }
     }
