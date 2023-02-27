@@ -21,7 +21,7 @@ class WorldScene extends Scene {
     init(assets, canvas) {
         this.mobFactory = new MobFactory(this.entityManager);
         let airTileMap
-        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.mobFactory)
+        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
@@ -159,7 +159,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
         }
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
