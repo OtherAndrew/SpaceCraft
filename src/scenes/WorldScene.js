@@ -21,7 +21,7 @@ class WorldScene extends Scene {
     init(assets, canvas) {
         this.mobFactory = new MobFactory(this.entityManager);
         let airTileMap
-        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.mobFactory)
+        [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
         // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
@@ -46,7 +46,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
-        this.craftingMenu = new InteractiveMenu(this.containerManager);
+        this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
@@ -159,7 +159,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
         }
-        this.#drawColliders(ctx);
+        // this.#drawColliders(ctx);
 
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
@@ -274,7 +274,8 @@ class WorldScene extends Scene {
         let visCodeC = this.#checkCardinal(posY, posX);
         let visCodeO = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
-        return {exposed: exposed, visCode: /*visCodeC*/ visCodeC === 'c0000' ? visCodeO : visCodeC};
+        return {exposed: exposed, visCode: visCodeC};
+        // return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
     }
 
     // TODO: meld check cardinal and ordinal to get correct obfuscation

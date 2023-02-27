@@ -20,6 +20,12 @@ class ContainerManager {
 
         this.chestCount = 0;            // counter for new chests
         this.reuseChest = [];           // reusable chest inventories
+
+        this.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
+        this.createInventory(null, 678, 502, 1, 1, "red");
+
+        this.activateInventory("player");
+        this.activateInventory(null);
     }
 
     /**

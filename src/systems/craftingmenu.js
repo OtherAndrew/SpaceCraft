@@ -1,4 +1,4 @@
-class InteractiveMenu {
+class CraftingMenu {
 
     builtin_recipes = [
         [{tag: 'interact_furnace'},
@@ -10,7 +10,7 @@ class InteractiveMenu {
             {tag: 'tile_stone', count: 5}],
         [{tag: 'interact_table'},
             {tag: 'item_iron bar', count: 10},
-            {tag: 'tile_copper', count: 5}],
+            {tag: 'item_copper bar', count: 5}],
         [{tag: 'interact_station'},
             {tag: 'interact_table'},
             {tag: 'tile_stone', count: 200},
@@ -37,7 +37,7 @@ class InteractiveMenu {
             {tag: 'laserGun', name: 'weapon'},
             {tag: 'item_bismuth bar', count: 10},
             {tag: 'tile_coal', count: 20}]
-        // [{tag: 'item_refinedSilica'},
+        // [{tag: 'item_refined silica'},
         //     {tag: 'tile_silica', count: 1}],
         // [{tag: 'item_circuit'},
         //     {tag: 'item_gold bar', count: 1},
@@ -52,7 +52,7 @@ class InteractiveMenu {
         // [{tag: 'interact_station'},
         //     {tag: 'interact_table', count: 1},
         //     {tag: 'tile_stone', count: 200},
-        //     {tag: 'item_craftingStation plan', count: 5}]   //buy from tradestation for 20 wood + 20 amber
+        //     {tag: 'item_station plan', count: 5}]   //buy from trader for 20 wood + 20 amber
     ];
 
     furnace_recipes = [
@@ -71,7 +71,7 @@ class InteractiveMenu {
         [{tag: 'item_iron bar'},
             {tag: 'tile_iron', count: 5}],
         [{tag: 'item_paraffin bar'},
-            {tag: 'tile_paraffin', count: 5}],
+            {tag: 'tile_paraffin', count: 5}], // new
         [{tag: 'item_tin bar'},
             {tag: 'tile_tin', count: 5}],
         [{tag: 'item_titanite bar'},
@@ -87,6 +87,7 @@ class InteractiveMenu {
         [{tag: 'item_plexiglass'},
             {tag: 'item_glass', count: 10}]
     ];
+
     anvil_recipes = [
         [{tag: 'item_copper_pickaxe'},
             {tag: 'item_cobalt bar', count: 10},
@@ -105,57 +106,56 @@ class InteractiveMenu {
             {tag: 'item_wood', count: 10}]
     ];
 
-    craftingStation_recipes = [
-        [{tag: 'item_mossGun'},
-            {tag: 'item_ferrite bar', count: 10},
-            {tag: 'item_charcoal', count: 20},
-            {tag: 'item_wood', count: 10}],
-        [{tag: 'item_carverGun'},
-            {tag: 'item_iron bar', count: 10},
-            {tag: 'item_charcoal', count: 20},
-            {tag: 'item_dirtCarverHide', count: 10}],  //dirtcarverhide from dirtcarver
-        [{tag: 'item_jelloGun'},
-            {tag: 'item_bismuth bar', count: 10},
-            {tag: 'item_charcoal', count: 20},
-            {tag: 'item_stickySlime', count: 20}],  //stickySlime from silverfish
-        [{tag: 'item_hideGun'},
-            {tag: 'item_tungsten bar', count: 10},
-            {tag: 'item_charcoal', count: 20},
-            {tag: 'item_wormTankHide', count: 10}],  //stickySlime from wormTank
-        [{tag: 'item_hunterGun'},
-            {tag: 'item_titanite bar', count: 10},
-            {tag: 'item_charcoal', count: 20},
-            {tag: 'item_hideGun', count: 1}],        //reuse old item
-        [{tag: 'item_smartSuit'},
-            {tag: 'item_oxygenSuit', count: 1},
-            {tag: 'item_smartCircuit', count: 1},
-            {tag: 'item_plexiglass', count: 10}],
-        [{tag: 'item_oxygenSuit'},
-            {tag: 'item_spiderSilk', count: 1},
-            {tag: 'item_circuit', count: 1},
-            {tag: 'item_glassPanel', count: 30}]
-
+    station_recipes = [
+        // [{tag: 'item_mossGun'},
+        //     {tag: 'item_ferrite bar', count: 10},
+        //     {tag: 'item_charcoal', count: 20},
+        //     {tag: 'item_wood', count: 10}],
+        // [{tag: 'item_carverGun'},
+        //     {tag: 'item_iron bar', count: 10},
+        //     {tag: 'item_charcoal', count: 20},
+        //     {tag: 'item_dirtCarverHide', count: 10}],  //dirtcarverhide from dirtcarver
+        // [{tag: 'item_jelloGun'},
+        //     {tag: 'item_bismuth bar', count: 10},
+        //     {tag: 'item_charcoal', count: 20},
+        //     {tag: 'item_stickySlime', count: 20}],  //stickySlime from silverfish
+        // [{tag: 'item_hideGun'},
+        //     {tag: 'item_tungsten bar', count: 10},
+        //     {tag: 'item_charcoal', count: 20},
+        //     {tag: 'item_wormTankHide', count: 10}],  //stickySlime from wormTank
+        // [{tag: 'item_hunterGun'},
+        //     {tag: 'item_titanite bar', count: 10},
+        //     {tag: 'item_charcoal', count: 20},
+        //     {tag: 'item_hideGun', count: 1}],        //reuse old item
+        // [{tag: 'item_smartSuit'},
+        //     {tag: 'item_oxygenSuit', count: 1},
+        //     {tag: 'item_smartCircuit', count: 1},
+        //     {tag: 'item_plexiglass', count: 10}],
+        // [{tag: 'item_oxygenSuit'},
+        //     {tag: 'item_spiderSilk', count: 1},
+        //     {tag: 'item_circuit', count: 1},
+        //     {tag: 'item_glassPanel', count: 30}]
     ];
 
-    tradeStation_recipes = [
+    trader_recipes = [
         [{tag: 'item_craftingTree'},                //a list of all recipes in game
             {tag: 'tile_stone', count: 100}],
         [{tag: 'item_bomb'},
             {tag: 'item_gold bar', count: 1}],
         [{tag: 'item_spiderSilk', count: 10},
             {tag: 'item_bismuth bar', count: 1}],
-        [{tag: 'item_craftingStation plan'},
+        [{tag: 'item_station plan'},
             {tag: 'item_wood', count: 20},
             {tag: 'item_amber', count: 20}],
-        [{tag: 'item_engineeringHub plan'},
+        [{tag: 'item_hub plan'},
             {tag: 'item_steel bar', count: 5}],
         [{tag: 'item_paraffinTank plan'},
             {tag: 'item_spiderSilk', count: 10},
             {tag: 'item_wormTank hide', count: 10},
             {tag: 'item_plexiglass', count: 10}]
-
     ];
-    engineeringHub_recipes = [
+
+    hub_recipes = [
         [{tag: 'item_graphite'},
             {tag: 'item_charcoal', count: 3},
             {tag: 'item_paraffinTank plan', count: 1}],
@@ -188,7 +188,6 @@ class InteractiveMenu {
     constructor(containManager) {
         this.cm = containManager;
         this.recipes = [];
-        this.chestCount = 0;
 
         // TESTING
         this.x = 30;
@@ -196,12 +195,12 @@ class InteractiveMenu {
         this.spacer = 54;
 
         this.buildRecipe('builtin', this.builtin_recipes);
-        this.buildRecipe('table', this.table_recipes);
+        // this.buildRecipe('table', this.table_recipes);
         // this.buildRecipe('furnace', this.furnace_recipes);
         // this.buildRecipe('anvil', this.anvil_recipes);
-        // this.buildRecipe('craftingStation', this.craftingStation_recipes);
-        // this.buildRecipe('tradeStation', this.tradeStation_recipes);
-        // this.buildRecipe('engineeringHub', this.engineeringHub_recipes);
+        // this.buildRecipe('station', this.station_recipes);
+        // this.buildRecipe('trader', this.trader_recipes);
+        // this.buildRecipe('hub', this.hub_recipes);
 
         this.recipes.forEach(recipe => this.denoteRecipe(recipe));
 
