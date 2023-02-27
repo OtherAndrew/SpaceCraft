@@ -1,4 +1,4 @@
-class InteractiveMenu {
+class CraftingMenu {
 
     builtin_recipes = [
         [{tag: 'interact_furnace'},
