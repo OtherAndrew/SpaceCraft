@@ -11,7 +11,14 @@ class GameEngine {
         this.frames = 0
 
         //Scenes
-        this.terrainScene = new WorldScene(this)
+        //this.scene = new WorldScene(this)
+        /*
+        this.scenes = {
+            worldScene: new WorldScene(this),
+            mainMenuScene: new MainMenu()
+        }
+        */
+        this.mainScene = new MainMenu()
         // Information on the input
         this.click = null;
         this.mouseDown = null;
@@ -29,7 +36,8 @@ class GameEngine {
 
     init(ctx, assets, canvas) {
         this.ctx = ctx;
-        this.terrainScene.init(assets, canvas)
+        this.canvas = canvas
+        this.mainScene.init(assets, this.canvas)
         this.startInput();
         this.timer = new Timer();
     };
@@ -269,7 +277,7 @@ class GameEngine {
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         // this.ctx.fillStyle = 'rgb(159,109,50)'
-        this.terrainScene.draw(this.menuActive, this.ctx, this.mouse)
+        this.mainScene.draw(this.menuActive, this.ctx, this.mouse)
         if (this.currentTime > 1) {
             this.currentTime = 0
             this.frames = this.renderedFrames
@@ -285,7 +293,11 @@ class GameEngine {
     };
 
     update() {
-        this.terrainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
+        let status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
+        if(status) {
+            this.mainScene = new WorldScene(this)
+            this.mainScene.init(null, this.canvas)
+        }
         this.refreshInput();
     };
 

@@ -59,6 +59,7 @@ class WorldScene extends Scene {
 
         this.giveWeapons2();
         this.spawnTestEntities();
+        ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
     }
 
     spawnTestEntities() {
@@ -76,7 +77,7 @@ class WorldScene extends Scene {
         // this.mobFactory.build('electrojelly', px - 600, py - 200);
         // this.mobFactory.build('bombfly', px + 900, py - 200);
         // this.mobFactory.build('grapebomb', px + 300, py - 200);
-        this.mobFactory.build('spore', px + 3*BLOCKSIZE, py - 3*BLOCKSIZE);
+        this.mobFactory.build('spiderboss', px + 3*BLOCKSIZE, py - 20*BLOCKSIZE);
         // this.mobFactory.build('silverfish', px + 600, py - 200);
     }
 
@@ -173,10 +174,6 @@ class WorldScene extends Scene {
                 ctx.fillRect(box.x - this.camera.x, box.y - this.camera.y, box.width, box.height)
             }
         });
-        this.spawnManager.spawnMap.forEach(pos => {
-            ctx.fillStyle = 'rgba(255,0,0)'
-            ctx.fillRect((pos.x * BLOCKSIZE) - this.camera.x, (pos.y * BLOCKSIZE) - this.camera.y, BLOCKSIZE, BLOCKSIZE)
-        })
     }
 
     /**
