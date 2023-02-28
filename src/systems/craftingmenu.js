@@ -22,6 +22,9 @@ class CraftingMenu {
     ];
 
     table_recipes = [ // DONE
+        [{tag: 'interact_chest'},
+            {tag: 'item_iron bar'},
+            {tag: 'item_wood'}],
         [{tag: 'interact_trader'},
             {tag: 'item_copper bar', count: 20},
             {tag: 'tile_stone', count: 80}],
