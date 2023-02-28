@@ -175,7 +175,15 @@ const PROJECTILE_PATH = {
 }
 
 const SOUND_PATH = {
-    BOSS: './assets/music/themes/boss_battle.mp3'
+    BOSS: './assets/music/themes/boss_battle.mp3',
+    EXPLOSION: './assets/music/sfx/pipe_bomb1.wav',
+    FIRE: './assets/music/sfx/flame_thrower_loop.wav',
+    GRENADE_LAUNCHER: './assets/music/sfx/grenade_launcher_shoot.wav',
+    HAND_CANNON: './assets/music/sfx/back_scatter.wav',
+    LASER: './assets/music/sfx/capper_shoot.wav',
+    RAILGUN: './assets/music/sfx/sniper_railgun_single_01.wav',
+    SMALL_EXPLOSION: './assets/music/sfx/airstrike_small_explosion_03.wav',
+    STRONG_LASER: './assets/music/sfx/shooting_star_shoot.wav'
 }
 
 const TILE_LIFE = {
