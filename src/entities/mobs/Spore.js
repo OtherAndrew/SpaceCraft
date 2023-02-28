@@ -29,7 +29,7 @@ class Spore {
             sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
             sWidth: 138,
             sHeight: 170,
-            scale: 0.5,
+            scale: BLOCKSIZE * 2 / 138,
             fps: 7.5,
             lastFrameX: 7
         });
@@ -42,7 +42,7 @@ class Spore {
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: Math.floor(sprite.dWidth / BLOCKSIZE) * BLOCKSIZE,
+            width: sprite.dWidth,
             height: sprite.dHeight,
             // xOffset: sprite.dWidth
         });

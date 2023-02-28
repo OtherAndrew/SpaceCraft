@@ -3,7 +3,6 @@
  * Can direct player to do tasks and can be trade with.
  *
  * @author Jeep Naarkom
- * @author Andrew Nguyen
  */
 
 class Nativenpc {
@@ -16,7 +15,7 @@ class Nativenpc {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob enemy';
+        this.tag = 'mob ignoreAttack';
         this.name = 'nativenpc';
         this.components = this.#buildComponents(props);
         return this;
@@ -24,7 +23,6 @@ class Nativenpc {
 
     #buildComponents(props) {
         const stats = new CStats({
-
             speed: .2,
             invincible: true
         });
@@ -50,7 +48,6 @@ class Nativenpc {
             width: cWidth,
             xOffset: (sprite.dWidth - cWidth) / 2,
             height: sprite.dHeight,
-
         });
         const state = new CState();
         const duration = new CDuration();
@@ -61,10 +58,9 @@ class Nativenpc {
     }
 
     update(target, projectileManager) {
-
         const targetX = target.center.x;
         const x = this.components['boxCollider'].center.x;
-        const state = targetX < x? "headL": "idleR";
+        const state = targetX < x ? "headL": "idleR";
         this.components.state.setState(state);
     }
 
