@@ -42,7 +42,7 @@ class Spore {
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
-            width: Math.floor(sprite.dWidth / BLOCKSIZE) * BLOCKSIZE,
+            width: sprite.dWidth,
             height: sprite.dHeight,
             // xOffset: sprite.dWidth
         });

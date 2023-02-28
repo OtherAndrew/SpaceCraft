@@ -76,8 +76,8 @@ class WorldScene extends Scene {
         // this.mobFactory.build('silverfish', px + 600, py - 200);
         // this.mobFactory.build('electrojelly', px - 600, py - 200);
         // this.mobFactory.build('bombfly', px + 900, py - 200);
-        // this.mobFactory.build('grapebomb', px + 300, py - 200);
-        this.mobFactory.build('spiderboss', px + 3*BLOCKSIZE, py - 20*BLOCKSIZE);
+        this.mobFactory.build('spore', px + 100, py - 200);
+        // this.mobFactory.build('spiderboss', px + 3*BLOCKSIZE, py - 20*BLOCKSIZE);
         // this.mobFactory.build('silverfish', px + 600, py - 200);
     }
 
