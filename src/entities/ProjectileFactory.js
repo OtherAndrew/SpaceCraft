@@ -36,6 +36,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 1
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'mid_bullet':
                 projectileOrigin.x += directionVector.x * 15
@@ -54,6 +55,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 1
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'strong_bullet':
                 projectileOrigin.x += directionVector.x * 10
@@ -72,6 +74,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 1
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.STRONG_LASER);
                 break;
             case 'minigun_bullet':
                 projectileOrigin.x += directionVector.x * 10
@@ -92,6 +95,7 @@ class ProjectileFactory {
                         spread: 1.25
                     }));
                 }
+                // ASSET_MANAGER.playAsset(SOUND_PATH.FIRE);
                 break;
             case 'railgun_bullet':
                 projectileOrigin.x += directionVector.x * 10
@@ -107,6 +111,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 0
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.RAILGUN);
                 break;
             case 'fire':
                 projectileOrigin.x += directionVector.x * 30
@@ -122,6 +127,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 0.33
                 }));
+                // ASSET_MANAGER.playAsset(SOUND_PATH.FIRE);
                 break;
             case 'bomb':
                 projectileOrigin.x += directionVector.x * 20;
@@ -138,6 +144,7 @@ class ProjectileFactory {
                     hasGravity: true,
                     spread: 0.5
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.GRENADE_LAUNCHER);
                 break;
             case 'mini_bomb':
                 projectileOrigin.x += directionVector.x * 10;
@@ -166,6 +173,7 @@ class ProjectileFactory {
                         spread: 3.5
                     }));
                 }
+                ASSET_MANAGER.playAsset(SOUND_PATH.HAND_CANNON);
                 break;
             default: console.log(`ProjectileManager.playerShoot: Invalid projectile type: ${type}.`);
         }
@@ -254,6 +262,7 @@ class ProjectileFactory {
                     damage: 12,
                     origin: position,
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);
                 break;
             case 'mini_explosion':
                 projectileQueue.push(new Explosion({
@@ -262,6 +271,7 @@ class ProjectileFactory {
                     damage: 4,
                     origin: position,
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);
                 break;
             case 'enemy_explosion':
                 projectileQueue.push(new Explosion({
@@ -270,6 +280,7 @@ class ProjectileFactory {
                     damage: 1.5,
                     origin: position,
                 }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);
                 break;
             default: console.log(`ProjectileManager.detonate: Invalid projectile type: ${type}.`);
         }
