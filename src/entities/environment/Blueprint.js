@@ -43,6 +43,12 @@ class Blueprint {
                 regenCooldown: props.regenCooldown,
                 regenAmount: props.regenAmount,
                 invincible: props.invincible
+            }),
+            new CBoxCollider({
+                x: props.x,
+                y: props.y,
+                width: BLOCKSIZE,
+                height: BLOCKSIZE
             })
         ]
     };

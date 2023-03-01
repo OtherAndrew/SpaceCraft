@@ -12,7 +12,7 @@ const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 const BLOCK_PLACEMENT_DISTANCE = 3.2
 const FALL_DAMAGE_MULTIPLIER = 200;
-const MOB_TIMEOUT = 900;
+const MOB_TIMEOUT = 180;
 const CHEST_SPAWN_COUNT = 30
 
 const MAXCREEPERILA = 2;
@@ -204,6 +204,7 @@ const SOUND_PATH = {
     GRENADE_LAUNCHER: './assets/music/sfx/grenade_launcher_shoot.wav',
     HAND_CANNON: './assets/music/sfx/air_burster_shoot.wav',
     LASER: './assets/music/sfx/capper_shoot.wav',
+    MINIGUN: './assets/music/sfx/sentry_shaft_shoot.wav',
     RAILGUN: './assets/music/sfx/sniper_railgun_single_01.wav',
     SMALL_EXPLOSION1: './assets/music/sfx/air_burster_explode1.wav',
     SMALL_EXPLOSION2: './assets/music/sfx/air_burster_explode2.wav',

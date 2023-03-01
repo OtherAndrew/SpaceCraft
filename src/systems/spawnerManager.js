@@ -41,8 +41,6 @@ class SpawnerManager {
         this.easyMobList = [
             'silverfish',
             'vengefly',
-            'grapebomb',
-            'spore',
             'wormwood'
         ]
         this.mediumMobList = [
@@ -86,13 +84,18 @@ class SpawnerManager {
                 getDistance({x: this.player.components.transform.x,
                                  y: this.player.components.transform.y},
                               this.playerPos) > HEIGHT * 1.5) {
-                console.log("setting new pos")
+                // console.log("setting new pos")
                 this.playerPos = {
                     x: this.player.components.transform.x,
                     y: this.player.components.transform.y
                 }
             }
-            this.spawnMob(this.easyMobList[randomInt(this.easyMobList.length)], 1)
+            switch (randomInt(4)) {
+                case 0: this.spawnMob(this.easyMobList[randomInt(this.easyMobList.length)], 1); break;
+                case 1: this.spawnMob(this.mediumMobList[randomInt(this.mediumMobList.length)], 1); break;
+                case 2: this.spawnMob(this.hardMobList[randomInt(this.hardMobList.length)], 1); break;
+                case 3:this.spawnMob(this.veryHardMobList[randomInt(this.veryHardMobList.length)], 1); break;
+            }
         }
 
     }
@@ -103,15 +106,15 @@ class SpawnerManager {
             y: this.player.components.transform.y
         }
         let dist = getDistance(playerCurrentPos, this.playerPos)
-        console.log(dist)
-        console.log(playerCurrentPos.y, HEIGHT_PIXELS * .5)
+        // console.log(dist)
+        // console.log(playerCurrentPos.y, HEIGHT_PIXELS * .5)
         if(/*playerCurrentPos.y < HEIGHT_PIXELS * .5*/ true) {
             let amount = randomNumber(1, max)
             for(let i = 0; i < amount; i++) {
-                console.log(`spawned ${mob}`)
+                console.log(`attempting to spawn ${mob}`)
                 const spawnedMob = this.mobFactory.build(mob,
-                    playerCurrentPos.x - (WIDTH * plusOrMinus()),
-                    playerCurrentPos.y - (BLOCKSIZE * 3 * plusOrMinus()));
+                    playerCurrentPos.x - (randomNumber(WIDTH * 0.75, WIDTH) * plusOrMinus()),
+                    playerCurrentPos.y - (randomNumber(0, HEIGHT * 0.66) * plusOrMinus()));
                 if (spawnedMob && this.collisionSystem.checkTileCollision(spawnedMob)) { // check if in tile
                     spawnedMob.destroy();
                     console.log(`destroyed ${mob}`)

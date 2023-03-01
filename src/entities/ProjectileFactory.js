@@ -95,7 +95,6 @@ class ProjectileFactory {
                         spread: 1.25
                     }));
                 }
-                // ASSET_MANAGER.playAsset(SOUND_PATH.FIRE);
                 break;
             case 'railgun_bullet':
                 projectileOrigin.x += directionVector.x * 10
@@ -271,8 +270,7 @@ class ProjectileFactory {
                     damage: 4,
                     origin: position,
                 }));
-                const num = randomInt(3);
-                switch (num) {
+                switch (randomInt(3)) {
                     case 0: ASSET_MANAGER.playAsset(SOUND_PATH.SMALL_EXPLOSION1); break;
                     case 1: ASSET_MANAGER.playAsset(SOUND_PATH.SMALL_EXPLOSION2); break;
                     case 2: ASSET_MANAGER.playAsset(SOUND_PATH.SMALL_EXPLOSION3); break;

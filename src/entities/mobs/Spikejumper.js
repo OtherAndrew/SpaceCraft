@@ -39,7 +39,8 @@ class Spikejumper {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: true
+            hasGravity: true,
+            maxVelocityX: BLOCKSIZE / 4
         });
         const cWidth = BLOCKSIZE * 1.5;
         const cHeight = BLOCKSIZE * 1.25;

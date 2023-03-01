@@ -93,14 +93,9 @@ class CollisionSystem {
     }
 
     checkTileCollision(mob) {
-        console.log("checking tile collision")
-        let out = false;
-        this.tileList.forEach(tile => {
-            if (checkCollision(mob, tile)) {
-                out = true;
-            }
-        });
-        return out;
+        // console.log("checking tile collision")
+        return this.tileList.some(tile => checkCollision(mob, tile));
+
     }
 
     /**

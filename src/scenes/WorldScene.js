@@ -40,7 +40,7 @@ class WorldScene extends Scene {
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
             this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
-        this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileFactory);
+        this.mobController = new MobController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
@@ -264,19 +264,19 @@ class WorldScene extends Scene {
         let visCheck = this.#isExposed(posY, posX);
         if (visCheck.exposed) {
             e.visCode = visCheck.visCode; // placeholder
-            if (!e.components["boxCollider"]) {
-                e.addComponent([
-                    new CBoxCollider({
-                        x: e.components.transform.x,
-                        y: e.components.transform.y,
-                        width: BLOCKSIZE,
-                        height: BLOCKSIZE
-                    })
-                ]);
-            }
+            // if (!e.components["boxCollider"]) {
+            //     e.addComponent([
+            //         new CBoxCollider({
+            //             x: e.components.transform.x,
+            //             y: e.components.transform.y,
+            //             width: BLOCKSIZE,
+            //             height: BLOCKSIZE
+            //         })
+            //     ]);
+            // }
         } else {
             delete e.visCode; // placeholder
-            delete e.components["boxCollider"];
+            // delete e.components["boxCollider"];
         }
     }
 
