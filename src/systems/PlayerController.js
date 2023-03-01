@@ -33,6 +33,7 @@ class PlayerController {
         let animState = this.pSprite.currentState;
 
         if ((key[' '] || key['w']) && this.pState.grounded && !this.restrictMovement) { //jump
+            this.pState.grounded = false;
             this.pTransform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
         }
 

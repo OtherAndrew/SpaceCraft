@@ -125,7 +125,8 @@ class WorldScene extends Scene {
             this.renderBox.update();
             this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.refresh();
+            this.collisionSystem.refreshNew();
+
             this.spawnManager.update(deltaTime);
 
             this.mobController.update(deltaTime);

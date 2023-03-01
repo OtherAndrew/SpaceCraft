@@ -17,7 +17,7 @@ class CollisionSystem {
         this.explosionList = null;
         this.enemyAttackList = null;
 
-        this.refresh();
+        this.refreshNew();
     }
 
     /**
@@ -36,6 +36,44 @@ class CollisionSystem {
         this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
         this.explosionList = this.collideList.filter(e => e.name === 'explosion');
         this.enemyAttackList = this.collideList.filter(e => e.tag.includes("enemy"))
+    }
+
+    refreshNew() {
+        this.tileCollideList = [];
+        this.mobList = [];
+        this.tileList = [];
+
+        this.playerAttackList = [];
+        this.explosionList = [];
+        this.enemyAttackList = [];
+
+        this.entities.forEach(e => {
+            if (e.isDrawable && e.components["boxCollider"]) {
+                if (this.#canCollideWithTiles(e)) {
+                    this.tileCollideList.push(e);
+                }
+                if (e.tag.includes('mob')) {
+                    this.mobList.push(e);
+                }
+                if (e.name === 'block') {
+                    this.tileList.push(e);
+                }
+                if (e.tag.includes("playerAttack")) {
+                    this.playerAttackList.push(e);
+                }
+                if (e.name === 'explosion') {
+                    this.explosionList.push(e);
+                }
+                if (e.tag.includes("enemy")) {
+                    this.enemyAttackList.push(e);
+                }
+            }
+        });
+    }
+
+    #canCollideWithTiles(e) {
+        return e.name === "player" || e.name === "rocket" || e.tag.includes("fire")
+               || (e.tag.includes("mob") && !e.tag.includes("ghost"));
     }
 
     /**
@@ -90,12 +128,6 @@ class CollisionSystem {
         this.#resolvePlayerAttack();
         this.#resolveExplosions();
         this.#resolveEnemyAttack();
-    }
-
-    checkTileCollision(mob) {
-        // console.log("checking tile collision")
-        return this.tileList.some(tile => checkCollision(mob, tile));
-
     }
 
     /**
@@ -204,6 +236,10 @@ class CollisionSystem {
         } else if (p.tag === "playerAttack mini explosive") {
             this.projectileFactory.detonate("mini_explosion", origin);
         }
+    }
+
+    checkTileCollision(mob) {
+        return this.tileList.some(tile => checkCollision(mob, tile));
     }
 }
 
