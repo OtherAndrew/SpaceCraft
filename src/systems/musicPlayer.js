@@ -1,16 +1,26 @@
 
 
-const song = function Song() {
-    this.sound = document.createElement("audio")
-    this.sound.src = ASSET_MANAGER.cache[SOUND_PATH.BOSS]
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function() {
-        this.sound.play()
+class MusicPlayer {
+    constructor(player) {
+        this.player = player
+        this.timer = 0
+        this.timesUp = 60
+        this.surfacelevel = HEIGHT_PIXELS * .5
+        this.caveLevel = HEIGHT_PIXELS * .5 + WIDTH * 2
     }
-    this.stop = function(){
-        this.sound.pause();
-      }
+    update(tick) {
+        let yLevel = this.player.components.transform.y
+        this.timer += tick
+        if(this.timer > this.timesUp) {
+            this.timer = 0
+            if(yLevel < this.surfacelevel) {
+                let index = randomInt(3)
+                ASSET_MANAGER.playAsset(SOUND_PATH['THUNDER_' + index])
+            } else if(yLevel > this.caveLevel) {
+                let index = randomInt(10)
+                ASSET_MANAGER.playAsset(SOUND_PATH['CAVE_' + index])
+            }
+        }
+    }
+
 }

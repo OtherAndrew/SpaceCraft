@@ -42,6 +42,7 @@ class AssetManager {
                     this.cache[path] = img;
                     break;
                 case 'wav':
+                case 'ogg':
                 case 'mp3':
                 case 'mp4':
                     const audio = new Audio()

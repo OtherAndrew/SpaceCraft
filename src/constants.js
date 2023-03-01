@@ -198,21 +198,37 @@ const PROJECTILE_PATH = {
 }
 
 const SOUND_PATH = {
-    BOSS: './assets/music/themes/boss_battle.mp3',
-    EXPLOSION: './assets/music/sfx/pipe_bomb1.wav',
-    FIRE: './assets/music/sfx/flame_thrower_loop.wav',
-    GRENADE_LAUNCHER: './assets/music/sfx/grenade_launcher_shoot.wav',
-    HAND_CANNON: './assets/music/sfx/back_scatter.wav',
-    LASER: './assets/music/sfx/capper_shoot.wav',
-    RAILGUN: './assets/music/sfx/sniper_railgun_single_01.wav',
-    SMALL_EXPLOSION: './assets/music/sfx/airstrike_small_explosion_03.wav',
-    STRONG_LASER: './assets/music/sfx/shooting_star_shoot.wav'
+    BOSS                    :   './assets/music/themes/boss_battle.mp3',
+    EXPLOSION               :   './assets/music/sfx/pipe_bomb1.wav',
+    FIRE                    :   './assets/music/sfx/flame_thrower_loop.wav',
+    GRENADE_LAUNCHER        :   './assets/music/sfx/grenade_launcher_shoot.wav',
+    HAND_CANNON             :   './assets/music/sfx/back_scatter.wav',
+    LASER                   :   './assets/music/sfx/capper_shoot.wav',
+    RAILGUN                 :   './assets/music/sfx/sniper_railgun_single_01.wav',
+    SMALL_EXPLOSION         :   './assets/music/sfx/airstrike_small_explosion_03.wav',
+    STRONG_LASER            :   './assets/music/sfx/shooting_star_shoot.wav',
+    BLOCK_BREAK             :   './assets/music/sfx/blockBreak.ogg',
+    BLOCK_PLACE             :   './assets/music/sfx/blockPlace.ogg',
+    BLOCK_DAMAGE            :   './assets/music/sfx/blockDamage.ogg',
+    THUNDER_0               :   './assets/music/sfx/thunder1.ogg',
+    THUNDER_1               :   './assets/music/sfx/thunder2.ogg',
+    THUNDER_2               :   './assets/music/sfx/thunder3.ogg',
+    CAVE_0                  :   './assets/music/sfx/cave1.ogg',
+    CAVE_1                  :   './assets/music/sfx/cave2.ogg',
+    CAVE_2                  :   './assets/music/sfx/cave3.ogg',
+    CAVE_3                  :   './assets/music/sfx/cave4.ogg',
+    CAVE_4                  :   './assets/music/sfx/cave5.ogg',
+    CAVE_5                  :   './assets/music/sfx/cave6.ogg',
+    CAVE_6                  :   './assets/music/sfx/cave7.ogg',
+    CAVE_7                  :   './assets/music/sfx/cave8.ogg',
+    CAVE_8                  :   './assets/music/sfx/cave9.ogg',
+    CAVE_9                  :   './assets/music/sfx/cave10.ogg',
 }
 
 const TILE_LIFE = {
-    DIRT: 1,
+    DIRT: 50,
     RUBY: 1,
-    STONE: 1
+    STONE: 50
 }
 
 const TILE_PATH = {

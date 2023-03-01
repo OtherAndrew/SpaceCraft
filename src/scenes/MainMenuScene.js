@@ -8,7 +8,7 @@ class MainMenu extends Scene {
     }
 
     init() {
-        this.title = "SpaceCraft ver 0.1Alpha"
+        this.title = "SpaceCraft ver 0.5Alpha"
         this.prompt = 'click to start game'
         this.midPoint = {
             x: WIDTH * .5,

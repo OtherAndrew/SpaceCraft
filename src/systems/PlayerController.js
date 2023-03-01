@@ -9,6 +9,9 @@ class PlayerController {
         this.acceleration = 1
         this.fastFall = 3;
         this.restrictMovement = false;
+        this.timer = 0
+        this.timesUp = .25
+        this.ready = true
     }
 
     /**
@@ -20,6 +23,13 @@ class PlayerController {
      * @param activeContainer
      */
     update(keys, mouseDown, mouse, tick, activeContainer) {
+        if(!this.ready) {
+            this.timer += tick
+            if(this.timer > this.timesUp) {
+                this.timer = 0
+                this.ready = true
+            }
+        }
         if (activeContainer.item) {
             this.restrictMovement = activeContainer.item.tag === 'minigun' || activeContainer.item.tag === 'railgun';
         } else {
@@ -105,8 +115,10 @@ class PlayerController {
                     let newBlock;
                     if (active.tag.includes('interact')) {
                         newBlock = this.entityManager.addEntity(generateInteractive(tag, mapX, mapY));
+                        ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_PLACE)
                         if (active.tag.includes('chest')) this.containerManager.registerChest(newBlock);
                     } else newBlock = this.entityManager.addEntity(generateBlock(tag, mapX, mapY, 'worldgen'));
+                    ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_PLACE)
                     if (newBlock) {
                         selected.tag = newBlock.tag
                         selected.id = newBlock.id
@@ -120,6 +132,10 @@ class PlayerController {
                     if (destroyable) {
                         let e = this.entityManager.getEntity(selected.id)
                         e.components.stats.applyDamage(1);
+                        if(this.ready) {
+                            ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_DAMAGE)
+                            this.ready = false
+                        }
                         if(e.components.stats.isDead) {
                             if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
                             selected.tag = 'air'
@@ -128,6 +144,7 @@ class PlayerController {
                             e.isBroken = true;
                             e.isDrawable = false;
                             e.destroy(); // deregister item from entity list
+                            ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_BREAK)
                             this.containerManager.addToInventory('player', e /*resizeBlock(e)*/)
                         }
                     }

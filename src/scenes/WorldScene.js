@@ -59,7 +59,8 @@ class WorldScene extends Scene {
 
         this.giveWeapons2();
         this.spawnTestEntities();
-        ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+       // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+       this.musicPlayer = new MusicPlayer(this.player)
     }
 
     spawnTestEntities() {
@@ -145,6 +146,7 @@ class WorldScene extends Scene {
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime);
+            this.musicPlayer.update(deltaTime)
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
