@@ -74,7 +74,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 1
                 }));
-                ASSET_MANAGER.playAsset(SOUND_PATH.STRONG_LASER);
+                ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'minigun_bullet':
                 projectileOrigin.x += directionVector.x * 10
@@ -111,7 +111,7 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 0
                 }));
-                ASSET_MANAGER.playAsset(SOUND_PATH.RAILGUN);
+                ASSET_MANAGER.playAsset(SOUND_PATH.STRONG_LASER);
                 break;
             case 'fire':
                 projectileOrigin.x += directionVector.x * 30
@@ -259,7 +259,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile destroyBlock',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 12,
+                    damage: 13,
                     origin: position,
                 }));
                 ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);
@@ -271,7 +271,12 @@ class ProjectileFactory {
                     damage: 4,
                     origin: position,
                 }));
-                ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);
+                const num = randomInt(3);
+                switch (num) {
+                    case 0: ASSET_MANAGER.playAsset(SOUND_PATH.SMALL_EXPLOSION1); break;
+                    case 1: ASSET_MANAGER.playAsset(SOUND_PATH.SMALL_EXPLOSION2); break;
+                    case 2: ASSET_MANAGER.playAsset(SOUND_PATH.SMALL_EXPLOSION3); break;
+                }
                 break;
             case 'enemy_explosion':
                 projectileQueue.push(new Explosion({

@@ -2,11 +2,12 @@
 
 
 class SpawnerManager {
-    constructor(factory, map, player) {
+    constructor(factory, map, player, collisionSystem) {
 
         this.terrainMap = map
         this.player = player
         this.mobFactory = factory
+        this.collisionSystem = collisionSystem;
 
         this.currentLightjelly = 0;
         this.currentBloodsucker = 0;
@@ -22,20 +23,44 @@ class SpawnerManager {
         this.playerLocationTimer = 0
 
         this.caveSpawnTimer = 5
-        this.setPlayerLocationTime = 10
+        this.setPlayerLocationTime = 1
         this.playerPos = null
 
         this.spawnTime = 10
         this.mobList = [
-            'creeperilla',
+            // 'creeperilla',
             'dirtcarver',
             'electrojelly',
-            'lightjelly',
+            // 'lightjelly',
             'mossfly',
             'silverfish',
             'spikejumper',
             'wormtank',
+        ];
+
+        this.easyMobList = [
+            'silverfish',
+            'vengefly',
+            'grapebomb',
+            'spore',
+            'wormwood'
         ]
+        this.mediumMobList = [
+            'bloodsucker',
+            'dirtcarver',
+            'grapebomb',
+            'spore'
+        ]
+        this.hardMobList = [
+            'bombfly',
+            'electrojelly',
+            'mossfly'
+        ]
+        this.veryHardMobList = [
+            'spikejumper',
+            'wormtank'
+        ]
+
     }
 
     update(deltaTime) {
@@ -45,21 +70,21 @@ class SpawnerManager {
         this.caveTimer += deltaTime
         this.playerLocationTimer += deltaTime
 
-        if(this.waspTimer > this.spawnTime) {
-            this.waspTimer = 0
-            console.log('spawning vengefly')
-            this.spawnMob('vengefly', 3)
-        }
-        if(this.bloodSuckerTimer > this.spawnTime) {
-            this.bloodSuckerTimer = 0
-            console.log('spawning bloodsucker')
-            this.spawnMob('bloodsucker', 2)
-        }
+        // if(this.waspTimer > this.spawnTime) {
+        //     this.waspTimer = 0
+        //     console.log('spawning vengefly')
+        //     this.spawnMob('vengefly', 3)
+        // }
+        // if(this.bloodSuckerTimer > this.spawnTime) {
+        //     this.bloodSuckerTimer = 0
+        //     console.log('spawning bloodsucker')
+        //     this.spawnMob('bloodsucker', 2)
+        // }
         if (this.playerLocationTimer > this.setPlayerLocationTime) {
             this.playerLocationTimer = 0
             if(!this.playerPos || 
-                getDistance({x:this.player.components.transform.x,
-                             y:this.player.components.transform.y},
+                getDistance({x: this.player.components.transform.x,
+                                 y: this.player.components.transform.y},
                               this.playerPos) > HEIGHT * 1.5) {
                 console.log("setting new pos")
                 this.playerPos = {
@@ -67,7 +92,7 @@ class SpawnerManager {
                     y: this.player.components.transform.y
                 }
             }
-            this.spawnMob(this.mobList[randomInt(this.mobList.length)])
+            this.spawnMob(this.easyMobList[randomInt(this.easyMobList.length)], 1)
         }
 
     }
@@ -80,16 +105,27 @@ class SpawnerManager {
         let dist = getDistance(playerCurrentPos, this.playerPos)
         console.log(dist)
         console.log(playerCurrentPos.y, HEIGHT_PIXELS * .5)
-        if(playerCurrentPos.y < HEIGHT_PIXELS * .5) {
+        if(/*playerCurrentPos.y < HEIGHT_PIXELS * .5*/ true) {
             let amount = randomNumber(1, max)
             for(let i = 0; i < amount; i++) {
-                console.log('spawned')
-                this.mobFactory.build(mob, playerCurrentPos.x - ( WIDTH * plusOrMinus()), playerCurrentPos.y - BLOCKSIZE * 3)
+                console.log(`spawned ${mob}`)
+                const spawnedMob = this.mobFactory.build(mob,
+                    playerCurrentPos.x - (WIDTH * plusOrMinus()),
+                    playerCurrentPos.y - (BLOCKSIZE * 3 * plusOrMinus()));
+                if (spawnedMob && this.collisionSystem.checkTileCollision(spawnedMob)) { // check if in tile
+                    spawnedMob.destroy();
+                    console.log(`destroyed ${mob}`)
+                }
             }
-        } else if(this.playerPos && dist > HEIGHT) {
-            console.log("spawning on player pos...")
-            this.mobFactory.build(mob, this.playerPos.x, this.playerPos.y)
         }
+        // else if(this.playerPos && dist > HEIGHT) {
+        //     console.log(`spawning ${mob} on player pos...`)
+        //     const spawnedMob = this.mobFactory.build(mob, this.playerPos.x, this.playerPos.y)
+        //     if (spawnedMob && this.collisionSystem.checkTileCollision(spawnedMob)) {
+        //         spawnedMob.destroy();
+        //         console.log(`${mob} destroyed`)
+        //     }
+        // }
     }
 
     

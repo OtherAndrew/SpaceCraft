@@ -202,10 +202,12 @@ const SOUND_PATH = {
     EXPLOSION: './assets/music/sfx/pipe_bomb1.wav',
     FIRE: './assets/music/sfx/flame_thrower_loop.wav',
     GRENADE_LAUNCHER: './assets/music/sfx/grenade_launcher_shoot.wav',
-    HAND_CANNON: './assets/music/sfx/back_scatter.wav',
+    HAND_CANNON: './assets/music/sfx/air_burster_shoot.wav',
     LASER: './assets/music/sfx/capper_shoot.wav',
     RAILGUN: './assets/music/sfx/sniper_railgun_single_01.wav',
-    SMALL_EXPLOSION: './assets/music/sfx/airstrike_small_explosion_03.wav',
+    SMALL_EXPLOSION1: './assets/music/sfx/air_burster_explode1.wav',
+    SMALL_EXPLOSION2: './assets/music/sfx/air_burster_explode2.wav',
+    SMALL_EXPLOSION3: './assets/music/sfx/air_burster_explode3.wav',
     STRONG_LASER: './assets/music/sfx/shooting_star_shoot.wav'
 }
 

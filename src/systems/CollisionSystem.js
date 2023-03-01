@@ -92,6 +92,17 @@ class CollisionSystem {
         this.#resolveEnemyAttack();
     }
 
+    checkTileCollision(mob) {
+        console.log("checking tile collision")
+        let out = false;
+        this.tileList.forEach(tile => {
+            if (checkCollision(mob, tile)) {
+                out = true;
+            }
+        });
+        return out;
+    }
+
     /**
      * Resolves projectile collisions.
      */

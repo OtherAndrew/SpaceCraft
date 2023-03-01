@@ -28,7 +28,6 @@ class WorldScene extends Scene {
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.nativenpc =
             this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
-        this.spawnManager = new SpawnerManager(this.mobFactory, this.terrainMap, this.player)
 
         /*
     this.spawnManager.spawnTestEntities({
@@ -48,6 +47,7 @@ class WorldScene extends Scene {
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
+        this.spawnManager = new SpawnerManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
@@ -59,7 +59,7 @@ class WorldScene extends Scene {
 
         this.giveWeapons2();
         this.spawnTestEntities();
-        ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
     }
 
     spawnTestEntities() {
@@ -121,12 +121,12 @@ class WorldScene extends Scene {
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
             }
             // **update state**
-            this.spawnManager.update(deltaTime);
             this.entityManager.update();
             this.renderBox.update();
             this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.refresh();
+            this.spawnManager.update(deltaTime);
 
             this.mobController.update(deltaTime);
             // https://gamedev.stackexchange.com/a/71123
@@ -203,11 +203,24 @@ class WorldScene extends Scene {
         let length = entities.length;
         for (let i = 0; i < length; i++) {
             let e = entities[i];
-            if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
-                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
+            // check tiles
+            if (e.name === 'block') {
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 6 &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 6 &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 4 &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 4) {
+                    e.isDrawable = !e.isBroken
+                    if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
+                } else {
+                    e.isDrawable = false;
+                }
+            }
+            // check everything else
+            else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * (BLOCKSIZE) &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * (BLOCKSIZE) &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * (BLOCKSIZE)) {
                     e.isDrawable = !e.isBroken
                     if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
                 } else {
