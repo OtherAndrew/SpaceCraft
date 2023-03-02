@@ -8,6 +8,7 @@ class MainMenu extends Scene {
     }
 
     init() {
+        this.img = ASSET_MANAGER.cache[BG_PATH.MAIN_MENU]
         this.title = "SpaceCraft ver 0.5Alpha"
         this.prompt = 'click to start game'
         this.midPoint = {
@@ -22,11 +23,18 @@ class MainMenu extends Scene {
         }
     }
 
+    /*
     draw(menuActive, ctx, mouse) {
-        ctx.fillStyle = 'white'
+        
         ctx.textAlign = 'center'
-        ctx.font = 'bold 50px Helvetica'
-        ctx.fillText(this.title, this.midPoint.x - 50, this.midPoint.y - 50)
+        
         ctx.fillText(this.prompt, this.midPoint.x - 50, this.midPoint.y + 50)
     }
+    */
+   draw(menuActive, ctx, mouse) {  
+        ctx.drawImage(this.img, 0, 0)
+        ctx.font = 'bold 50px Helvetica'
+        ctx.fillStyle = 'red'
+        ctx.fillText(this.prompt, this.midPoint.x - 350, this.midPoint.y + 250)
+   }
 }
