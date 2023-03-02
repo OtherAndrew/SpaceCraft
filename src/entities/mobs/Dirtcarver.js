@@ -1,6 +1,6 @@
 /**
  * Dirtcarver is an aggressive crawling mob.
- * Chases after the player at moderate speed and pounces at them to do damage.
+ * Chases after the player at moderate speed.
  *
  * @author Jeep Naarkom
  * @author Andrew Nguyen
@@ -71,31 +71,16 @@ class Dirtcarver {
         const dVector = normalize(origin, target.center)
         let animState;
         const interval = 10;
-        const vX = (target.center.x - origin.x) / (BLOCKSIZE/2);
 
-        if (state.grounded) {
-            if (distance <= BLOCKSIZE * 12) {
-                if (checkCollision(collider, target)) { // attack
-                    transform.velocityX = 0;
-                } else if (distance <= BLOCKSIZE * 6 && state.elapsedTime > interval/2) { // pounce
-                    state.grounded = false;
-                    transform.velocityX = vX;
-                    transform.velocityY = -(GRAVITY + BLOCKSIZE/2);
-                    state.elapsedTime = 0;
-                } else { // chase
-                    transform.velocityX = dVector.x * speed;
-                }
-                animState = target.center.x < origin.x ? "walkL" : "walkR";
-            } else { // idle
-                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 3 : -speed / 3;
-                animState = transform.velocityX < 0 ? "idleL" : "idleR"
+        if (distance <= BLOCKSIZE * 12) {
+            if (checkCollision(collider, target)) { // attack
+                transform.velocityX = 0;
+            } else { // chase
+                transform.velocityX = dVector.x * speed;
             }
-        } else { // airborne
-            if (checkCollision(collider, target) && state.attackTime > interval) {
-                projectileManager.entityShoot("weakimpact", target.center, origin);
-                state.attackTime = 0;
-            }
-            transform.velocityX = vX;
+            animState = target.center.x < origin.x ? "walkL" : "walkR";
+        } else { // idle
+            transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed / 3 : -speed / 3;
             animState = transform.velocityX < 0 ? "idleL" : "idleR"
         }
 

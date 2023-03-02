@@ -208,10 +208,10 @@ class WorldScene extends Scene {
             let e = entities[i];
             // check tiles
             if (e.name === 'block') {
-                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 6 &&
-                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 6 &&
-                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 4 &&
-                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 4) {
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 8 &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 8 &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 8 &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 8) {
                     e.isDrawable = !e.isBroken
                     if (e.isDrawable) this.#checkIfExposed(e)
                 } else {

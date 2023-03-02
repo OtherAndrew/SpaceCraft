@@ -16,8 +16,8 @@ class Bloodspore {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob';
-        this.name = 'spore';
+        this.tag = 'mob enemy';
+        this.name = 'bloodspore';
         this.components = this.#buildComponents(props);
         return this;
     };
@@ -57,7 +57,7 @@ class Bloodspore {
     update(target, projectileManager) {
         const origin = this.components['boxCollider'].center;
         const state = this.components['state'];
-        if (state.attackTime > 1.5 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
+        if (state.attackTime > 2 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
             projectileManager.entityShoot('bloodspore', target.center, origin)
             state.attackTime = 0;
         }

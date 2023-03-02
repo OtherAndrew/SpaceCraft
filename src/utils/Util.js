@@ -238,3 +238,11 @@ const switchInterval = (time, interval) => {
 const getRandom = (list) => {
     return list[Math.floor((Math.random() * list.length))];
 }
+
+const randomVector = () => {
+    const angle = 2 * Math.PI * Math.random();
+    return {
+        x: Math.cos(angle),
+        y: Math.sin(angle)
+    }
+}
