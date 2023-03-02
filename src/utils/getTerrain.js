@@ -442,6 +442,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     }
 
     function spawnChests() {
+        let otherBars = ['item_copper bar', 'item_tin bar', 'item_cobalt bar']
         for (let i = 0; i < CHEST_SPAWN_COUNT; i++) {
             let x, y
             do {
@@ -449,9 +450,16 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 y = Math.floor(randomNumber(startRow + blocksPerChunk, terrainMap.length - blocksPerChunk))
             } while (!terrainMap[y + 1][x].tag.includes('tile'))
             punchHole({x: x, y: y}, 1, 1)
-            generateChest(x, y);
+            let chest = generateChest(x, y);
+            let itemChance = Math.random();
+            if (itemChance > 0.8)
+                containerManager.addToInventory(chest, new Entity(generateItem('item_bismuth bar')));
+            else if (itemChance > 0.3){
+                let roll = randomInt(4)
+                for (let j = 0; j < roll; j++)
+                    containerManager.addToInventory(chest, new Entity(generateItem(otherBars[randomInt(3)])), randomInt(3) + 1);
+            }
         }
-
     }
 
     function generatePlanet() {
