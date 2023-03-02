@@ -314,8 +314,10 @@ class WorldScene extends Scene {
     }
 
     #checkWinCon() {
-        let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
-        return (this.containerManager.checkSufficient(requisite, 'player') && checkCollision(this.player, this.rocket))
+        // let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
+        let requisite = [0, {item: {tag: 'item_bismuth bar'}, count: 5}]
+        return (this.containerManager.checkSufficient(requisite, 'player') 
+            && checkCollision(this.player, this.rocket))
     }
     #gameContinue() {
         this.player.isDrawable = true;

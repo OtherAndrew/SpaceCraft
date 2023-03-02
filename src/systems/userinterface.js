@@ -18,7 +18,7 @@ class HUD {
         // this.add(new Entity(generateInteractive('interact_hub')));
         // this.add(new Entity(generateInteractive('interact_trader')));
         // this.add(new Entity(generateInteractive('interact_furnace')));
-        this.add(new Entity(generateInteractive('interact_table')));
+        // this.add(new Entity(generateInteractive('interact_table')));
         // this.add(new Entity(generateInteractive('interact_station')));
         //
         // this.add(new Entity(generateItem('item_fueltower')));
