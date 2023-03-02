@@ -4,13 +4,13 @@ class CraftingMenu {
         [{tag: 'interact_furnace'},
             {tag: 'tile_dirt', count: 10},
             {tag: 'tile_stone', count: 20}],
-        [{tag: 'interact_anvil'},
-            {tag: 'item_copper bar', count: 10},
-            {tag: 'tile_dirt', count: 30},
-            {tag: 'tile_stone', count: 5}],
+        // [{tag: 'interact_anvil'},
+        //     {tag: 'item_copper bar', count: 10},
+        //     {tag: 'tile_dirt', count: 30},
+        //     {tag: 'tile_stone', count: 5}],
         [{tag: 'interact_table'},
             {tag: 'item_copper bar', count: 5},
-            {tag: 'item_wood', count: 20}],
+            /*{tag: 'item_wood', count: 20}*/],
         [{tag: 'interact_station'},
             {tag: 'interact_table'},
             {tag: 'item_station plan'},
@@ -24,7 +24,7 @@ class CraftingMenu {
     table_recipes = [ // DONE
         [{tag: 'interact_chest'},
             {tag: 'item_iron bar'},
-            {tag: 'item_wood'}],
+            /*{tag: 'item_wood'}*/],
         [{tag: 'interact_trader'},
             {tag: 'item_copper bar', count: 20},
             {tag: 'tile_stone', count: 80}],
@@ -44,7 +44,7 @@ class CraftingMenu {
             {tag: 'tile_silica'}],
         [{tag: 'item_circuit'},
             {tag: 'item_gold bar'},
-            {tag: 'item_amber', count: 5}],    // amber drop from mossamber (rare 10% chance) and lightjelly
+            /*{tag: 'item_amber', count: 5}*/],    // amber drop from mossamber (rare 10% chance) and lightjelly
         // [{tag: 'item_furnace'},
         //     {tag: 'tile_dirt', count: 10},
         //     {tag: 'tile_stone', count: 20}],
@@ -60,7 +60,7 @@ class CraftingMenu {
 
     furnace_recipes = [ // DONE
         [{tag: 'item_charcoal'},
-            {tag: 'item_wood'},
+            /*{tag: 'item_wood'},*/
             {tag: 'tile_coal'}],
         [{tag: 'item_glass'},
             {tag: 'item_charcoal'},
@@ -121,17 +121,17 @@ class CraftingMenu {
             {tag: 'item_handCannon part'},
             {tag: 'item_titanite bar', count: 10},
             {tag: 'item_charcoal', count: 20},
-            {tag: 'item_dirtcarver hide', count: 10}],
+            /*{tag: 'item_dirtcarver hide', count: 10}*/],
         [{tag: 'minigun', name: 'weapon'},
             {tag: 'item_minigun part'},
             {tag: 'item_bismuth bar', count: 10},
             {tag: 'item_charcoal', count: 20},
-            {tag: 'item_wormtank hide', count: 10}],
+            /*{tag: 'item_wormtank hide', count: 10}*/],
         [{tag: 'railgun', name: 'weapon'},
             {tag: 'item_railgun part'},
             {tag: 'item_tungsten bar', count: 10},
             {tag: 'item_charcoal', count: 20},
-            {tag: 'item_sticky slime', count: 10}],
+            /*{tag: 'item_sticky slime', count: 10}*/],
         // [{tag: 'item_mossGun'},
         //     {tag: 'item_ferrite bar', count: 10},
         //     {tag: 'item_charcoal', count: 20},
@@ -170,13 +170,14 @@ class CraftingMenu {
         [{tag: 'item_spider silk', count: 10},
             {tag: 'item_bismuth bar'}],
         [{tag: 'item_station plan'},
-            {tag: 'item_wood', count: 20},
-            {tag: 'item_amber', count: 20}],
+            {tag: 'item_cobalt bar', count: 5}
+            /*{tag: 'item_wood', count: 20},
+            {tag: 'item_amber', count: 20}*/],
         [{tag: 'item_hub plan'},
             {tag: 'item_steel bar', count: 5}],
         [{tag: 'item_paraffintankplan'},
             {tag: 'item_spider silk', count: 10},
-            {tag: 'item_wormtank hide', count: 10},
+            /*{tag: 'item_wormtank hide', count: 10},*/
             {tag: 'item_plexiglass', count: 10}]
     ];
 
