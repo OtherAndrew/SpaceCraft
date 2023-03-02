@@ -12,7 +12,7 @@ const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 const BLOCK_PLACEMENT_DISTANCE = 3.2
 const FALL_DAMAGE_MULTIPLIER = 200;
-const MOB_TIMEOUT = 180;
+const MOB_TIMEOUT = 300;
 const CHEST_SPAWN_COUNT = 30
 
 const MAXCREEPERILA = 2;
@@ -63,6 +63,7 @@ const BG_SCROLL = {
 }
 
 const CHAR_PATH = {
+    BLOODSPORE  :   './assets/sprites/bloodspore.png',
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BOMBFLY     :   './assets/sprites/bombfly.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',

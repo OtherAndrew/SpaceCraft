@@ -229,3 +229,12 @@ const plusOrMinus = () => {
 const switchInterval = (time, interval) => {
     return Math.floor(time / interval) % 2 === 0;
 }
+
+/**
+ * Get random element from array
+ *
+ * @return {*} Random element from array
+ */
+const getRandom = (list) => {
+    return list[Math.floor((Math.random() * list.length))];
+}

@@ -98,7 +98,7 @@ class GrenadeLauncher {
                 sWidth: 32,
                 sHeight: 32
             }),
-            new CWeaponProps('bomb', 1.25)
+            new CWeaponProps('bomb', 1)
         ];
         return this;
     }

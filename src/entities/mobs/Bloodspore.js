@@ -1,33 +1,34 @@
 /**
- * Spore is a stationary, but aggressive mob.
+ * Bloodspore is a stationary, but aggressive mob.
  * Fires spores at the player if they're within range.
+ * Stronger than the normal Spore
  *
  * @author Jeep Naarkom
  * @author Andrew Nguyen
  */
-class Spore {
+class Bloodspore {
     /**
-     * Initializes Spore
+     * Initializes Bloodspore
      * @param {Object} props   Position properties.
      * @param {number} props.x X spawn position.
      * @param {number} props.y Y spawn position.
-     * @returns {Spore} Spore blueprint.
+     * @returns {Spore} Bloodspore blueprint.
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob enemy';
+        this.tag = 'mob';
         this.name = 'spore';
         this.components = this.#buildComponents(props);
         return this;
     };
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.25,
-            maxHealth: 100
+            damage: 0.75,
+            maxHealth: 150
         });
         // const height = 160;
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.SPORE],
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.BLOODSPORE],
             sWidth: 138,
             sHeight: 170,
             scale: BLOCKSIZE * 2 / 138,
@@ -45,7 +46,6 @@ class Spore {
             width: sprite.dWidth,
             height: sprite.dHeight,
         });
-
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
@@ -57,8 +57,8 @@ class Spore {
     update(target, projectileManager) {
         const origin = this.components['boxCollider'].center;
         const state = this.components['state'];
-        if (state.attackTime > 2 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
-            projectileManager.entityShoot('spore', target.center, origin)
+        if (state.attackTime > 1.5 && getDistance(origin, target.center) <= BLOCKSIZE * 16) {
+            projectileManager.entityShoot('bloodspore', target.center, origin)
             state.attackTime = 0;
         }
     }

@@ -47,7 +47,7 @@ class WorldScene extends Scene {
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
-        this.spawnManager = new SpawnerManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
+        this.spawnManager = new SpawnManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
@@ -127,7 +127,7 @@ class WorldScene extends Scene {
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.refreshNew();
 
-            this.spawnManager.update(deltaTime);
+            this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 
             this.mobController.update(deltaTime);
             // https://gamedev.stackexchange.com/a/71123

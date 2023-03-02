@@ -67,10 +67,10 @@ class Bloodsucker {
 
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleL', new AnimationProps(0, 0,4));
-        aMap.set('idleR', new AnimationProps(0, 1,4));
-        aMap.set('attackL', new AnimationProps(0, 2,3));
-        aMap.set('attackR', new AnimationProps(0, 3,3));
+        aMap.set('idleL', new AnimationProps(0, 0,4, 20));
+        aMap.set('idleR', new AnimationProps(0, 1,4, 20));
+        aMap.set('attackL', new AnimationProps(0, 2,3, 30));
+        aMap.set('attackR', new AnimationProps(0, 3,3, 30));
     };
 
     update(target, projectileManager) {

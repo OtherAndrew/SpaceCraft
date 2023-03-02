@@ -28,7 +28,7 @@ class Player {
             speed: 5,
             // regenCooldown: 10,
             regenAmount: 0.1,
-            // invincible: true
+            invincible: true
         });
         const spriteWidth = 200;
         const sprite = new CSprite({

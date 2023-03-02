@@ -184,6 +184,21 @@ class ProjectileFactory {
         const projectileQueue = [];
         let sprite;
         switch (type) {
+            case 'bloodspore':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                projectileQueue.push(new Projectile({
+                    tag: 'enemy',
+                    sprite: this.darkOrbSprite(8, 1),
+                    damage: 50,
+                    speed: BLOCKSIZE * 0.05,
+                    dVector: directionVector,
+                    origin: origin,
+                    duration: 5,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                break;
             case 'spore':
                 origin.x += directionVector.x * 10;
                 origin.y += directionVector.y * 10;
