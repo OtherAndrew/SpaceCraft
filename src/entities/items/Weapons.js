@@ -78,7 +78,7 @@ class Flamethrower {
                 sWidth: 32,
                 sHeight: 32
             }),
-            new CWeaponProps('fire', 6, 3)
+            new CWeaponProps('fire', 6, 3, SOUND_PATH.FIRE)
         ];
         return this;
     }
@@ -139,7 +139,7 @@ class Minigun {
                 sWidth: 42,
                 sHeight: 42,
             }),
-            new CWeaponProps('minigun_bullet', 7.5, 2.5)
+            new CWeaponProps('minigun_bullet', 7.5, 2.5, SOUND_PATH.MINIGUN)
         ];
         return this;
     }

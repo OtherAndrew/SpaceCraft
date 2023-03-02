@@ -126,7 +126,6 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 0.33
                 }));
-                // ASSET_MANAGER.playAsset(SOUND_PATH.FIRE);
                 break;
             case 'bomb':
                 projectileOrigin.x += directionVector.x * 20;

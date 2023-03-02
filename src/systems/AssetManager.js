@@ -119,6 +119,17 @@ class AssetManager {
             aud.play();
         });
     };
+
+    isPlaying(path) {
+        let audio = this.cache[path];
+        return !audio.paused;
+    }
+
+    stop(path) {
+        const audio = this.cache[path];
+        audio.pause()
+        audio.currentTime = 0;
+    }
 }
 
 

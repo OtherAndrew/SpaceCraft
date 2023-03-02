@@ -27,6 +27,18 @@ class PlayerController {
         }
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
+
+        if (activeContainer.item && activeContainer.item.name === 'weapon') {
+            const wProps = activeContainer.item.components["weaponProps"]
+            if (wProps.sound) {
+                if (mouseDown && wProps.readyToFire()) {
+                    if (!ASSET_MANAGER.isPlaying(wProps.sound)) ASSET_MANAGER.playAsset(wProps.sound);
+                } else {
+                    ASSET_MANAGER.stop(wProps.sound);
+                }
+            }
+        }
+
     }
 
     handleKeyboard(key, tick) {
