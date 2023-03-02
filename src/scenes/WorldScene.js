@@ -155,6 +155,7 @@ class WorldScene extends Scene {
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
+        this.textBox.update(deltaTime)
         this.hud.update(menuActive, keys, wheel);
     }
 
