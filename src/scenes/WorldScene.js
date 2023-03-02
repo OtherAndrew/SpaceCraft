@@ -211,22 +211,17 @@ class WorldScene extends Scene {
                     e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 4 &&
                     e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 4) {
                     e.isDrawable = !e.isBroken
-                    if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
+                    if (e.isDrawable) this.#checkIfExposed(e)
                 } else {
                     e.isDrawable = false;
                 }
             }
             // check everything else
             else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
-                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
+                e.isDrawable = e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * (BLOCKSIZE) &&
-                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * (BLOCKSIZE)) {
-                    e.isDrawable = !e.isBroken
-                    if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
-                } else {
-                    e.isDrawable = false;
-                }
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * (BLOCKSIZE)
             }
         }
     }
