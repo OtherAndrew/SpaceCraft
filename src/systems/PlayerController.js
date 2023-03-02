@@ -157,6 +157,7 @@ class PlayerController {
             if (selected.tag.includes('chest')) this.containerManager.loadInventory(cleanTag(selected.tag));
             else this.containerManager.loadInventories(cleanTag(selected.tag));
             this.game.activateMenu();
+            ASSET_MANAGER.playAsset(SOUND_PATH.CHEST_OPEN)
         }
     }
 

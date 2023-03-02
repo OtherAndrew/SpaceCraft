@@ -61,6 +61,9 @@ class WorldScene extends Scene {
         this.spawnTestEntities();
        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
        this.musicPlayer = new MusicPlayer(this.player)
+       ASSET_MANAGER.adjustVolume(.2)
+       this.textBox = new TextBox()
+       this.containerManager.textBox = this.textBox
     }
 
     spawnTestEntities() {
@@ -161,6 +164,7 @@ class WorldScene extends Scene {
             ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
+            this.textBox.draw(ctx)
         }
         // this.#drawColliders(ctx);
 

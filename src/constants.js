@@ -5,7 +5,7 @@
 //Game Values
 const WIDTH = 1024
 const HEIGHT = 768
-const GRIDSIZE = 15
+const GRIDSIZE = 15 //don't change lol
 const BLOCKSIZE = 32
 const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
 const HEIGHT_PIXELS = WIDTH_PIXELS * 2
@@ -50,7 +50,8 @@ const BG_PATH = {
     CAVE_0          :   './assets/backgrounds/cave_0_50.png',
     CAVE_1          :   './assets/backgrounds/cave_1_50.png',
     CAVE_2          :   './assets/backgrounds/cave_2_50.png',
-    CAVE_3          :   './assets/backgrounds/cave_3_50.png'
+    CAVE_3          :   './assets/backgrounds/cave_3_50.png',
+    MAIN_MENU       :   './assets/backgrounds/mainMenuSplashScreen.png'
 }
 
 const BG_SCROLL = {
@@ -223,12 +224,14 @@ const SOUND_PATH = {
     CAVE_7                  :   './assets/music/sfx/cave8.ogg',
     CAVE_8                  :   './assets/music/sfx/cave9.ogg',
     CAVE_9                  :   './assets/music/sfx/cave10.ogg',
+    CHEST_OPEN              :   './assets/music/sfx/chestOpen.ogg',
+    CHEST_CLOSE             :   './assets/music/sfx/chestClose.ogg',
 }
 
 const TILE_LIFE = {
-    DIRT: 50,
+    DIRT: 10,
     RUBY: 1,
-    STONE: 50
+    STONE: 10
 }
 
 const TILE_PATH = {

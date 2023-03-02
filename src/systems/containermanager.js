@@ -1,5 +1,6 @@
 class ContainerManager {
     constructor() {
+        this.textBox = null
         this.owners = {};               // owners and their inventory
 
         this.slots = [];                // every container by their universal slot number
@@ -90,7 +91,10 @@ class ContainerManager {
 
     addPlayerCount(item, count) {
         let current = this.playerCounts.get(item.tag);
-        if (current) this.playerCounts.set(item.tag, current + count);
+        if (current) {
+            this.playerCounts.set(item.tag, current + count);
+            this.textBox.append(`Added ${count} ${item.tag}`)
+        } 
         else this.playerCounts.set(item.tag, count);
     }
 
