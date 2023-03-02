@@ -39,7 +39,8 @@ class Spikejumper {
         const transform = new CTransform({
             x: props.x,
             y: props.y,
-            hasGravity: true
+            hasGravity: true,
+            maxVelocityX: BLOCKSIZE / 4
         });
         const cWidth = BLOCKSIZE * 1.5;
         const cHeight = BLOCKSIZE * 1.25;
@@ -71,7 +72,7 @@ class Spikejumper {
         const vX = (target.center.x - origin.x) / (BLOCKSIZE * 0.5);
 
         if (state.grounded) {
-            if ((distance < BLOCKSIZE * 14 || collider.attackCollision) && state.elapsedTime > interval) { // jump
+            if ((distance < BLOCKSIZE * 16 || collider.attackCollision) && state.elapsedTime > interval) { // jump
                 state.grounded = false;
                 transform.velocityX = vX;
                 transform.velocityY =

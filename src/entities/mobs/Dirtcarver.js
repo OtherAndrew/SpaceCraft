@@ -40,6 +40,7 @@ class Dirtcarver {
             x: props.x,
             y: props.y,
             hasGravity: true,
+            maxVelocityX: BLOCKSIZE / 4
         });
         const cWidth = BLOCKSIZE * 1.8;
         const cHeight = BLOCKSIZE * 0.85;

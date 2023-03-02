@@ -37,12 +37,25 @@ class PlayerController {
         }
         this.pSprite.setAnimation(this.handleKeyboard(keys, tick));
         if (mouseDown) this.handleMouse(mouse, activeContainer, tick);
+
+        if (activeContainer.item && activeContainer.item.name === 'weapon') {
+            const wProps = activeContainer.item.components["weaponProps"]
+            if (wProps.sound) {
+                if (mouseDown && wProps.readyToFire()) {
+                    if (!ASSET_MANAGER.isPlaying(wProps.sound)) ASSET_MANAGER.playAsset(wProps.sound);
+                } else {
+                    ASSET_MANAGER.stop(wProps.sound);
+                }
+            }
+        }
+
     }
 
     handleKeyboard(key, tick) {
         let animState = this.pSprite.currentState;
 
         if ((key[' '] || key['w']) && this.pState.grounded && !this.restrictMovement) { //jump
+            this.pState.grounded = false;
             this.pTransform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
         }
 
@@ -161,7 +174,6 @@ class PlayerController {
     }
 
     #fireWeapon(activeWeapon, target, tick) {
-        // const wProps = this.weaponMap.get(activeWeapon);
         const wProps = activeWeapon.components["weaponProps"];
         if (wProps.readyToFire()) {
             this.projectileFactory.playerShoot(wProps.projectileType, target, this.player)

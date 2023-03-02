@@ -16,7 +16,7 @@ class RenderSystem {
                 let destX = e.components.transform.x - xSpeed;
                 let destY = e.components.transform.y - ySpeed;
                 if (e.tag.includes('tile')) {
-                    if (!e.components['boxCollider']) {
+                    if (!e.visCode) {
                         ctx.drawImage(ASSET_MANAGER.cache[OVERLAY_PATH.OBSCURED], destX, destY)
                     } else {
                         ctx.drawImage(

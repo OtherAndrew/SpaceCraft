@@ -15,7 +15,7 @@ class Nativenpc {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob ignoreAttack';
+        this.tag = 'ignoreAttack npc';
         this.name = 'nativenpc';
         this.components = this.#buildComponents(props);
         return this;

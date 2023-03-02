@@ -28,7 +28,6 @@ class WorldScene extends Scene {
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.nativenpc =
             this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
-        this.spawnManager = new SpawnerManager(this.mobFactory, this.terrainMap, this.player)
 
         /*
     this.spawnManager.spawnTestEntities({
@@ -41,13 +40,14 @@ class WorldScene extends Scene {
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
             this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
-        this.mobController = new EntityController(this.entityManager.getEntities, this.player, this.projectileFactory);
+        this.mobController = new MobController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
         this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
+        this.spawnManager = new SpawnManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
         this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
@@ -59,8 +59,8 @@ class WorldScene extends Scene {
 
         this.giveWeapons2();
         this.spawnTestEntities();
-       // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
-       this.musicPlayer = new MusicPlayer(this.player)
+        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+        this.musicPlayer = new MusicPlayer(this.player)
     }
 
     spawnTestEntities() {
@@ -122,14 +122,15 @@ class WorldScene extends Scene {
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
             }
             // **update state**
-            this.spawnManager.update(deltaTime);
             this.entityManager.update();
             this.renderBox.update();
             this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.refresh();
+            this.collisionSystem.refreshNew();
 
-            this.mobController.update(deltaTime);
+            this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
+
+            this.mobController.update(deltaTime, this.collisionSystem.mobList);
             // https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
             this.movementSystem.updateY(deltaTime);
@@ -205,16 +206,24 @@ class WorldScene extends Scene {
         let length = entities.length;
         for (let i = 0; i < length; i++) {
             let e = entities[i];
-            if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
-                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
-                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
+            // check tiles
+            if (e.name === 'block') {
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 6 &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 6 &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 4 &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 4) {
                     e.isDrawable = !e.isBroken
-                    if (e.isDrawable && e.tag.includes('tile')) this.#checkIfExposed(e)
+                    if (e.isDrawable) this.#checkIfExposed(e)
                 } else {
                     e.isDrawable = false;
                 }
+            }
+            // check everything else
+            else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
+                e.isDrawable = e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * (BLOCKSIZE) &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * (BLOCKSIZE) &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * (BLOCKSIZE)
             }
         }
     }
@@ -253,19 +262,19 @@ class WorldScene extends Scene {
         let visCheck = this.#isExposed(posY, posX);
         if (visCheck.exposed) {
             e.visCode = visCheck.visCode; // placeholder
-            if (!e.components["boxCollider"]) {
-                e.addComponent([
-                    new CBoxCollider({
-                        x: e.components.transform.x,
-                        y: e.components.transform.y,
-                        width: BLOCKSIZE,
-                        height: BLOCKSIZE
-                    })
-                ]);
-            }
+            // if (!e.components["boxCollider"]) {
+            //     e.addComponent([
+            //         new CBoxCollider({
+            //             x: e.components.transform.x,
+            //             y: e.components.transform.y,
+            //             width: BLOCKSIZE,
+            //             height: BLOCKSIZE
+            //         })
+            //     ]);
+            // }
         } else {
             delete e.visCode; // placeholder
-            delete e.components["boxCollider"];
+            // delete e.components["boxCollider"];
         }
     }
 
@@ -316,7 +325,7 @@ class WorldScene extends Scene {
     #checkWinCon() {
         // let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
         let requisite = [0, {item: {tag: 'item_bismuth bar'}, count: 5}]
-        return (this.containerManager.checkSufficient(requisite, 'player') 
+        return (this.containerManager.checkSufficient(requisite, 'player')
             && checkCollision(this.player, this.rocket))
     }
     #gameContinue() {

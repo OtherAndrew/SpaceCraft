@@ -22,9 +22,10 @@ class HealthSystem {
                     e.destroy();
                 }
                 // else if (e.name === 'block') {
-                //     e.tag = 'air'
-                //     e.id = null
-                //     delete e.components["boxCollider"]
+                //     e.tag = 'air';
+                //     e.id = null;
+                //     e.isBroken = true;
+                //     delete e.components["boxCollider"];
                 // }
             } else {
                 if (eStats.canRegen()) {

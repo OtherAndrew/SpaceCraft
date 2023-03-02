@@ -12,7 +12,7 @@ const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 const BLOCK_PLACEMENT_DISTANCE = 3.2
 const FALL_DAMAGE_MULTIPLIER = 200;
-const MOB_TIMEOUT = 900;
+const MOB_TIMEOUT = 300;
 const CHEST_SPAWN_COUNT = 30
 
 const MAXCREEPERILA = 2;
@@ -63,6 +63,7 @@ const BG_SCROLL = {
 }
 
 const CHAR_PATH = {
+    BLOODSPORE  :   './assets/sprites/bloodspore.png',
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BOMBFLY     :   './assets/sprites/bombfly.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
@@ -223,6 +224,19 @@ const SOUND_PATH = {
     CAVE_7                  :   './assets/music/sfx/cave8.ogg',
     CAVE_8                  :   './assets/music/sfx/cave9.ogg',
     CAVE_9                  :   './assets/music/sfx/cave10.ogg',
+    BOSS: './assets/music/themes/boss_battle.mp3',
+    EXPLOSION: './assets/music/sfx/pipe_bomb1.wav',
+    FIRE: './assets/music/sfx/flame_thrower_long.wav',
+    FIRE_DAMAGE: './assets/music/sfx/flame_thrower_fire_hit.wav',
+    GRENADE_LAUNCHER: './assets/music/sfx/grenade_launcher_shoot.wav',
+    HAND_CANNON: './assets/music/sfx/air_burster_shoot.wav',
+    LASER: './assets/music/sfx/capper_shoot.wav',
+    MINIGUN: './assets/music/sfx/minigun_shoot_long.wav',
+    RAILGUN: './assets/music/sfx/sniper_railgun_single_01.wav',
+    SMALL_EXPLOSION1: './assets/music/sfx/air_burster_explode1.wav',
+    SMALL_EXPLOSION2: './assets/music/sfx/air_burster_explode2.wav',
+    SMALL_EXPLOSION3: './assets/music/sfx/air_burster_explode3.wav',
+    STRONG_LASER: './assets/music/sfx/shooting_star_shoot.wav'
 }
 
 const TILE_LIFE = {
