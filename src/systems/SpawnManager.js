@@ -10,7 +10,7 @@ class SpawnManager {
         this.collisionSystem = collisionSystem;
 
         this.elapsedTime = 0
-        this.spawnCooldown = 0.33
+        this.spawnCooldown = 2
 
         this.easyMobList = [
             'silverfish',
@@ -34,9 +34,10 @@ class SpawnManager {
         ]
         this.hardMobList = [
             'bloodsucker',
+            'bloodsucker',
+            'dirtcarver',
             'dirtcarver',
             'bombfly',
-            'electrojelly',
             'mossfly',
             'mossfly',
             'grapebomb',
@@ -57,7 +58,7 @@ class SpawnManager {
     update(deltaTime, mobList) {
         this.elapsedTime += deltaTime;
         // console.log(`spawned: ${mobList.length}`)
-        if (this.elapsedTime > this.spawnCooldown && mobList.length < 16) {
+        if (this.elapsedTime > this.spawnCooldown && mobList.length < 10) {
             const playerPosition = {
                 x: this.player.components['boxCollider'].center.x,
                 y: this.player.components['boxCollider'].bottom
