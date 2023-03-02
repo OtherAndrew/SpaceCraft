@@ -12,7 +12,7 @@ const HEIGHT_PIXELS = WIDTH_PIXELS * 2
 const GRAVITY = 1
 const BLOCK_PLACEMENT_DISTANCE = 3.2
 const FALL_DAMAGE_MULTIPLIER = 200;
-const MOB_TIMEOUT = 900;
+const MOB_TIMEOUT = 300;
 const CHEST_SPAWN_COUNT = 30
 
 const MAXCREEPERILA = 2;
@@ -64,6 +64,7 @@ const BG_SCROLL = {
 }
 
 const CHAR_PATH = {
+    BLOODSPORE  :   './assets/sprites/bloodspore.png',
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BOMBFLY     :   './assets/sprites/bombfly.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
@@ -201,12 +202,15 @@ const PROJECTILE_PATH = {
 const SOUND_PATH = {
     BOSS                    :   './assets/music/themes/boss_battle.mp3',
     EXPLOSION               :   './assets/music/sfx/pipe_bomb1.wav',
-    FIRE                    :   './assets/music/sfx/flame_thrower_loop.wav',
+    FIRE                    :   './assets/music/sfx/flame_thrower_long.wav',
     GRENADE_LAUNCHER        :   './assets/music/sfx/grenade_launcher_shoot.wav',
-    HAND_CANNON             :   './assets/music/sfx/back_scatter.wav',
+    HAND_CANNON             :   './assets/music/sfx/air_burster_shoot.wav',
     LASER                   :   './assets/music/sfx/capper_shoot.wav',
+    MINIGUN                 :   './assets/music/sfx/minigun_shoot_long.wav',
     RAILGUN                 :   './assets/music/sfx/sniper_railgun_single_01.wav',
-    SMALL_EXPLOSION         :   './assets/music/sfx/airstrike_small_explosion_03.wav',
+    SMALL_EXPLOSION1        :   './assets/music/sfx/air_burster_explode1.wav',
+    SMALL_EXPLOSION2        :   './assets/music/sfx/air_burster_explode2.wav',
+    SMALL_EXPLOSION3        :   './assets/music/sfx/air_burster_explode3.wav',
     STRONG_LASER            :   './assets/music/sfx/shooting_star_shoot.wav',
     BLOCK_BREAK             :   './assets/music/sfx/blockBreak.ogg',
     BLOCK_PLACE             :   './assets/music/sfx/blockPlace.ogg',
@@ -229,9 +233,9 @@ const SOUND_PATH = {
 }
 
 const TILE_LIFE = {
-    DIRT: 10,
-    RUBY: 1,
-    STONE: 10
+    DIRT    :   35,
+    SAND    :   10,
+    STONE   :   45
 }
 
 const TILE_PATH = {

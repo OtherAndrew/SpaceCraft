@@ -18,7 +18,7 @@ class HUD {
         // this.add(new Entity(generateInteractive('interact_hub')));
         // this.add(new Entity(generateInteractive('interact_trader')));
         // this.add(new Entity(generateInteractive('interact_furnace')));
-        this.add(new Entity(generateInteractive('interact_table')));
+        // this.add(new Entity(generateInteractive('interact_table')));
         // this.add(new Entity(generateInteractive('interact_station')));
         //
         // this.add(new Entity(generateItem('item_fueltower')));
@@ -48,7 +48,7 @@ class HUD {
             let active = this.activeContainer.item;
             if (active && active.name && active.name.includes('weapon')) {
                 let weaponStats = active.components.weaponProps;
-                if (weaponStats.cooldownDuration > 1) {
+                if (weaponStats.cooldownDuration >= 1) {
                     ctx.drawImage(ASSET_MANAGER.cache[MISC_PATH.BULLETFRAME], 462, 650, 100, 30)
                     let cooldownPercentage;
                     if (weaponStats.cooldownTime === 0 && weaponStats.fireDuration === 0) {

@@ -43,6 +43,12 @@ class Blueprint {
                 regenCooldown: props.regenCooldown,
                 regenAmount: props.regenAmount,
                 invincible: props.invincible
+            }),
+            new CBoxCollider({
+                x: props.x,
+                y: props.y,
+                width: BLOCKSIZE,
+                height: BLOCKSIZE
             })
         ]
     };
@@ -74,7 +80,7 @@ const generateBlock = (tag, x, y, mode) => {
     return new Blueprint({
         tag: tag,
         sprite: ASSET_MANAGER.cache[TILE_PATH[id]],
-        maxHealth: TILE_LIFE[id] || 1, // Placeholder 1
+        maxHealth: TILE_LIFE[id] || 55, // Placeholder
         invincible: tag.includes('bedrock'),
         x: tempX,
         y: tempY,

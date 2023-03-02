@@ -70,12 +70,13 @@ class Electrojelly {
         const dVector = normalize(origin, target.center)
         const interval = 40;
 
-        if (distance > BLOCKSIZE * 16) {
-            if (switchInterval(state.elapsedTime, interval/2)) {
-                transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed : -speed;
-            } else {
-                transform.velocityX = 0;
-            }
+        if (distance > BLOCKSIZE * 20) {
+            // if (switchInterval(state.elapsedTime, interval/2)) {
+            //     transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed : -speed;
+            // } else {
+            //    transform.velocityX = 0;
+            // }
+            transform.velocityX = 0;
             transform.velocityY = 0;
         } else {
             transform.velocityX = dVector.x * speed;

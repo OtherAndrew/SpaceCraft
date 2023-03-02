@@ -78,7 +78,7 @@ class Flamethrower {
                 sWidth: 32,
                 sHeight: 32
             }),
-            new CWeaponProps('fire', 6, 3)
+            new CWeaponProps('fire', 5, 7, SOUND_PATH.FIRE)
         ];
         return this;
     }
@@ -98,7 +98,7 @@ class GrenadeLauncher {
                 sWidth: 32,
                 sHeight: 32
             }),
-            new CWeaponProps('bomb', 1.25)
+            new CWeaponProps('bomb', 1)
         ];
         return this;
     }
@@ -139,7 +139,7 @@ class Minigun {
                 sWidth: 42,
                 sHeight: 42,
             }),
-            new CWeaponProps('minigun_bullet', 7.5, 2.5)
+            new CWeaponProps('minigun_bullet', 12, 12, SOUND_PATH.MINIGUN)
         ];
         return this;
     }
@@ -160,7 +160,7 @@ class Railgun {
                 sWidth: 36,
                 sHeight: 36,
             }),
-            new CWeaponProps('railgun_bullet', 5)
+            new CWeaponProps('railgun_bullet', 4)
         ];
         return this;
     }

@@ -8,6 +8,7 @@ class MobFactory {
         let mob;
         const position = { x: x, y: y };
         switch (type) {
+            case 'bloodspore': mob = new Bloodspore(position); break;
             case 'bloodsucker': mob = new Bloodsucker(position); break;
             case 'bombfly': mob = new Bombfly(position); break;
             case 'creeperilla': mob = new Creeperilla(position); break;

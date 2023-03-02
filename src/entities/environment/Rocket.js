@@ -9,7 +9,7 @@ class Rocket {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'rocket ignore';
+        this.tag = 'rocket ignore npc';
         this.name = 'rocket';
         this.components = this.#buildComponents(props);
     };
