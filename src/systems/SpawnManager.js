@@ -56,7 +56,7 @@ class SpawnManager {
 
     update(deltaTime, mobList) {
         this.elapsedTime += deltaTime;
-        console.log(mobList.length)
+        // console.log(`spawned: ${mobList.length}`)
         if (this.elapsedTime > this.spawnCooldown && mobList.length < 16) {
             const playerPosition = {
                 x: this.player.components['boxCollider'].center.x,
@@ -81,13 +81,14 @@ class SpawnManager {
     spawnMob(mob, playerPosition) {
         // console.log(`attempting to spawn ${mob}`)
         const spawnedMob = this.mobFactory.build(mob,
-            playerPosition.x - (randomNumber(WIDTH * 0.66, WIDTH) * plusOrMinus()),
-            playerPosition.y - (randomNumber(0, HEIGHT * 1.5) * plusOrMinus()));
+            playerPosition.x - (/*randomNumber(WIDTH * 0.66, WIDTH * 0.75)*/ WIDTH * 0.66 * plusOrMinus()),
+            playerPosition.y - (randomNumber(0, HEIGHT * 0.66) * plusOrMinus()));
         if (spawnedMob && this.collisionSystem.checkTileCollision(spawnedMob)) { // check if in tile
             spawnedMob.destroy();
             // console.log(`failed to spawn ${mob}`);
         } else {
             // console.log(`spawned ${mob} at x: ${Math.floor(spawnedMob.components.transform.x)}, y: ${Math.floor(spawnedMob.components.transform.y)}`);
+            console.log(`spawned ${mob}`);
         }
     }
 }

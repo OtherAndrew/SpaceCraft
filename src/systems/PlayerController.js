@@ -115,7 +115,7 @@ class PlayerController {
             x: pos.x + 25 / 2,
             y: pos.y + 25 / 2
         };
-        console.log(selected.tag) // DEBUGGING
+        // console.log(selected.tag) // DEBUGGING
         if (selected.tag.includes('chest')) {
             console.log(selected);
             console.log(this.containerManager.getInventory(cleanTag(selected.tag)));

@@ -87,10 +87,10 @@ class WorldScene extends Scene {
             new Pickaxe(),
             new LaserPistol(),
             new LaserGun(),
-            new LaserRifle(),
             new Flamethrower(),
-            new GrenadeLauncher(),
+            new LaserRifle(),
             new HandCannon(),
+            new GrenadeLauncher(),
             new Minigun(),
             new Railgun(),
         ]
@@ -130,7 +130,7 @@ class WorldScene extends Scene {
 
             this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 
-            this.mobController.update(deltaTime, this.collisionSystem.mobList);
+            this.mobController.update(deltaTime);
             // https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
             this.movementSystem.updateY(deltaTime);

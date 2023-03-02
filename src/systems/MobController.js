@@ -5,13 +5,13 @@ class MobController {
         Object.assign(this, { entities, player, projectileFactory })
     }
 
-    update(tick, mobList) {
+    update(tick) {
         const pCollider = this.player.components['boxCollider']
         const updateList = this.entities.filter(e => /*e.isDrawable &&*/ e.tag.includes('mob') && e.name !== 'nativenpc');
-        mobList.forEach(e => {
-            if (getDistance(e.components['boxCollider'].center, pCollider) > WIDTH * 1.5) {
+        updateList.forEach(e => {
+            if (getDistance(e.components['boxCollider'].center, pCollider) > WIDTH) {
                 e.destroy();
-                console.log(`despawned: ${e.name}`)
+                console.log(`despawned ${e.name}`)
             } else {
                 e.components['state'].elapsedTime += tick;
                 e.components['state'].attackTime += tick;
