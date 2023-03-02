@@ -226,9 +226,9 @@ const SOUND_PATH = {
 }
 
 const TILE_LIFE = {
-    DIRT: 50,
-    RUBY: 1,
-    STONE: 50
+    DIRT    :   35,
+    SAND    :   10,
+    STONE   :   45
 }
 
 const TILE_PATH = {

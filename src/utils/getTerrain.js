@@ -1,5 +1,3 @@
-
-
 const getTerrain = (entityManager, containerManager, mobFactory) => {
 
     let noiseMap = []
@@ -147,36 +145,36 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     let startRow = 226
     let oreCount = {}
 
-        /**
+    /**
      * Private class function. Generates a (2*gridSize) * (2*gridSize) matrix of perlin noise values
      * The values are from -1 to 1 so it is modified by multiplying by valueOffset and adding valueAddition
      * so it can be easy to work with.
      * Range from 0 to 120 ish.
      */
-        function generateNoiseMap() {
-            let valueOffset = 10
-            let valueAdditional = 5
-            for(let y = 0; y < GRIDSIZE; y += 1/GRIDSIZE) {
-                let row = []
-                for(let x = 0; x < GRIDSIZE; x += 1/GRIDSIZE) {
-                    let v = parseInt(perlin.get(x,y) * valueOffset + valueAdditional)
-                    row.push(v)
-                }
-                noiseMap.push(row)
-                row = []
+    function generateNoiseMap() {
+        let valueOffset = 10
+        let valueAdditional = 5
+        for (let y = 0; y < GRIDSIZE; y += 1 / GRIDSIZE) {
+            let row = []
+            for (let x = 0; x < GRIDSIZE; x += 1 / GRIDSIZE) {
+                let v = parseInt(perlin.get(x, y) * valueOffset + valueAdditional)
+                row.push(v)
             }
+            noiseMap.push(row)
+            row = []
         }
+    }
 
 
-         /**
+    /**
      * Private class function. Uses a noiseMap to place blocks according to the blockValues.
-     * 
+     *
      */
     function generateTerrain() {
         //fill first half of terrainmap matrix with empty air cells
-        for(let i = 0; i < noiseMap.length; i++) {
+        for (let i = 0; i < noiseMap.length; i++) {
             let r = []
-            for(let j = 0; j < noiseMap.length; j++) {
+            for (let j = 0; j < noiseMap.length; j++) {
                 r.push({
                     tag: 'air',
                     id: null
@@ -185,7 +183,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             terrainMap.push(r)
         }
         let sizeSoFar = terrainMap[0].length
-        noiseMap.forEach( (row, y) => {
+        noiseMap.forEach((row, y) => {
             y += sizeSoFar
             let r = []
             row.forEach((val, x) => {
@@ -206,14 +204,14 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     }
 
     /**
-     * Creates a tile entity according to the noise value 
-     * @param {*} props 
-     * @returns 
+     * Creates a tile entity according to the noise value
+     * @param {*} props
+     * @returns
      */
     function createBlock(props) {
         let value = clamp(props.value, 0, 10)
-        let index = blockValues['CHUNK_'+ Math.floor((props.row - startRow) / blocksPerChunk)][value]
-        if(index === 'null') {
+        let index = blockValues['CHUNK_' + Math.floor((props.row - startRow) / blocksPerChunk)][value]
+        if (index === 'null') {
             return {tag: 'air', id: null}
         }
         index = randomize(index)
@@ -224,14 +222,13 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
     function randomize(str) {
         let result = str
-        let replacement =  randomInt(30) > 15 ? 'stone' : 'dirt'
+        let replacement = randomInt(30) > 15 ? 'stone' : 'dirt'
         let chance = GENSTATS[result.toUpperCase()]
-        if(chance) {
+        if (chance) {
             result = randomInt(30) > chance ? replacement : str
         }
         return result
     }
-
 
 
     function generateBackgrounds() {
@@ -244,7 +241,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let caveBGYVal = HEIGHT_PIXELS - (undergroundHeight * scaleUnder) - HEIGHT * .5
         let offset = BLOCKSIZE * 2
 
-        for(let i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
 
             entityManager.addEntity({
                 tag: 'background_0',
@@ -283,7 +280,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  caveBGYVal,
+                        y: caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -294,13 +291,13 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                     })
                 ]
             })
-            
+
             entityManager.addEntity({
                 tag: 'background_4',
                 components: [
                     new CTransform({
                         x: (undergroundWidth * i * scaleUnder),
-                        y:  caveBGYVal,
+                        y: caveBGYVal,
                         maxVelocity: 0
                     }),
                     new CSprite({
@@ -313,6 +310,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             })
         }
     }
+
     function generateBorders() {
         // left border collider
         entityManager.addEntity({
@@ -367,12 +365,13 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     }
 
     function generateStatues() {
-        for(let r = 0; r < 3; r++) {
-            let pos = chooseRandomLocation(6,7)
+        let gunParts = ['item_minigun part', 'item_railgun part', 'item_grenadeLauncher part', 'item_handCannon part']
+        for (let r = 0; r < 4; r++) { // for 4 rare gun parts
+            let pos = chooseRandomLocation(6, 7)
             let pos2 = {}
             pos2.x = pos.x * BLOCKSIZE
             pos2.y = pos.y * BLOCKSIZE
-           let e = entityManager.addEntity({
+            let e = entityManager.addEntity({
                 tag: 'chozo',
                 components: [
                     new CTransform({
@@ -387,35 +386,35 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                         scale: 3,
                     })
                 ]
-           })
+            })
             for (let i = 0, j = 0; i < 6 * BLOCKSIZE; i += BLOCKSIZE) {
                 let e = entityManager.addEntity(generateBlock('tile_bedrock', pos2.x + i, pos2.y + (BLOCKSIZE * 6), 'terraingen'))
                 terrainMap[pos.y + 6][pos.x + j++] = {
                     tag: e.tag,
                     id: e.id
                 }
-
             }
-            generateChest(pos.x + 1, pos.y + 3)
+            containerManager.addToInventory(generateChest(pos.x + 1, pos.y + 3), new Entity(generateItem(gunParts[r])));
         }
-        
     }
+
     function chooseRandomLocation(width, height) {
-        let x = clamp(randomInt(terrainMap[0].length), 16 , terrainMap[0].length - width - 16)
+        let x = clamp(randomInt(terrainMap[0].length), 16, terrainMap[0].length - width - 16)
         let y = clamp(randomInt(terrainMap.length) + startRow, 333, terrainMap.length - height - 20)
-        let pos = {x:x,y:y}
+        let pos = {x: x, y: y}
         punchHole(pos, width, height)
-        return  pos
+        return pos
     }
+
     function punchHole(pos, width, height) {
         entityManager.update()
-        for(let i = pos.y; i < pos.y + height; i++) {
-            for(let j = pos.x; j < pos.x + width; j++) {
+        for (let i = pos.y; i < pos.y + height; i++) {
+            for (let j = pos.x; j < pos.x + width; j++) {
                 let cell = terrainMap[i][j]
-                if(cell.tag !== 'air') {
-                    let e =entityManager.getEntity(cell.id)
-                e.destroy()
-                terrainMap[i][j] = {tag: 'air', id: null}
+                if (cell.tag !== 'air') {
+                    let e = entityManager.getEntity(cell.id)
+                    e.destroy()
+                    terrainMap[i][j] = {tag: 'air', id: null}
                 }
             }
         }
@@ -437,9 +436,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let e = entityManager.addEntity(generateInteractive('interact_chest', x, y));
         containerManager.registerChest(e);
         terrainMap[y][x] = {tag: e.tag, id: e.id};
-
-        let owner = cleanTag(e.tag);
-        containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar'))); // Example
+        return cleanTag(e.tag);
+        // containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar'))); // Example
         // Could randomize number of random rolls on loot table (random count for each result as well if desired)
     }
 
@@ -453,8 +451,9 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             punchHole({x: x, y: y}, 1, 1)
             generateChest(x, y);
         }
-        
+
     }
+
     function generatePlanet() {
         let e = entityManager.addEntity({
             tag: 'background_',
@@ -479,8 +478,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let width = 160
         let height = 96
         let scale = 2
-        for(let j = 0; j < 8; j++) {
-            for(let i = 0; i < 22; i++) {
+        for (let j = 0; j < 8; j++) {
+            for (let i = 0; i < 22; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -500,8 +499,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             }
         }
 
-        for(let j = 8; j < 16; j++) {
-            for(let i = 0; i < 22; i++) {
+        for (let j = 8; j < 16; j++) {
+            for (let i = 0; i < 22; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -521,8 +520,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             }
         }
 
-        for(let j = 16; j < 24; j++) {
-            for(let i = 0; i < 22; i++) {
+        for (let j = 16; j < 24; j++) {
+            for (let i = 0; i < 22; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -542,8 +541,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             }
         }
 
-        for(let j = 24; j < 29; j++) {
-            for(let i = 0; i < 22; i++) {
+        for (let j = 24; j < 29; j++) {
+            for (let i = 0; i < 22; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -562,8 +561,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 })
             }
         }
-        
-        
+
+
     }
 
     generatePlanet()
