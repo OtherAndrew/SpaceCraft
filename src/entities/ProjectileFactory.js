@@ -118,7 +118,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack pierce fire',
                     sprite: this.fireSprite(),
-                    damage: 0.15,
+                    damage: 0.25,
                     speed: BLOCKSIZE * 0.1,
                     dVector: directionVector,
                     origin: projectileOrigin,

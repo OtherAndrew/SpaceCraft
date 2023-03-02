@@ -157,7 +157,6 @@ class PlayerController {
     }
 
     #fireWeapon(activeWeapon, target, tick) {
-        // const wProps = this.weaponMap.get(activeWeapon);
         const wProps = activeWeapon.components["weaponProps"];
         if (wProps.readyToFire()) {
             this.projectileFactory.playerShoot(wProps.projectileType, target, this.player)

@@ -72,7 +72,7 @@ class CollisionSystem {
     }
 
     #canCollideWithTiles(e) {
-        return e.name === "player" || e.name === "rocket" || e.tag.includes("fire")
+        return e.name === "player" || e.tag.includes("npc") || e.tag.includes("fire")
                || (e.tag.includes("mob") && !e.tag.includes("ghost"));
     }
 

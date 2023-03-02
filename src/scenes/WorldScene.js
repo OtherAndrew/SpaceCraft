@@ -129,7 +129,7 @@ class WorldScene extends Scene {
 
             this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 
-            this.mobController.update(deltaTime);
+            this.mobController.update(deltaTime, this.collisionSystem.mobList);
             // https://gamedev.stackexchange.com/a/71123
             // update Y first for ledges
             this.movementSystem.updateY(deltaTime);
