@@ -94,7 +94,10 @@ class ContainerManager {
                 this.textBox.append(`Added ${count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
             }
             return 1;
-        } else return -1;
+        } else {
+            this.textBox.append(`Cannot add ${cleanTag(item.tag)}, inventory full`);
+            return -1;
+        }
     }
 
     addPlayerCount(item, count) {
