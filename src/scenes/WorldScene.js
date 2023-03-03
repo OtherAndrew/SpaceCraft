@@ -26,7 +26,6 @@ class WorldScene extends Scene {
         this.mobFactory = new MobFactory(this.entityManager);
         let airTileMap
         [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
-        // this.#createEntity()
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
         this.rocket =
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
@@ -42,7 +41,7 @@ class WorldScene extends Scene {
 
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
-            this.projectileFactory, this.terrainMap);
+                                                     this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new MobController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
@@ -62,7 +61,7 @@ class WorldScene extends Scene {
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
 
         this.giveWeapons2();
-        this.spawnTestEntities();
+        // this.spawnTestEntities();
         // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
         this.musicPlayer = new MusicPlayer(this.player)
         ASSET_MANAGER.adjustVolume(.2)
@@ -73,20 +72,6 @@ class WorldScene extends Scene {
     spawnTestEntities() {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
-
-        // this.mobFactory.build('spikejumper', px + 300, py - 200);
-        // this.mobFactory.build('bloodsucker', px - 300, py - 200);
-        // this.mobFactory.build('dirtcarver', px + 300, py - 200);
-        // this.mobFactory.build('vengefly', px - 300, py - 200);
-        // this.mobFactory.build('lightbug', px + 300, py - 200);
-        // this.mobFactory.build('wormtank', px - 300, py - 200);
-        // this.mobFactory.build('mossfly', px - 300, py - 200);
-        // this.mobFactory.build('silverfish', px + 600, py - 200);
-        // this.mobFactory.build('electrojelly', px - 600, py - 200);
-        // this.mobFactory.build('bombfly', px + 900, py - 200);
-        // this.mobFactory.build('spore', px + 100, py - 200);
-        // this.mobFactory.build('spiderboss', px + 3*BLOCKSIZE, py - 20*BLOCKSIZE);
-        // this.mobFactory.build('silverfish', px + 600, py - 200);
     }
 
     giveWeapons2() {
@@ -133,7 +118,7 @@ class WorldScene extends Scene {
             this.renderBox.update();
             this.drawItems = this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.refreshNew();
+            this.collisionSystem.refresh();
 
             this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 

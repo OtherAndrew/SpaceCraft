@@ -8,16 +8,15 @@ class CollisionSystem {
     constructor(player, entities, projectileFactory) {
         Object.assign(this, { player, entities, projectileFactory })
 
-        this.collideList = null;
-        this.tileCollideList = null;
-        this.mobList = null;
-        this.tileList = null;
+        this.tileCollideList = [];
+        this.mobList = [];
+        this.tileList = [];
 
-        this.playerAttackList = null;
-        this.explosionList = null;
-        this.enemyAttackList = null;
+        this.playerAttackList = [];
+        this.explosionList = [];
+        this.enemyAttackList = [];
 
-        this.refreshNew();
+        this.refresh();
     }
 
     /**
@@ -25,20 +24,6 @@ class CollisionSystem {
      * Call this before resolving.
      */
     refresh() {
-        this.collideList = this.entities.filter(e => e.isDrawable && e.components["boxCollider"]);
-        this.tileCollideList = this.collideList.filter(e =>
-                e.name === "player" || e.name === "rocket" || e.tag.includes("fire")
-                || (e.tag.includes("mob") && !e.tag.includes("ghost"))
-        );
-        this.mobList = this.collideList.filter(e => e.tag.includes("mob"));
-        this.tileList = this.collideList.filter(e => e.name === 'block');
-
-        this.playerAttackList = this.collideList.filter(e => e.tag.includes("playerAttack"));
-        this.explosionList = this.collideList.filter(e => e.name === 'explosion');
-        this.enemyAttackList = this.collideList.filter(e => e.tag.includes("enemy"))
-    }
-
-    refreshNew() {
         this.tileCollideList = [];
         this.mobList = [];
         this.tileList = [];
@@ -72,13 +57,18 @@ class CollisionSystem {
         }
     }
 
+    /**
+     * Determines if an entity is able to collide with a tile.
+     * @param {Entity} e The entity.
+     * @return {boolean} True if the entity is able to collide with a tile, false otherwise.
+     */
     #canCollideWithTiles(e) {
         return e.name === "player" || e.tag.includes("npc") || e.tag.includes("fire")
                || (e.tag.includes("mob") && !e.tag.includes("ghost"));
     }
 
     /**
-     * Checks for and resolves X collisions between mobs and tiles.
+     * Checks for and resolves X collisions between entities and tiles.
      */
     resolveTileX() {
         for (let i = 0; i < this.tileCollideList.length; i++) {
@@ -99,7 +89,7 @@ class CollisionSystem {
     }
 
     /**
-     * Checks for and resolves Y collisions between mobs and tiles.
+     * Checks for and resolves Y collisions between entities and tiles.
      */
     resolveTileY() {
         for (let i = 0; i < this.tileCollideList.length; i++) {
@@ -129,7 +119,8 @@ class CollisionSystem {
     }
 
     /**
-     * Responds to attack collisions.
+     * Resolves attack collisions from all sources (player, enemy, explosions) and
+     * applies damage accordingly.
      */
     resolveAttack() {
         this.#resolvePlayerAttack();
@@ -138,62 +129,64 @@ class CollisionSystem {
     }
 
     /**
-     * Resolves projectile collisions.
+     * Resolves player projectile collisions.
      */
     #resolvePlayerAttack() {
-        this.playerAttackList.forEach(atk => {
-            this.mobList.forEach(mob => {
-               if (checkCollision(atk, mob) && !mob.tag.includes('ignoreAttack')) {
-                   mob.components["stats"].applyDamage(atk.components["stats"].damage);
-                   mob.components["boxCollider"].attackCollision = true;
-                   this.#stun(mob);
-                   if (atk.tag.includes("explosive")) {
-                       this.#handleExplosions(atk);
-                   }
-                   if (!atk.tag.includes("pierce")) {
-                       atk.destroy();
-                   }
-               }
-            });
-            for (let i = 0; i < this.tileList.length; i++) {
-                if (checkCollision(atk, this.tileList[i])) {
+        for (let i = 0; i < this.playerAttackList.length; i++) {
+            const atk = this.playerAttackList[i];
+            for (let j = 0; j < this.mobList.length; j++) {
+                const mob = this.mobList[j];
+                if (checkCollision(atk, mob) && !mob.tag.includes('ignoreAttack')) {
+                    mob.components["stats"].applyDamage(atk.components["stats"].damage);
+                    mob.components["boxCollider"].attackCollision = true;
+                    this.#stun(mob);
+                    if (atk.tag.includes("explosive")) {
+                        this.#handleExplosions(atk);
+                    }
+                    if (!atk.tag.includes("pierce")) {
+                        atk.destroy();
+                    }
+                }
+            }
+            for (let j = 0; j < this.tileList.length; j++) {
+                if (checkCollision(atk, this.tileList[j])) {
                     if (atk.tag.includes("explosive")) {
                         this.#handleExplosions(atk);
                     }
                     if (!atk.tag.includes("ignoreTile")) {
                         atk.destroy();
                     }
+                    break;
                 }
             }
-        });
+        }
     }
 
+    /**
+     * Resolves explosion collisions.
+     */
     #resolveExplosions() {
-        this.explosionList.forEach(e => {
+        for (let i = 0; i < this.explosionList.length; i++) {
+            const e = this.explosionList[i];
             if (checkCollision(e, this.player)) {
                 this.player.components["stats"].applyDamage(e.components["stats"].damage);
             }
-            this.mobList.forEach(mob => {
+            for (let j = 0; j < this.mobList.length; j++) {
+                const mob = this.mobList[j];
                 if (checkCollision(e, mob) && !mob.tag.includes('ignoreAttack')) {
                     mob.components["stats"].applyDamage(e.components["stats"].damage);
                     this.#stun(mob);
                 }
-            });
-            // this.tileList.forEach(tile => {
-            //     if (checkCollision(e, tile)) {
-            //         if (e.tag.includes("destroyBlock")) {
-            //             // tile.components["stats"].applyDamage(e.components["stats"].damage);
-            //         }
-            //     }
-            // });
-        });
+            }
+        }
     }
 
     /**
-     * Applies damage to player if attacked by mob.
+     * Resolves enemy attack collisions.
      */
     #resolveEnemyAttack() {
-        this.enemyAttackList.forEach(atk => {
+        for (let i = 0; i < this.enemyAttackList.length; i++) {
+            const atk = this.enemyAttackList[i];
             if (checkCollision(atk, this.player)) {
                 this.player.components['stats'].applyDamage(atk.components['stats'].damage)
                 if (atk.tag.includes("explosive")) {
@@ -206,14 +199,14 @@ class CollisionSystem {
                     atk.destroy();
                 }
             }
-            for (let i = 0; i < this.tileList.length; i++) {
-                if (checkCollision(atk, this.tileList[i])) {
+            for (let j = 0; j < this.tileList.length; j++) {
+                if (checkCollision(atk, this.tileList[j])) {
                     if (atk.name === "projectile" && !atk.tag.includes("ignoreTile")) {
                         atk.destroy();
                     }
                 }
             }
-        });
+        }
     }
 
     /**
@@ -244,8 +237,12 @@ class CollisionSystem {
         }
     }
 
+    /**
+     * Determines if a mob is colliding with a tile, used for spawning.
+     * @param {Entity} mob A mob.
+     * @return {boolean} True if the mob collides with a tile, false otherwise.
+     */
     checkTileCollision(mob) {
-        // return this.tileList.some(tile => checkCollision(mob, tile));
         for (let i = 0; i < this.tileList.length; i++) {
             if (checkCollision(mob, this.tileList[i])) {
                 return true;
