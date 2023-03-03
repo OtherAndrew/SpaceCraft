@@ -81,47 +81,51 @@ class CollisionSystem {
      * Checks for and resolves X collisions between mobs and tiles.
      */
     resolveTileX() {
-        this.tileCollideList.forEach(mob => {
-            for (let i = 0; i < this.tileList.length; i++) {
-                if (checkCollision(mob, this.tileList[i])) {
-                    const mTransform = mob.components["transform"];
-                    const mCollider = mob.components["boxCollider"];
-                    mCollider.sideCollision = true;
-                    mTransform.velocityX = 0
-                    mTransform.x = mTransform.last.x
-                    mCollider.setPosition(mTransform.x, mTransform.y)
+        for (let i = 0; i < this.tileCollideList.length; i++) {
+            const entity = this.tileCollideList[i];
+            const eTransform = entity.components["transform"];
+            if (eTransform.velocityX === 0) continue;
+            for (let j = 0; j < this.tileList.length; j++) {
+                if (checkCollision(entity, this.tileList[j])) {
+                    const eCollider = entity.components["boxCollider"];
+                    eCollider.sideCollision = true;
+                    eTransform.velocityX = 0
+                    eTransform.x = eTransform.last.x
+                    eCollider.setPosition(eTransform.x, eTransform.y)
                     break;
                 }
             }
-        });
+        }
     }
 
     /**
      * Checks for and resolves Y collisions between mobs and tiles.
      */
     resolveTileY() {
-        this.tileCollideList.forEach(mob => {
-            for (let i = 0; i < this.tileList.length; i++) {
-                if (checkCollision(mob, this.tileList[i])) {
-                    const mTransform = mob.components["transform"];
-                    const mCollider = mob.components["boxCollider"];
-                    const tCollider = this.tileList[i].components["boxCollider"];
-                    if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
-                        if (mob.components.state) mob.components.state.grounded = true;
-                        const fallDamage = mTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
-                        if (mob.components["stats"] && mob.components["stats"].hasFallDamage
-                            && mTransform.hasGravity && fallDamage !== 0) {
-                            mob.components["stats"].applyDamage(fallDamage);
+        for (let i = 0; i < this.tileCollideList.length; i++) {
+            const entity = this.tileCollideList[i];
+            const eTransform = entity.components["transform"];
+            if (eTransform.velocityY === 0) continue;
+            for (let j = 0; j < this.tileList.length; j++) {
+                if (checkCollision(entity, this.tileList[j])) {
+                    const eCollider = entity.components["boxCollider"];
+                    const tCollider = this.tileList[j].components["boxCollider"];
+                    if (eCollider.bottom > tCollider.top && eCollider.last.bottom <= tCollider.top) {
+                        if (entity.components.state) entity.components.state.grounded = true;
+                        const fallDamage = eTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
+                        if (entity.components["stats"] && entity.components["stats"].hasFallDamage
+                            && eTransform.hasGravity && fallDamage !== 0) {
+                            entity.components["stats"].applyDamage(fallDamage);
                         }
-                        mTransform.fallDamageTime = 0;
+                        eTransform.fallDamageTime = 0;
                     }
-                    mTransform.velocityY = 0
-                    mTransform.y = mTransform.last.y
-                    mCollider.setPosition(mTransform.x, mTransform.y)
+                    eTransform.velocityY = 0
+                    eTransform.y = eTransform.last.y
+                    eCollider.setPosition(eTransform.x, eTransform.y)
                     break;
                 }
             }
-        });
+        }
     }
 
     /**
