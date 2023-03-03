@@ -226,8 +226,7 @@ class ContainerManager {
         if (menuActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check && check.item) this.hoverText = /*check.item.tag;*/ cleanTag(check.item.tag);
-                else this.hoverText = null;
+                this.hoverText = (check && check.item) ? cleanTag(check.item.tag) : null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique
                 if (click.w === 1) { // left click
@@ -258,6 +257,9 @@ class ContainerManager {
                     this.splitMode = true;
                     if (this.activeContainer.count > this.splitCount) this.splitCount++;
                     this.hoverText = this.splitCount;
+                } else if (click.w === 2 && this.activeContainer && this.activeContainer.item) {
+                    let trash = this.getInventory(null)[0];
+                    this.inspectInteraction(trash, this.swapViaContainer.bind(this));
                 }
                 this.lastClick = click;
             }
@@ -267,6 +269,8 @@ class ContainerManager {
             this.lastClick = null;      // don't bother remembering last click
         }
     }
+    
+    // TODO investigate broken splitting
 
     checkNew(click) {
         return this.lastClick == null || click.t !== this.lastClick.t;
