@@ -19,6 +19,9 @@ class WorldScene extends Scene {
      * @param assets
      */
     init(assets, canvas) {
+        this.textBox = new TextBox();
+        this.containerManager.textBox = this.textBox;
+
         this.mobFactory = new MobFactory(this.entityManager);
         let airTileMap
         [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
@@ -62,8 +65,6 @@ class WorldScene extends Scene {
        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
        this.musicPlayer = new MusicPlayer(this.player)
        ASSET_MANAGER.adjustVolume(.2)
-       this.textBox = new TextBox()
-       this.containerManager.textBox = this.textBox
     }
 
     spawnTestEntities() {
@@ -160,16 +161,15 @@ class WorldScene extends Scene {
     }
 
     draw(menuActive, ctx, mouse) {
-
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else {
             ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera);
-            this.textBox.draw(ctx)
         }
         // this.#drawColliders(ctx);
 
+        this.textBox.draw(ctx)
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
     }

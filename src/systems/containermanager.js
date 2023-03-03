@@ -1,6 +1,7 @@
 class ContainerManager {
     constructor() {
-        this.textBox = null
+        this.textBox = null;            // Display changes for player inventory
+
         this.owners = {};               // owners and their inventory
 
         this.slots = [];                // every container by their universal slot number
@@ -11,7 +12,7 @@ class ContainerManager {
 
         this.playerCounts = new Map;    // keep track of player items and their counts
 
-        this.activeContainer = null;  // player selected container
+        this.activeContainer = null;    // player selected container
         this.lastClick = null;          // tracks last mouse click
 
         this.hoverText = null           // provides information
@@ -68,7 +69,8 @@ class ContainerManager {
     }
 
     getPlayerCounts(tag) {
-        return this.playerCounts.get(tag);
+        // return this.playerCounts.get(tag);
+        return this.playerCounts.get(tag) ? this.playerCounts.get(tag) : 0;
     }
 
     addToInventory(owner, item, count = 1) {
@@ -77,24 +79,27 @@ class ContainerManager {
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 inventory[i].count += count;
-                if (owner === 'player') this.addPlayerCount(item, count);
+                if (owner === 'player') {
+                    this.addPlayerCount(item, count);
+                    this.textBox.append(`Added ${count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
+                }
                 return 0;
             } else if (firstEmpty === undefined && inventory[i].item == null) firstEmpty = inventory[i];
         }
         if (firstEmpty) {
             firstEmpty.item = item;
             firstEmpty.count = count;
-            if (owner === 'player') this.addPlayerCount(item, count);
+            if (owner === 'player') {
+                this.addPlayerCount(item, count);
+                this.textBox.append(`Added ${count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
+            }
             return 1;
         } else return -1;
     }
 
     addPlayerCount(item, count) {
         let current = this.playerCounts.get(item.tag);
-        if (current) {
-            this.playerCounts.set(item.tag, current + count);
-            this.textBox.append(`Added ${count} ${item.tag}`)
-        } 
+        if (current) this.playerCounts.set(item.tag, current + count);
         else this.playerCounts.set(item.tag, count);
     }
 
@@ -124,7 +129,8 @@ class ContainerManager {
         let ent = this.slots[index];
         if (ent.item) {
             let active = ent.item.tag;
-            this.minusPlayerCount(ent.item, 1)
+            this.minusPlayerCount(ent.item, 1);
+            this.textBox.append(`Removed 1 ${cleanTag(active)} (${this.getPlayerCounts(active)})`);
             if (!--ent.count) this.clearContainer(ent);
             return active;
         }
@@ -146,7 +152,10 @@ class ContainerManager {
                 }
             }
         }
-        if (owner === "player") this.minusPlayerCount(item, requisite.count)
+        if (owner === "player") {
+            this.minusPlayerCount(item, requisite.count)
+            this.textBox.append(`Removed ${requisite.count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
+        }
     }
 
     swapViaContainer(swapContainer) {
@@ -166,7 +175,6 @@ class ContainerManager {
             this.activeContainer.count = swapContainer.count;
             swapContainer.count = placeholder;
         }
-        this.deselectContainer();
     }
 
     splitViaContainer(splitContainer) {
@@ -174,7 +182,6 @@ class ContainerManager {
         splitContainer.count = this.splitCount;
         this.activeContainer.count -= this.splitCount;
         if (this.activeContainer.count === 0) this.clearContainer(this.activeContainer);
-        this.deselectContainer();
         this.clearSplit();
     }
 
@@ -184,6 +191,7 @@ class ContainerManager {
         else if (this.activeContainer.owner === 'player' && container.owner !== 'player') playerContainer = this.activeContainer;
         if (playerContainer && playerContainer.item) this.minusPlayerCount(playerContainer.item, playerContainer.count);
         interaction(container);
+        this.deselectContainer();
         if (playerContainer && playerContainer.item) this.addPlayerCount(playerContainer.item, playerContainer.count);
     }
 
