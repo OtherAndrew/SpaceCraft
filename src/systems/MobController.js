@@ -7,7 +7,7 @@ class MobController {
 
     update(tick) {
         const pCollider = this.player.components['boxCollider']
-        const updateList = this.entities.filter(e => /*e.isDrawable &&*/ e.tag.includes('mob') || !e.tag.includes('npc'));
+        const updateList = this.entities.filter(e => e.tag.includes('mob') || e.tag.includes('npc'));
         updateList.forEach(e => {
             if (!e.tag.includes('npc') && getDistance(e.components['boxCollider'].center, pCollider) > WIDTH * 1.5) {
                 e.destroy();
