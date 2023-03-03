@@ -101,7 +101,7 @@ class WorldScene extends Scene {
                 this.player.isDrawable = false;
                 this.player.components['stats'].invincible = true;
                 console.log("game over");
-                if (this.elapsedTime === 0) this.textBox.append(`Respawning in 3 seconds...`);
+                if (this.elapsedTime === 0) this.textBox.append("Respawning in 3 seconds...");
                 if (this.elapsedTime > 3) return true;
                 this.elapsedTime += deltaTime;
             } else {
