@@ -5,6 +5,7 @@ class WorldScene extends Scene {
         super()
         this.game = game;
         this.mid = HEIGHT_PIXELS * .5 + WIDTH
+        this.drawItems = null;
         //other game stats --- display during win condition (rocket scene)
         //add total each mob kills
         //total blocks mined
@@ -62,9 +63,11 @@ class WorldScene extends Scene {
 
         this.giveWeapons2();
         this.spawnTestEntities();
-       // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
-       this.musicPlayer = new MusicPlayer(this.player)
-       ASSET_MANAGER.adjustVolume(.2)
+        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+        this.musicPlayer = new MusicPlayer(this.player)
+        ASSET_MANAGER.adjustVolume(.2)
+
+        this.drawItems = this.#updateTileState();
     }
 
     spawnTestEntities() {
@@ -128,7 +131,7 @@ class WorldScene extends Scene {
             // **update state**
             this.entityManager.update();
             this.renderBox.update();
-            this.#updateTileState();
+            this.drawItems = this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.refreshNew();
 
@@ -150,7 +153,7 @@ class WorldScene extends Scene {
 
             // **draw**
             this.camera.update();
-            this.renderSystem.update(deltaTime);
+            this.renderSystem.update(deltaTime, this.drawItems);
             this.musicPlayer.update(deltaTime)
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
@@ -165,7 +168,7 @@ class WorldScene extends Scene {
         else {
             ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
-            this.renderSystem.draw(ctx, this.camera);
+            this.renderSystem.draw(ctx, this.camera, this.drawItems);
         }
         // this.#drawColliders(ctx);
 
@@ -191,22 +194,7 @@ class WorldScene extends Scene {
      * @todo performance optimization
      */
     #updateTileState() {
-        // this.entityManager.getEntities.forEach(e => {
-        //     if(e.name !== 'player' && !e.tag.includes('background') && !this.#isItem(e)) {
-        //         if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
-        //         e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
-        //         e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
-        //         e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
-        //             if(!e.isBroken) {
-        //                 e.isDrawable = true
-        //             }
-        //             this.#checkIfExposed(e)
-        //         } else {
-        //             e.isDrawable = false
-        //         }
-        //     }
-        // })
-
+        let drawables = [];
         let entities = this.entityManager.getEntities;
         let length = entities.length;
         for (let i = 0; i < length; i++) {
@@ -222,20 +210,16 @@ class WorldScene extends Scene {
                 } else {
                     e.isDrawable = false;
                 }
-            }
-            // check everything else
-            else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
+            } else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
                 e.isDrawable = e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * (BLOCKSIZE)
             }
+            if (e.isDrawable) drawables.push(e);
         }
+        return drawables;
     }
-
-    // #isItem(e) {
-    //     return e.name === 'weapon' || e.name === 'tool' || e.name === "item";
-    // }
 
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
@@ -243,25 +227,6 @@ class WorldScene extends Scene {
      * @param {Entity} e
      */
     #checkIfExposed(e) {
-        // if(e.isDrawable && e.tag.includes('tile') && !this.#isItem(e)) {
-        //     const posX = e.components.transform.x / BLOCKSIZE
-        //     const posY = e.components.transform.y / BLOCKSIZE
-        //     if (this.#isExposed(posY, posX)) {
-        //         if (!e.components["boxCollider"]) {
-        //             e.addComponent([
-        //                 new CBoxCollider({
-        //                     x: e.components.transform.x,
-        //                     y: e.components.transform.y,
-        //                     width: BLOCKSIZE,
-        //                     height: BLOCKSIZE
-        //                 })
-        //             ]);
-        //         }
-        //     } else {
-        //         delete e.components["boxCollider"];
-        //     }
-        // }
-
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
         let visCheck = this.#isExposed(posY, posX);
@@ -309,7 +274,7 @@ class WorldScene extends Scene {
         } else visCode.push('0');
         return visCode.join('');
     }
-    
+
     #checkOrdinal(posY, posX) {
         let visCode = ['o'];
         if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag)) { // NW
@@ -333,6 +298,7 @@ class WorldScene extends Scene {
         return (this.containerManager.checkSufficient(requisite, 'player')
             && checkCollision(this.player, this.rocket))
     }
+
     #gameContinue() {
         this.player.isDrawable = true;
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
