@@ -21,6 +21,13 @@ class MovementSystem {
             && (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile')
         );
         movables.forEach(e => this.#moveEntityX(e, tick));
+        // getting better performance with filter + forEach for some reason
+        // for (let i = 0; i < this.entities.length; i++) {
+        //     const e = this.entities[i];
+        //     if (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile') {
+        //         this.#moveEntityX(e, tick);
+        //     }
+        // }
     }
 
     /**
@@ -36,6 +43,12 @@ class MovementSystem {
                 || e.name === 'projectile')
         );
         movables.forEach(e => this.#moveEntityY(e, tick));
+        // for (let i = 0; i < this.entities.length; i++) {
+        //     const e = this.entities[i];
+        //     if (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile') {
+        //         this.#moveEntityY(e, tick);
+        //     }
+        // }
     }
 
     /**
