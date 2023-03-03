@@ -17,9 +17,10 @@ class WorldScene extends Scene {
     /**
      * Initializes this class' terrain entities
      * Player and player movement are for testing purposes
-     * @param assets
      */
-    init(assets, canvas) {
+    init(canvas) {
+        this.canvas = canvas;
+        this.elapsedTime = 0;
         this.textBox = new TextBox();
         this.containerManager.textBox = this.textBox;
 
@@ -31,14 +32,6 @@ class WorldScene extends Scene {
             this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
         this.nativenpc =
             this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
-
-        /*
-    this.spawnManager.spawnTestEntities({
-        x: WIDTH_PIXELS * .5,
-        y: HEIGHT_PIXELS * .5 - 100
-    });
-    */
-
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
                                                      this.projectileFactory, this.terrainMap);
@@ -51,7 +44,7 @@ class WorldScene extends Scene {
         this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.spawnManager = new SpawnManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
-        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
+        this.cursorSystem = new CursorSystem(this.canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
@@ -108,6 +101,9 @@ class WorldScene extends Scene {
                 this.player.isDrawable = false;
                 this.player.components['stats'].invincible = true;
                 console.log("game over");
+                if (this.elapsedTime === 0) this.textBox.append(`Respawning in 3 seconds...`);
+                if (this.elapsedTime > 3) return true;
+                this.elapsedTime += deltaTime;
             } else {
                 this.containerManager.reloadInventory();
                 // **get input**

@@ -37,7 +37,7 @@ class GameEngine {
     init(ctx, assets, canvas) {
         this.ctx = ctx;
         this.canvas = canvas
-        this.mainScene.init(assets, this.canvas)
+        this.mainScene.init(this.canvas)
         this.startInput();
         this.timer = new Timer();
     };
@@ -189,7 +189,8 @@ class GameEngine {
         let status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
         if(status) {
             this.mainScene = new WorldScene(this)
-            this.mainScene.init(null, this.canvas)
+            // this.mainScene.init(null, this.canvas)
+            this.mainScene.init(this.canvas);
         }
         this.refreshInput();
     };
