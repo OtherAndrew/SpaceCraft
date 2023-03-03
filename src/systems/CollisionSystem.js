@@ -47,7 +47,8 @@ class CollisionSystem {
         this.explosionList = [];
         this.enemyAttackList = [];
 
-        this.entities.forEach(e => {
+        for (let i = 0; i < this.entities.length; i++) {
+            const e = this.entities[i];
             if (e.isDrawable && e.components["boxCollider"]) {
                 if (this.#canCollideWithTiles(e)) {
                     this.tileCollideList.push(e);
@@ -68,7 +69,7 @@ class CollisionSystem {
                     this.enemyAttackList.push(e);
                 }
             }
-        });
+        }
     }
 
     #canCollideWithTiles(e) {
@@ -81,16 +82,17 @@ class CollisionSystem {
      */
     resolveTileX() {
         this.tileCollideList.forEach(mob => {
-            this.tileList.forEach(tile => {
-                if (checkCollision(mob, tile)) {
+            for (let i = 0; i < this.tileList.length; i++) {
+                if (checkCollision(mob, this.tileList[i])) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
                     mCollider.sideCollision = true;
                     mTransform.velocityX = 0
                     mTransform.x = mTransform.last.x
                     mCollider.setPosition(mTransform.x, mTransform.y)
+                    break;
                 }
-            });
+            }
         });
     }
 
@@ -99,16 +101,16 @@ class CollisionSystem {
      */
     resolveTileY() {
         this.tileCollideList.forEach(mob => {
-            this.tileList.forEach(tile => {
-                if (checkCollision(mob, tile)) {
+            for (let i = 0; i < this.tileList.length; i++) {
+                if (checkCollision(mob, this.tileList[i])) {
                     const mTransform = mob.components["transform"];
                     const mCollider = mob.components["boxCollider"];
-                    const tCollider = tile.components["boxCollider"];
+                    const tCollider = this.tileList[i].components["boxCollider"];
                     if (mCollider.bottom > tCollider.top && mCollider.last.bottom <= tCollider.top) {
                         if (mob.components.state) mob.components.state.grounded = true;
                         const fallDamage = mTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
                         if (mob.components["stats"] && mob.components["stats"].hasFallDamage
-                                && mTransform.hasGravity && fallDamage !== 0) {
+                            && mTransform.hasGravity && fallDamage !== 0) {
                             mob.components["stats"].applyDamage(fallDamage);
                         }
                         mTransform.fallDamageTime = 0;
@@ -116,8 +118,9 @@ class CollisionSystem {
                     mTransform.velocityY = 0
                     mTransform.y = mTransform.last.y
                     mCollider.setPosition(mTransform.x, mTransform.y)
+                    break;
                 }
-            });
+            }
         });
     }
 
@@ -148,17 +151,16 @@ class CollisionSystem {
                    }
                }
             });
-
-            this.tileList.forEach(tile => {
-               if (checkCollision(atk, tile)) {
-                   if (atk.tag.includes("explosive")) {
-                       this.#handleExplosions(atk);
-                   }
-                   if (!atk.tag.includes("ignoreTile")) {
-                       atk.destroy();
-                   }
-               }
-            });
+            for (let i = 0; i < this.tileList.length; i++) {
+                if (checkCollision(atk, this.tileList[i])) {
+                    if (atk.tag.includes("explosive")) {
+                        this.#handleExplosions(atk);
+                    }
+                    if (!atk.tag.includes("ignoreTile")) {
+                        atk.destroy();
+                    }
+                }
+            }
         });
     }
 
@@ -173,13 +175,13 @@ class CollisionSystem {
                     this.#stun(mob);
                 }
             });
-            this.tileList.forEach(tile => {
-                if (checkCollision(e, tile)) {
-                    if (e.tag.includes("destroyBlock")) {
-                        // tile.components["stats"].applyDamage(e.components["stats"].damage);
-                    }
-                }
-            });
+            // this.tileList.forEach(tile => {
+            //     if (checkCollision(e, tile)) {
+            //         if (e.tag.includes("destroyBlock")) {
+            //             // tile.components["stats"].applyDamage(e.components["stats"].damage);
+            //         }
+            //     }
+            // });
         });
     }
 
@@ -200,13 +202,13 @@ class CollisionSystem {
                     atk.destroy();
                 }
             }
-            this.tileList.forEach(tile => {
-                if (checkCollision(atk, tile)) {
+            for (let i = 0; i < this.tileList.length; i++) {
+                if (checkCollision(atk, this.tileList[i])) {
                     if (atk.name === "projectile" && !atk.tag.includes("ignoreTile")) {
                         atk.destroy();
                     }
                 }
-            });
+            }
         });
     }
 
@@ -239,7 +241,13 @@ class CollisionSystem {
     }
 
     checkTileCollision(mob) {
-        return this.tileList.some(tile => checkCollision(mob, tile));
+        // return this.tileList.some(tile => checkCollision(mob, tile));
+        for (let i = 0; i < this.tileList.length; i++) {
+            if (checkCollision(mob, this.tileList[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

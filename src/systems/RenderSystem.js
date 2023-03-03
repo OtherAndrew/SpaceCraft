@@ -5,9 +5,9 @@ class RenderSystem {
     }
 
     draw(ctx, camera) {
-        const drawables = this.entities.filter(e => e.isDrawable)
-        drawables.forEach(e => {
-            if (e.components.transform && e.components.sprite) {
+        for (let i = 0; i < this.entities.length; i++) {
+            const e = this.entities[i];
+            if (e.isDrawable && e.components.transform && e.components.sprite) {
                 let sprite = e.components.sprite
                 let ySpeed = camera.y
                 let xSpeed = camera.x
@@ -52,7 +52,7 @@ class RenderSystem {
                 if (!e.tag.includes('tile') && e.components.stats && e.components.stats.isDamaged)
                     drawHealthbar(ctx, e, destX, destY, 50, 5);
             }
-        })
+        }
     }
 
     /**
@@ -60,21 +60,23 @@ class RenderSystem {
      * @param {number} tick time length
      */
     update(tick) {
-        const drawables = this.entities.filter(e => e.isDrawable && e.components.sprite)
-        drawables.forEach(e => {
-            const s = e.components.sprite;
-            if (s.lastFrameX !== s.firstFrameX) { // has animations
-                if (s.elapsedTime >= s.frameDuration) {
-                    if (s.currentFrame === s.lastFrameX && s.loop) { // reset frame
-                        s.currentFrame = s.firstFrameX;
+        for (let i = 0; i < this.entities.length; i++) {
+            const e = this.entities[i];
+            if (e.isDrawable && e.components.sprite) {
+                const s = e.components.sprite;
+                if (s.lastFrameX !== s.firstFrameX) { // has animations
+                    if (s.elapsedTime >= s.frameDuration) {
+                        if (s.currentFrame === s.lastFrameX && s.loop) { // reset frame
+                            s.currentFrame = s.firstFrameX;
+                        } else {
+                            s.currentFrame = clamp(s.currentFrame + 1, s.firstFrameX, s.lastFrameX);
+                        }
+                        s.elapsedTime = 0;
                     } else {
-                        s.currentFrame = clamp(s.currentFrame + 1, s.firstFrameX, s.lastFrameX);
+                        s.elapsedTime += tick;
                     }
-                    s.elapsedTime = 0;
-                } else {
-                    s.elapsedTime += tick;
                 }
             }
-        });
+        }
     };
 }
