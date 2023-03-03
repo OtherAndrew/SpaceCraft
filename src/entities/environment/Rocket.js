@@ -55,4 +55,7 @@ class Rocket {
         bMap.set('win', new BehaviorProps(0, -5));
     }
 
+    update(tick, projectileManager) {
+        
+    }
 }
