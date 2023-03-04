@@ -99,6 +99,17 @@ class WorldScene extends Scene {
                 this.playerController.refreshPlayerConnection();
                 this.camera.setTarget(this.player);
                 this.renderBox.setTarget(this.player);
+                // this.player.components["transform"].hasGravity = false;
+                // this.player.components["transform"].velocityX = 0;
+                // this.player.components["transform"].velocityY = 0;
+                // this.player.isDrawable = false;
+                // this.player.components['stats'].invincible = true;
+                // if (this.elapsedTime === 0){
+                //     this.textBox.append("You died!");
+                //     this.textBox.append("Restarting in 3 seconds...");
+                // }
+                // if (this.elapsedTime > 3) return true;
+                // this.elapsedTime += deltaTime;
             } else {
                 this.containerManager.reloadInventory();
                 // **get input**
@@ -278,9 +289,9 @@ class WorldScene extends Scene {
     #gameContinue() {
         this.player.isDrawable = true;
         this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.player.components['stats'].currentHealth = this.player.components['stats'].maxHealth;
+        this.player.components['stats'].isDead = false;
         this.player.components["transform"].hasGravity = true;
-        // this.player.components["transform"].velocityX = 0;
-        // this.player.components["transform"].velocityY = 0;
         this.player.components['stats'].invincible = false;
     }
 }

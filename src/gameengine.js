@@ -186,10 +186,9 @@ class GameEngine {
     };
 
     update() {
-        let status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
-        if(status) {
+        const status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
+        if (status) {
             this.mainScene = new WorldScene(this)
-            // this.mainScene.init(null, this.canvas)
             this.mainScene.init(this.canvas);
         }
         this.refreshInput();
