@@ -94,44 +94,14 @@ class WorldScene extends Scene {
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon()) {
-                this.rocket.components["state"].setState("win");
-                this.rocket.components['transform'].hasGravity = false;
-                this.camera.setTarget(this.rocket);
-                this.renderBox.setTarget(this.rocket);
-                this.player.isDrawable = false;
-                this.player.components['stats'].invincible = true;
-                console.log("win");
+                this.#onWin();
             } else if (this.player.components['stats'].isDead) {
-                if (this.elapsedRespawnTime >= this.respawnTime) {
-                    this.elapsedRespawnTime = 0;
-                    this.elapsedInvulnTime = 0;
-                    regenPlayerComponents(this.spawnPoint, this.player);
-                    this.playerController.refreshPlayerConnection();
-                    this.camera.setTarget(this.player);
-                    this.renderBox.setTarget(this.player);
-                    this.player.components['stats'].invincible = true;
-                } else {
-                    if (this.elapsedRespawnTime === 0) {
-                        const pTransform = this.player.components["transform"];
-                        pTransform.hasGravity = false;
-                        pTransform.velocityX = 0;
-                        pTransform.velocityY = 0;
-                        this.player.isDrawable = false;
-                        this.textBox.append("You died!");
-                        this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
-                        this.elapsedRespawnTime += deltaTime;
-                    }
-                    this.elapsedRespawnTime += deltaTime;
-                }
+                this.#onDeath(deltaTime);
             } else {
                 this.containerManager.reloadInventory();
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
-                if (this.elapsedInvulnTime >= this.invulnTime) {
-                    this.player.components['stats'].invincible = false;
-                } else {
-                    this.elapsedInvulnTime += deltaTime;
-                }
+                this.#setInvulnerability(deltaTime);
             }
             // **update state**
             this.entityManager.update();
@@ -304,13 +274,48 @@ class WorldScene extends Scene {
             && checkCollision(this.player, this.rocket))
     }
 
-    #gameContinue() {
-        this.player.isDrawable = true;
-        this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
-        this.player.components['stats'].currentHealth = this.player.components['stats'].maxHealth;
-        this.player.components['stats'].isDead = false;
-        this.player.components["transform"].hasGravity = true;
-        this.player.components['stats'].invincible = false;
+    #onWin() {
+        this.rocket.components["state"].setState("win");
+        this.rocket.components['transform'].hasGravity = false;
+        this.camera.setTarget(this.rocket);
+        this.renderBox.setTarget(this.rocket);
+        this.player.isDrawable = false;
+        this.player.components['stats'].invincible = true;
+        if (this.elapsedRespawnTime === 0) {
+            this.textBox.append("You won!");
+            this.elapsedRespawnTime += 1;
+        }
+    }
+
+    #onDeath(deltaTime) {
+        if (this.elapsedRespawnTime >= this.respawnTime) {
+            this.elapsedRespawnTime = 0;
+            this.elapsedInvulnTime = 0;
+            regenPlayerComponents(this.spawnPoint, this.player);
+            this.playerController.refreshPlayerConnection();
+            this.camera.setTarget(this.player);
+            this.renderBox.setTarget(this.player);
+        } else {
+            if (this.elapsedRespawnTime === 0) {
+                const pTransform = this.player.components["transform"];
+                pTransform.hasGravity = false;
+                pTransform.velocityX = 0;
+                pTransform.velocityY = 0;
+                this.player.isDrawable = false;
+                this.textBox.append("You died!");
+                this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
+            }
+            this.elapsedRespawnTime += deltaTime;
+        }
+    }
+
+    #setInvulnerability(deltaTime) {
+        if (this.elapsedInvulnTime < this.invulnTime) {
+            this.player.components['stats'].invincible = true;
+            this.elapsedInvulnTime += deltaTime;
+        } else {
+            this.player.components['stats'].invincible = false;
+        }
     }
 }
 
