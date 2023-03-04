@@ -36,9 +36,9 @@ class WorldScene extends Scene {
         [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
         this.player = this.mobFactory.build('player', this.spawnPoint.x, this.spawnPoint.y);
         this.rocket =
-            this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
+            this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 11);
         this.nativenpc =
-            this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
+            this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE);
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
                                                      this.projectileFactory, this.terrainMap);
@@ -127,9 +127,10 @@ class WorldScene extends Scene {
                 this.containerManager.reloadInventory();
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
-                this.elapsedInvulnTime += deltaTime;
                 if (this.elapsedInvulnTime >= this.invulnTime) {
                     this.player.components['stats'].invincible = false;
+                } else {
+                    this.elapsedInvulnTime += deltaTime;
                 }
             }
             // **update state**
