@@ -368,12 +368,3 @@ const blur = (imageData, radius, quality) => {
     }
     postMessage(imageData);
 }
-
-const regenPlayerComponents = (props, currentPlayer) => {
-    let newPlayer = new Player(props);
-    currentPlayer.isDrawable = true;
-    currentPlayer.isAlive = true;
-    currentPlayer.components = {};
-    newPlayer.components.forEach(c => currentPlayer.components[c.name] = c)
-}
-
