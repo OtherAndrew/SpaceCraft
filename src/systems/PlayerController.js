@@ -13,6 +13,13 @@ class PlayerController {
         this.timesUp = .25
         this.ready = true
     }
+    
+    refreshPlayerConnection() {
+        this.pTransform = this.player.components.transform
+        this.pState = this.player.components.state
+        this.pSprite = this.player.components.sprite
+        this.pStats = this.player.components['stats']
+    }
 
     /**
      * Updates player state, animation, and position

@@ -95,15 +95,10 @@ class WorldScene extends Scene {
                 this.player.components['stats'].invincible = true;
                 console.log("win");
             } else if (this.player.components['stats'].isDead) {
-                this.player.components["transform"].hasGravity = false;
-                this.player.components["transform"].velocityX = 0;
-                this.player.components["transform"].velocityY = 0;
-                this.player.isDrawable = false;
-                this.player.components['stats'].invincible = true;
-                console.log("game over");
-                if (this.elapsedTime === 0) this.textBox.append("Respawning in 3 seconds...");
-                if (this.elapsedTime > 3) return true;
-                this.elapsedTime += deltaTime;
+                regenPlayerComponents({x: WIDTH_PIXELS * .5, y: HEIGHT_PIXELS * .5 - 10}, this.player);
+                this.playerController.refreshPlayerConnection();
+                this.camera.setTarget(this.player);
+                this.renderBox.setTarget(this.player);
             } else {
                 this.containerManager.reloadInventory();
                 // **get input**
@@ -289,3 +284,18 @@ class WorldScene extends Scene {
         this.player.components['stats'].invincible = false;
     }
 }
+
+var setVals = function (obj, vals) {
+    if (obj && vals) {
+        for (var x in vals) {
+            if (vals.hasOwnProperty(x)) {
+                if (obj[x] && typeof vals[x] === 'object') {
+                    obj[x] = setVals(obj[x], vals[x]);
+                } else {
+                    obj[x] = vals[x];
+                }
+            }
+        }
+    }
+    return obj;
+};
