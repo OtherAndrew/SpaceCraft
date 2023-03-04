@@ -5,28 +5,21 @@ class HealthSystem {
     }
 
     update(tick) {
-        const updateList = this.entityManager.getEntities.filter(e => e.isDrawable
-            // && (e.tag.includes('mob') || e.tag.includes("player"))
-            && e.components["stats"]);
-        // console.log(updateList)
+        const updateList = this.entityManager.getEntities.filter(e => e.isDrawable && e.components["stats"]);
         updateList.forEach(e => {
             const eStats = e.components["stats"];
             if (eStats.isDead) {
                 if (e.tag.includes('mob') || e.name === "player") {
                     this.particleFactory.generate('death', e.components['boxCollider'].center);
-                    if (e.components['drops']) {
-                        e.components['drops'].dropList.forEach(d => {
-                            this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
-                        });
+                    if (e.tag.includes('mob')) {
+                        if (e.components['drops']) {
+                            e.components['drops'].dropList.forEach(d => {
+                                this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
+                            });
+                        }
+                        e.destroy();
                     }
-                    e.destroy();
                 }
-                // else if (e.name === 'block') {
-                //     e.tag = 'air';
-                //     e.id = null;
-                //     e.isBroken = true;
-                //     delete e.components["boxCollider"];
-                // }
             } else {
                 if (eStats.canRegen()) {
                     eStats.heal(eStats.regenAmount);
