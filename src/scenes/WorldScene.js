@@ -295,6 +295,7 @@ class WorldScene extends Scene {
             this.playerController.refreshPlayerConnection();
             this.camera.setTarget(this.player);
             this.renderBox.setTarget(this.player);
+            this.textBox.append("You live once more!");
         } else {
             if (this.elapsedRespawnTime === 0) {
                 const pTransform = this.player.components["transform"];
