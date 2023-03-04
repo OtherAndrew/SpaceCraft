@@ -6,7 +6,8 @@ class WorldScene extends Scene {
         this.game = game;
         this.mid = HEIGHT_PIXELS * .5 + WIDTH
         this.drawItems = null;
-        this.respawnTime = 3;
+        this.respawnTime = 5;
+        this.invulnTime = 3;
         this.spawnPoint = {
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
@@ -25,7 +26,8 @@ class WorldScene extends Scene {
      */
     init(canvas) {
         this.canvas = canvas;
-        this.elapsedTime = 0;
+        this.elapsedRespawnTime = 0;
+        this.elapsedInvulnTime = this.invulnTime;
         this.textBox = new TextBox();
         this.containerManager.textBox = this.textBox;
 
@@ -100,28 +102,35 @@ class WorldScene extends Scene {
                 this.player.components['stats'].invincible = true;
                 console.log("win");
             } else if (this.player.components['stats'].isDead) {
-                if (this.elapsedTime === 0) {
-                    const pTransform = this.player.components["transform"];
-                    pTransform.hasGravity = false;
-                    pTransform.velocityX = 0;
-                    pTransform.velocityY = 0;
-                    this.player.isDrawable = false;
-                    this.textBox.append("You died!");
-                    this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
-                    this.elapsedTime += deltaTime;
-                } else if (this.elapsedTime > this.respawnTime) {
-                    this.elapsedTime = 0;
+                if (this.elapsedRespawnTime >= this.respawnTime) {
+                    this.elapsedRespawnTime = 0;
+                    this.elapsedInvulnTime = 0;
                     regenPlayerComponents(this.spawnPoint, this.player);
                     this.playerController.refreshPlayerConnection();
                     this.camera.setTarget(this.player);
                     this.renderBox.setTarget(this.player);
+                    this.player.components['stats'].invincible = true;
                 } else {
-                    this.elapsedTime += deltaTime;
+                    if (this.elapsedRespawnTime === 0) {
+                        const pTransform = this.player.components["transform"];
+                        pTransform.hasGravity = false;
+                        pTransform.velocityX = 0;
+                        pTransform.velocityY = 0;
+                        this.player.isDrawable = false;
+                        this.textBox.append("You died!");
+                        this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
+                        this.elapsedRespawnTime += deltaTime;
+                    }
+                    this.elapsedRespawnTime += deltaTime;
                 }
             } else {
                 this.containerManager.reloadInventory();
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
+                this.elapsedInvulnTime += deltaTime;
+                if (this.elapsedInvulnTime >= this.invulnTime) {
+                    this.player.components['stats'].invincible = false;
+                }
             }
             // **update state**
             this.entityManager.update();
