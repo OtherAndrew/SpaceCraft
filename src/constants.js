@@ -202,9 +202,13 @@ const PROJECTILE_PATH = {
 const SOUND_PATH = {
     BOSS                    :   './assets/music/themes/boss_battle.mp3',
     EXPLOSION               :   './assets/music/sfx/pipe_bomb1.wav',
+    FALL_DAMAGE             :   './assets/music/sfx/fleshbreak.wav',
     FIRE                    :   './assets/music/sfx/flame_thrower_long.wav',
     GRENADE_LAUNCHER        :   './assets/music/sfx/grenade_launcher_shoot.wav',
     HAND_CANNON             :   './assets/music/sfx/air_burster_shoot.wav',
+    HIT1                    :   './assets/music/sfx/hit1.ogg',
+    HIT2                    :   './assets/music/sfx/hit2.ogg',
+    HIT3                    :   './assets/music/sfx/hit3.ogg',
     LASER                   :   './assets/music/sfx/capper_shoot.wav',
     MINIGUN                 :   './assets/music/sfx/minigun_shoot_long.wav',
     RAILGUN                 :   './assets/music/sfx/sniper_railgun_single_01.wav',

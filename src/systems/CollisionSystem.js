@@ -104,8 +104,9 @@ class CollisionSystem {
                         if (entity.components.state) entity.components.state.grounded = true;
                         const fallDamage = eTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
                         if (entity.components["stats"] && entity.components["stats"].hasFallDamage
-                            && eTransform.hasGravity && fallDamage !== 0) {
+                                && eTransform.hasGravity && fallDamage !== 0) {
                             entity.components["stats"].applyDamage(fallDamage);
+                            if (entity.name === 'player') ASSET_MANAGER.playAsset(SOUND_PATH.FALL_DAMAGE);
                         }
                         eTransform.fallDamageTime = 0;
                     }
@@ -198,14 +199,35 @@ class CollisionSystem {
                 if (atk.name === "projectile" && !atk.tag.includes("pierce")) {
                     atk.destroy();
                 }
+                this.#playHitSound(atk.components['stats'].damage);
             }
-            for (let j = 0; j < this.tileList.length; j++) {
-                if (checkCollision(atk, this.tileList[j])) {
-                    if (atk.name === "projectile" && !atk.tag.includes("ignoreTile")) {
+            if (atk.name === "projectile" && !atk.tag.includes("ignoreTile")) {
+                for (let j = 0; j < this.tileList.length; j++) {
+                    if (checkCollision(atk, this.tileList[j])) {
                         atk.destroy();
+                        break;
                     }
                 }
             }
+        }
+    }
+
+    #playHitSound(attackDamage) {
+        if (this.player.components['stats'].isDead) return;
+        if (attackDamage <= 0) return;
+        if (ASSET_MANAGER.isPlaying(SOUND_PATH.HIT1)
+            || ASSET_MANAGER.isPlaying(SOUND_PATH.HIT2)
+            || ASSET_MANAGER.isPlaying(SOUND_PATH.HIT3)) return;
+        switch (randomInt(3)) {
+            case 0:
+                ASSET_MANAGER.playAsset(SOUND_PATH.HIT1);
+                break;
+            case 1:
+                ASSET_MANAGER.playAsset(SOUND_PATH.HIT2);
+                break;
+            case 2:
+                ASSET_MANAGER.playAsset(SOUND_PATH.HIT3);
+                break;
         }
     }
 
