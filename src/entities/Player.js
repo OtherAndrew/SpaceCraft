@@ -75,5 +75,12 @@ class Player {
         aMap.set('crouchR', new AnimationProps(5, 1));
         aMap.set('crouchL', new AnimationProps(5, 2));
     };
+}
 
+const regenPlayerComponents = (props, currentPlayer) => {
+    let newPlayer = new Player(props);
+    currentPlayer.isDrawable = true;
+    currentPlayer.isAlive = true;
+    currentPlayer.components = {};
+    newPlayer.components.forEach(c => currentPlayer.components[c.name] = c)
 }
