@@ -51,7 +51,7 @@ const BG_PATH = {
     CAVE_1          :   './assets/backgrounds/cave_1_50.png',
     CAVE_2          :   './assets/backgrounds/cave_2_50.png',
     CAVE_3          :   './assets/backgrounds/cave_3_50.png',
-    MAIN_MENU       :   './assets/backgrounds/mainMenuSplashScreen.png'
+    MAIN_MENU       :   './assets/menu/splashscreen_start.png'
 }
 
 const BG_SCROLL = {

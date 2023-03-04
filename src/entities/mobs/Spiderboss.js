@@ -55,13 +55,11 @@ class Spiderboss {
     update(target, projectileManager) {
         const targetX = target.center.x;
         const x = this.components['boxCollider'].center.x;
-        const state = targetX < x ? "walkL" : "walkR";
+        const state = targetX < x ? "idleL" : "idleR";
         this.components.state.setState(state);
         if (this.rand > 0) {
             this.rand -= 1;
-
         } else {
-
             let height = Math.floor(Math.random()*(10 - 5) + 5);
             this.components.transform.velocityY -= height;
             this.rand = Math.floor(Math.random()*(60 - 30) + 30);

@@ -10,7 +10,7 @@ class MainMenu extends Scene {
     init() {
         this.img = ASSET_MANAGER.cache[BG_PATH.MAIN_MENU]
         this.title = "SpaceCraft ver 0.5Alpha"
-        this.prompt = 'click to start game'
+        // this.prompt = null
         this.midPoint = {
             x: WIDTH * .5,
             y: HEIGHT * .5
@@ -35,6 +35,6 @@ class MainMenu extends Scene {
         ctx.drawImage(this.img, 0, 0)
         ctx.font = 'bold 50px Helvetica'
         ctx.fillStyle = 'red'
-        ctx.fillText(this.prompt, this.midPoint.x - 350, this.midPoint.y + 250)
+        // ctx.fillText(this.prompt, this.midPoint.x - 350, this.midPoint.y + 250)
    }
 }
