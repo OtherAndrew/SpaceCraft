@@ -7,7 +7,6 @@ class CursorSystem {
         this.cursorList = []
         this.playerHud = hud
         this.player = player
-        this.crosshairTags = ['laserPistol', 'laserGun', 'laserRifle', 'flamethrower', 'grenadeLauncher', 'handCannon', 'minigun', 'railgun']
     }
 
     init() {
@@ -23,9 +22,9 @@ class CursorSystem {
             let selected = this.playerHud.activeContainer.item
             if(!menuActive && selected) {
                 let tag = this.terrainMap[pos.y][pos.x].tag
-                if(/tile|interact/.test(tag) && selected.tag === 'pickaxe' && checkPlayerDistance(pos, this.player) < BLOCK_PLACEMENT_DISTANCE) {
+                if(/tile|interact/.test(tag) && selected.tag.includes('Pickaxe') && checkPlayerDistance(pos, this.player) < BLOCK_PLACEMENT_DISTANCE) {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
-                } else if (this.crosshairTags.some(t => selected.tag === t)) {
+                } else if (selected.name === "weapon") {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]
                 } else if(/tile|interact/.test(selected.tag)) {
                     this.cursor.cursor = isPlaceable(this.player, pos, this.terrainMap) && /air/.test(tag) ? 

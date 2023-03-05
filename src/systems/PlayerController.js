@@ -38,7 +38,7 @@ class PlayerController {
             }
         }
         if (activeContainer.item) {
-            this.restrictMovement = activeContainer.item.tag === 'minigun' || activeContainer.item.tag === 'railgun';
+            this.restrictMovement = activeContainer.item.tag === 'Minigun' || activeContainer.item.tag === 'Railgun';
         } else {
             this.restrictMovement = false;
         }
@@ -145,7 +145,7 @@ class PlayerController {
                         // console.log(newBlock)
                     }
                 }
-            } else if (active.tag.includes('pickaxe')) {
+            } else if (active.tag.includes('Pickaxe')) {
                 if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
                     let destroyable = true;
                     if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
