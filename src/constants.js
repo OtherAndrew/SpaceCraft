@@ -163,6 +163,7 @@ const MISC_PATH = {
     BULLETFRAME: './assets/icons/bullets_frame.png',
     DEATH_EFFECT: './assets/projectiles/death_explosion.png',
     PICK: './assets/icons/item_3485.png',
+    SUPER_PICK: './assets/icons/super_pickaxe.png',
     BLOCK_PLACEMENT_GREEN: './assets/cursors/blockPlacementGreen.cur',
     BLOCK_PLACEMENT_RED: './assets/cursors/blockPlacementRed.cur'
 }

@@ -145,13 +145,13 @@ class PlayerController {
                         // console.log(newBlock)
                     }
                 }
-            } else if (active.tag === 'pickaxe') {
+            } else if (active.tag.includes('pickaxe')) {
                 if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
                     let destroyable = true;
                     if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
                     if (destroyable) {
                         let e = this.entityManager.getEntity(selected.id)
-                        e.components.stats.applyDamage(1);
+                        e.components['stats'].applyDamage(active.components['stats'].damage);
                         if(this.ready) {
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_DAMAGE)
                             this.ready = false

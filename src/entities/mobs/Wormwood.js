@@ -1,6 +1,6 @@
 /**
  * Wormwood is a beneficial stationary mob that heals the player on contact.
- * Can be defeated to procure wood.
+ * Can be defeated to obtain wood.
  *
  * @author Jeep Naarkom
  * @author Andrew Nguyen

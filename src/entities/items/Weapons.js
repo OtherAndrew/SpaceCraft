@@ -10,7 +10,7 @@
  */
 class LaserPistol {
     constructor() {
-        this.tag = "laserPistol";
+        this.tag = "Laser Pistol";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -30,7 +30,7 @@ class LaserPistol {
  */
 class LaserGun {
     constructor() {
-        this.tag = "laserGun";
+        this.tag = "Laser Gun";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -50,7 +50,7 @@ class LaserGun {
  */
 class LaserRifle {
     constructor() {
-        this.tag = "laserRifle";
+        this.tag = "Laser Rifle";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -70,7 +70,7 @@ class LaserRifle {
  */
 class Flamethrower {
     constructor() {
-        this.tag = "flamethrower";
+        this.tag = "Flamethrower";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -90,7 +90,7 @@ class Flamethrower {
  */
 class GrenadeLauncher {
     constructor() {
-        this.tag = "grenadeLauncher";
+        this.tag = "Grenade Launcher";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -110,7 +110,7 @@ class GrenadeLauncher {
  */
 class HandCannon {
     constructor() {
-        this.tag = "handCannon";
+        this.tag = "Hand Cannon";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -131,7 +131,7 @@ class HandCannon {
  */
 class Minigun {
     constructor() {
-        this.tag = "minigun";
+        this.tag = "Minigun";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -152,7 +152,7 @@ class Minigun {
  */
 class Railgun {
     constructor() {
-        this.tag = "railgun";
+        this.tag = "Railgun";
         this.name = "weapon";
         this.components = [
             new CSprite({

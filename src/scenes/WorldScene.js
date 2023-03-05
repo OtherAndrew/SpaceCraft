@@ -7,7 +7,7 @@ class WorldScene extends Scene {
         this.mid = HEIGHT_PIXELS * .5 + WIDTH
         this.drawItems = null;
         this.respawnTime = 5;
-        this.invulnTime = 3;
+        this.invulnTime = 5;
         this.spawnPoint = {
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
@@ -77,6 +77,7 @@ class WorldScene extends Scene {
     giveWeapons2() {
         const weps = [
             new Pickaxe(),
+            new SuperPickaxe(),
             new LaserPistol(),
             new LaserGun(),
             new Flamethrower(),
@@ -295,7 +296,8 @@ class WorldScene extends Scene {
             this.playerController.refreshPlayerConnection();
             this.camera.setTarget(this.player);
             this.renderBox.setTarget(this.player);
-            this.textBox.append("You live once more!");
+            // this.textBox.append("You live once more!");
+            this.textBox.append(getRandom(HELP));
         } else {
             if (this.elapsedRespawnTime === 0) {
                 const pTransform = this.player.components["transform"];
