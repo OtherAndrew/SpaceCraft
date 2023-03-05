@@ -62,7 +62,7 @@ class Blueprint {
  * @param mode  the mode the function should behave as
  * @returns {{components: (CTransform|CSprite|CLifespan)[], tag: string}}   Block blueprint
  */
-const generateBlock = (tag, x, y, mode) => {
+const generateBlock = (tag, x = 0, y = 0, mode) => {
     let id = cleanTag(tag).toUpperCase();
     let tempX = x;
     let tempY = y;
@@ -92,7 +92,7 @@ const generateBlock = (tag, x, y, mode) => {
     });
 }
 
-const generateInteractive = (tag, x=0, y=0) => {
+const generateInteractive = (tag, x = 0, y = 0) => {
     let id = cleanTag(tag).toUpperCase();
     if (id.includes('CHEST')) id = 'CHEST';
     let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];

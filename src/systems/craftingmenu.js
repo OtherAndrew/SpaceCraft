@@ -254,7 +254,7 @@ class CraftingMenu {
                 } else if (tag.includes('interact')) { // interactive
                     generate = new Entity(generateInteractive(tag));
                 } else { // tile
-                    generate = new Entity(generateBlock(tag, 0, 0, 'craftgen'));
+                    generate = new Entity(generateBlock(tag,'craftgen'));
                 }
                 this.cm.addToInventory(
                     id,
@@ -280,9 +280,9 @@ class CraftingMenu {
         for (let i = 1; i < recipe.length; i++) {
             let ingredient = recipe[i];
             ingredient.font = '12'
-            ingredient.playerCount = this.cm.playerCounts.get(ingredient.item.tag);
+            ingredient.playerCount = this.cm.getPlayerCounts(ingredient.item.tag);
             ingredient.update = function () {
-                this.displayText = ingredient.playerCount + '/' + this.count;
+                this.displayText = this.playerCount + '/' + this.count;
             }
         }
     }
@@ -296,13 +296,8 @@ class CraftingMenu {
                     for (let j = 1; j < actives[i].length; j++) { // update each ingredient
                         let ingredient = actives[i][j];
                         let playerCount = this.cm.getPlayerCounts(ingredient.item.tag);
-                        if (playerCount) {
-                            ingredient.playerCount = playerCount;
-                            ingredient.insufficient = playerCount < ingredient.count;
-                        } else {
-                            ingredient.playerCount = 0;
-                            ingredient.insufficient = true;
-                        }
+                        ingredient.playerCount = playerCount;
+                        ingredient.insufficient = playerCount < ingredient.count;
                     }
                 }
             }
