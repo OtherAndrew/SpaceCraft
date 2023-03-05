@@ -7,18 +7,20 @@ class MobController {
 
     update(tick) {
         const pCollider = this.player.components['boxCollider']
-        const updateList = this.entities.filter(e => /*e.isDrawable &&*/ e.tag.includes('mob') && e.name !== 'nativenpc');
-        updateList.forEach(e => {
-            if (getDistance(e.components['boxCollider'].center, pCollider) > WIDTH) {
-                e.destroy();
-                console.log(`despawned ${e.name}`)
-            } else {
-                e.components['state'].elapsedTime += tick;
-                e.components['state'].attackTime += tick;
-                e.update(pCollider, this.projectileFactory);
-                e.components['boxCollider'].sideCollision = false;
-                e.components['boxCollider'].attackCollision = false;
+        for (let i = 0; i < this.entities.length; i++) {
+            const e = this.entities[i];
+            if (e.tag.includes('mob') || e.tag.includes('npc')) {
+                if (!e.tag.includes('npc') && getDistance(e.components['boxCollider'].center, pCollider) > WIDTH * 1.5) {
+                    e.destroy();
+                    console.log(`despawned ${e.name}`)
+                } else if (e.isDrawable) {
+                    e.components['state'].elapsedTime += tick;
+                    e.components['state'].attackTime += tick;
+                    e.update(pCollider, this.projectileFactory);
+                    e.components['boxCollider'].sideCollision = false;
+                    e.components['boxCollider'].attackCollision = false;
+                }
             }
-        });
+        }
     }
 }

@@ -1,15 +1,17 @@
 class DurationSystem {
-    constructor(entites) {
-        this.entites = entites;
+    constructor(entities) {
+        this.entities = entities;
     }
 
     update(tick) {
-        const checkList = this.entites.filter(e => e.components["duration"]);
-        checkList.forEach(e => {
-            e.components["duration"].time -= tick;
-            if (e.components["duration"].time < 0) {
-                e.destroy();
+        for (let i = 0; i < this.entities.length; i++) {
+            const e = this.entities[i];
+            if (e.components["duration"]) {
+                e.components["duration"].time -= tick;
+                if (e.components["duration"].time < 0) {
+                    e.destroy();
+                }
             }
-        })
+        }
     }
 }

@@ -83,7 +83,7 @@ class ProjectileFactory {
                     projectileQueue.push(new Projectile({
                         tag: 'playerAttack',
                         sprite: this.orbSprite(14, 0, 0.8),
-                        damage: 2.5,
+                        damage: 4,
                         speed: BLOCKSIZE * 0.75,
                         dVector: directionVector,
                         origin: projectileOrigin,

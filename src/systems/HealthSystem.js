@@ -19,7 +19,7 @@ class HealthSystem {
                             this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
                         });
                     }
-                    e.destroy();
+                    if (e.name !== "player") e.destroy();
                 }
                 // else if (e.name === 'block') {
                 //     e.tag = 'air';

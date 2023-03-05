@@ -38,7 +38,7 @@ class CStats {
             this.currentHealth = clamp(this.currentHealth - damage, 0, this.maxHealth);
             this.elapsedTime = 0;
             this.isDamaged = true;
-            if (this.currentHealth <= 0) this.isDead = true;
+            this.isDead = this.currentHealth === 0;
         }
     }
 

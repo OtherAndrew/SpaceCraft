@@ -1,28 +1,30 @@
 class ContainerManager {
+    hotbarLength = 9;
+    
     constructor() {
-        this.textBox = null
         this.owners = {};               // owners and their inventory
 
-        this.slots = [];                // every container by their universal slot number
-        this.slotCount = 0;             // universal slot number count
+        this.slots = [];                // All containers by universal slot id
+        this.slotID = 0;                // universal slot id
 
         this.activeInventory = [];      // interactive inventories
         this.drawnInventory = [];       // TODO inventories on screen
 
-        this.playerCounts = new Map;    // keep track of player items and their counts
+        this.playerCounts = new Map;    // internal tracking of player items and their counts
 
-        this.activeContainer = null;  // player selected container
-        this.lastClick = null;          // tracks last mouse click
+        this.activeContainer = null;    // previously selected container
+        this.lastClick = null;          // previous mouse click
 
-        this.hoverText = null           // provides information
+        this.textBox = null;            // display area for changes in player inventory
+        this.hoverText = null           // information displayed on mouseover
 
-        this.splitMode = false;         // stack splitting
-        this.splitCount = 0;            // new stack count
+        this.splitMode = false;         // mode denoting whether splitting has been initiated
+        this.splitCount = 0;            // counter for current split
 
         this.chestCount = 0;            // counter for new chests
         this.reuseChest = [];           // reusable chest inventories
 
-        this.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
+        this.createInventory("player", 302, 690, 4, this.hotbarLength, undefined, "reverse");
         this.createInventory(null, 678, 502, 1, 1, "red");
 
         this.loadInventory("player");
@@ -48,13 +50,13 @@ class ContainerManager {
             for (let j = 0; j < col; j++) {
                 if (keyword == null) { // ordinary container
                     newInventory[internalCount] = new Container(
-                        owner, x + (47 * j), y + (47 * i), this.slotCount++, color);
+                        owner, x + (47 * j), y + (47 * i), this.slotID++, color);
                 } else if (keyword === 'reverse') { // player main inventory
                     newInventory[internalCount] = new Container(
-                        owner, x + (47 * j), y - (47 * i), this.slotCount++, color);
+                        owner, x + (47 * j), y - (47 * i), this.slotID++, color);
                 } else { // other special container
                     newInventory[internalCount] = new Container(
-                        owner, x + (47 * j), y + (47 * i), this.slotCount++, color, undefined, keyword);
+                        owner, x + (47 * j), y + (47 * i), this.slotID++, color, undefined, keyword);
                 }
                 this.slots.push(newInventory[internalCount++]); // register with uni-slot
             }
@@ -68,7 +70,7 @@ class ContainerManager {
     }
 
     getPlayerCounts(tag) {
-        return this.playerCounts.get(tag);
+        return this.playerCounts.get(tag) ? this.playerCounts.get(tag) : 0;
     }
 
     addToInventory(owner, item, count = 1) {
@@ -77,104 +79,96 @@ class ContainerManager {
         for (let i = 0; i < inventory.length; i++) {
             if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 inventory[i].count += count;
-                if (owner === 'player') this.addPlayerCount(item, count);
+                if (owner === 'player') {
+                    this.addPlayerCount(item, count);
+                    this.textBox.append(`Added ${count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
+                }
                 return 0;
-            } else if (firstEmpty === undefined && inventory[i].item == null) firstEmpty = inventory[i];
+            } else if (!firstEmpty && !inventory[i].item) firstEmpty = inventory[i];
         }
         if (firstEmpty) {
             firstEmpty.item = item;
             firstEmpty.count = count;
-            if (owner === 'player') this.addPlayerCount(item, count);
+            if (owner === 'player') {
+                this.addPlayerCount(item, count);
+                this.textBox.append(`Added ${count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
+            }
             return 1;
-        } else return -1;
-    }
-
-    addPlayerCount(item, count) {
-        let current = this.playerCounts.get(item.tag);
-        if (current) {
-            this.playerCounts.set(item.tag, current + count);
-            this.textBox.append(`Added ${count} ${item.tag}`)
-        } 
-        else this.playerCounts.set(item.tag, count);
-    }
-
-    minusPlayerCount(item, count) {
-        let current = this.playerCounts.get(item.tag);
-        if (current) {
-            let newCount = current - count;
-            if (!newCount) this.playerCounts.delete(item.tag);
-            else this.playerCounts.set(item.tag, newCount);
+        } else {
+            this.textBox.append(`Cannot add ${cleanTag(item.tag)}, inventory full`);
+            return -1;
         }
     }
 
-    // removeFromInventory(owner, index) {
-    //     let inventory = this.getInventory(owner);
-    //     let ent = inventory[index];
-    //     if (ent.item) {
-    //         if (--ent.count) return structuredClone(ent.item);
-    //         else {
-    //             let item = ent.item;
-    //             ent.item = null;
-    //             return item;
-    //         }
-    //     }
-    // }
+    addPlayerCount(item, count) {
+        let tag = item.tag;
+        this.playerCounts.set(tag, this.getPlayerCounts(tag) + count);
+    }
 
-    removeFromPlayer(index) {
-        let ent = this.slots[index];
-        if (ent.item) {
-            let active = ent.item.tag;
-            this.minusPlayerCount(ent.item, 1)
-            if (!--ent.count) this.clearContainer(ent);
+    minusPlayerCount(item, count) {
+        let tag = item.tag;
+        let current = this.playerCounts.get(tag);
+        if (current) {
+            let newCount = current - count;
+            if (!newCount) this.playerCounts.delete(tag);
+            else this.playerCounts.set(tag, newCount);
+        }
+    }
+
+    removeFromPlayer(index, count = 1) {
+        let container = this.slots[index];
+        if (container.item) {
+            let active = container.item.tag;
+            this.minusPlayerCount(container.item, count);
+            this.textBox.append(`Removed ${count} ${cleanTag(active)} (${this.getPlayerCounts(active)})`);
+            if (!--container.count) this.clearContainer(container);
             return active;
         }
     }
 
-    removeForCrafting(requisite, owner = "player") {
+    removeForCrafting(requisite, owner = 'player') {
         let item = requisite.item;
         let cost = requisite.count;
         let inventory = this.getInventory(owner);
-        for (let i = 0; i < inventory.length && cost; i++) {
+        for (let i = 0; cost > 0 && i < inventory.length; i++) {
             if (inventory[i].item && inventory[i].item.tag === item.tag) {
                 let owned = inventory[i].count;
-                if (cost >= owned) {
-                    cost -= owned;
-                    this.clearContainer(inventory[i])
-                } else {
-                    inventory[i].count -= cost;
-                    cost = 0;
-                }
+                inventory[i].count -= cost;
+                cost -= owned;
+                if (inventory[i].count <= 0) this.clearContainer(inventory[i]);
             }
         }
-        if (owner === "player") this.minusPlayerCount(item, requisite.count)
+        if (owner === 'player') {
+            this.minusPlayerCount(item, requisite.count)
+            this.textBox.append(`Removed ${requisite.count} ${cleanTag(item.tag)} (${this.getPlayerCounts(item.tag)})`);
+        }
     }
 
     swapViaContainer(swapContainer) {
-        if (swapContainer !== this.activeContainer && swapContainer.item && this.activeContainer.item
-            && swapContainer.item.tag === this.activeContainer.item.tag) { // stack if same
-            swapContainer.count = swapContainer.count + this.activeContainer.count;
-            this.clearContainer(this.activeContainer)
-        } else if (!swapContainer.owner && this.activeContainer.item) { // trashcan
-            swapContainer.item = this.activeContainer.item;
-            swapContainer.count = this.activeContainer.count;
-            this.clearContainer(this.activeContainer)
+        let swapItem = swapContainer.item;
+        let swapCount = swapContainer.count;
+        let activeItem = this.activeContainer.item;
+        let activeCount = this.activeContainer.count;
+        if (swapContainer !== this.activeContainer && swapItem && activeItem && swapItem.tag === activeItem.tag) { // stack if same
+            swapContainer.count += activeCount;
+            this.clearContainer();
+        } else if (!swapContainer.owner && activeItem) { // trashcan
+            swapContainer.item = activeItem;
+            swapContainer.count = activeCount;
+            this.clearContainer();
         } else { // swap
-            let placeholder = this.activeContainer.item;
-            this.activeContainer.item = swapContainer.item;
-            swapContainer.item = placeholder;
-            placeholder = this.activeContainer.count;
-            this.activeContainer.count = swapContainer.count;
-            swapContainer.count = placeholder;
+            this.activeContainer.item = swapItem;
+            swapContainer.item = activeItem;
+            this.activeContainer.count = swapCount;
+            swapContainer.count = activeCount;
         }
-        this.deselectContainer();
     }
 
     splitViaContainer(splitContainer) {
         splitContainer.item = this.activeContainer.item; // possibly problematic
         splitContainer.count = this.splitCount;
         this.activeContainer.count -= this.splitCount;
-        if (this.activeContainer.count === 0) this.clearContainer(this.activeContainer);
-        this.deselectContainer();
+        if (this.activeContainer.count === 0) this.clearContainer();
         this.clearSplit();
     }
 
@@ -184,12 +178,13 @@ class ContainerManager {
         else if (this.activeContainer.owner === 'player' && container.owner !== 'player') playerContainer = this.activeContainer;
         if (playerContainer && playerContainer.item) this.minusPlayerCount(playerContainer.item, playerContainer.count);
         interaction(container);
+        this.deselectContainer();
         if (playerContainer && playerContainer.item) this.addPlayerCount(playerContainer.item, playerContainer.count);
     }
 
     loadInventory(owner) {
         this.activeInventory.push(this.owners[owner]);
-        console.log(this.owners[owner]);
+        // console.log(this.owners[owner]);
     }
 
     loadInventories(tag) {
@@ -216,22 +211,13 @@ class ContainerManager {
             if (this.hoverText) {
                 ctx.save();
                 ctx.globalAlpha = 0.75;
-                ctx.fillStyle = 'black';
-                ctx.font = "bold 15px Helvetica";
-                ctx.strokeStyle = 'white';
-                ctx.fillStyle = 'black';
-                ctx.lineWidth = 3;
-                ctx.lineJoin = "round";
-                ctx.miterLimit = 2;
-                ctx.strokeText(this.hoverText, mouse.x, mouse.y);
-                ctx.lineWidth = 1;
-                ctx.fillText(this.hoverText, mouse.x, mouse.y);
+                drawStrokedText(ctx, 'bold 15', 'black', this.hoverText, mouse.x, mouse.y);
                 ctx.restore();
             }
         } else {
             ctx.save();
             ctx.globalAlpha = 0.7;
-            for (let c = 0; c < 9; c++) this.activeInventory[0][c].draw(ctx);
+            for (let c = 0; c < this.hotbarLength; c++) this.activeInventory[0][c].draw(ctx);
             ctx.restore();
         }
     }
@@ -243,8 +229,7 @@ class ContainerManager {
         if (menuActive) { // ui is active
             if (!this.splitMode) {
                 let check = this.checkHit(mouse); // item text
-                if (check && check.item) this.hoverText = /*check.item.tag;*/ cleanTag(check.item.tag);
-                else this.hoverText = null;
+                this.hoverText = (check && check.item) ? cleanTag(check.item.tag) : null;
             }
             if (click && this.checkNew(click)) { // there is a click and it is unique
                 if (click.w === 1) { // left click
@@ -275,15 +260,20 @@ class ContainerManager {
                     this.splitMode = true;
                     if (this.activeContainer.count > this.splitCount) this.splitCount++;
                     this.hoverText = this.splitCount;
+                } else if (click.w === 2 && this.activeContainer && this.activeContainer.item) {
+                    let trash = this.getInventory(null)[0];
+                    this.inspectInteraction(trash, this.swapViaContainer.bind(this));
                 }
                 this.lastClick = click;
             }
         } else { // ui is not active
-            this.deselectContainer(); // if something is selected deselect it
-            this.clearSplit();
-            this.lastClick = null; // don't bother remembering last click
+            this.deselectContainer();   // if something is selected deselect it
+            this.clearSplit();          // clear any active splits
+            this.lastClick = null;      // don't bother remembering last click
         }
     }
+    
+    // TODO investigate broken splitting
 
     checkNew(click) {
         return this.lastClick == null || click.t !== this.lastClick.t;
@@ -314,8 +304,7 @@ class ContainerManager {
     checkCount(requisite, owner = 'player') {
         let item = requisite.item;
         let cost = requisite.count;
-        if (owner === 'player')
-            return (this.playerCounts.get(item.tag) ? this.playerCounts.get(item.tag) >= cost : false);
+        if (owner === 'player') return this.getPlayerCounts(item.tag) >= cost;
         let count = 0;
         let inventory = this.getInventory(owner)
         for (let i = 0; count < cost && i < inventory.length; i++)
@@ -329,7 +318,7 @@ class ContainerManager {
         this.splitCount = 0;
     }
 
-    clearContainer(container) {
+    clearContainer(container = this.activeContainer) {
         container.item = null;
         container.count = 0;
     }
@@ -362,7 +351,7 @@ class ContainerManager {
         if (index) chest.tag += index;
         else {
             chest.tag += this.chestCount++;
-            this.createInventory(cleanTag(chest.tag), 302, 408, 2, 9, 'blue');
+            this.createInventory(cleanTag(chest.tag), 302, 408, 2, 9, 'purple');
         }
     }
 
@@ -381,16 +370,23 @@ class ContainerManager {
 }
 
 class Container {
+    baselineWidth = 42;
+
     constructor(owner, x, y, slot, fillColor, strokeColor = 'white', keyword) {
         Object.assign(this, {owner, x, y, slot, fillColor, strokeColor, keyword});
-        this.width = 42;
+        
+        this.width = this.baselineWidth;
         this.calculateMiddle();
+        
         this.textColor = 'black';
         this.font = 'bold 15';
 
         this.item = null;
         this.count = 0;
+        
         this.selected = false;
+        this.uncraftable = false;
+        this.insufficient = false;
     }
 
     calculateMiddle() {
@@ -404,12 +400,11 @@ class Container {
     }
 
     draw(ctx) {
-        if (this.selected) this.roundRect(ctx, this.x, this.y, 'orange');
-        else this.roundRect(ctx, this.x, this.y, this.fillColor);
+        this.roundRect(ctx, this.x, this.y, (this.selected) ? 'orange' : this.fillColor);
         if (this.item) {
-            let sprite = this.item.components.sprite;
             ctx.save();
             if (this.uncraftable) ctx.globalAlpha = 0.40;
+            let sprite = this.item.components.sprite;
             ctx.drawImage(
                 sprite.sprite,
                 0,
@@ -421,25 +416,16 @@ class Container {
                 sprite.sWidth,
                 sprite.sHeight
             );
-            this.drawStrokedText(ctx, this.x + Math.round(0.2 * this.width), this.y + Math.round(0.8 * this.width));
+            drawStrokedText(
+                ctx,
+                this.font,
+                (this.insufficient) ? 'red' : this.textColor,
+                this.displayText,
+                this.x + Math.round(0.2 * this.width), 
+                this.y + Math.round(0.8 * this.width)
+            );
             ctx.restore();
         }
-    }
-
-    // credit: https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
-    drawStrokedText(ctx, x, y) {
-        ctx.save();
-        ctx.font = this.font + 'px Helvetica';
-        ctx.strokeStyle = this.strokeColor;
-        ctx.lineWidth = 3;
-        ctx.lineJoin = 'round';
-        ctx.miterLimit = 2;
-        ctx.strokeText(this.displayText, x, y);
-        ctx.fillStyle = this.textColor;
-        if (this.insufficient) ctx.fillStyle = 'red';
-        ctx.lineWidth = 1;
-        ctx.fillText(this.displayText, x, y);
-        ctx.restore();
     }
 
     // credit: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
@@ -463,21 +449,3 @@ class Container {
         ctx.stroke();
     }
 }
-
-// credit: https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
-/*function drawStrokedText(ctx, x, y) {
-    ctx.save();
-    // ctx.globalAlpha = 1;
-    ctx.font = this.font + 'px Helvetica';
-    ctx.strokeStyle = this.strokeColor;
-    ctx.lineWidth = 3;
-    ctx.lineJoin='round';
-    ctx.miterLimit=2;
-    ctx.strokeText(this.displayText, x, y);
-    ctx.fillStyle = this.textColor;
-    if (this.insufficient)
-        ctx.fillStyle = 'red';
-    ctx.lineWidth = 1;
-    ctx.fillText(this.displayText, x, y);
-    ctx.restore();
-}*/

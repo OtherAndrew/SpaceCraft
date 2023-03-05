@@ -5,6 +5,13 @@ class WorldScene extends Scene {
         super()
         this.game = game;
         this.mid = HEIGHT_PIXELS * .5 + WIDTH
+        this.drawItems = null;
+        this.respawnTime = 5;
+        this.invulnTime = 3;
+        this.spawnPoint = {
+            x: WIDTH_PIXELS * .5,
+            y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
+        }
         //other game stats --- display during win condition (rocket scene)
         //add total each mob kills
         //total blocks mined
@@ -16,29 +23,25 @@ class WorldScene extends Scene {
     /**
      * Initializes this class' terrain entities
      * Player and player movement are for testing purposes
-     * @param assets
      */
-    init(assets, canvas) {
+    init(canvas) {
+        this.canvas = canvas;
+        this.elapsedRespawnTime = 0;
+        this.elapsedInvulnTime = this.invulnTime;
+        this.textBox = new TextBox();
+        this.containerManager.textBox = this.textBox;
+
         this.mobFactory = new MobFactory(this.entityManager);
         let airTileMap
         [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
-        // this.#createEntity()
-        this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
+        this.player = this.mobFactory.build('player', this.spawnPoint.x, this.spawnPoint.y);
         this.rocket =
-            this.mobFactory.build('rocket', this.player.components.transform.x - 750, this.player.components.transform.y - 200);
+            this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 11);
         this.nativenpc =
-            this.mobFactory.build('nativenpc', this.player.components.transform.x + 350, this.player.components.transform.y - 200);
-
-        /*
-    this.spawnManager.spawnTestEntities({
-        x: WIDTH_PIXELS * .5,
-        y: HEIGHT_PIXELS * .5 - 100
-    });
-    */
-
+            this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE);
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
-            this.projectileFactory, this.terrainMap);
+                                                     this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new MobController(this.entityManager.getEntities, this.player, this.projectileFactory);
         this.renderSystem = new RenderSystem(this.entityManager.getEntities);
@@ -48,7 +51,7 @@ class WorldScene extends Scene {
         this.craftingMenu = new CraftingMenu(this.containerManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.spawnManager = new SpawnManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
-        this.cursorSystem = new CursorSystem(canvas, this.terrainMap, this.hud, this.player);
+        this.cursorSystem = new CursorSystem(this.canvas, this.terrainMap, this.hud, this.player);
         this.cursorSystem.init();
         // this.worldImages = new WorldImages(this.player)
         // this.worldImages.init(this.entityManager)
@@ -58,31 +61,18 @@ class WorldScene extends Scene {
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
 
         this.giveWeapons2();
-        this.spawnTestEntities();
-       // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
-       this.musicPlayer = new MusicPlayer(this.player)
-       ASSET_MANAGER.adjustVolume(.2)
-       this.textBox = new TextBox()
-       this.containerManager.textBox = this.textBox
+        // this.spawnTestEntities();
+        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+        this.musicPlayer = new MusicPlayer(this.player)
+        ASSET_MANAGER.adjustVolume(.2)
+
+        this.drawItems = this.#updateTileState();
     }
 
     spawnTestEntities() {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
 
-        // this.mobFactory.build('spikejumper', px + 300, py - 200);
-        // this.mobFactory.build('bloodsucker', px - 300, py - 200);
-        // this.mobFactory.build('dirtcarver', px + 300, py - 200);
-        // this.mobFactory.build('vengefly', px - 300, py - 200);
-        // this.mobFactory.build('lightbug', px + 300, py - 200);
-        // this.mobFactory.build('wormtank', px - 300, py - 200);
-        // this.mobFactory.build('mossfly', px - 300, py - 200);
-        // this.mobFactory.build('silverfish', px + 600, py - 200);
-        // this.mobFactory.build('electrojelly', px - 600, py - 200);
-        // this.mobFactory.build('bombfly', px + 900, py - 200);
-        // this.mobFactory.build('spore', px + 100, py - 200);
-        // this.mobFactory.build('spiderboss', px -5*BLOCKSIZE, py - 20*BLOCKSIZE);
-        // this.mobFactory.build('silverfish', px + 600, py - 200);
     }
 
     giveWeapons2() {
@@ -105,31 +95,21 @@ class WorldScene extends Scene {
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon()) {
-                this.rocket.components["state"].setState("win");
-                this.rocket.components['transform'].hasGravity = false;
-                this.camera.setTarget(this.rocket);
-                this.renderBox.setTarget(this.rocket);
-                this.player.isDrawable = false;
-                this.player.components['stats'].invincible = true;
-                console.log("win");
+                this.#onWin();
             } else if (this.player.components['stats'].isDead) {
-                this.player.components["transform"].hasGravity = false;
-                this.player.components["transform"].velocityX = 0;
-                this.player.components["transform"].velocityY = 0;
-                this.player.isDrawable = false;
-                this.player.components['stats'].invincible = true;
-                console.log("game over");
+                this.#onDeath(deltaTime);
             } else {
                 this.containerManager.reloadInventory();
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
+                this.#setInvulnerability(deltaTime);
             }
             // **update state**
             this.entityManager.update();
             this.renderBox.update();
-            this.#updateTileState();
+            this.drawItems = this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
-            this.collisionSystem.refreshNew();
+            this.collisionSystem.refresh();
 
             this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 
@@ -149,7 +129,7 @@ class WorldScene extends Scene {
 
             // **draw**
             this.camera.update();
-            this.renderSystem.update(deltaTime);
+            this.renderSystem.update(deltaTime, this.drawItems);
             this.musicPlayer.update(deltaTime)
         }
         this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
@@ -160,16 +140,15 @@ class WorldScene extends Scene {
     }
 
     draw(menuActive, ctx, mouse) {
-
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else {
             ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
-            this.renderSystem.draw(ctx, this.camera);
-            this.textBox.draw(ctx)
+            this.renderSystem.draw(ctx, this.camera, this.drawItems);
         }
         // this.#drawColliders(ctx);
 
+        this.textBox.draw(ctx)
         this.containerManager.draw(menuActive, ctx, mouse);
         this.hud.draw(menuActive, ctx);
     }
@@ -191,51 +170,32 @@ class WorldScene extends Scene {
      * @todo performance optimization
      */
     #updateTileState() {
-        // this.entityManager.getEntities.forEach(e => {
-        //     if(e.name !== 'player' && !e.tag.includes('background') && !this.#isItem(e)) {
-        //         if(e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE &&
-        //         e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE &&
-        //         e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE &&
-        //         e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE) {
-        //             if(!e.isBroken) {
-        //                 e.isDrawable = true
-        //             }
-        //             this.#checkIfExposed(e)
-        //         } else {
-        //             e.isDrawable = false
-        //         }
-        //     }
-        // })
-
+        let drawables = [];
         let entities = this.entityManager.getEntities;
         let length = entities.length;
         for (let i = 0; i < length; i++) {
             let e = entities[i];
             // check tiles
             if (e.name === 'block') {
-                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 6 &&
-                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 6 &&
-                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 4 &&
-                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 4) {
+                if (e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 8 &&
+                    e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 8 &&
+                    e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * BLOCKSIZE - BLOCKSIZE * 8 &&
+                    e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * BLOCKSIZE + BLOCKSIZE * 8) {
                     e.isDrawable = !e.isBroken
                     if (e.isDrawable) this.#checkIfExposed(e)
                 } else {
                     e.isDrawable = false;
                 }
-            }
-            // check everything else
-            else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
+            } else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
                 e.isDrawable = e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.y < (this.renderBox.y + BLOCKSIZE) * (BLOCKSIZE)
             }
+            if (e.isDrawable) drawables.push(e);
         }
+        return drawables;
     }
-
-    // #isItem(e) {
-    //     return e.name === 'weapon' || e.name === 'tool' || e.name === "item";
-    // }
 
     /**
      * Checks a drawable entities four directions to see if it is exposed(not completely surrounded by other blocks).
@@ -243,25 +203,6 @@ class WorldScene extends Scene {
      * @param {Entity} e
      */
     #checkIfExposed(e) {
-        // if(e.isDrawable && e.tag.includes('tile') && !this.#isItem(e)) {
-        //     const posX = e.components.transform.x / BLOCKSIZE
-        //     const posY = e.components.transform.y / BLOCKSIZE
-        //     if (this.#isExposed(posY, posX)) {
-        //         if (!e.components["boxCollider"]) {
-        //             e.addComponent([
-        //                 new CBoxCollider({
-        //                     x: e.components.transform.x,
-        //                     y: e.components.transform.y,
-        //                     width: BLOCKSIZE,
-        //                     height: BLOCKSIZE
-        //                 })
-        //             ]);
-        //         }
-        //     } else {
-        //         delete e.components["boxCollider"];
-        //     }
-        // }
-
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
         let visCheck = this.#isExposed(posY, posX);
@@ -309,7 +250,7 @@ class WorldScene extends Scene {
         } else visCode.push('0');
         return visCode.join('');
     }
-    
+
     #checkOrdinal(posY, posX) {
         let visCode = ['o'];
         if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag)) { // NW
@@ -333,12 +274,63 @@ class WorldScene extends Scene {
         return (this.containerManager.checkSufficient(requisite, 'player')
             && checkCollision(this.player, this.rocket))
     }
-    #gameContinue() {
-        this.player.isDrawable = true;
-        this.player = this.mobFactory.build('player', WIDTH_PIXELS * .5, HEIGHT_PIXELS * .5 - 100);
-        this.player.components["transform"].hasGravity = true;
-        // this.player.components["transform"].velocityX = 0;
-        // this.player.components["transform"].velocityY = 0;
-        this.player.components['stats'].invincible = false;
+
+    #onWin() {
+        this.rocket.components["state"].setState("win");
+        this.rocket.components['transform'].hasGravity = false;
+        this.camera.setTarget(this.rocket);
+        this.renderBox.setTarget(this.rocket);
+        this.player.isDrawable = false;
+        this.player.components['stats'].invincible = true;
+        if (this.elapsedRespawnTime === 0) {
+            this.textBox.append("You won!");
+            this.elapsedRespawnTime += 1;
+        }
+    }
+
+    #onDeath(deltaTime) {
+        if (this.elapsedRespawnTime >= this.respawnTime) {
+            this.elapsedRespawnTime = 0;
+            this.elapsedInvulnTime = 0;
+            regenPlayerComponents(this.spawnPoint, this.player);
+            this.playerController.refreshPlayerConnection();
+            this.camera.setTarget(this.player);
+            this.renderBox.setTarget(this.player);
+        } else {
+            if (this.elapsedRespawnTime === 0) {
+                const pTransform = this.player.components["transform"];
+                pTransform.hasGravity = false;
+                pTransform.velocityX = 0;
+                pTransform.velocityY = 0;
+                this.player.isDrawable = false;
+                this.textBox.append("You died!");
+                this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
+            }
+            this.elapsedRespawnTime += deltaTime;
+        }
+    }
+
+    #setInvulnerability(deltaTime) {
+        if (this.elapsedInvulnTime < this.invulnTime) {
+            this.player.components['stats'].invincible = true;
+            this.elapsedInvulnTime += deltaTime;
+        } else {
+            this.player.components['stats'].invincible = false;
+        }
     }
 }
+
+var setVals = function (obj, vals) {
+    if (obj && vals) {
+        for (var x in vals) {
+            if (vals.hasOwnProperty(x)) {
+                if (obj[x] && typeof vals[x] === 'object') {
+                    obj[x] = setVals(obj[x], vals[x]);
+                } else {
+                    obj[x] = vals[x];
+                }
+            }
+        }
+    }
+    return obj;
+};
