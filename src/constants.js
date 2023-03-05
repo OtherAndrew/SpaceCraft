@@ -162,8 +162,6 @@ const MISC_PATH = {
     BULLET: './assets/icons/bullets.png',
     BULLETFRAME: './assets/icons/bullets_frame.png',
     DEATH_EFFECT: './assets/projectiles/death_explosion.png',
-    PICK: './assets/icons/item_3485.png',
-    SUPER_PICK: './assets/icons/super_pickaxe.png',
     BLOCK_PLACEMENT_GREEN: './assets/cursors/blockPlacementGreen.cur',
     BLOCK_PLACEMENT_RED: './assets/cursors/blockPlacementRed.cur'
 }
@@ -263,6 +261,24 @@ const TILE_PATH = {
     BEDROCK     :   './assets/tiles/tilesBedrock.png'
 }
 
+const TOOL_DAMAGE = {
+    IRON                :   2,
+    STEEL               :   4,
+    TIN                 :   8,
+    TITANITE            :   16,
+    FERRITE             :   32,
+    SUPER               :   100
+}
+
+const TOOL_PATH = {
+    IRON                :   './assets/icons/item_3503.png',
+    STEEL               :   './assets/icons/item_3509.png',
+    TIN                 :   './assets/icons/item_3521.png',
+    TITANITE            :   './assets/icons/item_3485.png',
+    FERRITE             :   './assets/icons/item_3491.png',
+    SUPER               :   './assets/icons/super_pickaxe.png',
+}
+
 const WEAPON_PATH = {
     FLAMETHROWER        :   './assets/weapons/flamethrower.png',
     GRENADE_LAUNCHER    :   './assets/weapons/grenade_launcher.png',
@@ -290,9 +306,10 @@ const PATHS = {
     OVERLAYS    :   OVERLAY_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TILES       :   TILE_PATH,
+    TOOLS       :   TOOL_PATH,
     WEAPONS     :   WEAPON_PATH,
     SOUNDS      :   SOUND_PATH,
-    ENVS: ENV_PATH
+    ENVS        :   ENV_PATH
 }
 
 const CONSTANTS = {
@@ -307,9 +324,11 @@ const CONSTANTS = {
     OVERLAYS    :   OVERLAY_PATH,
     PROJECTILES :   PROJECTILE_PATH,
     TILES       :   TILE_PATH,
+    TOOLS       :   TOOL_PATH,
+    TOOL_DMGS   :   TOOL_DAMAGE,
     WEAPONS     :   WEAPON_PATH,
     SOUNDS      :   SOUND_PATH,
-    ENVS: ENV_PATH
+    ENVS        :   ENV_PATH
 }
 
 for (const constant in CONSTANTS) Object.freeze(CONSTANTS[constant])

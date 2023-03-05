@@ -145,7 +145,7 @@ class PlayerController {
                         // console.log(newBlock)
                     }
                 }
-            } else if (active.tag.includes('Pickaxe')) {
+            } else if (active.tag.includes('pickaxe')) {
                 if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
                     let destroyable = true;
                     if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);

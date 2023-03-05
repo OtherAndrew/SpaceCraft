@@ -96,17 +96,26 @@ const generateInteractive = (tag, x = 0, y = 0) => {
     let id = cleanTag(tag).toUpperCase();
     if (id.includes('CHEST')) id = 'CHEST';
     let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
-    return new Blueprint({
+    return {
         tag: tag,
-        sprite: image,
-        x: x * BLOCKSIZE,
-        y: y * BLOCKSIZE,
-        sWidth: image.width,
-        sHeight: image.height,
-        maxHealth: 50,
-        regenCooldown: 1,
-        regenAmount: 1
-    });
+        name: 'block',
+        components: [
+            new CTransform({
+                x: x * BLOCKSIZE,
+                y: y * BLOCKSIZE
+            }),
+            new CSprite({
+                sprite: image,
+                sWidth: image.width,
+                sHeight: image.height
+            }),
+            new CStats({
+                maxHealth: 50,
+                regenCooldown: 1,
+                regenAmount: 1
+            }),
+        ]
+    }
 }
 
 const generateItem = (tag) => {
@@ -114,14 +123,56 @@ const generateItem = (tag) => {
     let index = id.lastIndexOf(' ');
     if (index !== -1) id = id.slice(0, index);
     let image = ASSET_MANAGER.cache[ITEM_PATH[id]];
-    return new Blueprint({
+    return {
         tag: tag,
-        sprite: image,
-        sWidth: image.width,
-        sHeight: image.height,
-        invincible: true
-    });
+        components: [
+            new CSprite({
+                    sprite: image,
+                    sWidth: image.width,
+                    sHeight: image.height
+                }
+            )
+        ]
+    };
 }
+
+const generatePickaxe = (tag) => {
+    let id = cleanTag(tag).toUpperCase();
+    let image = ASSET_MANAGER.cache[TOOL_PATH[id]];
+    return {
+        tag: tag + ' pickaxe',
+        name: tag + ' Pickaxe',
+        components: [
+            new CSprite({
+                sprite: image,
+                sWidth: image.width,
+                sHeight: image.height,
+            }),
+            new CStats({
+                damage: TOOL_DAMAGE[id]
+            }),
+        ]
+    };
+}
+
+// const generatePickaxe = (index) => {
+//     let INDEX = index.toUpperCase();
+//     let image = ASSET_MANAGER.cache[TOOL_PATH[INDEX]];
+//     return {
+//         tag : 'pickaxe',
+//         name : index + ' Pickaxe',
+//         components : [
+//             new CSprite({
+//                 sprite: image,
+//                 sWidth: image.width,
+//                 sHeight: image.height,
+//             }),
+//             new CStats({
+//                 damage: TOOL_DAMAGE[INDEX]
+//             }),
+//         ]
+//     };
+// }
 
 const generateWeapon = (tag) => {
     let gun;

@@ -76,8 +76,8 @@ class WorldScene extends Scene {
 
     giveWeapons2() {
         const weps = [
-            new Pickaxe(),
-            new SuperPickaxe(),
+            generatePickaxe('pickaxe_iron'),
+            generatePickaxe('pickaxe_super'),
             new LaserPistol(),
             new LaserGun(),
             new Flamethrower(),
@@ -186,7 +186,7 @@ class WorldScene extends Scene {
                 } else {
                     e.isDrawable = false;
                 }
-            } else if (!/player|weapon|tool|item/.test(e.name) && !e.tag.includes('background')) {
+            } else if (!/player|weapon|item/.test(e.name) && !/background|pickaxe/.test(e.tag)) {
                 e.isDrawable = e.components.transform.x > (this.renderBox.x - BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.x < (this.renderBox.x + BLOCKSIZE) * (BLOCKSIZE) &&
                     e.components.transform.y > (this.renderBox.y - BLOCKSIZE) * (BLOCKSIZE) &&

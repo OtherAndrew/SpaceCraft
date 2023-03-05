@@ -3,18 +3,12 @@ class HUD {
         this.cm = containermanager;
         this.player = player;
 
-        // create player inventory and trashcan
-        // this.cm.createInventory("player", 302, 690, 4, 9, undefined, "reverse");
-        // this.cm.createInventory(null, 678, 502, 1, 1, "red");
-        //
-        // this.cm.activateInventory("player");
-        // this.cm.activateInventory(null);
-
         this.containers = this.cm.getInventory("player");
         this.activeContainer = this.containers[0];
         this.refreshActiveInfo();
 
         // TESTING
+        // this.add(new Entity(generateInteractive('interact_anvil')));
         // this.add(new Entity(generateInteractive('interact_hub')));
         // this.add(new Entity(generateInteractive('interact_trader')));
         // this.add(new Entity(generateInteractive('interact_furnace')));
@@ -27,7 +21,7 @@ class HUD {
 
     // TESTING
     add(entity) {
-        this.cm.addToInventory("player", entity);
+        this.cm.addToInventory('player', entity);
     }
 
     refreshActiveInfo() {
@@ -40,7 +34,7 @@ class HUD {
             ctx.save();
             ctx.beginPath();
             ctx.lineWidth = 3;
-            ctx.strokeStyle = "yellow";
+            ctx.strokeStyle = 'yellow';
             ctx.rect(this.x, this.y, 42, 42);
             ctx.stroke();
             ctx.restore();
