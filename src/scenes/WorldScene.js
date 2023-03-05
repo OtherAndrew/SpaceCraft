@@ -320,9 +320,9 @@ class WorldScene extends Scene {
     }
 }
 
-var setVals = function (obj, vals) {
+const setVals = function (obj, vals) {
     if (obj && vals) {
-        for (var x in vals) {
+        for (let x in vals) {
             if (vals.hasOwnProperty(x)) {
                 if (obj[x] && typeof vals[x] === 'object') {
                     obj[x] = setVals(obj[x], vals[x]);
