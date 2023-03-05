@@ -72,6 +72,7 @@ class WorldScene extends Scene {
     spawnTestEntities() {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
+
     }
 
     giveWeapons2() {
