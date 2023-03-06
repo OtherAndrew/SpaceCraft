@@ -44,7 +44,7 @@ class WorldScene extends Scene {
                                                      this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new MobController(this.entityManager.getEntities, this.player, this.projectileFactory);
-        this.renderSystem = new RenderSystem(this.entityManager.getEntities);
+        this.renderSystem = new RenderSystem();
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
@@ -96,7 +96,9 @@ class WorldScene extends Scene {
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon()) {
-                this.#onWin();
+                // spawn boss (if not spawned already)
+                // if (boss is dead)
+                //     this.#onWin();
             } else if (this.player.components['stats'].isDead) {
                 this.#onDeath(deltaTime);
             } else {
@@ -209,19 +211,8 @@ class WorldScene extends Scene {
         let visCheck = this.#isExposed(posY, posX);
         if (visCheck.exposed) {
             e.visCode = visCheck.visCode; // placeholder
-            // if (!e.components["boxCollider"]) {
-            //     e.addComponent([
-            //         new CBoxCollider({
-            //             x: e.components.transform.x,
-            //             y: e.components.transform.y,
-            //             width: BLOCKSIZE,
-            //             height: BLOCKSIZE
-            //         })
-            //     ]);
-            // }
         } else {
             delete e.visCode; // placeholder
-            // delete e.components["boxCollider"];
         }
     }
 
@@ -322,18 +313,3 @@ class WorldScene extends Scene {
         }
     }
 }
-
-const setVals = function (obj, vals) {
-    if (obj && vals) {
-        for (let x in vals) {
-            if (vals.hasOwnProperty(x)) {
-                if (obj[x] && typeof vals[x] === 'object') {
-                    obj[x] = setVals(obj[x], vals[x]);
-                } else {
-                    obj[x] = vals[x];
-                }
-            }
-        }
-    }
-    return obj;
-};
