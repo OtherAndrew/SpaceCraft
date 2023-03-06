@@ -113,6 +113,7 @@ class WorldScene extends Scene {
             this.drawItems = this.#updateTileState();
             // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
             this.collisionSystem.refresh();
+            this.movementSystem.refresh();
 
             this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 

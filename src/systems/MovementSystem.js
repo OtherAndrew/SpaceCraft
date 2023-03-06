@@ -6,49 +6,52 @@
  */
 class MovementSystem {
     constructor(entities, player) {
-        this.entities = entities
+        this.entities = entities;
         this.player = player;
+        this.movables = [];
+        this.refresh();
+    }
+
+    /**
+     * Refreshes internal list of movable entities.
+     * Call this before updating.
+     */
+    refresh() {
+        this.movables = [];
+        for (let i = 0; i < this.entities.length; i++) {
+            const e = this.entities[i];
+            if (e.isDrawable && this.#canMove(e)) this.movables.push(e);
+        }
+    }
+
+    /**
+     * Determines if entity can move.
+     * @param {Entity} e The entity
+     * @return {boolean} If the entity can move.
+     */
+    #canMove(e) {
+        return (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile')
+               && e.name !== 'player';
     }
 
     /**
      * Update X position.
-     * @param tick
+     * @param tick Time slice.
      */
     updateX(tick) {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityX(this.player, tick);
-        const movables = this.entities.filter(e => e.isDrawable
-            && (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile')
-        );
-        movables.forEach(e => this.#moveEntityX(e, tick));
-        // getting better performance with filter + forEach for some reason
-        // for (let i = 0; i < this.entities.length; i++) {
-        //     const e = this.entities[i];
-        //     if (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile') {
-        //         this.#moveEntityX(e, tick);
-        //     }
-        // }
+        this.movables.forEach(e => this.#moveEntityX(e, tick));
     }
 
     /**
      * Update Y position.
-     * @param tick
+     * @param tick Time slice
      */
     updateY(tick) {
         // Player needs to be updated separately from other mobs otherwise movement is jittery.
         this.#moveEntityY(this.player, tick);
-        const movables = this.entities.filter(e => e.isDrawable
-            && (e.tag.includes('mob')
-                || e.tag.includes("npc")
-                || e.name === 'projectile')
-        );
-        movables.forEach(e => this.#moveEntityY(e, tick));
-        // for (let i = 0; i < this.entities.length; i++) {
-        //     const e = this.entities[i];
-        //     if (e.tag.includes('mob') || e.tag.includes("npc") || e.name === 'projectile') {
-        //         this.#moveEntityY(e, tick);
-        //     }
-        // }
+        this.movables.forEach(e => this.#moveEntityY(e, tick));
     }
 
     /**

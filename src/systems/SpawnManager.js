@@ -88,7 +88,7 @@ class SpawnManager {
         // console.log(Math.floor(this.player.components['boxCollider'].bottom))
         // console.log(`spawned: ${mobList.length}`)
         if (this.elapsedTime > this.spawnCooldown && mobList.length < 10) {
-            console.log(`spawned: ${mobList.length}`)
+            // console.log(`spawned: ${mobList.length}`)
             const playerPosition = {
                 x: this.player.components['boxCollider'].center.x,
                 y: this.player.components['boxCollider'].bottom
@@ -131,7 +131,7 @@ class SpawnManager {
             // console.log(`failed to spawn ${mob}`);
         } else {
             // console.log(`spawned ${mob} using flatspawn at x: ${Math.floor(spawnedMob.components.transform.x)}, y: ${Math.floor(spawnedMob.components.transform.y)}`);
-            console.log(`spawned ${mob}`);
+            // console.log(`spawned ${mob}`);
         }
     }
 
@@ -146,7 +146,7 @@ class SpawnManager {
             // console.log(`failed to spawn ${mob}`);
         } else {
             // console.log(`spawned ${mob} using vectspawn at x: ${Math.floor(spawnedMob.components.transform.x)}, y: ${Math.floor(spawnedMob.components.transform.y)}`);
-            console.log(`spawned ${mob}`);
+            // console.log(`spawned ${mob}`);
         }
 
     }

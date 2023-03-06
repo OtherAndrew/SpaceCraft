@@ -5,11 +5,10 @@ class HealthSystem {
     }
 
     update(tick) {
-        const updateList = this.entityManager.getEntities.filter(e => e.isDrawable
-            // && (e.tag.includes('mob') || e.tag.includes("player"))
-            && e.components["stats"]);
-        // console.log(updateList)
-        updateList.forEach(e => {
+        const updateList = this.entityManager.getEntities;
+        for (let i = 0; i < updateList.length; i++) {
+            const e = updateList[i];
+            if (!e.isDrawable || !e.components['stats']) continue;
             const eStats = e.components["stats"];
             if (eStats.isDead) {
                 if (e.tag.includes('mob') || e.name === "player") {
@@ -21,12 +20,6 @@ class HealthSystem {
                     }
                     if (e.name !== "player") e.destroy();
                 }
-                // else if (e.name === 'block') {
-                //     e.tag = 'air';
-                //     e.id = null;
-                //     e.isBroken = true;
-                //     delete e.components["boxCollider"];
-                // }
             } else {
                 if (eStats.canRegen()) {
                     eStats.heal(eStats.regenAmount);
@@ -34,7 +27,7 @@ class HealthSystem {
                     eStats.elapsedTime += tick;
                 }
             }
-        });
+        }
     }
 }
 
