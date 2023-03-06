@@ -8,14 +8,15 @@ class SpawnManager {
 
         this.elapsedTime = 0;
         this.spawnCooldown = 1;
+        this.spawnLimit = 10;
 
         this.mobList1 = [
             'silverfish',
             'silverfish',
             'vengefly',
-            'vengefly',
             'wormwood',
             'wormwood',
+            null,
             null,
             null,
             null,
@@ -40,9 +41,9 @@ class SpawnManager {
             'bloodsucker',
             'dirtcarver',
             'dirtcarver',
+            'grapebomb',
             'spore',
             'spore',
-            'vengefly',
             'vengefly',
         ]
         this.mobList4 = [
@@ -65,12 +66,14 @@ class SpawnManager {
             'dirtcarver',
             'dirtcarver',
             'mossfly',
+            'mossfly',
             'grapebomb',
             'spikejumper',
             'wormtank',
         ]
         this.mobList6 = [
             'bloodspore',
+            'bloodsucker',
             'bombfly',
             'dirtcarver',
             'electrojelly',
@@ -85,10 +88,7 @@ class SpawnManager {
 
     update(deltaTime, mobList) {
         this.elapsedTime += deltaTime;
-        // console.log(Math.floor(this.player.components['boxCollider'].bottom))
-        // console.log(`spawned: ${mobList.length}`)
-        if (this.elapsedTime > this.spawnCooldown && mobList.length < 10) {
-            // console.log(`spawned: ${mobList.length}`)
+        if (mobList.length < this.spawnLimit && this.elapsedTime > this.spawnCooldown) {
             const playerPosition = {
                 x: this.player.components['boxCollider'].center.x,
                 y: this.player.components['boxCollider'].bottom
@@ -101,27 +101,31 @@ class SpawnManager {
                 this.flatSpawn(getRandom(this.mobList1), playerPosition);
                 console.log("level 1")
             } else if (isBetween(playerPosition.y, 7700, 8940)) {
-                this.vectSpawn(getRandom(this.mobList2), playerPosition);
+                this.vectorSpawn(getRandom(this.mobList2), playerPosition);
                 console.log("level 2")
             } else if (isBetween(playerPosition.y, 8940, 10180)) {
-                this.vectSpawn(getRandom(this.mobList3), playerPosition);
+                this.vectorSpawn(getRandom(this.mobList3), playerPosition);
                 console.log("level 3")
             } else if (isBetween(playerPosition.y, 10180, 11420)) {
-                this.vectSpawn(getRandom(this.mobList4), playerPosition);
+                this.vectorSpawn(getRandom(this.mobList4), playerPosition);
                 console.log("level 4")
             } else if (isBetween(playerPosition.y, 11420, 12660)) {
-                this.vectSpawn(getRandom(this.mobList5), playerPosition);
+                this.vectorSpawn(getRandom(this.mobList5), playerPosition);
                 console.log("level 5")
             } else if (isBetween(playerPosition.y, 12660, 13900)) {
-                this.vectSpawn(getRandom(this.mobList6), playerPosition);
+                this.vectorSpawn(getRandom(this.mobList6), playerPosition);
                 console.log("level 6")
             }
             this.elapsedTime = 0;
         }
     }
 
+    /**
+     * Spawns a mob slightly off-screen.
+     * @param {String} mob Mob to spawn.
+     * @param {{x: number, y: number}} playerPosition The player's position
+     */
     flatSpawn(mob, playerPosition) {
-        // console.log(`attempting to spawn ${mob}`)
         if (!mob) return;
         const spawnedMob = this.mobFactory.build(mob,
             playerPosition.x - (WIDTH * 0.66 * plusOrMinus()),
@@ -135,9 +139,15 @@ class SpawnManager {
         }
     }
 
-    vectSpawn(mob, playerPosition) {
+    /**
+     * Spawns a mob based on a randomly generated vector originating from the player's position.
+     * @param {String} mob Mob to spawn.
+     * @param {{x: number, y: number}} playerPosition The player's position
+     */
+    vectorSpawn(mob, playerPosition) {
+        if (!mob) return;
         const spawnVector = randomVector();
-        const spawnDistance = randomNumber(WIDTH * 0.66, WIDTH * 0.75)
+        const spawnDistance = randomNumber(WIDTH * 0.66, WIDTH * 0.75);
         const spawnedMob = this.mobFactory.build(mob,
             playerPosition.x - spawnVector.x * spawnDistance,
             playerPosition.y - spawnVector.y * spawnDistance);
@@ -145,7 +155,7 @@ class SpawnManager {
             spawnedMob.destroy();
             // console.log(`failed to spawn ${mob}`);
         } else {
-            // console.log(`spawned ${mob} using vectspawn at x: ${Math.floor(spawnedMob.components.transform.x)}, y: ${Math.floor(spawnedMob.components.transform.y)}`);
+            // console.log(`spawned ${mob} using vectorspawn at x: ${Math.floor(spawnedMob.components.transform.x)}, y: ${Math.floor(spawnedMob.components.transform.y)}`);
             // console.log(`spawned ${mob}`);
         }
 

@@ -294,7 +294,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 1.5,
+                    damage: 3,
                     origin: position,
                 }));
                 ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);
