@@ -85,15 +85,19 @@ class CraftingMenu {
 
     anvil_recipes = [ // TODO PICKAXES
         [{tag: 'pickaxe_steel'},
+            {tag: 'pickaxe_iron'},
             {tag: 'item_steel bar', count: 5},
             /*{tag: 'item_wood', count: 10}*/],
         [{tag: 'pickaxe_tin'},
+            {tag: 'pickaxe_steel'},
             {tag: 'item_tin bar', count: 5},
             /*{tag: 'item_wood', count: 10}*/],
         [{tag: 'pickaxe_titanite'},
+            {tag: 'pickaxe_tin'},
             {tag: 'item_titanite bar', count: 5},
             /*{tag: 'item_wood', count: 10}*/],
         [{tag: 'pickaxe_ferrite'},
+            {tag: 'pickaxe_titanite'},
             {tag: 'item_ferrite bar', count: 5},
             /*{tag: 'item_wood', count: 10}*/]
     ];

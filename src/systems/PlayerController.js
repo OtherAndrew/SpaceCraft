@@ -156,7 +156,7 @@ class PlayerController {
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_DAMAGE)
                             this.ready = false
                         }
-                        if(e.components.stats.isDead) {
+                        if(e.components['stats'].isDead) {
                             if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
                             selected.tag = 'air'
                             selected.id = null
@@ -165,7 +165,7 @@ class PlayerController {
                             e.isDrawable = false;
                             e.destroy(); // deregister item from entity list
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_BREAK)
-                            this.containerManager.addToInventory('player', e /*resizeBlock(e)*/)
+                            this.containerManager.addToInventory('player', e)
                         }
                     }
                 }
