@@ -73,7 +73,6 @@ class SpawnManager {
         ]
         this.mobList6 = [
             'bloodspore',
-            'bloodsucker',
             'bombfly',
             'dirtcarver',
             'electrojelly',

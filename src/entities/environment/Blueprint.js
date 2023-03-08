@@ -137,6 +137,22 @@ const generateItem = (tag) => {
     };
 }
 
+const getRandomBar = () => {
+    return generateItem(getRandom([
+        'bismuth',
+        'cobalt',
+        'copper',
+        'ferrite',
+        'gold',
+        'iron',
+        'paraffin',
+        'steel',
+        'tin',
+        'titanite',
+        'tungsten'
+    ]));
+}
+
 const generatePickaxe = (tag) => {
     let id = cleanTag(tag).toUpperCase();
     let image = ASSET_MANAGER.cache[TOOL_PATH[id]];
