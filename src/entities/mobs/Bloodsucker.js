@@ -53,9 +53,7 @@ class Bloodsucker {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: (sprite.dHeight - cHeight) * 3/4,
         });
-        const drops = new CDrops([
-            new LaserPistol()
-        ]);
+        const drops = new CDrops(this.#getDrops());
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
@@ -108,16 +106,10 @@ class Bloodsucker {
         state.setState(animState);
     }
 
-    #direction(x1,y1,x2,y2) {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const length = getDistance2(x1, y1, x2, y2);
-        return [dx/length, dy/length];
-    }
-
-    #moveCloser(mover, target, blocksize) {
-        const [x,y] = mover;
-        const [dx,dy] = target;
-        return [x + dx * blocksize, y + dy * blocksize];
+    #getDrops() {
+        const dropList = [generateItem('dirtcarver')];
+        if (Math.random() <= 0.05) dropList.push(new LaserGun());
+        if (Math.random() <= 0.1) dropList.push(new LaserPistol());
+        return dropList;
     }
 }

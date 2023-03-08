@@ -54,10 +54,11 @@ class Dirtcarver {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#getDrops());
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -98,5 +99,12 @@ class Dirtcarver {
         aMap.set('walkR', new AnimationProps(0, 0, 3, 18));
         aMap.set('walkL', new AnimationProps(0, 1, 3, 18));
     };
+
+    #getDrops() {
+        const dropList = [generateItem('dirtcarver')];
+        if (Math.random() <= 0.05) dropList.push(new LaserGun());
+        if (Math.random() <= 0.1) dropList.push(new LaserPistol());
+        return dropList;
+    }
 }
 

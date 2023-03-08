@@ -54,10 +54,11 @@ class Spikejumper {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#getDrops())
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -98,5 +99,12 @@ class Spikejumper {
         aMap.set('idleR', new AnimationProps(0, 0, 1, null, false));
         aMap.set('jumpR', new AnimationProps(0, 1, 3, null, false));
     };
+
+    #getDrops() {
+        const dropList = [generateItem('spider')];
+        if (Math.random() <= 0.05) dropList.push(new LaserRifle());
+        if (Math.random() <= 0.1) dropList.push(new LaserGun());
+        return dropList;
+    }
 }
 

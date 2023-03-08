@@ -51,10 +51,11 @@ class Grapebomb {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops([generateItem('sticky')])
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileFactory) {

@@ -54,9 +54,10 @@ class Electrojelly {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops([generateItem('amber')]);
         transform.collider = collider
 
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileFactory) {

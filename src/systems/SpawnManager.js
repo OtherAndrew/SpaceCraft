@@ -12,7 +12,7 @@ class SpawnManager {
 
         this.mobList1 = [
             'silverfish',
-            'silverfish',
+            'vengefly',
             'vengefly',
             'wormwood',
             'wormwood',
@@ -23,42 +23,55 @@ class SpawnManager {
             null,
         ]
         this.mobList2 = [
+            'silverfish',
+            'silverfish',
+            'silverfish',
+            'silverfish',
+            'silverfish',
+            'vengefly',
+            'vengefly',
+            'vengefly',
+            'vengefly',
+            'wormwood',
+        ]
+        this.mobList3 = [
+            'dirtcarver',
             'dirtcarver',
             'silverfish',
             'silverfish',
             'silverfish',
             'silverfish',
             'silverfish',
-            'silverfish',
+            'spore',
             'vengefly',
             'vengefly',
-            'wormwood'
         ]
-        this.mobList3 = [
+        this.mobList4 = [
             'silverfish',
             'silverfish',
             'silverfish',
             'bloodsucker',
             'dirtcarver',
             'dirtcarver',
+            'dirtcarver',
             'grapebomb',
             'spore',
             'spore',
-            'vengefly',
         ]
-        this.mobList4 = [
+        this.mobList5 = [
+            'bloodsucker',
             'bloodsucker',
             'bloodsucker',
             'bombfly',
             'dirtcarver',
             'dirtcarver',
+            'dirtcarver',
             'grapebomb',
             'mossfly',
-            'silverfish',
             'spore',
-            'vengefly',
+            'spore'
         ]
-        this.mobList5 = [
+        this.mobList6 = [
             'bloodspore',
             'bloodsucker',
             'bloodsucker',
@@ -69,9 +82,8 @@ class SpawnManager {
             'mossfly',
             'grapebomb',
             'spikejumper',
-            'wormtank',
         ]
-        this.mobList6 = [
+        this.mobList7 = [
             'bloodspore',
             'bombfly',
             'dirtcarver',
@@ -94,26 +106,29 @@ class SpawnManager {
             };
             // surface: 7200 (7231)
             // underground: 7700 (7647)
-            // intervals: 1240
+            // intervals: 1033
             // bedrock: 13900 (13855)
-            if (playerPosition.y < 7700) {
+            if (playerPosition.y < 7702) {
                 this.flatSpawn(getRandom(this.mobList1), playerPosition);
                 console.log("level 1")
-            } else if (isBetween(playerPosition.y, 7700, 8940)) {
+            } else if (isBetween(playerPosition.y, 7702, 8735)) {
                 this.vectorSpawn(getRandom(this.mobList2), playerPosition);
                 console.log("level 2")
-            } else if (isBetween(playerPosition.y, 8940, 10180)) {
+            } else if (isBetween(playerPosition.y, 8735, 9768)) {
                 this.vectorSpawn(getRandom(this.mobList3), playerPosition);
                 console.log("level 3")
-            } else if (isBetween(playerPosition.y, 10180, 11420)) {
+            } else if (isBetween(playerPosition.y, 9768, 10801)) {
                 this.vectorSpawn(getRandom(this.mobList4), playerPosition);
                 console.log("level 4")
-            } else if (isBetween(playerPosition.y, 11420, 12660)) {
+            } else if (isBetween(playerPosition.y, 10801, 11834)) {
                 this.vectorSpawn(getRandom(this.mobList5), playerPosition);
                 console.log("level 5")
-            } else if (isBetween(playerPosition.y, 12660, 13900)) {
+            } else if (isBetween(playerPosition.y, 11834, 12867)) {
                 this.vectorSpawn(getRandom(this.mobList6), playerPosition);
                 console.log("level 6")
+            } else if (isBetween(playerPosition.y, 12867, 13900)) {
+                this.vectorSpawn(getRandom(this.mobList7), playerPosition);
+                console.log("level 7")
             }
             this.elapsedTime = 0;
         }
