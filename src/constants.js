@@ -133,7 +133,7 @@ const ITEM_PATH = {
     TUNGSTEN: './assets/items/tungsten_bar.png',
 
     AMBER: './assets/items/amber.png',
-    DIRTCARVER: './assets/items/mob_dirtCarver.png',
+    KERATIN: './assets/items/mob_dirtCarver.png',
     WORMTANK: './assets/items/mob_wormTank.png',
     STICKY: './assets/items/mob_stickySlime.png',
     SPIDER: './assets/items/spiderSilk.png',
