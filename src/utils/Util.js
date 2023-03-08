@@ -7,8 +7,6 @@ const params = { };
  */
 const randomInt = n => Math.floor(Math.random() * n);
 
-const randomIntBetween = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-
 /**
  * @param {Number} r Red Value
  * @param {Number} g Green Value

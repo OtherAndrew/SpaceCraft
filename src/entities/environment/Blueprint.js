@@ -137,6 +137,22 @@ const generateItem = (tag) => {
     };
 }
 
+const getRandomItem = () => {
+    let out;
+    switch (randomInt(3)) {
+        case 0:
+            out = getRandomBar();
+            break;
+        case 1:
+            out = getRandomMobDrop();
+            break;
+        case 2:
+            out = getRandomMaterial();
+            break;
+    }
+    return out;
+}
+
 const getRandomBar = () => {
     return generateItem(getRandom([
         'bismuth',
@@ -150,6 +166,28 @@ const getRandomBar = () => {
         'tin',
         'titanite',
         'tungsten'
+    ]));
+}
+
+const getRandomMobDrop = () => {
+    return generateItem(getRandom([
+        'amber',
+        'dirtcarver',
+        'wormtank',
+        'sticky',
+        'spider'
+    ]));
+}
+
+const getRandomMaterial = () => {
+    return generateItem(getRandom([
+        'circuit',
+        'smart',
+        'charcoal',
+        'glass',
+        'plexiglass',
+        'refined',
+        'wood'
     ]));
 }
 
