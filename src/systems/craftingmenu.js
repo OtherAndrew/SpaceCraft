@@ -127,7 +127,7 @@ class CraftingMenu {
     trader_recipes = [ // DONE
         // [{tag: 'item_bomb'},
         //     {tag: 'item_gold bar'}],
-        [{tag: 'item_spider silk', count: 5},
+        [/*{tag: 'item_spider silk', count: 5},*/
             {tag: 'item_bismuth bar'}],
         [{tag: 'item_station plan'},
             {tag: 'item_cobalt bar', count: 5}
@@ -136,7 +136,7 @@ class CraftingMenu {
         [{tag: 'item_hub plan'},
             {tag: 'item_steel bar', count: 5}],
         [{tag: 'item_paraffintankplan'},
-            {tag: 'item_spider silk', count: 5},
+            /*{tag: 'item_spider silk', count: 5},*/
             /*{tag: 'item_wormtank hide', count: 5},*/
             {tag: 'item_plexiglass', count: 5}]
     ];

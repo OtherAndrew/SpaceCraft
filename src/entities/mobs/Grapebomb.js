@@ -51,7 +51,7 @@ class Grapebomb {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops([generateItem('sticky')])
+        const drops = new CDrops([generateItem('slime')])
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;

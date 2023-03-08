@@ -11,16 +11,19 @@ class SpawnManager {
         this.spawnLimit = 10;
 
         this.mobList1 = [
-            'silverfish',
-            'vengefly',
-            'vengefly',
-            'wormwood',
-            'wormwood',
-            null,
-            null,
-            null,
-            null,
-            null,
+            // 'silverfish',
+            // 'vengefly',
+            // 'vengefly',
+            // 'wormwood',
+            // 'wormwood',
+            // null,
+            // null,
+            // null,
+            // null,
+            // null,
+            'spikejumper',
+            'wormtank',
+            'grapebomb'
         ]
         this.mobList2 = [
             'silverfish',
