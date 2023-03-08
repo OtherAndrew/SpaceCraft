@@ -51,9 +51,7 @@ class Mossfly {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: (sprite.dHeight - cHeight) * 2/3,
         });
-        const drops = new CDrops([
-            new LaserPistol()
-        ]);
+        const drops = new CDrops(this.#addDrops());
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
@@ -68,6 +66,15 @@ class Mossfly {
         aMap.set('idleL', new AnimationProps(0, 0,3, 20));
         aMap.set('idleR', new AnimationProps(0, 1,3, 20));
     };
+
+    #addDrops() {
+        const dropList = [];
+        const num = randomInt(3) + 1;
+        for (let i = 0; i < num; i++) {
+            dropList.push(generateItem('wood'));
+        }
+        return dropList;
+    }
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']

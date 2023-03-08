@@ -125,6 +125,7 @@ const generateItem = (tag) => {
     let image = ASSET_MANAGER.cache[ITEM_PATH[id]];
     return {
         tag: tag,
+        name: 'item',
         components: [
             new CSprite({
                     sprite: image,

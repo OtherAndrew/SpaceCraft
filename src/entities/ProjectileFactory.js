@@ -20,8 +20,8 @@ class ProjectileFactory {
         const projectileQueue = [];
         switch (type) {
             case 'weak_bullet':
-                projectileOrigin.x += directionVector.x * 15
-                projectileOrigin.y += directionVector.y * 15
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
                     sprite: this.orbSprite(8),
@@ -39,8 +39,8 @@ class ProjectileFactory {
                 ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'mid_bullet':
-                projectileOrigin.x += directionVector.x * 15
-                projectileOrigin.y += directionVector.y * 15
+                projectileOrigin.x += directionVector.x * 10
+                projectileOrigin.y += directionVector.y * 10
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
                     sprite: this.orbSprite(11),
@@ -128,8 +128,8 @@ class ProjectileFactory {
                 }));
                 break;
             case 'bomb':
-                projectileOrigin.x += directionVector.x * 20;
-                projectileOrigin.y += directionVector.y * 20;
+                projectileOrigin.x += directionVector.x * 10;
+                projectileOrigin.y += directionVector.y * 10;
                 directionVector.y -= 0.25;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack explosive',

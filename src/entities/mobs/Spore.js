@@ -48,10 +48,11 @@ class Spore {
 
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#addDrops())
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -67,4 +68,14 @@ class Spore {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,7));
     };
+
+    #addDrops() {
+        const dropList = [];
+        const num = randomInt(3) + 1;
+        for (let i = 0; i < num; i++) {
+            dropList.push(generateItem('wood'));
+        }
+        return dropList;
+    }
+
 }
