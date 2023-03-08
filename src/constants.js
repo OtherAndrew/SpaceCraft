@@ -134,9 +134,9 @@ const ITEM_PATH = {
 
     AMBER: './assets/items/amber.png',
     KERATIN: './assets/items/mob_dirtCarver.png',
-    WORMTANK: './assets/items/mob_wormTank.png',
-    STICKY: './assets/items/mob_stickySlime.png',
-    SPIDER: './assets/items/spiderSilk.png',
+    WORMTANK: './assets/items/mob_wormTank2.png',
+    STICKY: './assets/items/mob_stickySlime2.png',
+    SPIDER: './assets/items/spiderSilk2.png',
 
     CIRCUIT: './assets/items/circuit.png',
     SMART: './assets/items/smartCircuit.png',
