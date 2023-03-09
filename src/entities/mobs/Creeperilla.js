@@ -34,7 +34,7 @@ class Creeperilla {
             scale: BLOCKSIZE * 2 / 152,
             firstFrameX: 1,
             frameY: 1,
-            fps: 15,
+            fps: 20,
         });
         const transform = new CTransform({
             x: props.x,
