@@ -1,3 +1,11 @@
+/**
+ * Creeperilla is a speedy crawling mob that shoots webs.
+ * Highly maneuverable but has low survivability.
+ *
+ * @author Jeep Naarkom
+ * @author Andrew Nguyen
+ */
+
 class Creeperilla {
     /**
      * Initializes Creeperilla
@@ -8,7 +16,7 @@ class Creeperilla {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob enemy';
+        this.tag = 'mob';
         this.name = 'creeperilla';
         this.components = this.#buildComponents(props);
         return this;
@@ -16,8 +24,7 @@ class Creeperilla {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 100,
-            damage: 0.25,
+            maxHealth: 75,
             speed: 4
         });
         const sprite = new CSprite({
