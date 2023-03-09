@@ -13,7 +13,7 @@ class SpawnManager {
         this.mobList1 = [
             'silverfish',
             'vengefly',
-            'vengefly',
+            'wormwood',
             'wormwood',
             'wormwood',
             null,

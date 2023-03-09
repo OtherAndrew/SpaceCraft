@@ -254,19 +254,19 @@ const TILE_PATH = {
 
 const TOOL_DAMAGE = {
     IRON                :   2,
-    STEEL               :   4,
-    TIN                 :   8,
+    COPPER              :   4,
+    STEEL               :   8,
     TITANITE            :   16,
     FERRITE             :   32,
     SUPER               :   100
 }
 
 const TOOL_PATH = {
-    IRON                :   './assets/icons/item_3503.png',
-    STEEL               :   './assets/icons/item_3509.png',
-    TIN                 :   './assets/icons/item_3521.png',
-    TITANITE            :   './assets/icons/item_3485.png',
-    FERRITE             :   './assets/icons/item_3491.png',
+    IRON                :   './assets/icons/iron_pick.png',
+    COPPER              :   './assets/icons/copper_pick.png',
+    STEEL               :   './assets/icons/steel_pick.png',
+    TITANITE            :   './assets/icons/titanite_pick.png',
+    FERRITE             :   './assets/icons/ferrite_pick.png',
     SUPER               :   './assets/icons/super_pickaxe.png',
 }
 
