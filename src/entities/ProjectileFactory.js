@@ -226,6 +226,23 @@ class ProjectileFactory {
                     spread: 0
                 }));
                 break;
+            case 'web':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                for (let i = 0; i < 3; i++) {
+                    projectileQueue.push(new Projectile({
+                        tag: 'enemy',
+                        sprite: this.orbSprite(15, 1),
+                        damage: 5,
+                        speed: BLOCKSIZE * 0.33,
+                        dVector: directionVector,
+                        origin: origin,
+                        duration: 0.5,
+                        hasGravity: false,
+                        spread: 4
+                    }));
+                }
+                break;
             case 'strongimpact':
                 origin.x += directionVector.x * 20;
                 origin.y += directionVector.y * 20;

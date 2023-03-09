@@ -15,15 +15,6 @@ const FALL_DAMAGE_MULTIPLIER = 200;
 const MOB_TIMEOUT = 300;
 const CHEST_SPAWN_COUNT = 30
 
-const MAXCREEPERILA = 2;
-const MAXDIRTCARVER = 5;
-const MAXLIGHTJELLY = 2;
-const MAXSPORE = 10;
-const MAXLIGHTBUG = 1;
-const MAXGRAPEBOMB = 3;
-const MAXBLOODSUCKER = 2;
-const MAXWORMTANK = 5;
-
 const GENSTATS = {
     BISMUTH	    :	12,
     COAL	    :	15,
@@ -68,7 +59,7 @@ const CHAR_PATH = {
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BOMBFLY     :   './assets/sprites/bombfly.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
-    CREEPERILLA :	'./assets/sprites/creeperilla.png',
+    CREEPERILLA :	'./assets/sprites/creeperilla2.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver2.png',
     ELECTROJELLY:	'./assets/sprites/electrojelly.png',
     ENTITY      :	'./assets/sprites/entity.png',

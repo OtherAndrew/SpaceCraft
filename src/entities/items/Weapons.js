@@ -160,7 +160,7 @@ class Railgun {
                 sWidth: 36,
                 sHeight: 36,
             }),
-            new CWeaponProps('railgun_bullet', 4)
+            new CWeaponProps('railgun_bullet', 5)
         ];
         return this;
     }

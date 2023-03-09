@@ -1,92 +1,102 @@
 class Creeperilla {
     /**
-     * Initializes Creeperilla (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes Creeperilla
+     * @param {Object} props   Position properties.
+     * @param {number} props.x X spawn position.
+     * @param {number} props.y Y spawn position.
+     * @returns {Creeperilla} Creeperilla blueprint.
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob';
+        this.tag = 'mob enemy';
         this.name = 'creeperilla';
         this.components = this.#buildComponents(props);
-        this.rand = Math.floor(Math.random()*(60-10) + 10);
+        return this;
     };
 
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 3
+            maxHealth: 100,
+            damage: 0.25,
+            speed: 4.5
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.CREEPERILLA],
-            sWidth: 150,
-            sHeight: 104,
-            scale: .75,
-            firstFrameX: 0,
-            frameY: 0,
-            lastFrameX: 3,
-            fps: 12,
-            padding: 3
+            sWidth: 160,
+            sHeight: 106,
+            scale: BLOCKSIZE * 2 / 152,
+            firstFrameX: 1,
+            frameY: 1,
+            fps: 15,
         });
         const transform = new CTransform({
             x: props.x,
             y: props.y,
             hasGravity: true,
         });
-        const cWidth = 1.8 * BLOCKSIZE;
+        const cWidth = BLOCKSIZE * 0.8;
+        const yOffset = BLOCKSIZE / 3;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
+            height: sprite.dHeight - yOffset - 3,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            height: sprite.dHeight
+            yOffset: yOffset
         });
 
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         state.sprite = sprite;
-        state.transform = transform;
+        state.direction = Math.random() < 0.5 ? 'left' : 'right';
         return [stats, sprite, transform, collider, state];
     }
 
     update(target, projectileManager) {
-        const targetX = target.center.x;
-        const x = this.components['boxCollider'].center.x;
-        const state = targetX < x ? "walkL" : "walkR";
-        this.components.state.setState(state);
-        if (this.rand > 0) {
-            this.rand -= 1;
+        const collider = this.components['boxCollider']
+        const origin = collider.center;
+        const speed = this.components["stats"].speed;
+        const transform = this.components["transform"];
+        const state = this.components['state'];
 
-        } else {
+        const distance = getDistance(origin, target.center);
+        const dVector = normalize(origin, target.center)
+        let animState;
 
-            let height = Math.floor(Math.random()*(25 - 5) + 5);
-            this.components.transform.velocityY -= height;
-            let leap = Math.floor(Math.random()*(10 - 3) + 3);
-            this.components.transform.velocityX = state === "walkL" ? -leap: leap;
-            this.rand = Math.floor(Math.random()*(60 - 30) + 30);
+        if (distance <= BLOCKSIZE * 12) { // attack
+            if (checkCollision(collider, target)) {
+                transform.velocityX = 0;
+            } else {
+                if (state.attackTime > 1) {
+                    projectileManager.entityShoot('web', target.center, origin)
+                    state.attackTime = 0;
+                }
+                transform.velocityX = dVector.x * speed;
+                state.direction = transform.velocityX < 0 ? "left" : "right"
+            }
+            animState = target.center.x < origin.x ? "walkL" : "walkR";
+        } else { // idle
+            transform.velocityX = 0;
+            animState = state.direction === 'left' ? "idleL" : "idleR";
         }
+
+        // jump
+        if (collider.sideCollision && state.grounded) {
+            transform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
+            state.grounded = false;
+        }
+
+        state.setState(animState);
     }
 
-    #jump(){
-        this.components.transform.y -= 10;
-    }
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 1, 0));
-        aMap.set('idleL', new AnimationProps(0, 0,0));
+        aMap.set('idleR', new AnimationProps(1, 1));
+        aMap.set('idleL', new AnimationProps(1, 0));
         aMap.set('walkR', new AnimationProps(0, 1, 3));
         aMap.set('walkL', new AnimationProps(0, 0, 3));
     };
-    #addBehaviors(transform, stats) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, null));
-        bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('walkR', new BehaviorProps(stats.speed, null));
-        bMap.set('walkL', new BehaviorProps(-stats.speed, null));
-    }
 
 }
 
