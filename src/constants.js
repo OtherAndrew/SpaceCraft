@@ -126,7 +126,7 @@ const ITEM_PATH = {
     AMBER: './assets/items/amber.png',
     KERATIN: './assets/items/mob_dirtCarver.png',
     SHELL: './assets/items/mob_wormTank2.png',
-    SLIME: './assets/items/mob_stickySlime2.png',
+    SLIME: './assets/items/slime.png',
     SILK: './assets/items/spiderSilk2.png',
 
     CIRCUIT: './assets/items/circuit.png',
