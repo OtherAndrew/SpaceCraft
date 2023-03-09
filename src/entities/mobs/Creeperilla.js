@@ -42,15 +42,15 @@ class Creeperilla {
             hasGravity: true,
         });
         const cWidth = BLOCKSIZE * 0.8;
-        const yOffset = BLOCKSIZE / 3;
         const collider = new CBoxCollider({
             x: props.x,
             y: props.y,
             width: cWidth,
-            height: sprite.dHeight - yOffset - 3,
+            height: BLOCKSIZE * 1.1,
             xOffset: (sprite.dWidth - cWidth) / 2,
-            yOffset: yOffset
+            yOffset: BLOCKSIZE * 0.25
         });
+        console.log(collider.height)
         const state = new CState();
         const duration = new CDuration();
         const drops = new CDrops(this.#getDrops());
@@ -86,13 +86,14 @@ class Creeperilla {
             animState = state.direction === 'left' ? "idleL" : "idleR";
         }
 
+        // shoot
         if ((collider.attackCollision || distance <= attackDistance) && state.attackTime > 1) {
             projectileManager.entityShoot('web', target.center, origin)
             state.attackTime = 0;
         }
 
         // jump
-        if (collider.sideCollision && state.grounded) {
+        if ((collider.attackCollision || collider.sideCollision) && state.grounded) {
             transform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
             state.grounded = false;
         }

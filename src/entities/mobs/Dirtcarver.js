@@ -24,7 +24,7 @@ class Dirtcarver {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.33,
+            damage: 0.5,
             speed: 2,
             maxHealth: 100
         });

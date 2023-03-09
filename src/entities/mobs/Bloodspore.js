@@ -12,7 +12,7 @@ class Bloodspore {
      * @param {Object} props   Position properties.
      * @param {number} props.x X spawn position.
      * @param {number} props.y Y spawn position.
-     * @returns {Spore} Bloodspore blueprint.
+     * @returns {Bloodspore} Bloodspore blueprint.
      * @constructor
      */
     constructor(props) {
@@ -24,7 +24,8 @@ class Bloodspore {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.75,
-            maxHealth: 150
+            maxHealth: 150,
+            hasFallDamage: false
         });
         // const height = 160;
         const sprite = new CSprite({

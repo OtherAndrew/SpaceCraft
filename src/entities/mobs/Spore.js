@@ -23,7 +23,8 @@ class Spore {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.25,
-            maxHealth: 100
+            maxHealth: 100,
+            hasFallDamage: false
         });
         // const height = 160;
         const sprite = new CSprite({

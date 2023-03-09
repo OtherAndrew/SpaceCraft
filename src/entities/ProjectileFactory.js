@@ -233,7 +233,7 @@ class ProjectileFactory {
                     projectileQueue.push(new Projectile({
                         tag: 'enemy',
                         sprite: this.orbSprite(15, 1),
-                        damage: 3,
+                        damage: 3.5,
                         speed: BLOCKSIZE * 0.5,
                         dVector: directionVector,
                         origin: origin,

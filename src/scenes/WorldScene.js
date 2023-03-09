@@ -85,7 +85,7 @@ class WorldScene extends Scene {
             new LaserRifle(),
             // new HandCannon(),
             // new GrenadeLauncher(),
-            new Minigun(),
+            // new Minigun(),
             // new Railgun(),
         ]
         weps.forEach(w => {
