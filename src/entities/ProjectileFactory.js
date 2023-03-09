@@ -234,7 +234,7 @@ class ProjectileFactory {
                         tag: 'enemy',
                         sprite: this.orbSprite(15, 1),
                         damage: 5,
-                        speed: BLOCKSIZE * 0.33,
+                        speed: BLOCKSIZE * 0.5,
                         dVector: directionVector,
                         origin: origin,
                         duration: 0.5,

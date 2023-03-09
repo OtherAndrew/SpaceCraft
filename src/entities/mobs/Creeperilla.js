@@ -18,7 +18,7 @@ class Creeperilla {
         const stats = new CStats({
             maxHealth: 100,
             damage: 0.25,
-            speed: 4.5
+            speed: 4
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.CREEPERILLA],
@@ -44,13 +44,14 @@ class Creeperilla {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: yOffset
         });
-
+        const state = new CState();
+        const duration = new CDuration();
+        const drops = new CDrops(this.#getDrops());
         this.#addAnimations(sprite);
         transform.collider = collider
-        const state = new CState();
         state.sprite = sprite;
         state.direction = Math.random() < 0.5 ? 'left' : 'right';
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -63,15 +64,12 @@ class Creeperilla {
         const distance = getDistance(origin, target.center);
         const dVector = normalize(origin, target.center)
         let animState;
+        const attackDistance = BLOCKSIZE * 12;
 
-        if (distance <= BLOCKSIZE * 12) { // attack
+        if (distance <= attackDistance) { // attack
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
             } else {
-                if (state.attackTime > 1) {
-                    projectileManager.entityShoot('web', target.center, origin)
-                    state.attackTime = 0;
-                }
                 transform.velocityX = dVector.x * speed;
                 state.direction = transform.velocityX < 0 ? "left" : "right"
             }
@@ -79,6 +77,11 @@ class Creeperilla {
         } else { // idle
             transform.velocityX = 0;
             animState = state.direction === 'left' ? "idleL" : "idleR";
+        }
+
+        if ((collider.attackCollision || distance <= attackDistance) && state.attackTime > 1) {
+            projectileManager.entityShoot('web', target.center, origin)
+            state.attackTime = 0;
         }
 
         // jump
@@ -97,6 +100,13 @@ class Creeperilla {
         aMap.set('walkR', new AnimationProps(0, 1, 3));
         aMap.set('walkL', new AnimationProps(0, 0, 3));
     };
+
+    #getDrops() {
+        const dropList = [generateItem('silk')];
+        if (Math.random() <= 0.05) dropList.push(new LaserRifle());
+        if (Math.random() <= 0.1) dropList.push(new LaserGun());
+        return dropList;
+    }
 
 }
 
