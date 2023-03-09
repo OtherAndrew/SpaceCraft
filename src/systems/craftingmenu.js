@@ -9,8 +9,8 @@ class CraftingMenu {
             {tag: 'tile_dirt', count: 5},
             {tag: 'tile_stone', count: 5}],
         [{tag: 'interact_table'},
-            {tag: 'item_copper bar', count: 5},
-            /*{tag: 'item_wood', count: 5}*/],
+            /*{tag: 'item_copper bar', count: 5},*/
+            {tag: 'item_wood', count: 5}],
         [{tag: 'interact_station'},
             {tag: 'interact_table'},
             {tag: 'item_station plan'},
@@ -24,32 +24,35 @@ class CraftingMenu {
     table_recipes = [ // DONE
         [{tag: 'interact_chest'},
             {tag: 'item_iron bar'},
-            /*{tag: 'item_wood'}*/],
+            {tag: 'item_wood'}],
         [{tag: 'interact_trader'},
             {tag: 'item_copper bar', count: 5},
             {tag: 'tile_stone', count: 10}],
+        [{tag: 'laserPistol', name: 'weapon'},
+            {tag: 'item_copper bar', count: 1},
+            {tag: 'item_charcoal', count: 1}],
         [{tag: 'laserGun', name: 'weapon'},
             {tag: 'laserPistol', name: 'weapon'},
-            {tag: 'item_iron bar', count: 5},
+            {tag: 'item_copper bar', count: 5},
             {tag: 'item_charcoal', count: 5}],
         [{tag: 'laserRifle', name: 'weapon'},
             {tag: 'laserGun', name: 'weapon'},
-            {tag: 'item_tin bar', count: 5},
+            {tag: 'item_steel bar', count: 5},
             {tag: 'item_charcoal', count: 5}],
         [{tag: 'flamethrower', name: 'weapon'},
-            {tag: 'laserGun', name: 'weapon'},
+            {tag: 'item_iron bar', count: 5},
             {tag: 'item_cobalt bar', count: 5},
             {tag: 'item_charcoal', count: 5}],
         [{tag: 'item_refined silica'},
             {tag: 'tile_silica'}],
         [{tag: 'item_circuit'},
             {tag: 'item_gold bar'},
-            /*{tag: 'item_amber', count: 5}*/]    // amber drop from mossamber (rare 10% chance) and lightjelly
+            {tag: 'item_amber', count: 5}]
     ];
 
     furnace_recipes = [ // DONE
         [{tag: 'item_charcoal'},
-            /*{tag: 'item_wood'},*/
+            // {tag: 'item_wood'},
             {tag: 'tile_coal'}],
         [{tag: 'item_glass'},
             {tag: 'item_charcoal'},
@@ -72,9 +75,8 @@ class CraftingMenu {
         // [{tag: 'item_paraffin bar'},
         //     {tag: 'tile_paraffin', count: 2}], // new
         [{tag: 'item_steel bar'},
-            {tag: 'item_charcoal'},
             {tag: 'item_iron bar'},
-            {tag: 'tile_silica'}],
+            {tag: 'item_charcoal', count: 2},],
         [{tag: 'item_tin bar'},
             {tag: 'tile_tin', count: 2}],
         [{tag: 'item_titanite bar'},
@@ -87,19 +89,19 @@ class CraftingMenu {
         [{tag: 'pickaxe_steel'},
             {tag: 'pickaxe_iron'},
             {tag: 'item_steel bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/],
+            {tag: 'item_wood', count: 10}],
         [{tag: 'pickaxe_tin'},
             {tag: 'pickaxe_steel'},
             {tag: 'item_tin bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/],
+            {tag: 'item_wood', count: 10}],
         [{tag: 'pickaxe_titanite'},
             {tag: 'pickaxe_tin'},
             {tag: 'item_titanite bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/],
+            {tag: 'item_wood', count: 10}],
         [{tag: 'pickaxe_ferrite'},
             {tag: 'pickaxe_titanite'},
             {tag: 'item_ferrite bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/]
+            {tag: 'item_wood', count: 10}]
     ];
 
     station_recipes = [ // DONE
@@ -110,18 +112,15 @@ class CraftingMenu {
         [{tag: 'handCannon', name: 'weapon'},
             {tag: 'item_handCannon part'},
             {tag: 'item_titanite bar', count: 5},
-            {tag: 'item_charcoal', count: 5},
-            /*{tag: 'item_dirtcarver hide', count: 5}*/],
+            {tag: 'item_charcoal', count: 5}],
         [{tag: 'minigun', name: 'weapon'},
             {tag: 'item_minigun part'},
             {tag: 'item_bismuth bar', count: 5},
-            {tag: 'item_charcoal', count: 5},
-            /*{tag: 'item_wormtank hide', count: 5}*/],
+            {tag: 'item_charcoal', count: 5}],
         [{tag: 'railgun', name: 'weapon'},
             {tag: 'item_railgun part'},
             {tag: 'item_tungsten bar', count: 5},
-            {tag: 'item_charcoal', count: 5},
-            /*{tag: 'item_sticky slime', count: 5}*/]
+            {tag: 'item_charcoal', count: 5}]
     ];
 
     trader_recipes = [ // DONE
@@ -130,14 +129,14 @@ class CraftingMenu {
         [/*{tag: 'item_spider silk', count: 5},*/
             {tag: 'item_bismuth bar'}],
         [{tag: 'item_station plan'},
-            {tag: 'item_cobalt bar', count: 5}
-            /*{tag: 'item_wood', count: 5},
-            {tag: 'item_amber', count: 5}*/],
+            {tag: 'item_cobalt bar', count: 5},
+            {tag: 'item_wood', count: 5},
+            {tag: 'item_amber', count: 5}],
         [{tag: 'item_hub plan'},
             {tag: 'item_steel bar', count: 5}],
         [{tag: 'item_paraffintankplan'},
-            /*{tag: 'item_spider silk', count: 5},*/
-            /*{tag: 'item_wormtank hide', count: 5},*/
+            {tag: 'item_silk', count: 5},
+            {tag: 'item_shell', count: 5},
             {tag: 'item_plexiglass', count: 5}]
     ];
 
@@ -169,8 +168,9 @@ class CraftingMenu {
             {tag: 'tile_sand'}]    //drop from boss
     ];
 
-    constructor(containManager) {
+    constructor(containManager, entityManager) {
         this.cm = containManager;
+        this.entityManager = entityManager;
         this.recipes = [];
         
         this.x = 30;
@@ -205,7 +205,7 @@ class CraftingMenu {
                 let tag = item.tag;
                 let generate;
                 if (item.name && item.name.includes('weapon')) {
-                    generate = new Entity(generateWeapon(tag));
+                    generate = this.entityManager.addEntity(generateWeapon(tag));
                 } else if (tag.includes('item')) {
                     generate = new Entity(generateItem(tag));
                 } else if (tag.includes('interact')) { // interactive

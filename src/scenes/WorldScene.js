@@ -48,7 +48,7 @@ class WorldScene extends Scene {
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
-        this.craftingMenu = new CraftingMenu(this.containerManager);
+        this.craftingMenu = new CraftingMenu(this.containerManager, this.entityManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.spawnManager = new SpawnManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
         this.cursorSystem = new CursorSystem(this.canvas, this.terrainMap, this.hud, this.player);
@@ -80,13 +80,13 @@ class WorldScene extends Scene {
             generatePickaxe('pickaxe_iron'),
             generatePickaxe('pickaxe_super'),
             new LaserPistol(),
-            new LaserGun(),
-            new Flamethrower(),
+            // new LaserGun(),
+            // new Flamethrower(),
             new LaserRifle(),
-            new HandCannon(),
-            new GrenadeLauncher(),
+            // new HandCannon(),
+            // new GrenadeLauncher(),
             new Minigun(),
-            new Railgun(),
+            // new Railgun(),
         ]
         weps.forEach(w => {
             this.containerManager.addToInventory('player', this.entityManager.addEntity(w))

@@ -172,10 +172,10 @@ const getRandomBar = () => {
 const getRandomMobDrop = () => {
     return generateItem(getRandom([
         'amber',
-        'dirtcarver',
-        'wormtank',
-        'sticky',
-        'spider'
+        'keratin',
+        'shell',
+        'slime',
+        'silk'
     ]));
 }
 

@@ -38,7 +38,7 @@ class PlayerController {
             }
         }
         if (activeContainer.item) {
-            this.restrictMovement = activeContainer.item.tag === 'Minigun' || activeContainer.item.tag === 'Railgun';
+            this.restrictMovement = activeContainer.item.tag === 'minigun' || activeContainer.item.tag === 'railgun';
         } else {
             this.restrictMovement = false;
         }

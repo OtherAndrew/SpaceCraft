@@ -71,7 +71,7 @@ class Mossfly {
         const dropList = [];
         const num = randomInt(3) + 1;
         for (let i = 0; i < num; i++) {
-            dropList.push(generateItem('wood'));
+            dropList.push(generateItem('item_wood'));
         }
         return dropList;
     }

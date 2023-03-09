@@ -130,7 +130,7 @@ class Wormtank {
 
     #getDrops() {
         const dropList = [];
-        dropList.push(generateItem('shell'));
+        dropList.push(generateItem('item_shell'));
         dropList.push(getRandomBar());
         return dropList;
     }
