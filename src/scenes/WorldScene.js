@@ -60,9 +60,10 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
 
-        this.giveWeapons2();
+        // this.giveWeapons2();
         // this.spawnTestEntities();
         // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+        this.startup();
         this.musicPlayer = new MusicPlayer(this.player)
         ASSET_MANAGER.adjustVolume(.2)
 
@@ -75,8 +76,24 @@ class WorldScene extends Scene {
 
     }
 
+    startup() {
+        [generatePickaxe('pickaxe_iron'), new LaserPistol()].forEach(item => {
+            this.containerManager.addToInventory('player', this.entityManager.addEntity(item))
+        });
+        this.textBox.append("WASD + SPACE to move.");
+        this.textBox.append("TAB to open inventory.");
+        this.textBox.append("1-9 + SCROLL to change hotbar item.");
+        this.textBox.append("Use placed items by clicking on them");
+        this.textBox.append("    with an empty hand.");
+        this.textBox.append("Plant monsters can be defeated");
+        this.textBox.append("    to obtain wood.");
+        this.textBox.append("Dig with your pickaxe to get");
+        this.textBox.append("    materials to upgrade your");
+        this.textBox.append("    equipment.");
+    }
+
     giveWeapons2() {
-        const weps = [
+        [
             generatePickaxe('pickaxe_iron'),
             generatePickaxe('pickaxe_super'),
             new LaserPistol(),
@@ -87,8 +104,7 @@ class WorldScene extends Scene {
             // new GrenadeLauncher(),
             // new Minigun(),
             // new Railgun(),
-        ]
-        weps.forEach(w => {
+        ].forEach(w => {
             this.containerManager.addToInventory('player', this.entityManager.addEntity(w))
         });
     }

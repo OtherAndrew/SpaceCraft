@@ -13,7 +13,7 @@ class TextBox {
         this.text = ''
         this.list = new LinkedList()
         this.timer = 0
-        this.timesUp = 5
+        this.timesUp = 15
     }
     update(deltaTime) {
         this.timer += deltaTime
