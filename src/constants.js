@@ -3,17 +3,18 @@
  */
 
 //Game Values
-const WIDTH = 1024
-const HEIGHT = 768
-const GRIDSIZE = 15 //don't change lol
-const BLOCKSIZE = 32
-const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
-const HEIGHT_PIXELS = WIDTH_PIXELS * 2
-const GRAVITY = 1
-const BLOCK_PLACEMENT_DISTANCE = 3.2
+const WIDTH = 1024;
+const HEIGHT = 768;
+const GRIDSIZE = 15; //don't change lol
+const BLOCKSIZE = 32;
+const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE;
+const HEIGHT_PIXELS = WIDTH_PIXELS * 2;
+const GRAVITY = 1;
+const BLOCK_PLACEMENT_DISTANCE = 3.2;
 const FALL_DAMAGE_MULTIPLIER = 200;
 const MOB_TIMEOUT = 300;
-const CHEST_SPAWN_COUNT = 30
+const CHEST_SPAWN_COUNT = 30;
+const CHEATCODE = "amogus";
 
 const GENSTATS = {
     BISMUTH	    :	12,
