@@ -30,12 +30,11 @@ class Lightbug {
             invincible: true
         });
         const sprite = new CSprite({
-            sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTBUGG],
-            sWidth: 50,
-            sHeight: 48,
+            sprite: ASSET_MANAGER.cache[CHAR_PATH.LIGHTBUG],
+            sWidth: 51,
+            sHeight: 51,
             lastFrameX: 7,
             fps: 30,
-            padding: 2
         });
         const transform = new CTransform({
             x: props.x,
@@ -61,10 +60,7 @@ class Lightbug {
 
     update(target, projectileManager) {
         const collider = this.components['boxCollider']
-        const origin = {
-            x: collider.center.x,
-            y: collider.bottom
-        };
+        const origin = collider.center;
         const speed = this.components["stats"].speed;
         const transform = this.components["transform"];
         const state = this.components['state'];
@@ -90,7 +86,7 @@ class Lightbug {
         }
 
         if (checkCollision(target, collider)) {
-            this.components['duration'].time -= 2;
+            this.components['duration'].time -= 1.5;
         }
     }
 
@@ -98,18 +94,5 @@ class Lightbug {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0, 7));
     };
-
-    #gettingTint() {
-        let imageData = this.lightbugG.components.sprite
-        for (let i = 0; i < imageData.length; i += 4) {
-            // Update the red, green, and blue values
-            imageData.data[i] += 1; // red
-            imageData.data[i + 1] = 0; // green
-            imageData.data[i + 2] = 0; // blue
-        }
-
-        this.lightbugG.components.sprite.putImageData(imageData,0,0);
-
-    }
 }
 

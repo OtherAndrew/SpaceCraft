@@ -50,7 +50,6 @@ class Creeperilla {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: BLOCKSIZE * 0.25
         });
-        console.log(collider.height)
         const state = new CState();
         const duration = new CDuration();
         const drops = new CDrops(this.#getDrops());

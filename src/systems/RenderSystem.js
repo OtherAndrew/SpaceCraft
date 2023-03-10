@@ -32,17 +32,21 @@ class RenderSystem {
                             ctx.drawImage(ASSET_MANAGER.cache[OVERLAY_PATH[e.visCode]], destX, destY)
                     }
                 } else {
-                    ctx.drawImage(
-                        sprite.sprite,
-                        sprite.currentFrame * (sprite.sWidth + sprite.padding),
-                        sprite.frameY * (sprite.sHeight + sprite.padding),
-                        sprite.sWidth,
-                        sprite.sHeight,
-                        destX,
-                        destY,
-                        sprite.dWidth,
-                        sprite.dHeight
-                    )
+                    try {
+                        ctx.drawImage(
+                            sprite.sprite,
+                            sprite.currentFrame * (sprite.sWidth + sprite.padding),
+                            sprite.frameY * (sprite.sHeight + sprite.padding),
+                            sprite.sWidth,
+                            sprite.sHeight,
+                            destX,
+                            destY,
+                            sprite.dWidth,
+                            sprite.dHeight
+                        )
+                    } catch (error) {
+                        console.log(e, 'Failed to draw: ' + error)
+                    }
                     if (e.components['stats'] && e.components['stats'].isDamaged)
                         drawHealthbar(ctx, e, destX += sprite.dWidth / 2 - 25, destY, 50, 5);
                 }

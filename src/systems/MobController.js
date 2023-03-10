@@ -12,7 +12,7 @@ class MobController {
             if (e.tag.includes('mob') || e.tag.includes('npc')) {
                 if (!e.tag.includes('npc') && getDistance(e.components['boxCollider'].center, pCollider) > WIDTH * 1.5) {
                     e.destroy();
-                    console.log(`despawned ${e.name}`)
+                    // console.log(`despawned ${e.name}`)
                 } else if (e.isDrawable) {
                     e.components['state'].elapsedTime += tick;
                     e.components['state'].attackTime += tick;
