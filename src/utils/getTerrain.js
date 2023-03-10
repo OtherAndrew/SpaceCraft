@@ -314,7 +314,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     function generateBorders() {
         // left border collider
         entityManager.addEntity({
-            tag: 'tile_bedrock',
+            tag: 'border',
+            name: 'border',
             components: [
                 new CTransform({
                     x: 0,
@@ -331,7 +332,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
         // right border collider
         entityManager.addEntity({
-            tag: 'tile_bedrock',
+            tag: 'border',
+            name: 'border',
             components: [
                 new CTransform({
                     x: WIDTH_PIXELS - (WIDTH * .5),
@@ -348,7 +350,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
         //top
         entityManager.addEntity({
-            tag: 'tile_bedrock',
+            tag: 'border',
+            name: 'border',
             components: [
                 new CTransform({
                     x: 0,

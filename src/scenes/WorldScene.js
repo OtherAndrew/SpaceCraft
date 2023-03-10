@@ -169,8 +169,7 @@ class WorldScene extends Scene {
             this.game.pickaxeCheat = false;
         }
         if (this.game.weaponCheat) {
-            [
-                new LaserPistol(),
+            [new LaserPistol(),
                 new LaserGun(),
                 new Flamethrower(),
                 new LaserRifle(),
@@ -178,13 +177,13 @@ class WorldScene extends Scene {
                 new GrenadeLauncher(),
                 new Minigun(),
                 new Railgun(),
-                new DeathRay(),
+                new DeathRay()
             ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
             this.textBox.append("Hey look buddy, I'm an engineer");
             this.game.weaponCheat = false;
         }
         if (this.game.invincibleCheat) {
-            this.textBox.append("I am bulletproof!");
+            this.textBox.append("I AM BULLETPROOF!!!");
             this.game.invincibleCheat = false;
         }
     }

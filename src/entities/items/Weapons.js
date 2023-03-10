@@ -167,7 +167,7 @@ class Railgun {
 }
 
 /**
- * Obliterates anything in its path.
+ * Obliterates everything in its path.
  * Cheat weapon.
  */
 class DeathRay {

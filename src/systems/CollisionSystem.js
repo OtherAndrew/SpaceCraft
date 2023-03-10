@@ -54,6 +54,9 @@ class CollisionSystem {
                     this.enemyAttackList.push(e);
                 }
             }
+            if (e.name === 'border') {
+                this.tileList.push(e);
+            }
         }
     }
 
