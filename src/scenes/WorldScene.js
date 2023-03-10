@@ -195,7 +195,7 @@ class WorldScene extends Scene {
             ctx.fillRect(0, 0, WIDTH, HEIGHT)
             this.renderSystem.draw(ctx, this.camera, this.drawItems);
         }
-        // this.#drawColliders(ctx);
+        if (this.game.options.debugging) this.#drawColliders(ctx);
 
         this.textBox.draw(ctx)
         this.containerManager.draw(menuActive, ctx, mouse);

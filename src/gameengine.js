@@ -108,7 +108,7 @@ class GameEngine {
         
         this.ctx.canvas.addEventListener("wheel", e => {
             if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
+                console.log("WHEEL", getXandY(e));
             }
             e.preventDefault(); // Prevent Scrolling
             this.wheel = e;
@@ -127,10 +127,6 @@ class GameEngine {
                 case "Tab":
                     e.preventDefault();
                     break;
-                case "c":
-                    e.preventDefault();
-                    break;
-
             }
             // if (e.code === "Tab") {  // PREVENT TABBING OUT
             //     e.preventDefault();
@@ -149,14 +145,16 @@ class GameEngine {
                 case "Tab":
                     this.activateMenu();
                     break;
-                case "c":
-                    // this.activatePausemenu();
-                    console.log("key c pressed");
+                case "KeyQ":
+                    this.activateMenu();
+                    break;
+                case 'Backslash':
+                    this.options.debugging = !this.options.debugging;
                     break;
             }
         }, false);
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.code] = true);
+        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.code] = false);
 
         // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
         window.addEventListener("keyup", e => {
