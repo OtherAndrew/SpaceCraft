@@ -52,11 +52,17 @@ class Grapebomb {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops([generateItem('item_slime')])
+        const drops = new CDrops(this.#addDrops())
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
         return [stats, sprite, transform, collider, state, duration, drops];
+    }
+
+    #addDrops() {
+        const dropList = [generateItem('item_slime')];
+        if (Math.random() < 0.25) dropList.push(generateItem('item_slime'))
+        return dropList;
     }
 
     update(target, projectileFactory) {

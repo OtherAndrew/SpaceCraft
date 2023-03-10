@@ -54,13 +54,20 @@ class Electrojelly {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops([generateItem('item_amber')]);
+        const drops = new CDrops(this.#addDrops());
         transform.collider = collider
 
         return [stats, sprite, transform, collider, state, duration, drops];
     }
 
-    update(target, projectileFactory) {
+    #addDrops() {
+        const dropList = [generateItem('item_amber')];
+        if (Math.random() < 0.25) dropList.push(generateItem('item_amber'))
+        return dropList;
+    }
+
+
+    update (target, projectileFactory) {
         const collider = this.components['boxCollider']
         const origin = collider.center;
         const speed = this.components["stats"].speed;
