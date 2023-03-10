@@ -92,21 +92,21 @@ class WorldScene extends Scene {
         this.textBox.append("    equipment.");
     }
 
-    giveWeapons2() {
+    #giveWeapons() {
         [
-            generatePickaxe('pickaxe_iron'),
             generatePickaxe('pickaxe_super'),
             new LaserPistol(),
-            // new LaserGun(),
-            // new Flamethrower(),
+            new LaserGun(),
+            new Flamethrower(),
             new LaserRifle(),
-            // new HandCannon(),
-            // new GrenadeLauncher(),
-            // new Minigun(),
-            // new Railgun(),
+            new HandCannon(),
+            new GrenadeLauncher(),
+            new Minigun(),
+            new Railgun(),
         ].forEach(w => {
             this.containerManager.addToInventory('player', this.entityManager.addEntity(w))
         });
+        this.textBox.append("sus");
     }
 
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
@@ -114,7 +114,7 @@ class WorldScene extends Scene {
             if (this.#checkWinCon()) {
                 // spawn boss (if not spawned already)
                 // if (boss is dead)
-                //     this.#onWin();
+                    this.#onWin();
             } else if (this.player.components['stats'].isDead) {
                 this.#onDeath(deltaTime);
             } else {
@@ -123,6 +123,12 @@ class WorldScene extends Scene {
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
                 this.#setInvulnerability(deltaTime);
             }
+
+            if (this.game.cheats) {
+                this.#giveWeapons();
+                this.game.cheats = false;
+            }
+
             // **update state**
             this.entityManager.update();
             this.renderBox.update();

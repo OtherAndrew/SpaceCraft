@@ -32,6 +32,11 @@ class GameEngine {
         this.options = options || {
             debugging: false,
         };
+
+        this.bufferArray = [];
+        this.lastKeystrokeTime = Date.now();
+        this.cheatcode = "amogus";
+        this.cheats = false;
     };
 
     init(ctx, assets, canvas) {
@@ -143,6 +148,21 @@ class GameEngine {
         }, false);
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+
+        // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
+        window.addEventListener("keyup", e => {
+            const key = e.key.toLowerCase();
+            const latestKeystrokeTime = Date.now();
+            if (latestKeystrokeTime - this.lastKeystrokeTime > 10000) { // 10 seconds
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            this.bufferArray.push(key);
+            const word = this.bufferArray.join("");
+            if (word === this.cheatcode) {
+                this.cheats = true;
+            }
+        });
     };
 
     activateMenu() {
