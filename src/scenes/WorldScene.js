@@ -92,23 +92,6 @@ class WorldScene extends Scene {
         this.textBox.append("    equipment.");
     }
 
-    #cheat() {
-        [
-            generatePickaxe('pickaxe_super'),
-            new LaserPistol(),
-            new LaserGun(),
-            new Flamethrower(),
-            new LaserRifle(),
-            new HandCannon(),
-            new GrenadeLauncher(),
-            new Minigun(),
-            new Railgun(),
-            generateItem('item_fueltower'),
-            generateItem('item_medical bay')
-        ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
-        this.textBox.append("sus");
-    }
-
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon()) {
@@ -123,11 +106,7 @@ class WorldScene extends Scene {
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
                 this.#setInvulnerability(deltaTime);
             }
-
-            if (this.game.cheats) {
-                this.#cheat();
-                this.game.cheats = false;
-            }
+            this.#activateCheats();
 
             // **update state**
             this.entityManager.update();
@@ -163,6 +142,49 @@ class WorldScene extends Scene {
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.textBox.update(deltaTime)
         this.hud.update(menuActive, keys, wheel);
+    }
+
+    #setInvulnerability(deltaTime) {
+        if (this.elapsedInvulnTime < this.invulnTime || this.game.gaveInvincibleCheat) {
+            this.player.components['stats'].invincible = true;
+            this.elapsedInvulnTime += deltaTime;
+        } else {
+            this.player.components['stats'].invincible = false;
+        }
+    }
+
+    #activateCheats() {
+        if (this.game.winCheat) {
+            [generateItem('item_fueltower'), generateItem('item_medical bay')].forEach(item => {
+                this.containerManager.addToInventory('player', this.entityManager.addEntity(item))
+            });
+            this.textBox.append("sus");
+            this.game.winCheat = false;
+        }
+        if (this.game.pickaxeCheat) {
+            this.containerManager.addToInventory('player',
+                this.entityManager.addEntity(generatePickaxe('pickaxe_super')));
+            this.textBox.append("Aw man");
+            this.game.pickaxeCheat = false;
+        }
+        if (this.game.weaponCheat) {
+            [
+                new LaserPistol(),
+                new LaserGun(),
+                new Flamethrower(),
+                new LaserRifle(),
+                new HandCannon(),
+                new GrenadeLauncher(),
+                new Minigun(),
+                new Railgun()
+            ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
+            this.textBox.append("Hey look, buddy. I'm an engineer");
+            this.game.weaponCheat = false;
+        }
+        if (this.game.invincibleCheat) {
+            this.textBox.append("I am bulletproof!");
+            this.game.invincibleCheat = false;
+        }
     }
 
     draw(menuActive, ctx, mouse) {
@@ -324,15 +346,6 @@ class WorldScene extends Scene {
                 this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
             }
             this.elapsedRespawnTime += deltaTime;
-        }
-    }
-
-    #setInvulnerability(deltaTime) {
-        if (this.elapsedInvulnTime < this.invulnTime) {
-            this.player.components['stats'].invincible = true;
-            this.elapsedInvulnTime += deltaTime;
-        } else {
-            this.player.components['stats'].invincible = false;
         }
     }
 }

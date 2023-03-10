@@ -36,9 +36,16 @@ class GameEngine {
         // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
         this.bufferArray = [];
         this.lastKeystrokeTime = Date.now();
-        this.cheatcode = CHEATCODE;
-        this.cheats = false;
-        this.gaveCheats = false;
+
+        this.winCheat = false;
+        this.pickaxeCheat = false;
+        this.weaponCheat = false;
+        this.invincibleCheat = false;
+
+        this.gaveWinCheat = false;
+        this.gavePickaxeCheat = false;
+        this.gaveWeaponCheat = false;
+        this.gaveInvincibleCheat = false;
     };
 
     init(ctx, assets, canvas) {
@@ -153,14 +160,34 @@ class GameEngine {
 
         // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
         window.addEventListener("keyup", e => {
-            if (Date.now() - this.lastKeystrokeTime > 5000) { // 3 seconds
+            if (Date.now() - this.lastKeystrokeTime > 5000) { // 5 seconds
                 this.bufferArray = [];
                 this.lastKeystrokeTime = Date.now();
             }
             this.bufferArray.push(e.key.toLowerCase());
-            if (this.bufferArray.join("") === this.cheatcode && !this.gaveCheats) {
-                this.cheats = true;
-                this.gaveCheats = true;
+            if (this.bufferArray.join("") === CHEATCODE.WIN && !this.gaveWinCheat) {
+                this.winCheat = true;
+                this.gaveWinCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.PICKAXE && !this.gavePickaxeCheat) {
+                this.pickaxeCheat = true;
+                this.gavePickaxeCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.WEAPON && !this.gaveWeaponCheat) {
+                this.weaponCheat = true;
+                this.gaveWeaponCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.INVINCIBLE && !this.gaveInvincibleCheat) {
+                this.invincibleCheat = true;
+                this.gaveInvincibleCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
             }
         });
     };

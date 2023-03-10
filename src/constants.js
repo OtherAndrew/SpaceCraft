@@ -14,7 +14,6 @@ const BLOCK_PLACEMENT_DISTANCE = 3.2;
 const FALL_DAMAGE_MULTIPLIER = 200;
 const MOB_TIMEOUT = 300;
 const CHEST_SPAWN_COUNT = 30;
-const CHEATCODE = "amogus";
 
 const GENSTATS = {
     BISMUTH	    :	12,
@@ -53,6 +52,13 @@ const BG_SCROLL = {
     BACKGROUND_3	:	.07,
     BACKGROUND_4	:	.08,
     BACKGROUND_5	:	.09
+}
+
+const CHEATCODE = {
+    WIN: "amogus",
+    WEAPON: "moregun",
+    PICKAXE: "creeper",
+    INVINCIBLE: "uber"
 }
 
 const CHAR_PATH = {
@@ -308,6 +314,7 @@ const CONSTANTS = {
     BGS         :   BG_PATH,
     BGSCROLLS   :   BG_SCROLL,
     CHARS       :   CHAR_PATH,
+    CHEATCODE   :   CHEATCODE,
     CRAFTS      :   CRAFT_PATH,
     CRAFTCOLORS :   CRAFT_COLOR,
     ITEMS       :   ITEM_PATH,
