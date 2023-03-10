@@ -48,7 +48,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'null'
         ],
         CHUNK_3: [
-            'bismuth',
+            'iron',
             'tin',
             'iron',
             'silica',
@@ -62,7 +62,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         ],
         CHUNK_4: [
             'tungsten',
-            'bismuth',
+            'silica',
             'tin',
             'iron',
             'stone',
@@ -104,7 +104,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'titanite',
             'ruby',
             'tungsten',
-            'coal',
+            'bismuth',
             'stone',
             'stone',
             'null',
@@ -116,7 +116,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         CHUNK_8: [
             'gold',
             'paraffin',
-            'silica',
+            'bismuth',
             'titanite',
             'stone',
             'stone',

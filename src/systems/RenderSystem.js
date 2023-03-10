@@ -43,9 +43,9 @@ class RenderSystem {
                             destY,
                             sprite.dWidth,
                             sprite.dHeight
-                        )
+                        );
                     } catch (error) {
-                        console.log(e, 'Failed to draw: ' + error)
+                        console.log(e, 'Failed to draw: ' + error);
                     }
                     if (e.components['stats'] && e.components['stats'].isDamaged)
                         drawHealthbar(ctx, e, destX += sprite.dWidth / 2 - 25, destY, 50, 5);

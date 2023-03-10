@@ -265,7 +265,7 @@ const TOOL_DAMAGE = {
     STEEL               :   8,
     TITANITE            :   16,
     FERRITE             :   32,
-    SUPER               :   100
+    SUPER               :   1000
 }
 
 const TOOL_PATH = {
