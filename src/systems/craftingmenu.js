@@ -134,7 +134,7 @@ class CraftingMenu {
         [{tag: 'item_station plan'},
             // {tag: 'item_cobalt bar', count: 5},
             // {tag: 'item_wood', count: 5},
-            {tag: 'item_keratin', count: 5}],
+            {tag: 'item_keratin', count: 10}],
         [{tag: 'item_hub plan'},
             // {tag: 'item_steel bar', count: 5},
             {tag: 'item_shell', count: 5}],

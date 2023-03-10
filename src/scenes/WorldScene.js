@@ -12,6 +12,7 @@ class WorldScene extends Scene {
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
         }
+        this.win = false;
         //other game stats --- display during win condition (rocket scene)
         //add total each mob kills
         //total blocks mined
@@ -94,7 +95,7 @@ class WorldScene extends Scene {
 
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
-            if (this.#checkWinCon()) {
+            if (this.#checkWinCon() || this.win) {
                 // spawn boss (if not spawned already)
                 // if (boss is dead)
                     this.#onWin();
@@ -137,7 +138,7 @@ class WorldScene extends Scene {
             this.renderSystem.update(deltaTime, this.drawItems);
             this.musicPlayer.update(deltaTime)
         }
-        this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
+        if (!this.win) this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.textBox.update(deltaTime)
@@ -323,6 +324,7 @@ class WorldScene extends Scene {
             this.textBox.append("You won!");
             this.elapsedRespawnTime += 1;
         }
+        this.win = true;
     }
 
     #onDeath(deltaTime) {
