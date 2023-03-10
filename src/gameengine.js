@@ -160,7 +160,7 @@ class GameEngine {
 
         // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
         window.addEventListener("keyup", e => {
-            if (Date.now() - this.lastKeystrokeTime > 5000) { // 5 seconds
+            if (Date.now() - this.lastKeystrokeTime > 3000) { // 3 seconds
                 this.bufferArray = [];
                 this.lastKeystrokeTime = Date.now();
             }

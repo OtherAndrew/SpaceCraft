@@ -178,7 +178,7 @@ class WorldScene extends Scene {
                 new Minigun(),
                 new Railgun()
             ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
-            this.textBox.append("Hey look, buddy. I'm an engineer");
+            this.textBox.append("Hey look buddy, I'm an engineer");
             this.game.weaponCheat = false;
         }
         if (this.game.invincibleCheat) {
