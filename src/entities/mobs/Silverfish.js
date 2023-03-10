@@ -90,7 +90,7 @@ class Silverfish {
 
         // jump
         if (collider.sideCollision && state.grounded) {
-            transform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
+            transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.33);
             state.grounded = false;
         }
 

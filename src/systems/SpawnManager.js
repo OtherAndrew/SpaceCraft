@@ -67,6 +67,7 @@ class SpawnManager {
             'dirtcarver',
             'dirtcarver',
             'grapebomb',
+            'lightbug',
             'mossfly',
             'spore',
             'spore'
@@ -74,13 +75,14 @@ class SpawnManager {
         this.mobList6 = [
             'bloodspore',
             'bloodsucker',
+            'bloodsucker',
             'bombfly',
             'creeperilla',
             'dirtcarver',
+            'lightbug',
             'mossfly',
             'mossfly',
             'grapebomb',
-            'lightbug',
             'spikejumper',
         ]
         this.mobList7 = [
@@ -88,7 +90,6 @@ class SpawnManager {
             'creeperilla',
             'creeperilla',
             'electrojelly',
-            'lightbug',
             'mossfly',
             'spikejumper',
             'spikejumper',
