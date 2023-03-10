@@ -153,15 +153,12 @@ class GameEngine {
 
         // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
         window.addEventListener("keyup", e => {
-            const key = e.key.toLowerCase();
-            const latestKeystrokeTime = Date.now();
-            if (latestKeystrokeTime - this.lastKeystrokeTime > 5000) { // 5 seconds
+            if (Date.now() - this.lastKeystrokeTime > 5000) { // 3 seconds
                 this.bufferArray = [];
                 this.lastKeystrokeTime = Date.now();
             }
-            this.bufferArray.push(key);
-            const word = this.bufferArray.join("");
-            if (word === this.cheatcode && !this.gaveCheats) {
+            this.bufferArray.push(e.key.toLowerCase());
+            if (this.bufferArray.join("") === this.cheatcode && !this.gaveCheats) {
                 this.cheats = true;
                 this.gaveCheats = true;
             }

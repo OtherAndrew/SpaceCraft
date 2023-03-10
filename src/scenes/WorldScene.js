@@ -92,7 +92,7 @@ class WorldScene extends Scene {
         this.textBox.append("    equipment.");
     }
 
-    #giveWeapons() {
+    #cheat() {
         [
             generatePickaxe('pickaxe_super'),
             new LaserPistol(),
@@ -103,9 +103,9 @@ class WorldScene extends Scene {
             new GrenadeLauncher(),
             new Minigun(),
             new Railgun(),
-        ].forEach(w => {
-            this.containerManager.addToInventory('player', this.entityManager.addEntity(w))
-        });
+            generateItem('item_fueltower'),
+            generateItem('item_medical bay')
+        ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
         this.textBox.append("sus");
     }
 
@@ -125,7 +125,7 @@ class WorldScene extends Scene {
             }
 
             if (this.game.cheats) {
-                this.#giveWeapons();
+                this.#cheat();
                 this.game.cheats = false;
             }
 
@@ -284,8 +284,8 @@ class WorldScene extends Scene {
     }
 
     #checkWinCon() {
-        // let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
-        let requisite = [0, {item: {tag: 'item_bismuth bar'}, count: 5}]
+        let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
+        // let requisite = [0, {item: {tag: 'item_bismuth bar'}, count: 5}]
         return (this.containerManager.checkSufficient(requisite, 'player')
             && checkCollision(this.player, this.rocket))
     }

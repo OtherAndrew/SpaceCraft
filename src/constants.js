@@ -143,8 +143,8 @@ const ITEM_PATH = {
     PARAFFINTANK: './assets/items/paraffintank.png',
     PARAFFINTANKPLAN: './assets/items/plan_paraffintank.png',
     MEDICAL: './assets/items/medicalBay.png',
-    FUEL: './assets/items/fueltank.png',
-    FUELTOWER: './assets/items/fueltower.png',
+    FUEL: './assets/items/fuelTank.png',
+    FUELTOWER: './assets/items/fuelTower.png',
 }
 
 const MISC_PATH = {
