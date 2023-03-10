@@ -30,6 +30,8 @@ class RenderSystem {
                         )
                         if (OVERLAY_PATH[e.visCode])
                             ctx.drawImage(ASSET_MANAGER.cache[OVERLAY_PATH[e.visCode]], destX, destY)
+                        if (e.components['stats'] && e.components['stats'].isDamaged)
+                            drawBlockDestruction(ctx, e, destX, destY);
                     }
                 } else {
                     try {

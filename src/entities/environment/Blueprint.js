@@ -88,7 +88,9 @@ const generateBlock = (tag, x = 0, y = 0, mode) => {
         sHeight: 16,
         scale: tempScale,
         frameX: randomInt(6),
-        frameY: randomInt(2)
+        frameY: randomInt(2),
+        regenCooldown: 1,
+        regenAmount: 1
     });
 }
 
