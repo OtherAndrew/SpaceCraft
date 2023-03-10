@@ -177,7 +177,8 @@ class WorldScene extends Scene {
                 new HandCannon(),
                 new GrenadeLauncher(),
                 new Minigun(),
-                new Railgun()
+                new Railgun(),
+                new DeathRay(),
             ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
             this.textBox.append("Hey look buddy, I'm an engineer");
             this.game.weaponCheat = false;

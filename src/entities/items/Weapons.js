@@ -165,3 +165,23 @@ class Railgun {
         return this;
     }
 }
+
+/**
+ * Obliterates anything in its path.
+ * Cheat weapon.
+ */
+class DeathRay {
+    constructor() {
+        this.tag = "deathRay";
+        this.name = "weapon";
+        this.components = [
+            new CSprite({
+                sprite: ASSET_MANAGER.cache[WEAPON_PATH.RAYGUN],
+                sWidth: 32,
+                sHeight: 32
+            }),
+            new CWeaponProps('deathray', 1)
+        ];
+        return this;
+    }
+}

@@ -168,8 +168,7 @@ class CraftingMenu {
             {tag: 'item_paraffintank', count: 1},
             {tag: 'item_gold bar'}],
         [{tag: 'item_fueltower'},               // requirement for rocket
-            {tag: 'item_fuel tank', count: 2},
-            {tag: 'tile_sand'}]    //drop from boss
+            {tag: 'item_fuel tank', count: 2}]
     ];
 
     constructor(containManager, entityManager) {

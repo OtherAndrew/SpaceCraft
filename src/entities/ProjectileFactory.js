@@ -173,6 +173,20 @@ class ProjectileFactory {
                 }
                 ASSET_MANAGER.playAsset(SOUND_PATH.HAND_CANNON);
                 break;
+            case 'deathray':
+                projectileQueue.push(new Projectile({
+                    tag: 'playerAttack ignoreTile pierce',
+                    sprite: this.electricitySprite(),
+                    damage: 9001,
+                    speed: BLOCKSIZE * 0.33,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 1,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.RAYGUN);
+                break;
             default: console.log(`ProjectileManager.playerShoot: Invalid projectile type: ${type}.`);
         }
         projectileQueue.forEach(p => this.entityManager.addEntity(p));
