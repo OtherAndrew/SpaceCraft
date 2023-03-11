@@ -36,7 +36,7 @@ class GameEngine {
 
         // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
         this.bufferArray = [];
-        this.lastKeystrokeTime = Date.now();
+        this.lastKeystrokeTime = 0;
 
         this.winCheat = false;
         this.pickaxeCheat = false;
