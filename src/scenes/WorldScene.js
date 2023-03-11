@@ -61,7 +61,6 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities);
         this.armorSystem = new ArmorSystem(this.player, this.containerManager);
-        this.helpSystem = new HelpSystem(this.textBox);
 
         // this.spawnTestEntities();
         // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
@@ -106,7 +105,6 @@ class WorldScene extends Scene {
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
                 this.#setInvulnerability(deltaTime);
-                this.helpSystem.update(deltaTime);
                 this.#activateCheats();
             }
 
@@ -142,7 +140,7 @@ class WorldScene extends Scene {
         if (!this.win) this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
-        this.textBox.update(deltaTime)
+        if (!this.win) this.textBox.update(deltaTime)
         this.hud.update(menuActive, keys, wheel);
     }
 

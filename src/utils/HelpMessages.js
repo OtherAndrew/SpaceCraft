@@ -22,19 +22,3 @@ const HELP = [
     "Slime drops from Grapebombs.",
     "Chests may contain metal bars or even parts to craft powerful weapons."
 ]
-
-class HelpSystem {
-    constructor(textBox) {
-        this.textBox = textBox;
-        this.elapsedTime = 0;
-        this.cooldown = 60;
-    }
-
-    update(deltaTime) {
-        this.elapsedTime += deltaTime;
-        if (this.elapsedTime > this.cooldown) {
-            this.textBox.append(getRandom(HELP));
-            this.elapsedTime = 0;
-        }
-    }
-}
