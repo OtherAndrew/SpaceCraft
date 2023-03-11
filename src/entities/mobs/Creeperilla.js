@@ -92,9 +92,14 @@ class Creeperilla {
         }
 
         // jump
-        if ((collider.attackCollision || collider.sideCollision) && state.grounded) {
-            transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.66);
-            state.grounded = false;
+        if (state.grounded) {
+            if (collider.sideCollision) {
+                transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.66);
+                state.grounded = false;
+            } else if (collider.attackCollision) {
+                transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.44);
+                state.grounded = false;
+            }
         }
 
         state.setState(animState);
