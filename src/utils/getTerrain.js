@@ -247,7 +247,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             components: [
                 new CTransform({
                     x: surfaceBackWidth * 0.35 * scale,
-                    y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + BLOCKSIZE * 3,
+                    y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + BLOCKSIZE * 3.5,
                     maxVelocity: 0
                 }),
                 new CSprite({
