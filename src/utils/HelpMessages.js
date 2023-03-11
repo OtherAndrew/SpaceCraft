@@ -10,7 +10,7 @@ const HELP = [
     "Explosive weapons will deal self-damage, stand back when using them!",
     "The Station can be used to craft armor and higher-grade weapons.",
     "The Anvil can be used to craft higher-grade pickaxes.",
-    "The Trader can be used to exchange items for crafting plans.",
+    "The Trader can be used to exchange items for crafting plans, materials, and equipment.",
     "The Furnace can be used to convert ores into materials.",
     "The Table can be used to craft basic items and weapons.",
     "The Hub can be used to craft parts for your ship.",

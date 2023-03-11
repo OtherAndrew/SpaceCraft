@@ -102,8 +102,7 @@ class Spikejumper {
 
     #getDrops() {
         const dropList = [generateItem('item_silk')];
-        if (Math.random() <= 0.01) dropList.push(new LaserRifle());
-        if (Math.random() <= 0.025) dropList.push(new LaserGun());
+        if (Math.random() < 0.05) dropList.push(new LaserRifle());
         return dropList;
     }
 }

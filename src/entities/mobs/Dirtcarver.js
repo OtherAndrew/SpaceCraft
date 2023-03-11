@@ -101,8 +101,9 @@ class Dirtcarver {
     };
 
     #getDrops() {
-        const dropList = [generateItem('item_keratin')];
-        if (Math.random() <= 0.025) dropList.push(new LaserGun());
+        const dropList = [];
+        if (Math.random() < 0.66) dropList.push(generateItem('item_keratin'));
+        if (Math.random() < 0.05) dropList.push(new LaserGun());
         return dropList;
     }
 }

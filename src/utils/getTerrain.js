@@ -29,7 +29,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'stone',
             'stone',
             'dirt',
-            'dirt',
+            'null',
             'null',
             'null',
             'null'

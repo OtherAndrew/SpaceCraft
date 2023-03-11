@@ -1,9 +1,9 @@
 class SpawnManager {
     constructor(factory, map, player, collisionSystem) {
 
-        this.terrainMap = map
-        this.player = player
-        this.mobFactory = factory
+        this.terrainMap = map;
+        this.player = player;
+        this.mobFactory = factory;
         this.collisionSystem = collisionSystem;
 
         this.elapsedTime = 0;
@@ -21,7 +21,7 @@ class SpawnManager {
             null,
             null,
             null,
-        ]
+        ];
         this.mobList2 = [
             'silverfish',
             'silverfish',
@@ -33,7 +33,7 @@ class SpawnManager {
             'vengefly',
             'vengefly',
             'wormwood',
-        ]
+        ];
         this.mobList3 = [
             'dirtcarver',
             'dirtcarver',
@@ -45,7 +45,7 @@ class SpawnManager {
             'spore',
             'vengefly',
             'vengefly',
-        ]
+        ];
         this.mobList4 = [
             'silverfish',
             'silverfish',
@@ -57,7 +57,7 @@ class SpawnManager {
             'grapebomb',
             'spore',
             'spore',
-        ]
+        ];
         this.mobList5 = [
             'bloodsucker',
             'bloodsucker',
@@ -71,7 +71,7 @@ class SpawnManager {
             'mossfly',
             'spore',
             'spore'
-        ]
+        ];
         this.mobList6 = [
             'bloodspore',
             'bloodsucker',
@@ -84,7 +84,7 @@ class SpawnManager {
             'mossfly',
             'grapebomb',
             'spikejumper',
-        ]
+        ];
         this.mobList7 = [
             'bloodspore',
             'creeperilla',
@@ -96,7 +96,7 @@ class SpawnManager {
             'wormtank',
             'wormtank',
             'wormtank',
-        ]
+        ];
     }
 
     update(deltaTime, mobList) {
@@ -112,25 +112,25 @@ class SpawnManager {
             // bedrock: 13900 (13855)
             if (playerPosition.y < 7702) {
                 this.flatSpawn(getRandom(this.mobList1), playerPosition);
-                console.log("level 1")
+                // console.log("level 1")
             } else if (isBetween(playerPosition.y, 7702, 8735)) {
                 this.vectorSpawn(getRandom(this.mobList2), playerPosition);
-                console.log("level 2")
+                // console.log("level 2")
             } else if (isBetween(playerPosition.y, 8735, 9768)) {
                 this.vectorSpawn(getRandom(this.mobList3), playerPosition);
-                console.log("level 3")
+                // console.log("level 3")
             } else if (isBetween(playerPosition.y, 9768, 10801)) {
                 this.vectorSpawn(getRandom(this.mobList4), playerPosition);
-                console.log("level 4")
+                // console.log("level 4")
             } else if (isBetween(playerPosition.y, 10801, 11834)) {
                 this.vectorSpawn(getRandom(this.mobList5), playerPosition);
-                console.log("level 5")
+                // console.log("level 5")
             } else if (isBetween(playerPosition.y, 11834, 12867)) {
                 this.vectorSpawn(getRandom(this.mobList6), playerPosition);
-                console.log("level 6")
+                // console.log("level 6")
             } else if (isBetween(playerPosition.y, 12867, 13900)) {
                 this.vectorSpawn(getRandom(this.mobList7), playerPosition);
-                console.log("level 7")
+                // console.log("level 7")
             }
             this.elapsedTime = 0;
         }

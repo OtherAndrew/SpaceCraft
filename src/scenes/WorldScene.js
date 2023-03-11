@@ -137,10 +137,10 @@ class WorldScene extends Scene {
             this.renderSystem.update(deltaTime, this.drawItems);
             this.musicPlayer.update(deltaTime)
         }
-        if (!this.win) this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
+        if (!this.win) this.cursorSystem.update(menuActive, getGridCell(mouse, this.player));
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
-        if (!this.win) this.textBox.update(deltaTime)
+        if (!this.win) this.textBox.update(deltaTime);
         this.hud.update(menuActive, keys, wheel);
     }
 

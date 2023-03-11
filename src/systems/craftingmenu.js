@@ -131,27 +131,34 @@ class CraftingMenu {
     ];
 
     trader_recipes = [ // DONE
-        // [{tag: 'item_bomb'},
-        //     {tag: 'item_gold bar'}],
-        //[/*{tag: 'item_spider silk', count: 5},*/
-        //    {tag: 'item_bismuth bar'}],
-        [{tag: 'item_handCannon part'},
-            {tag: 'item_silk', count: 5}],
-        [{tag: 'item_amber'},
-            {tag: 'laserGun', name: 'weapon'}],
-        [{tag: 'item_amber', count: 3},
-            {tag: 'laserRifle', name: 'weapon'}],
         [{tag: 'item_station plan'},
-            // {tag: 'item_cobalt bar', count: 5},
-            // {tag: 'item_wood', count: 5},
+            {tag: 'item_cobalt bar', count: 5},
             {tag: 'item_keratin', count: 5}],
         [{tag: 'item_hub plan'},
-            // {tag: 'item_steel bar', count: 5},
+            {tag: 'item_steel bar', count: 5},
             {tag: 'item_shell', count: 5}],
         [{tag: 'item_paraffintankplan'},
             {tag: 'item_silk', count: 5},
             {tag: 'item_shell', count: 5},
-            {tag: 'item_plexiglass', count: 5}]
+            {tag: 'item_plexiglass', count: 5}],
+        [{tag: 'item_amber'},
+            {tag: 'laserGun', name: 'weapon'}],
+        [{tag: 'tile_paraffin', count: 3},
+            {tag: 'laserRifle', name: 'weapon'}],
+        [{tag: 'item_handCannon part'},
+            {tag: 'item_silk', count: 5}],
+        [{tag: 'grenadeLauncher', name: 'weapon'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_shell'}],
+        [{tag: 'minigun', name: 'weapon'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_silk'}],
+        [{tag: 'railgun', name: 'weapon'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_amber'}],
+        [{tag: 'pickaxe_ferrite'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_wood'}]
     ];
 
     hub_recipes = [ // DONE
@@ -159,7 +166,7 @@ class CraftingMenu {
         //     {tag: 'item_charcoal', count: 3},
         //     {tag: 'item_paraffinTank plan'}],
         [{tag: 'tile_paraffin'},
-            {tag: 'item_charcoal', count: 20}],
+            {tag: 'item_charcoal', count: 10}],
         [{tag: 'item_smart circuit'},
             {tag: 'item_circuit'},
             {tag: 'item_tungsten bar'},
