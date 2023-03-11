@@ -241,10 +241,27 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let caveBGYVal = HEIGHT_PIXELS - (undergroundHeight * scaleUnder) - HEIGHT * .5
         let offset = BLOCKSIZE * 2
 
-        for (let i = 0; i < 2; i++) {
 
+        entityManager.addEntity({
+            tag: 'background_0',
+            components: [
+                new CTransform({
+                    x: surfaceBackWidth * 0.35 * scale,
+                    y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + BLOCKSIZE * 3,
+                    maxVelocity: 0
+                }),
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[ENV_PATH.RED_PLANET],
+                    sWidth: 1070,
+                    sHeight: 1070,
+                    scale: .125,
+                })
+            ]
+        })
+
+        for (let i = 0; i < 2; i++) {
             entityManager.addEntity({
-                tag: 'background_0',
+                tag: 'background_1',
                 components: [
                     new CTransform({
                         x: (surfaceBackWidth * i * scale),
@@ -260,7 +277,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 ]
             })
             entityManager.addEntity({
-                tag: 'background_1',
+                tag: 'background_2',
                 components: [
                     new CTransform({
                         x: (surfaceBackWidth * i * scale),
@@ -291,7 +308,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                     })
                 ]
             })
-
             entityManager.addEntity({
                 tag: 'background_4',
                 components: [
@@ -465,26 +481,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         }
     }
 
-    function generatePlanet() {
-        let e = entityManager.addEntity({
-            tag: 'background_',
-            components: [
-                new CTransform({
-                    x: WIDTH_PIXELS * .5,
-                    y: HEIGHT_PIXELS * .5 - 500,
-                    velocity: 0
-                }),
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[ENV_PATH.RED_PLANET],
-                    sWidth: 1070,
-                    sHeight: 1070,
-                    scale: .6,
-                })
-            ]
-        })
-        console.log(e.components.transform)
-    }
-
     function generateCaveBackgrounds() {
         let width = 160
         let height = 96
@@ -576,7 +572,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
     }
 
-    generatePlanet()
     generateBackgrounds()
     generateCaveBackgrounds()
     generateNoiseMap()

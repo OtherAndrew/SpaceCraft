@@ -201,8 +201,19 @@ class WorldScene extends Scene {
     draw(menuActive, ctx, mouse) {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else {
-            ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
-            ctx.fillRect(0, 0, WIDTH, HEIGHT)
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+            // https://astronomy.com/news/2016/06/what-do-the-stars-look-like-from-mars
+            skyGradient.addColorStop(0, "#181212");
+            // skyGradient.addColorStop(0.25, "#463022");
+            skyGradient.addColorStop(0.5, "#bb7e47");
+            // https://www.space.com/17193-mars-night-sky-observation-tips.html
+            const nightGradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+            nightGradient.addColorStop(0.33, "#000000");
+            nightGradient.addColorStop(1, "#09154b");
+            // nightGradient.addColorStop(1, "#6a1c58");
+            ctx.fillStyle = this.player.components.transform.y > this.mid ? nightGradient : skyGradient;
+            // ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
             this.renderSystem.draw(ctx, this.camera, this.drawItems);
         }
         if (this.game.options.debugging) this.#drawColliders(ctx);

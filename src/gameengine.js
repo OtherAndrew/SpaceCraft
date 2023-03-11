@@ -143,8 +143,6 @@ class GameEngine {
                     that.menuActive = false;
                     break;
                 case "Tab":
-                    this.activateMenu();
-                    break;
                 case "KeyQ":
                     this.activateMenu();
                     break;
