@@ -85,6 +85,10 @@ class CollisionSystem {
                     eTransform.velocityX = 0
                     eTransform.x = eTransform.last.x
                     eCollider.setPosition(eTransform.x, eTransform.y)
+                    if (this.tileList[j].name === 'border') {
+                        entity.components["stats"].applyDamage(0.33);
+                        if (entity.name === 'player') this.#playHitSound(0.33);
+                    }
                     break;
                 }
             }

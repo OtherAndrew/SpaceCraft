@@ -344,7 +344,7 @@ class WorldScene extends Scene {
         if (this.elapsedRespawnTime >= this.respawnTime) {
             this.elapsedRespawnTime = 0;
             this.elapsedInvulnTime = 0;
-            this.helpSystem.elapsedTime = 0;
+            this.textBox.helpTimer = 0;
             regenPlayerComponents(this.spawnPoint, this.player);
             this.playerController.refreshPlayerConnection();
             this.camera.setTarget(this.player);

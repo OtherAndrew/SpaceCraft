@@ -486,7 +486,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let height = 96
         let scale = 2
         for (let j = 0; j < 8; j++) {
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < 23; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
