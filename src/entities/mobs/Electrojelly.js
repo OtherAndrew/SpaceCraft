@@ -63,7 +63,6 @@ class Electrojelly {
     #addDrops() {
         const dropList = [generateItem('item_amber')];
         if (Math.random() < 0.25) dropList.push(generateItem('item_amber'));
-        if (Math.random() < 0.25) dropList.push(generateItem('item_amber'));
         return dropList;
     }
 
