@@ -2,6 +2,8 @@ class HealthSystem {
 
     constructor(entityManager, particleFactory, containerManager) {
         Object.assign(this, {entityManager, particleFactory, containerManager});
+        this.mobKills = 0;
+        this.playerDeaths = 0;
     }
 
     update(tick) {
@@ -11,14 +13,19 @@ class HealthSystem {
             if (!e.isDrawable || !e.components['stats']) continue;
             const eStats = e.components["stats"];
             if (eStats.isDead) {
-                if (e.tag.includes('mob') || e.name === "player") {
+                if (e.tag.includes('mob')) {
                     this.particleFactory.generate('death', e.components['boxCollider'].center);
                     if (e.components['drops']) {
                         e.components['drops'].dropList.forEach(d => {
                             this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
                         });
                     }
-                    if (e.name !== "player") e.destroy();
+                    this.mobKills++;
+                    e.destroy();
+                }
+                if (e.name === "player") {
+                    this.particleFactory.generate('death', e.components['boxCollider'].center);
+                    this.playerDeaths++;
                 }
             } else {
                 if (eStats.canRegen()) {
