@@ -8,7 +8,7 @@ const HELP = [
     "You're pretty good...",
     "Kept you waiting, huh?",
     "Explosive weapons will deal self-damage, stand back when using them!.",
-    "The Station can be used to craft higher-grade weapons.",
+    "The Station can be used to craft armor and higher-grade weapons.",
     "The Anvil can be used to craft higher-grade pickaxes.",
     "The Trader can be used to exchange items for crafting plans.",
     "The Furnace can be used to convert ores into materials.",
@@ -22,3 +22,19 @@ const HELP = [
     "Slime drops from Grapebombs.",
     "Chests may contain metal bars or even parts to craft powerful weapons."
 ]
+
+class HelpSystem {
+    constructor(textBox) {
+        this.textBox = textBox;
+        this.elapsedTime = 0;
+        this.cooldown = 60;
+    }
+
+    update(deltaTime) {
+        this.elapsedTime += deltaTime;
+        if (this.elapsedTime > this.cooldown) {
+            this.textBox.append(getRandom(HELP));
+            this.elapsedTime = 0;
+        }
+    }
+}

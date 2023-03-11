@@ -8,7 +8,6 @@ class WorldScene extends Scene {
         this.drawItems = null;
         this.respawnTime = 5;
         this.invulnTime = 5;
-        this.helpTime = 60;
         this.spawnPoint = {
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
@@ -30,7 +29,6 @@ class WorldScene extends Scene {
         this.canvas = canvas;
         this.elapsedRespawnTime = 0;
         this.elapsedInvulnTime = this.invulnTime;
-        this.elapsedHelpTime = 0;
         this.textBox = new TextBox();
         this.containerManager.textBox = this.textBox;
 
@@ -63,6 +61,7 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities);
         this.armorSystem = new ArmorSystem(this.player, this.containerManager);
+        this.helpSystem = new HelpSystem(this.textBox);
 
         // this.spawnTestEntities();
         // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
@@ -76,7 +75,6 @@ class WorldScene extends Scene {
     spawnTestEntities() {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
-
     }
 
     startup() {
@@ -108,9 +106,9 @@ class WorldScene extends Scene {
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
                 this.#setInvulnerability(deltaTime);
+                this.helpSystem.update(deltaTime);
+                this.#activateCheats();
             }
-            this.#activateCheats();
-            this.#getHelpMessage(deltaTime);
 
             // **update state**
             this.entityManager.update();
@@ -136,7 +134,6 @@ class WorldScene extends Scene {
             this.durationSystem.update(deltaTime);
             this.weaponSystem.update(deltaTime);
             this.armorSystem.applyArmor();
-
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime, this.drawItems);
@@ -147,14 +144,6 @@ class WorldScene extends Scene {
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.textBox.update(deltaTime)
         this.hud.update(menuActive, keys, wheel);
-    }
-
-    #getHelpMessage(deltaTime) {
-        this.elapsedHelpTime += deltaTime;
-        if (this.elapsedHelpTime > this.helpTime) {
-            this.textBox.append(getRandom(HELP));
-            this.elapsedHelpTime = 0;
-        }
     }
 
     #setInvulnerability(deltaTime) {
@@ -357,7 +346,7 @@ class WorldScene extends Scene {
         if (this.elapsedRespawnTime >= this.respawnTime) {
             this.elapsedRespawnTime = 0;
             this.elapsedInvulnTime = 0;
-            this.elapsedHelpTime = 0;
+            this.helpSystem.elapsedTime = 0;
             regenPlayerComponents(this.spawnPoint, this.player);
             this.playerController.refreshPlayerConnection();
             this.camera.setTarget(this.player);
