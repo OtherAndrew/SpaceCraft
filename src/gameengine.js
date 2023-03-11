@@ -26,7 +26,8 @@ class GameEngine {
         this.wheel = null;
         this.menuActive = false;
         this.pausemenuActive = false;
-        this.keys = {};
+        this.focused = true;
+        this.keys = [];
 
         // Options and the Details
         this.options = options || {
@@ -188,6 +189,29 @@ class GameEngine {
         });
     };
 
+    /**
+     * Periodically checks if the game has focus.
+     * If not then the game is paused.
+     * Borrowed from: https://github.com/Kenpai718/Untitled-Knight-Game/blob/main/engine/gameengine.js
+     */
+    checkGameFocus() {
+        const elem = document.getElementById("gameWorld");
+        if (elem === document.activeElement) {
+            // console.log("focus gained");
+            this.focused = true;
+        }
+        else {
+            // console.log("focus lost")
+            this.focused = false;
+            this.resetControls();
+        }
+    }
+
+    resetControls() {
+        // https://stackoverflow.com/a/40836264
+        Object.keys(this.keys).forEach(key => this.keys[key] = false);
+    }
+
     activateMenu() {
         this.menuActive = !this.menuActive;
         if (this.menuActive) {
@@ -195,6 +219,7 @@ class GameEngine {
             blur(this.screenshot, 2, 1);
         }
     }
+
 
     // activatePausemenu() {
     //     this.pausemenuActive = !this.pausemenuActive;
@@ -212,29 +237,35 @@ class GameEngine {
 
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        // this.ctx.fillStyle = 'rgb(159,109,50)'
-        this.mainScene.draw(this.menuActive, this.ctx, this.mouse)
+        this.mainScene.draw(this.menuActive, this.ctx, this.mouse);
         if (this.currentTime > 1) {
-            this.currentTime = 0
-            this.frames = this.renderedFrames
-            this.renderedFrames = 0
+            this.currentTime = 0;
+            this.frames = this.renderedFrames;
+            this.renderedFrames = 0;
         } else {
-            this.currentTime += this.clockTick
-            this.renderedFrames++
+            this.currentTime += this.clockTick;
+            this.renderedFrames++;
         }
         this.ctx.fillStyle = "white";
-        this.ctx.textAlign = 'left'
-        this.ctx.font = 'bold 15px Helvetica'
-        this.ctx.fillText(`FPS: ${this.frames}`, 10, 20)
+        this.ctx.textAlign = 'left';
+        this.ctx.font = 'bold 15px Helvetica';
+        if (this.focused) {
+            this.ctx.fillText(`FPS: ${this.frames}`, 10, 20);
+        } else {
+            this.ctx.fillText("PAUSED", 10, 20);
+        }
     };
 
     update() {
-        const status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
-        if (status) {
-            this.mainScene = new WorldScene(this)
-            this.mainScene.init(this.canvas);
+        if (this.focused) {
+            const status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
+            if (status) {
+                this.mainScene = new WorldScene(this)
+                this.mainScene.init(this.canvas);
+            }
         }
         this.refreshInput();
+        this.checkGameFocus();
     };
 
     refreshInput() {
