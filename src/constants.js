@@ -130,6 +130,9 @@ const ITEM_PATH = {
     TITANITE: './assets/items/titanite_bar.png',
     TUNGSTEN: './assets/items/tungsten_bar.png',
 
+    LIGHTARMOR: './assets/items/lightArmor.png',
+    HEAVYARMOR: './assets/items/heavyArmor.png',
+
     AMBER: './assets/items/amber.png',
     KERATIN: './assets/items/mob_dirtCarver.png',
     SHELL: './assets/items/mob_wormTank2.png',

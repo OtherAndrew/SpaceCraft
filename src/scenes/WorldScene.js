@@ -110,6 +110,7 @@ class WorldScene extends Scene {
             }
             this.#activateCheats();
             this.#getHelpMessage(deltaTime);
+            this.#applyArmor();
 
             // **update state**
             this.entityManager.update();
@@ -145,6 +146,18 @@ class WorldScene extends Scene {
         this.containerManager.update(menuActive, mouseDown, mouse);
         this.textBox.update(deltaTime)
         this.hud.update(menuActive, keys, wheel);
+    }
+
+    #applyArmor() {
+        const heavyArmor = [0, {item: {tag: 'item_heavyArmor'}, count: 1}];
+        const lightArmor = [0, {item: {tag: 'item_lightArmor'}, count: 1}];
+        if (this.containerManager.checkSufficient(heavyArmor, 'player')) {
+            this.player.components['stats'].defenseMod = 0.33;
+        } else if (this.containerManager.checkSufficient(lightArmor, 'player')) {
+            this.player.components['stats'].defenseMod = 0.66;
+        } else {
+            this.player.components['stats'].defenseMod = 1;
+        }
     }
 
     #getHelpMessage(deltaTime) {
@@ -187,7 +200,9 @@ class WorldScene extends Scene {
                 new GrenadeLauncher(),
                 new Minigun(),
                 new Railgun(),
-                new DeathRay()
+                new DeathRay(),
+                generateItem('item_lightArmor'),
+                generateItem('item_heavyArmor')
             ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
             this.textBox.append("Hey look buddy, I'm an engineer");
             this.game.weaponCheat = false;

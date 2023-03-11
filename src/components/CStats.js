@@ -26,6 +26,7 @@ class CStats {
         this.elapsedTime = this.regenCooldown;
         this.isDamaged = false;
         this.isDead = false;
+        this.defenseMod = 1;
         return this;
     }
 
@@ -35,7 +36,7 @@ class CStats {
      */
     applyDamage(damage) {
         if (!this.invincible) {
-            this.currentHealth = clamp(this.currentHealth - damage, 0, this.maxHealth);
+            this.currentHealth = clamp(this.currentHealth - damage * this.defenseMod, 0, this.maxHealth);
             this.elapsedTime = 0;
             this.isDamaged = true;
             this.isDead = this.currentHealth === 0;

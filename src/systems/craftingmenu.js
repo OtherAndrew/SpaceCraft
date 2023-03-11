@@ -121,7 +121,14 @@ class CraftingMenu {
         [{tag: 'railgun', name: 'weapon'},
             {tag: 'item_railgun part'},
             {tag: 'item_tungsten bar', count: 5},
-            {tag: 'item_charcoal', count: 5}]
+            {tag: 'item_charcoal', count: 5}],
+        [{tag: 'item_lightArmor'},
+            {tag: 'item_keratin', count: 15},
+            {tag: 'item_slime', count: 10}],
+        [{tag: 'item_heavyArmor'},
+            {tag: 'item_lightArmor'},
+            {tag: 'item_shell', count: 15},
+            {tag: 'item_silk', count: 10}]
     ];
 
     trader_recipes = [ // DONE
@@ -134,7 +141,7 @@ class CraftingMenu {
         [{tag: 'item_station plan'},
             // {tag: 'item_cobalt bar', count: 5},
             // {tag: 'item_wood', count: 5},
-            {tag: 'item_keratin', count: 12}],
+            {tag: 'item_keratin', count: 5}],
         [{tag: 'item_hub plan'},
             // {tag: 'item_steel bar', count: 5},
             {tag: 'item_shell', count: 5}],

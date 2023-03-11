@@ -50,8 +50,8 @@ class GameEngine {
 
     init(ctx, assets, canvas) {
         this.ctx = ctx;
-        this.canvas = canvas
-        this.mainScene.init(this.canvas)
+        this.canvas = canvas;
+        this.mainScene.init(this.canvas);
         this.startInput();
         this.timer = new Timer();
     };
