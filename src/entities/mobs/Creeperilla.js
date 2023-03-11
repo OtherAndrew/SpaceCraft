@@ -110,7 +110,7 @@ class Creeperilla {
 
     #getDrops() {
         const dropList = [generateItem('item_silk')];
-        if (Math.random() <= 0.1) dropList.push(new LaserGun());
+        if (Math.random() <= 0.025) dropList.push(new LaserGun());
         return dropList;
     }
 
