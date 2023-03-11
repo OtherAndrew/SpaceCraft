@@ -63,7 +63,6 @@ class WorldScene extends Scene {
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
         this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
 
-        // this.giveWeapons2();
         // this.spawnTestEntities();
         // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
         this.startup();

@@ -208,7 +208,6 @@ const SOUND_PATH = {
     HIT3                    :   './assets/music/sfx/hit3.ogg',
     LASER                   :   './assets/music/sfx/capper_shoot.wav',
     MINIGUN                 :   './assets/music/sfx/minigun_shoot_long.wav',
-    RAILGUN                 :   './assets/music/sfx/sniper_railgun_single_01.wav',
     RAYGUN                  :   './assets/music/sfx/barret_arm_shot.wav',
     SMALL_EXPLOSION1        :   './assets/music/sfx/air_burster_explode1.wav',
     SMALL_EXPLOSION2        :   './assets/music/sfx/air_burster_explode2.wav',

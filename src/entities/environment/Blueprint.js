@@ -163,7 +163,6 @@ const getRandomBar = () => {
         'ferrite',
         'gold',
         'iron',
-        'paraffin',
         'steel',
         'tin',
         'titanite',
