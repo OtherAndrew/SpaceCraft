@@ -7,7 +7,7 @@ const HELP = [
     "Electrojellies can move and shoot through blocks.",
     "You're pretty good...",
     "Kept you waiting, huh?",
-    "Explosive weapons will deal self-damage, stand back when using them!.",
+    "Explosive weapons will deal self-damage, stand back when using them!",
     "The Station can be used to craft armor and higher-grade weapons.",
     "The Anvil can be used to craft higher-grade pickaxes.",
     "The Trader can be used to exchange items for crafting plans.",
