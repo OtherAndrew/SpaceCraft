@@ -61,7 +61,8 @@ class Grapebomb {
 
     #addDrops() {
         const dropList = [generateItem('item_slime')];
-        if (Math.random() < 0.25) dropList.push(generateItem('item_slime'))
+        if (Math.random() < 0.25) dropList.push(generateItem('item_slime'));
+        if (Math.random() < 0.25) dropList.push(generateItem('item_slime'));
         return dropList;
     }
 
