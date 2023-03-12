@@ -173,7 +173,7 @@ class CraftingMenu {
             {tag: 'item_silk', count: 5}],
         [{tag: 'item_fueltower'}, // requirement for rocket
             {tag: 'item_fuel tank', count: 2},
-            {tag: 'tile_paraffin', count: 20}],
+            {tag: 'tile_paraffin', count: 15}],
         [{tag: 'item_smart circuit'},
             {tag: 'item_circuit', count: 2},
             {tag: 'item_tungsten bar'},
