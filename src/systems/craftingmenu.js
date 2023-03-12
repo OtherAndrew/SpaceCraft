@@ -164,6 +164,8 @@ class CraftingMenu {
     hub_recipes = [
         [{tag: 'tile_paraffin'},
             {tag: 'item_charcoal', count: 10}],
+        [{tag: 'item_charcoal', count: 10},
+            {tag: 'tile_paraffin'}],
         [{tag: 'item_paraffintank'},
             {tag: 'item_shell', count: 5},
             {tag: 'item_glass', count: 5}],
