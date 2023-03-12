@@ -25,7 +25,7 @@ class Wormtank {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.25,
+            damage: 0.5,
             speed: 0.5,
             maxHealth: 500
         });

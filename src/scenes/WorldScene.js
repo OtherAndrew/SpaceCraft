@@ -4,7 +4,6 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-        this.mid = HEIGHT_PIXELS * .5 + WIDTH
         this.drawItems = null;
         this.respawnTime = 5;
         this.invulnTime = 5;
@@ -13,12 +12,6 @@ class WorldScene extends Scene {
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
         this.win = false;
-        //other game stats --- display during win condition (rocket scene)
-        //add total each mob kills
-        //total blocks mined
-        //total jetpack used
-        //total jumps
-        //total deaths
     }
 
     /**
@@ -77,9 +70,8 @@ class WorldScene extends Scene {
     }
 
     startup() {
-        [generatePickaxe('pickaxe_iron'), new LaserPistol()].forEach(item => {
-            this.containerManager.addToInventory('player', this.entityManager.addEntity(item))
-        });
+        this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_iron')));
+        this.containerManager.addToPlayer(this.entityManager.addEntity(new LaserPistol()));
         this.textBox.append("WASD + SPACE to move.");
         this.textBox.append("TAB to open inventory.");
         this.textBox.append("1-9 + SCROLL to change hotbar item.");
@@ -163,7 +155,7 @@ class WorldScene extends Scene {
         }
         if (this.game.pickaxeCheat) {
             this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_super')));
-            this.textBox.append("Aw man");
+            this.textBox.append("Aw man.");
             this.game.pickaxeCheat = false;
         }
         if (this.game.weaponCheat) {
@@ -175,12 +167,24 @@ class WorldScene extends Scene {
                 new GrenadeLauncher(),
                 new Minigun(),
                 new Railgun(),
-                new DeathRay(),
-                generateItem('item_light armor'),
-                generateItem('item_heavy armor')
-            ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
-            this.textBox.append("Hey look buddy, I'm an engineer");
+                new DeathRay()
+            ].forEach(item => this.containerManager.addToPlayer(this.entityManager.addEntity(item)));
+            [generateItem('item_light armor'), generateItem('item_heavy armor')].forEach(item => {
+                this.containerManager.addToPlayer(new Entity(item))
+            });
+            this.textBox.append("Hey look buddy, I'm an engineer.");
             this.game.weaponCheat = false;
+        }
+        if (this.game.craftCheat) {
+            [generateInteractive('interact_table'),
+                generateInteractive('interact_furnace'),
+                generateInteractive('interact_anvil'),
+                generateInteractive('interact_trader'),
+                generateInteractive('interact_station'),
+                generateInteractive('interact_hub')
+            ].forEach(item => this.containerManager.addToPlayer(new Entity(item)));
+            this.textBox.append("Craft");
+            this.game.craftCheat = false;
         }
         if (this.game.invincibleCheat) {
             this.textBox.append("I AM BULLETPROOF!!!");
@@ -286,10 +290,10 @@ class WorldScene extends Scene {
         let ordVis = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || cardVis.overall || ordVis.overall;
         let visCode = ['c']; // NWES
-        visCode.push((cardVis.n || (ordVis.nw && ordVis.ne)) ? '1' : '0');
-        visCode.push((cardVis.w || (ordVis.nw && ordVis.sw)) ? '1' : '0');
-        visCode.push((cardVis.e || (ordVis.ne && ordVis.se)) ? '1' : '0');
-        visCode.push((cardVis.s || (ordVis.sw && ordVis.se)) ? '1' : '0');
+        visCode.push((cardVis.n || ordVis.nw && ordVis.ne) ? '1' : '0');
+        visCode.push((cardVis.w || ordVis.nw && ordVis.sw) ? '1' : '0');
+        visCode.push((cardVis.e || ordVis.ne && ordVis.se) ? '1' : '0');
+        visCode.push((cardVis.s || ordVis.sw && ordVis.se) ? '1' : '0');
         if (!visCode.includes('1')) {
             visCode = ['o']; // NWNESWSE
             visCode.push(ordVis.nw ? '1' : '0');
@@ -330,17 +334,18 @@ class WorldScene extends Scene {
     }
 
     #onWin() {
-        this.rocket.components["state"].setState("win");
-        this.rocket.components['transform'].hasGravity = false;
-        this.camera.setTarget(this.rocket);
-        this.renderBox.setTarget(this.rocket);
-        this.player.isDrawable = false;
-        this.player.components['stats'].invincible = true;
         if (this.elapsedRespawnTime === 0) {
+            this.rocket.components['transform'].hasGravity = false;
+            this.camera.setTarget(this.rocket);
+            this.renderBox.setTarget(this.rocket);
+            this.player.isDrawable = false;
+            this.player.components['stats'].invincible = true;
             this.textBox.append("You won!");
+            this.textBox.append(`    Kills: ${this.healthSystem.mobKills}, Deaths: ${this.healthSystem.playerDeaths}`);
             this.elapsedRespawnTime += 1;
+            this.win = true;
         }
-        this.win = true;
+        this.rocket.components['transform'].velocityY -= 0.25;
     }
 
     #onDeath(deltaTime) {
@@ -362,7 +367,7 @@ class WorldScene extends Scene {
                 pTransform.velocityY = 0;
                 this.player.isDrawable = false;
                 this.textBox.append("You died!");
-                this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
+                this.textBox.append(`    Respawning in ${this.respawnTime} seconds...`);
             }
             this.elapsedRespawnTime += deltaTime;
         }

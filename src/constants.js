@@ -55,10 +55,11 @@ const BG_SCROLL = {
 }
 
 const CHEATCODE = {
-    WIN: "amogus",
-    WEAPON: "moregun",
+    CRAFT: "space",
+    INVINCIBLE: "uber",
     PICKAXE: "creeper",
-    INVINCIBLE: "uber"
+    WEAPON: "moregun",
+    WIN: "amogus"
 }
 
 const CHAR_PATH = {

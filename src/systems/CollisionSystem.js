@@ -110,12 +110,13 @@ class CollisionSystem {
                     if (this.#bottomCollision(eCollider, tCollider)) {
                         if (entity.components.state) entity.components.state.grounded = true;
                         this.#fallDamage(entity);
-                        eTransform.y = eTransform.last.y;
-                    }
-                    if (this.#topCollision(eCollider, tCollider)) {
-                        eTransform.y += tCollider.bottom - eCollider.top;
                     }
                     eTransform.velocityY = 0;
+                    if (entity.name === 'player' && this.#topCollision(eCollider, tCollider)) {
+                        eTransform.y += tCollider.bottom - eCollider.top;
+                    } else {
+                        eTransform.y = eTransform.last.y;
+                    }
                     eCollider.setPosition(eTransform.x, eTransform.y);
                     break;
                 }
