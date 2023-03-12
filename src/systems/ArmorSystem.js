@@ -2,8 +2,8 @@ class ArmorSystem {
 
     constructor(player, containerManager) {
         Object.assign(this, {player, containerManager});
-        this.heavyArmor = [0, {item: {tag: 'item_heavyArmor'}, count: 1}];
-        this.lightArmor = [0, {item: {tag: 'item_lightArmor'}, count: 1}];
+        this.heavyArmor = [0, {item: {tag: 'item_heavy armor'}, count: 1}];
+        this.lightArmor = [0, {item: {tag: 'item_light armor'}, count: 1}];
     }
 
     /**

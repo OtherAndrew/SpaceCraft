@@ -176,8 +176,8 @@ class WorldScene extends Scene {
                 new Minigun(),
                 new Railgun(),
                 new DeathRay(),
-                generateItem('item_lightArmor'),
-                generateItem('item_heavyArmor')
+                generateItem('item_light armor'),
+                generateItem('item_heavy armor')
             ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
             this.textBox.append("Hey look buddy, I'm an engineer");
             this.game.weaponCheat = false;
@@ -286,10 +286,10 @@ class WorldScene extends Scene {
         let ordVis = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || cardVis.overall || ordVis.overall;
         let visCode = ['c']; // NWES
-        visCode.push((cardVis.n || ordVis.nw && ordVis.ne) ? '1' : '0');
-        visCode.push((cardVis.w || ordVis.nw && ordVis.sw) ? '1' : '0');
-        visCode.push((cardVis.e || ordVis.ne && ordVis.se) ? '1' : '0');
-        visCode.push((cardVis.s || ordVis.sw && ordVis.se) ? '1' : '0');
+        visCode.push((cardVis.n || (ordVis.nw && ordVis.ne)) ? '1' : '0');
+        visCode.push((cardVis.w || (ordVis.nw && ordVis.sw)) ? '1' : '0');
+        visCode.push((cardVis.e || (ordVis.ne && ordVis.se)) ? '1' : '0');
+        visCode.push((cardVis.s || (ordVis.sw && ordVis.se)) ? '1' : '0');
         if (!visCode.includes('1')) {
             visCode = ['o']; // NWNESWSE
             visCode.push(ordVis.nw ? '1' : '0');

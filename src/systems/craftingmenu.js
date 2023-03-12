@@ -123,11 +123,11 @@ class CraftingMenu {
             {tag: 'item_railgun part'},
             {tag: 'item_tungsten bar', count: 5},
             {tag: 'tile_paraffin', count: 5}],
-        [{tag: 'item_lightArmor'},
+        [{tag: 'item_light armor'},
             {tag: 'item_keratin', count: 15},
             {tag: 'item_slime', count: 10}],
-        [{tag: 'item_heavyArmor'},
-            {tag: 'item_lightArmor'},
+        [{tag: 'item_heavy armor'},
+            {tag: 'item_light armor'},
             {tag: 'item_shell', count: 15},
             {tag: 'item_silk', count: 10}]
     ];
@@ -164,11 +164,11 @@ class CraftingMenu {
     hub_recipes = [
         [{tag: 'tile_paraffin'},
             {tag: 'item_charcoal', count: 10}],
-        [{tag: 'item_paraffintank'},
+        [{tag: 'item_paraffin tank'},
             {tag: 'item_shell', count: 5},
             {tag: 'item_glass', count: 5}],
         [{tag: 'item_fuel tank'},
-            {tag: 'item_paraffintank'},
+            {tag: 'item_paraffin tank'},
             {tag: 'item_slime', count: 5},
             {tag: 'item_silk', count: 5}],
         [{tag: 'item_fueltower'}, // requirement for rocket

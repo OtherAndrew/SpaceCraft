@@ -124,14 +124,13 @@ const ITEM_PATH = {
     FERRITE: './assets/items/ferrite_bar.png',
     GOLD: './assets/items/gold_bar.png',
     IRON: './assets/items/iron_bar.png',
-    PARAFFIN: './assets/items/paraffin_bar.png',
     STEEL: './assets/items/steel_bar.png',
     TIN: './assets/items/tin_bar.png',
     TITANITE: './assets/items/titanite_bar.png',
     TUNGSTEN: './assets/items/tungsten_bar.png',
 
-    LIGHTARMOR: './assets/items/lightArmor.png',
-    HEAVYARMOR: './assets/items/heavyArmor.png',
+    LIGHT: './assets/items/lightArmor.png',
+    HEAVY: './assets/items/heavyArmor.png',
 
     AMBER: './assets/items/amber.png',
     KERATIN: './assets/items/mob_dirtCarver.png',
@@ -149,8 +148,7 @@ const ITEM_PATH = {
 
     HUB: './assets/items/plan_hub.png',
     STATION: './assets/items/plan_station.png',
-    PARAFFINTANK: './assets/items/paraffintank.png',
-    PARAFFINTANKPLAN: './assets/items/plan_paraffintank.png',
+    PARAFFIN: './assets/items/paraffintank.png',
     MEDICAL: './assets/items/medicalBay.png',
     FUEL: './assets/items/fuelTank.png',
     FUELTOWER: './assets/items/fuelTower.png',
