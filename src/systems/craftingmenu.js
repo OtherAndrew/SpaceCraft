@@ -1,6 +1,6 @@
 class CraftingMenu {
 
-    builtin_recipes = [ // DONE
+    builtin_recipes = [
         [{tag: 'laserPistol', name: 'weapon'}],
         [{tag: 'pickaxe_iron'}],
         [{tag: 'interact_table'},
@@ -23,7 +23,7 @@ class CraftingMenu {
             {tag: 'tile_stone', count: 10}]
     ];
 
-    table_recipes = [ // DONE
+    table_recipes = [
         [{tag: 'interact_chest'},
             {tag: 'item_iron bar'},
             {tag: 'item_wood'}],
@@ -49,9 +49,9 @@ class CraftingMenu {
             {tag: 'item_amber', count: 5}]
     ];
 
-    furnace_recipes = [ // DONE
+    furnace_recipes = [
         [{tag: 'item_charcoal'},
-            // {tag: 'item_wood'},
+            {tag: 'item_wood'},
             {tag: 'tile_coal'}],
         [{tag: 'item_glass'},
             {tag: 'item_charcoal'},
@@ -85,7 +85,7 @@ class CraftingMenu {
             {tag: 'tile_tungsten', count: 2}],
     ];
 
-    anvil_recipes = [ // TODO PICKAXES
+    anvil_recipes = [
         [{tag: 'pickaxe_copper'},
             {tag: 'pickaxe_iron'},
             {tag: 'item_copper bar', count: 5},
@@ -104,7 +104,7 @@ class CraftingMenu {
             {tag: 'item_wood', count: 10}]
     ];
 
-    station_recipes = [ // DONE
+    station_recipes = [
         [{tag: 'handCannon', name: 'weapon'},
             {tag: 'item_handCannon part'},
             {tag: 'item_titanite bar', count: 5},
@@ -130,7 +130,7 @@ class CraftingMenu {
             {tag: 'item_silk', count: 10}]
     ];
 
-    trader_recipes = [ // DONE
+    trader_recipes = [
         [{tag: 'item_station plan'},
             {tag: 'item_cobalt bar', count: 5},
             {tag: 'item_keratin', count: 5}],
@@ -161,7 +161,7 @@ class CraftingMenu {
             {tag: 'item_wood'}]
     ];
 
-    hub_recipes = [ // DONE
+    hub_recipes = [
         // [{tag: 'item_graphite'},
         //     {tag: 'item_charcoal', count: 3},
         //     {tag: 'item_paraffinTank plan'}],

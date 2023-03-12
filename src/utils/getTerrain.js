@@ -390,7 +390,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             let pos2 = {}
             pos2.x = pos.x * BLOCKSIZE
             pos2.y = pos.y * BLOCKSIZE
-            let e = entityManager.addEntity({
+            entityManager.addEntity({
                 tag: 'chozo',
                 components: [
                     new CTransform({
@@ -473,10 +473,11 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             let itemChance = Math.random();
             if (itemChance > 0.8)
                 containerManager.addToInventory(chest, new Entity(generateItem('item_bismuth bar')));
-            else if (itemChance > 0.3){
+            else if (itemChance > 0.3) {
                 let roll = randomInt(4)
                 for (let j = 0; j < roll; j++)
-                    containerManager.addToInventory(chest, new Entity(generateItem(otherBars[randomInt(3)])), randomInt(3) + 1);
+                    containerManager.addToInventory(chest, new Entity(generateItem(otherBars[randomInt(3)])),
+                        randomInt(3) + 1);
             }
         }
     }

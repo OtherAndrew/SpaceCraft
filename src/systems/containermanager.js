@@ -8,7 +8,6 @@ class ContainerManager {
         this.slotID = 0;                // universal slot id
 
         this.activeInventory = [];      // interactive inventories
-        this.drawnInventory = [];       // TODO inventories on screen
 
         this.playerCounts = new Map;    // internal tracking of player items and their counts
 
@@ -150,8 +149,12 @@ class ContainerManager {
         let activeItem = this.activeContainer.item;
         let activeCount = this.activeContainer.count;
         if (swapContainer !== this.activeContainer && swapItem && activeItem && swapItem.tag === activeItem.tag) { // stack if same
-            swapContainer.count += activeCount;
-            this.clearContainer();
+            if (this.splitMode) {
+                swapContainer.count += this.splitCount;
+            } else {
+                swapContainer.count += activeCount;
+                this.clearContainer();
+            }
         } else if (!swapContainer.owner && activeItem) { // trashcan
             swapContainer.item = activeItem;
             swapContainer.count = activeCount;
@@ -250,7 +253,7 @@ class ContainerManager {
                         } else if (hit.keyword !== 'recipe') { // product container
                             this.deselectContainer();
                             this.clearSplit();
-                            this.craftContainerItem(hit); // click
+                            this.craftContainerItem(hit);
                         } else {
                             this.deselectContainer();
                             this.clearSplit();
@@ -260,7 +263,7 @@ class ContainerManager {
                     this.splitMode = true;
                     if (this.activeContainer.count > this.splitCount) this.splitCount++;
                     this.hoverText = this.splitCount;
-                } else if (click.w === 2 && this.activeContainer && this.activeContainer.item) {
+                } else if (click.w === 2 && this.activeContainer && this.activeContainer.item) { // middle click
                     let trash = this.getInventory(null)[0];
                     this.inspectInteraction(trash, this.swapViaContainer.bind(this));
                 }
@@ -272,8 +275,6 @@ class ContainerManager {
             this.lastClick = null;      // don't bother remembering last click
         }
     }
-    
-    // TODO investigate broken splitting
 
     checkNew(click) {
         return this.lastClick == null || click.t !== this.lastClick.t;
