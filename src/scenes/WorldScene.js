@@ -191,7 +191,7 @@ class WorldScene extends Scene {
                 generateInteractive('interact_station'),
                 generateInteractive('interact_hub')
             ].forEach(item => this.containerManager.addToPlayer(new Entity(item)));
-            this.textBox.append("Craft.");
+            this.textBox.append("Craft");
             this.game.craftCheat = false;
         }
         if (this.game.invincibleCheat) {
