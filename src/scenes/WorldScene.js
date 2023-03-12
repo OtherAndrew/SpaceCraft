@@ -70,9 +70,8 @@ class WorldScene extends Scene {
     }
 
     startup() {
-        [generatePickaxe('pickaxe_iron'), new LaserPistol()].forEach(item => {
-            this.containerManager.addToInventory('player', this.entityManager.addEntity(item))
-        });
+        this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_iron')));
+        this.containerManager.addToPlayer(this.entityManager.addEntity(new LaserPistol()));
         this.textBox.append("WASD + SPACE to move.");
         this.textBox.append("TAB to open inventory.");
         this.textBox.append("1-9 + SCROLL to change hotbar item.");
@@ -169,7 +168,7 @@ class WorldScene extends Scene {
                 new Minigun(),
                 new Railgun(),
                 new DeathRay()
-            ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
+            ].forEach(item => this.containerManager.addToPlayer(this.entityManager.addEntity(item)));
             [generateItem('item_lightArmor'), generateItem('item_heavyArmor')].forEach(item => {
                 this.containerManager.addToPlayer(new Entity(item))
             });
