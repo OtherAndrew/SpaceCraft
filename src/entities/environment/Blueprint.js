@@ -177,7 +177,8 @@ const generatePickaxe = (tag) => {
                 sHeight: image.height,
             }),
             new CStats({
-                damage: TOOL_DAMAGE[id]
+                damage: TOOL_DAMAGE[id],
+                reach: TOOL_REACH[id]
             }),
         ]
     };

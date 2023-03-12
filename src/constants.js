@@ -284,6 +284,15 @@ const TOOL_PATH = {
     SUPER               :   './assets/icons/super_pickaxe.png',
 }
 
+const TOOL_REACH = {
+    IRON                :   3.2,
+    COPPER              :   4.2,
+    STEEL               :   5.2,
+    TITANITE            :   6.2,
+    FERRITE             :   7.2,
+    SUPER               :   1000
+}
+
 const WEAPON_PATH = {
     FLAMETHROWER        :   './assets/weapons/flamethrower.png',
     GRENADE_LAUNCHER    :   './assets/weapons/grenade_launcher.png',
@@ -332,6 +341,7 @@ const CONSTANTS = {
     TILES       :   TILE_PATH,
     TOOLS       :   TOOL_PATH,
     TOOL_DMGS   :   TOOL_DAMAGE,
+    TOOL_REACHS :   TOOL_REACH,
     WEAPONS     :   WEAPON_PATH,
     SOUNDS      :   SOUND_PATH,
     ENVS        :   ENV_PATH

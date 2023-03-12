@@ -146,7 +146,7 @@ class PlayerController {
                     }
                 }
             } else if (active.tag.includes('pickaxe')) {
-                if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < BLOCK_PLACEMENT_DISTANCE) {
+                if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < active.components['stats'].reach) {
                     let destroyable = true;
                     if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
                     if (destroyable) {

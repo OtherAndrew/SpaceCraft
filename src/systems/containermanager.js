@@ -69,7 +69,8 @@ class ContainerManager {
     }
 
     getPlayerCounts(tag) {
-        return this.playerCounts.get(tag) ? this.playerCounts.get(tag) : 0;
+        let count = this.playerCounts.get(tag);
+        return count ? count : 0;
     }
     
     addToPlayer(item, count = 1) {

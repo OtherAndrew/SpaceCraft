@@ -22,7 +22,8 @@ class CursorSystem {
             let selected = this.playerHud.activeContainer.item
             if(!menuActive && selected) {
                 let tag = this.terrainMap[pos.y][pos.x].tag
-                if(/tile|interact/.test(tag) && selected.tag.includes('pickaxe') && checkPlayerDistance(pos, this.player) < BLOCK_PLACEMENT_DISTANCE) {
+                if(/tile|interact/.test(tag) && selected.tag.includes('pickaxe')
+                    && checkPlayerDistance(pos, this.player) < selected.components['stats'].reach) {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_PICK]
                 } else if (selected.name === "weapon") {
                     this.cursor.cursor = this.cursorList[MISC_PATH.CURSOR_CROSSHAIR]

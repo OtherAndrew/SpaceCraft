@@ -15,11 +15,12 @@ class CStats {
      * @param {number} regenAmount    Health regenerated per tick. 0.1% of max health by default.
      * @param {boolean} invincible    If entity is invincible. false by default.
      * @param {boolean} hasFallDamage If entity can suffer fall damage. true by default.
+     * @param {number} reach          Affective range. 3.2 by default.
      * @return {CStats} This CStats component.
      */
     constructor({ damage = 0, maxHealth = 1, speed = 0,
                     regenCooldown = 10, regenAmount = maxHealth * 0.001,
-                    invincible = false, hasFallDamage = true }) {
+                    invincible = false, hasFallDamage = true, reach = 3.2 }) {
         Object.assign(this, { damage, maxHealth, speed, regenCooldown, regenAmount, invincible, hasFallDamage })
         this.currentHealth = this.maxHealth;
         this.name = "stats"
@@ -27,6 +28,7 @@ class CStats {
         this.isDamaged = false;
         this.isDead = false;
         this.defenseMod = 1;
+        this.reach = reach;
         return this;
     }
 
