@@ -368,7 +368,7 @@ class WorldScene extends Scene {
                 pTransform.velocityY = 0;
                 this.player.isDrawable = false;
                 this.textBox.append("You died!");
-                this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
+                this.textBox.append(`    Respawning in ${this.respawnTime} seconds...`);
             }
             this.elapsedRespawnTime += deltaTime;
         }
