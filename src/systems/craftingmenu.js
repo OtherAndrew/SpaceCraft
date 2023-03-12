@@ -1,6 +1,6 @@
 class CraftingMenu {
 
-    builtin_recipes = [ // DONE
+    builtin_recipes = [
         [{tag: 'laserPistol', name: 'weapon'}],
         [{tag: 'pickaxe_iron'}],
         [{tag: 'interact_table'},
@@ -24,7 +24,7 @@ class CraftingMenu {
             {tag: 'interact_furnace'}]
     ];
 
-    table_recipes = [ // DONE
+    table_recipes = [
         [{tag: 'interact_chest'},
             {tag: 'item_iron bar'},
             {tag: 'item_wood', count: 5}],
@@ -47,7 +47,7 @@ class CraftingMenu {
             {tag: 'item_amber', count: 5}]
     ];
 
-    furnace_recipes = [ // DONE
+    furnace_recipes = [
         [{tag: 'item_charcoal'},
             {tag: 'tile_coal'}],
         [{tag: 'item_charcoal'},
@@ -87,7 +87,7 @@ class CraftingMenu {
             {tag: 'item_charcoal'}],
     ];
 
-    anvil_recipes = [ // TODO PICKAXES
+    anvil_recipes = [
         [{tag: 'pickaxe_copper'},
             {tag: 'pickaxe_iron'},
             {tag: 'item_copper bar', count: 5},
@@ -106,7 +106,7 @@ class CraftingMenu {
             {tag: 'item_wood', count: 10}]
     ];
 
-    station_recipes = [ // DONE
+    station_recipes = [
         [{tag: 'handCannon', name: 'weapon'},
             {tag: 'item_handCannon part'},
             {tag: 'item_titanite bar', count: 5},
@@ -132,7 +132,7 @@ class CraftingMenu {
             {tag: 'item_silk', count: 10}]
     ];
 
-    trader_recipes = [ // DONE
+    trader_recipes = [
         [{tag: 'item_station plan'},
             {tag: 'item_cobalt bar', count: 5},
             {tag: 'item_keratin', count: 5}],
@@ -144,7 +144,7 @@ class CraftingMenu {
         [{tag: 'item_handCannon part'},
             {tag: 'item_silk', count: 5}],
         [{tag: 'tile_paraffin'},
-            {tag: 'item_keratin', count: 10}],
+            {tag: 'item_keratin', count: 5}],
         [{tag: 'item_gold bar'},
             {tag: 'item_shell', count: 10}],
         [{tag: 'grenadeLauncher', name: 'weapon'},
@@ -161,7 +161,7 @@ class CraftingMenu {
             {tag: 'item_wood'}]
     ];
 
-    hub_recipes = [ // DONE
+    hub_recipes = [
         [{tag: 'tile_paraffin'},
             {tag: 'item_charcoal', count: 10}],
         [{tag: 'item_paraffintank'},
