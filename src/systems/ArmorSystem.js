@@ -10,9 +10,9 @@ class ArmorSystem {
      * Applies armor value to player if holding armor.
      */
     applyArmor() {
-        if (this.containerManager.checkSufficient(this.heavyArmor, 'player')) {
+        if (this.containerManager.checkSufficient(this.heavyArmor)) {
             this.player.components['stats'].defenseMod = 0.33;
-        } else if (this.containerManager.checkSufficient(this.lightArmor, 'player')) {
+        } else if (this.containerManager.checkSufficient(this.lightArmor)) {
             this.player.components['stats'].defenseMod = 0.66;
         } else {
             this.player.components['stats'].defenseMod = 1;

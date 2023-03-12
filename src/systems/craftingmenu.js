@@ -185,7 +185,7 @@ class CraftingMenu {
 
     constructor(containManager, entityManager) {
         this.cm = containManager;
-        this.entityManager = entityManager;
+        this.em = entityManager;
         this.recipes = [];
         
         this.x = 30;
@@ -220,7 +220,7 @@ class CraftingMenu {
                 let tag = item.tag;
                 let generate;
                 if (item.name && item.name.includes('weapon')) {
-                    generate = this.entityManager.addEntity(generateWeapon(tag));
+                    generate = this.em.addEntity(generateWeapon(tag));
                 } else if (tag.includes('item')) {
                     generate = new Entity(generateItem(tag));
                 } else if (tag.includes('interact')) {
