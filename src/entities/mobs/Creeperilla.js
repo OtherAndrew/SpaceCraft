@@ -24,7 +24,7 @@ class Creeperilla {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 75,
+            maxHealth: 100,
             damage: 0.5,
             speed: 4,
             hasFallDamage: false
