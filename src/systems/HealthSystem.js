@@ -17,7 +17,7 @@ class HealthSystem {
                     this.particleFactory.generate('death', e.components['boxCollider'].center);
                     if (e.components['drops']) {
                         e.components['drops'].dropList.forEach(d => {
-                            this.containerManager.addToInventory('player', this.entityManager.addEntity(d))
+                            this.containerManager.addToPlayer(new Entity(d))
                         });
                     }
                     this.mobKills++;

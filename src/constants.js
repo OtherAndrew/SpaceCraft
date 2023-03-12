@@ -180,10 +180,16 @@ const OVERLAY_PATH = {
     c0101: './assets/overlays/obscuredc_sw.png',
     c0001: './assets/overlays/obscuredc_s.png',
     c0011: './assets/overlays/obscuredc_se.png',
+    
     o1000: './assets/overlays/obscuredo_nw.png',
     o0100: './assets/overlays/obscuredo_ne.png',
     o0010: './assets/overlays/obscuredo_sw.png',
     o0001: './assets/overlays/obscuredo_se.png',
+    
+
+    
+
+
     VIGNETTE: './assets/overlays/vignette.png'
 }
 

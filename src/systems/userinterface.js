@@ -21,7 +21,7 @@ class HUD {
 
     // TESTING
     add(entity) {
-        this.cm.addToInventory('player', entity);
+        this.cm.addToPlayer(entity);
     }
 
     refreshActiveInfo() {

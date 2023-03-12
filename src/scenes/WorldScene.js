@@ -156,14 +156,13 @@ class WorldScene extends Scene {
     #activateCheats() {
         if (this.game.winCheat) {
             [generateItem('item_fueltower'), generateItem('item_medical bay')].forEach(item => {
-                this.containerManager.addToInventory('player', this.entityManager.addEntity(item))
+                this.containerManager.addToPlayer(new Entity(item))
             });
             this.textBox.append("sus");
             this.game.winCheat = false;
         }
         if (this.game.pickaxeCheat) {
-            this.containerManager.addToInventory('player',
-                this.entityManager.addEntity(generatePickaxe('pickaxe_super')));
+            this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_super')));
             this.textBox.append("Aw man");
             this.game.pickaxeCheat = false;
         }
@@ -278,8 +277,8 @@ class WorldScene extends Scene {
         let visCodeC = this.#checkCardinal(posY, posX);
         let visCodeO = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
-        // return {exposed: exposed, visCode: visCodeC};
-        return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
+        return {exposed: exposed, visCode: visCodeC};
+        // return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
     }
 
     #checkCardinal(posY, posX) {

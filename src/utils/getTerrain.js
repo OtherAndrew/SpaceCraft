@@ -456,8 +456,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         containerManager.registerChest(e);
         terrainMap[y][x] = {tag: e.tag, id: e.id};
         return cleanTag(e.tag);
-        // containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar'))); // Example
-        // Could randomize number of random rolls on loot table (random count for each result as well if desired)
     }
 
     function spawnChests() {

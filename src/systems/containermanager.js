@@ -71,6 +71,10 @@ class ContainerManager {
     getPlayerCounts(tag) {
         return this.playerCounts.get(tag) ? this.playerCounts.get(tag) : 0;
     }
+    
+    addToPlayer(item, count = 1) {
+        this.addToInventory('player', item, count);
+    }
 
     addToInventory(owner, item, count = 1) {
         let firstEmpty;
@@ -343,7 +347,7 @@ class ContainerManager {
         if (this.checkSufficient(recipe)) {
             for (let i = 1; i < recipe.length; i++) this.removeForCrafting(recipe[i]);
             let product = recipe[0];
-            this.addToInventory('player', product.item, product.count);
+            this.addToPlayer(product.item, product.count);
         }
     }
 

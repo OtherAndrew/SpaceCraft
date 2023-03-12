@@ -165,7 +165,7 @@ class PlayerController {
                             e.isDrawable = false;
                             e.destroy(); // deregister item from entity list
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_BREAK)
-                            this.containerManager.addToInventory('player', e)
+                            this.containerManager.addToPlayer(e)
                         }
                     }
                 }
