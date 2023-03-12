@@ -16,13 +16,16 @@ class Spiderboss {
 
     #buildComponents(props) {
         const stats = new CStats({
-            speed: 1
+            maxHealth: 5,
+            damage: 0.5,
+            speed: 1,
+            hasFallDamage: false
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.BROODMOTHER],
             sWidth: 150,
             sHeight: 104,
-            scale: 5,
+            scale: 3,
             firstFrameX: 0,
             frameY: 0,
             lastFrameX: 3,
@@ -47,24 +50,56 @@ class Spiderboss {
         this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
+        const duration = new CDuration();
         state.sprite = sprite;
         state.transform = transform;
-        return [stats, sprite, transform, collider, state];
+        state.direction = Math.random() < 0.5 ? 'left' : 'right';
+        return [stats, sprite, transform, collider, state, duration];
     }
 
     update(target, projectileManager) {
-        const targetX = target.center.x;
-        const x = this.components['boxCollider'].center.x;
-        const state = targetX < x ? "idleL" : "idleR";
-        this.components.state.setState(state);
-        if (this.rand > 0) {
-            this.rand -= 1;
-        } else {
-            let height = Math.floor(Math.random()*(10 - 5) + 5);
-            this.components.transform.velocityY -= height;
-            this.rand = Math.floor(Math.random()*(60 - 30) + 30);
+        const collider = this.components['boxCollider']
+        const origin = collider.center;
+        const speed = this.components["stats"].speed;
+        const transform = this.components["transform"];
+        const state = this.components['state'];
+
+        const distance = getDistance(origin, target.center);
+        const dVector = normalize(origin, target.center)
+        let animState;
+        const attackDistance = BLOCKSIZE * 25;
+
+        if (distance <= attackDistance) { // attack
+            if (checkCollision(collider, target)) {
+                transform.velocityX = 0;
+            } else {
+                transform.velocityX = dVector.x * speed;
+                state.direction = transform.velocityX < 0 ? "left" : "right"
+            }
+            animState = target.center.x < origin.x ? "walkL" : "walkR";
+        } else { // idle
+            transform.velocityX = 0;
+            animState = state.direction === 'left' ? "idleL" : "idleR";
         }
 
+        // shoot
+        if ((collider.attackCollision || distance <= attackDistance) && state.attackTime > 1) {
+            projectileManager.entityShoot('web', target.center, origin)
+            state.attackTime = 0;
+        }
+
+        // jump
+        if (state.grounded) {
+            if (collider.sideCollision) {
+                transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.66);
+                state.grounded = false;
+            } else if (collider.attackCollision) {
+                transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.44);
+                state.grounded = false;
+            }
+        }
+
+        state.setState(animState);
     }
 
     #addAnimations(sprite) {

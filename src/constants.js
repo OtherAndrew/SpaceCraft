@@ -237,6 +237,7 @@ const SOUND_PATH = {
     CAVE_9                  :   './assets/music/sfx/cave10.ogg',
     CHEST_OPEN              :   './assets/music/sfx/chestOpen.ogg',
     CHEST_CLOSE             :   './assets/music/sfx/chestClose.ogg',
+    WIN                     :   './assets/music/themes/win.mp3'
 }
 
 const TILE_LIFE = {

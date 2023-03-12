@@ -12,6 +12,8 @@ class WorldScene extends Scene {
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
         this.win = false;
+        this.bossSpawned = false
+        this.bossIsDead = false
     }
 
     /**
@@ -87,9 +89,16 @@ class WorldScene extends Scene {
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon() || this.win) {
-                // spawn boss (if not spawned already)
-                // if (boss is dead)
+                if(!this.bossSpawned) {
+                    this.#bossBattle()
+                    this.bossSpawned = true
+                }
+                if (this.boss && !this.boss.isAlive){
+                    ASSET_MANAGER.stop(SOUND_PATH.BOSS)
+                    ASSET_MANAGER.adjustVolume(.5)
+                    ASSET_MANAGER.playAsset(SOUND_PATH.WIN)
                     this.#onWin();
+                } 
             } else if (this.player.components['stats'].isDead) {
                 this.#onDeath(deltaTime);
             } else {
@@ -369,6 +378,18 @@ class WorldScene extends Scene {
                 this.textBox.append(`    Respawning in ${this.respawnTime} seconds...`);
             }
             this.elapsedRespawnTime += deltaTime;
+        }
+    }
+
+    #bossBattle(){
+        let pos = {
+            x: this.player.components.transform.x,
+            y: this.player.components.transform.y
+        }
+        if( pos.y < HEIGHT_PIXELS * .5) {
+            let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH
+            this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT)
+            ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
         }
     }
 }
