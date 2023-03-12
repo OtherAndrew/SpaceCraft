@@ -23,6 +23,7 @@ class WorldScene extends Scene {
         this.canvas = canvas;
         this.elapsedRespawnTime = 0;
         this.elapsedInvulnTime = this.invulnTime;
+
         this.textBox = new TextBox();
         this.containerManager.textBox = this.textBox;
 
@@ -342,7 +343,9 @@ class WorldScene extends Scene {
             this.player.isDrawable = false;
             this.player.components['stats'].invincible = true;
             this.textBox.append("You won!");
-            this.textBox.append(`    Kills: ${this.healthSystem.mobKills}, Deaths: ${this.healthSystem.playerDeaths}`);
+            this.textBox.append(`    Time: ${toHHMMSS(this.game.elapsedTime)}`);
+            this.textBox.append(`    Kills: ${this.healthSystem.mobKills}`);
+            this.textBox.append(`    Deaths: ${this.healthSystem.playerDeaths}`);
             this.elapsedRespawnTime += 1;
             this.win = true;
             ASSET_MANAGER.adjustVolume(.5)
@@ -378,8 +381,15 @@ class WorldScene extends Scene {
 
     #checkBoss() {
         if (!this.boss && this.#spawnBossCon()) {
-            this.#bossBattle();
-            // this.bossSpawned = true;
+            let pos = {
+                x: this.player.components['boxCollider'].center.x,
+                y: this.player.components['boxCollider'].center.y
+            }
+            if (pos.y < HEIGHT_PIXELS * .5) {
+                let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH;
+                this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT);
+                ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
+            }
         }
         if (this.boss) this.bossIsDead = this.boss.components['stats'].isDead;
         if (this.bossIsDead) ASSET_MANAGER.stop(SOUND_PATH.BOSS);
@@ -389,17 +399,5 @@ class WorldScene extends Scene {
         const requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}];
         return this.containerManager.checkSufficient(requisite)
             && checkCollision(this.player, this.rocket);
-    }
-
-    #bossBattle(){
-        let pos = {
-            x: this.player.components.transform.x,
-            y: this.player.components.transform.y
-        }
-        if (pos.y < HEIGHT_PIXELS * .5) {
-            let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH
-            this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT)
-            ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
-        }
     }
 }

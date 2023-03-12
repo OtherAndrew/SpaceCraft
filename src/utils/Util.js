@@ -247,6 +247,18 @@ const randomVector = () => {
     }
 }
 
+const toHHMMSS = (secs) => {
+    const sec_num = parseInt(secs, 10)
+    const hours   = Math.floor(sec_num / 3600)
+    const minutes = Math.floor(sec_num / 60) % 60
+    const seconds = sec_num % 60
+
+    return [hours,minutes,seconds]
+        .map(v => v < 10 ? "0" + v : v)
+        .filter((v,i) => v !== "00" || i > 0)
+        .join(":")
+}
+
 // credit: https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
 const drawStrokedText = (ctx, font, color, text, x, y) => {
     ctx.save();

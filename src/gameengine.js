@@ -5,27 +5,18 @@ class GameEngine {
 
         this.ctx = null;
         //used to calculate FPS
-        this.renderedFrames = 0
-        this.currentTime = 0
-        this.lastTime = 0
-        this.frames = 0
+        this.renderedFrames = 0;
+        this.frameTime = 0;
+        this.frames = 0;
+        this.elapsedTime = 0;
 
-        //Scenes
-        //this.scene = new WorldScene(this)
-        /*
-        this.scenes = {
-            worldScene: new WorldScene(this),
-            mainMenuScene: new MainMenu()
-        }
-        */
         this.mainScene = new MainMenu()
-        // Information on the input
+        // Information on input
         this.click = null;
         this.mouseDown = null;
         this.mouse = null;
         this.wheel = null;
         this.menuActive = false;
-        this.pausemenuActive = false;
         this.focused = true;
         this.keys = [];
 
@@ -246,29 +237,37 @@ class GameEngine {
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.mainScene.draw(this.menuActive, this.ctx, this.mouse);
-        if (this.currentTime > 1) {
-            this.currentTime = 0;
+        if (this.frameTime > 1) {
+            this.frameTime = 0;
             this.frames = this.renderedFrames;
             this.renderedFrames = 0;
         } else {
-            this.currentTime += this.clockTick;
+            this.frameTime += this.clockTick;
             this.renderedFrames++;
         }
-        this.ctx.fillStyle = "white";
-        this.ctx.textAlign = 'left';
-        this.ctx.font = 'bold 15px Helvetica';
         if (this.focused) {
+            this.ctx.fillStyle = "white";
+            this.ctx.font = 'bold 15px Helvetica';
+            this.ctx.textAlign = 'left';
             this.ctx.fillText(`FPS: ${this.frames}`, 10, 20);
         } else {
-            this.ctx.fillText("PAUSED", 10, 20);
+            this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
+            this.ctx.fillRect(0, 0, WIDTH, HEIGHT);
+            this.ctx.fillStyle = "white";
+            this.ctx.font = 'bold 30px Helvetica';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText("PAUSED", WIDTH/2, HEIGHT/2);
+            this.ctx.font = 'bold 15px Helvetica';
+            this.ctx.fillText("Click to resume.", WIDTH/2, HEIGHT/2 + 20);
         }
     };
 
     update() {
         if (this.focused) {
+            this.elapsedTime += this.clockTick;
             const status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
             if (status) {
-                this.mainScene = new WorldScene(this)
+                this.mainScene = new WorldScene(this);
                 this.mainScene.init(this.canvas);
             }
         }
