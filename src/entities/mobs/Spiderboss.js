@@ -8,10 +8,9 @@ class Spiderboss {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'spiderboss mob';
+        this.tag = 'mob enemy npc';
         this.name = 'spiderboss';
         this.components = this.#buildComponents(props);
-        this.rand = Math.floor(Math.random()*(60-10) + 10);
     };
 
     #buildComponents(props) {
@@ -47,12 +46,10 @@ class Spiderboss {
         });
 
         this.#addAnimations(sprite);
-        this.#addBehaviors(transform, stats);
         transform.collider = collider
         const state = new CState();
         const duration = new CDuration();
         state.sprite = sprite;
-        state.transform = transform;
         state.direction = Math.random() < 0.5 ? 'left' : 'right';
         return [stats, sprite, transform, collider, state, duration];
     }
@@ -109,13 +106,6 @@ class Spiderboss {
         aMap.set('walkR', new AnimationProps(0, 1, 3));
         aMap.set('walkL', new AnimationProps(0, 0, 3));
     };
-    #addBehaviors(transform, stats) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, null));
-        bMap.set('idleL', new BehaviorProps(0, null));
-        bMap.set('walkR', new BehaviorProps(stats.speed, null));
-        bMap.set('walkL', new BehaviorProps(-stats.speed, null));
-    }
 
 }
 

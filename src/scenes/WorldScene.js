@@ -11,9 +11,8 @@ class WorldScene extends Scene {
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
+        this.bossIsDead = false;
         this.win = false;
-        this.bossSpawned = false
-        this.bossIsDead = false
     }
 
     /**
@@ -89,16 +88,7 @@ class WorldScene extends Scene {
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
             if (this.#checkWinCon() || this.win) {
-                if(!this.bossSpawned) {
-                    this.#bossBattle()
-                    this.bossSpawned = true
-                }
-                if (this.boss && !this.boss.isAlive){
-                    ASSET_MANAGER.stop(SOUND_PATH.BOSS)
-                    ASSET_MANAGER.adjustVolume(.5)
-                    ASSET_MANAGER.playAsset(SOUND_PATH.WIN)
-                    this.#onWin();
-                } 
+                this.#onWin();
             } else if (this.player.components['stats'].isDead) {
                 this.#onDeath(deltaTime);
             } else {
@@ -108,7 +98,7 @@ class WorldScene extends Scene {
                 this.#setInvulnerability(deltaTime);
                 this.#activateCheats();
             }
-
+            this.#checkBoss();
             // **update state**
             this.entityManager.update();
             this.renderBox.update();
@@ -337,8 +327,11 @@ class WorldScene extends Scene {
     }
 
     #checkWinCon() {
-        let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
-        return (this.containerManager.checkSufficient(requisite) && checkCollision(this.player, this.rocket))
+        const requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}];
+        return this.containerManager.checkSufficient(requisite)
+            && checkCollision(this.player, this.rocket)
+            && this.boss
+            && this.bossIsDead;
     }
 
     #onWin() {
@@ -352,6 +345,8 @@ class WorldScene extends Scene {
             this.textBox.append(`    Kills: ${this.healthSystem.mobKills}, Deaths: ${this.healthSystem.playerDeaths}`);
             this.elapsedRespawnTime += 1;
             this.win = true;
+            ASSET_MANAGER.adjustVolume(.5)
+            ASSET_MANAGER.playAsset(SOUND_PATH.WIN);
         }
         this.rocket.components['transform'].velocityY -= 0.25;
     }
@@ -381,15 +376,30 @@ class WorldScene extends Scene {
         }
     }
 
+    #checkBoss() {
+        if (!this.boss && this.#spawnBossCon()) {
+            this.#bossBattle();
+            // this.bossSpawned = true;
+        }
+        if (this.boss) this.bossIsDead = this.boss.components['stats'].isDead;
+        if (this.bossIsDead) ASSET_MANAGER.stop(SOUND_PATH.BOSS);
+    }
+
+    #spawnBossCon() {
+        const requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}];
+        return this.containerManager.checkSufficient(requisite)
+            && checkCollision(this.player, this.rocket);
+    }
+
     #bossBattle(){
         let pos = {
             x: this.player.components.transform.x,
             y: this.player.components.transform.y
         }
-        if( pos.y < HEIGHT_PIXELS * .5) {
+        if (pos.y < HEIGHT_PIXELS * .5) {
             let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH
             this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT)
-            ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+            ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
         }
     }
 }
