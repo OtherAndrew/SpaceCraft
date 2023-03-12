@@ -7,7 +7,7 @@ class PlayerController {
         this.pSprite = this.player.components.sprite
         this.pStats = this.player.components['stats']
         this.acceleration = 1
-        this.fastFall = 3;
+        this.fastFall = 1;
         this.restrictMovement = false;
         this.timer = 0
         this.timesUp = .25

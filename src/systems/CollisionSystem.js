@@ -82,9 +82,9 @@ class CollisionSystem {
                 if (checkCollision(entity, this.tileList[j])) {
                     const eCollider = entity.components["boxCollider"];
                     eCollider.sideCollision = true;
-                    eTransform.velocityX = 0
-                    eTransform.x = eTransform.last.x
-                    eCollider.setPosition(eTransform.x, eTransform.y)
+                    eTransform.velocityX = 0;
+                    eTransform.x = eTransform.last.x;
+                    eCollider.setPosition(eTransform.x, eTransform.y);
                     if (this.tileList[j].name === 'border' && entity.name === 'player') {
                         entity.components["stats"].applyDamage(0.33);
                         this.#playHitSound(0.33);
@@ -107,23 +107,57 @@ class CollisionSystem {
                 if (checkCollision(entity, this.tileList[j])) {
                     const eCollider = entity.components["boxCollider"];
                     const tCollider = this.tileList[j].components["boxCollider"];
-                    if (eCollider.bottom > tCollider.top && eCollider.last.bottom <= tCollider.top) {
+                    if (this.#bottomCollision(eCollider, tCollider)) {
                         if (entity.components.state) entity.components.state.grounded = true;
-                        const fallDamage = eTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
-                        if (entity.components["stats"] && entity.components["stats"].hasFallDamage
-                                && eTransform.hasGravity && fallDamage !== 0) {
-                            entity.components["stats"].applyDamage(fallDamage);
-                            if (entity.name === 'player') ASSET_MANAGER.playAsset(SOUND_PATH.FALL_DAMAGE);
-                        }
-                        eTransform.fallDamageTime = 0;
+                        this.#fallDamage(entity);
+                        eTransform.y = eTransform.last.y;
                     }
-                    eTransform.velocityY = 0
-                    eTransform.y = eTransform.last.y
-                    eCollider.setPosition(eTransform.x, eTransform.y)
+                    if (this.#topCollision(eCollider, tCollider)) {
+                        eTransform.y += tCollider.bottom - eCollider.top;
+                    }
+                    eTransform.velocityY = 0;
+                    eCollider.setPosition(eTransform.x, eTransform.y);
                     break;
                 }
             }
         }
+    }
+
+    /**
+     * Applies fall damage to entity.
+     * @param {Entity} entity The entity.
+     */
+    #fallDamage(entity) {
+        const eTransform = entity.components["transform"];
+        const fallDamage = eTransform.fallDamageTime * FALL_DAMAGE_MULTIPLIER;
+        if (entity.components["stats"]
+                && entity.components["stats"].hasFallDamage
+                && eTransform.hasGravity
+                && fallDamage !== 0) {
+            entity.components["stats"].applyDamage(fallDamage);
+            if (entity.name === 'player') ASSET_MANAGER.playAsset(SOUND_PATH.FALL_DAMAGE);
+        }
+        eTransform.fallDamageTime = 0;
+    }
+
+    /**
+     * Detects bottom collision.
+     * @param {CBoxCollider} eCollider Entity collider.
+     * @param {CBoxCollider} tCollider Tile collider.
+     * @return {boolean} If tile is colliding with bottom of entity.
+     */
+    #bottomCollision(eCollider, tCollider) {
+        return eCollider.bottom > tCollider.top && eCollider.last.bottom <= tCollider.top;
+    }
+
+    /**
+     * Detects top collision.
+     * @param {CBoxCollider} eCollider Entity collider.
+     * @param {CBoxCollider} tCollider Tile collider.
+     * @return {boolean} If tile is colliding with top of entity.
+     */
+    #topCollision(eCollider, tCollider) {
+        return eCollider.top < tCollider.bottom && eCollider.last.top >= tCollider.bottom;
     }
 
     /**
