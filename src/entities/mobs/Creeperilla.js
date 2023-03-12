@@ -16,7 +16,7 @@ class Creeperilla {
      * @constructor
      */
     constructor(props) {
-        this.tag = 'mob';
+        this.tag = 'mob enemy';
         this.name = 'creeperilla';
         this.components = this.#buildComponents(props);
         return this;
@@ -25,6 +25,7 @@ class Creeperilla {
     #buildComponents(props) {
         const stats = new CStats({
             maxHealth: 75,
+            damage: 0.5,
             speed: 4,
             hasFallDamage: false
         });

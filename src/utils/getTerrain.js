@@ -75,7 +75,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'gold'
         ],
         CHUNK_5: [
-            'titanite',
+            'ferrite',
             'tungsten',
             'tin',
             'coal',

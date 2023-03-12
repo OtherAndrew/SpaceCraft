@@ -44,7 +44,7 @@ class CraftingMenu {
             {tag: 'tile_silica', count: 5}],
         [{tag: 'item_circuit'},
             {tag: 'item_gold bar'},
-            {tag: 'item_amber', count: 5}]
+            {tag: 'item_amber'}]
     ];
 
     furnace_recipes = [
@@ -139,14 +139,14 @@ class CraftingMenu {
         [{tag: 'item_hub plan'},
             {tag: 'item_steel bar', count: 5},
             {tag: 'item_shell', count: 5}],
-        [{tag: 'item_amber'},
-            {tag: 'item_slime', count: 5}],
+        [{tag: 'item_wood', count: 2},
+            {tag: 'interact_chest'}],
         [{tag: 'item_handCannon part'},
             {tag: 'item_silk', count: 5}],
         [{tag: 'tile_paraffin'},
             {tag: 'item_keratin', count: 5}],
-        [{tag: 'item_gold bar'},
-            {tag: 'item_shell', count: 10}],
+        [{tag: 'item_amber'},
+            {tag: 'item_shell', count: 5}],
         [{tag: 'grenadeLauncher', name: 'weapon'},
             {tag: 'tile_ruby'},
             {tag: 'item_shell'}],
@@ -173,10 +173,9 @@ class CraftingMenu {
             {tag: 'item_silk', count: 5}],
         [{tag: 'item_fueltower'}, // requirement for rocket
             {tag: 'item_fuel tank', count: 2},
-            {tag: 'item_copper bar', count: 5},
-            {tag: 'tile_paraffin', count: 10}],
+            {tag: 'tile_paraffin', count: 20}],
         [{tag: 'item_smart circuit'},
-            {tag: 'item_circuit'},
+            {tag: 'item_circuit', count: 2},
             {tag: 'item_tungsten bar'},
             {tag: 'item_refined silica'}],
         [{tag: 'item_medical bay'}, // requirement for rocket
