@@ -139,56 +139,28 @@ const generateItem = (tag) => {
     };
 }
 
-const getRandomItem = () => {
-    let out;
-    switch (randomInt(3)) {
-        case 0:
-            out = getRandomBar();
-            break;
-        case 1:
-            out = getRandomMobDrop();
-            break;
-        case 2:
-            out = getRandomMaterial();
-            break;
-    }
-    return out;
-}
-
 const getRandomBar = () => {
     return generateItem(getRandom([
-        'bismuth',
-        'cobalt',
-        'copper',
-        'ferrite',
-        'gold',
-        'iron',
-        'steel',
-        'tin',
-        'titanite',
-        'tungsten'
+        'item_bismuth bar',
+        'item_cobalt bar',
+        'item_copper bar',
+        'item_ferrite bar',
+        'item_gold bar',
+        'item_iron bar',
+        'item_steel bar',
+        'item_tin bar',
+        'item_titanite bar',
+        'item_tungsten bar'
     ]));
 }
 
 const getRandomMobDrop = () => {
     return generateItem(getRandom([
-        'amber',
-        'keratin',
-        'shell',
-        'slime',
-        'silk'
-    ]));
-}
-
-const getRandomMaterial = () => {
-    return generateItem(getRandom([
-        'circuit',
-        'smart',
-        'charcoal',
-        'glass',
-        'plexiglass',
-        'refined',
-        'wood'
+        'item_amber',
+        'item_keratin',
+        'item_shell',
+        'item_slime',
+        'item_silk'
     ]));
 }
 

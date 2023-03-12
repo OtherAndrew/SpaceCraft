@@ -23,7 +23,7 @@ class Spikejumper {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
+            damage: 1.25,
             maxHealth: 250,
             hasFallDamage: false
         });
@@ -54,7 +54,7 @@ class Spikejumper {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops(this.#getDrops())
+        const drops = new CDrops([generateItem('item_silk')])
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
@@ -99,11 +99,5 @@ class Spikejumper {
         aMap.set('idleR', new AnimationProps(0, 0, 1, null, false));
         aMap.set('jumpR', new AnimationProps(0, 1, 3, null, false));
     };
-
-    #getDrops() {
-        const dropList = [generateItem('item_silk')];
-        if (Math.random() < 0.05) dropList.push(new LaserRifle());
-        return dropList;
-    }
 }
 

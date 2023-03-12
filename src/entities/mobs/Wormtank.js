@@ -129,10 +129,9 @@ class Wormtank {
     };
 
     #getDrops() {
-        const dropList = [];
-        if (Math.random() < 0.66) dropList.push(generateItem('item_shell'));
+        const dropList = [generateItem('item_shell')];
         if (Math.random() < 0.66) dropList.push(getRandomBar());
-        if (Math.random() < 0.05) dropList.push(generateBlock('tile_paraffin', 'craftgen'));
+        if (Math.random() < 0.33) dropList.push(generateBlock('tile_paraffin', 'craftgen'));
         return dropList;
     }
 }
