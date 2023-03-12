@@ -390,7 +390,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             let pos2 = {}
             pos2.x = pos.x * BLOCKSIZE
             pos2.y = pos.y * BLOCKSIZE
-            let e = entityManager.addEntity({
+            entityManager.addEntity({
                 tag: 'chozo',
                 components: [
                     new CTransform({
@@ -441,14 +441,11 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     }
 
     function spawnStationaryMobs() {
-
         let y = terrainMap.length * .5 - 5
         for (let x = 20; x < terrainMap[0].length - 20; x++) {
             x += randomInt(15) + 15
             mobFactory.build('wormwood', x * BLOCKSIZE, y * BLOCKSIZE)
         }
-
-
     }
 
     function generateChest(x, y) {
