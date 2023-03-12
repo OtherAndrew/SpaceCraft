@@ -466,13 +466,15 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             } while (!terrainMap[y + 1][x].tag.includes('tile'))
             punchHole({x: x, y: y}, 1, 1)
             const chest = generateChest(x, y);
-            if (Math.random() <= 0.1)
+            if (Math.random() <= 0.1) {
                 containerManager.addToInventory(chest, new Entity(generateBlock('tile_paraffin', 'craftgen')), randomInt(3) + 1);
-            if (Math.random() <= 0.2)
-                containerManager.addToInventory(chest, new Entity(getRandomMobDrop()), randomInt(2) + 1);
-            if (Math.random() <= 0.2)
+            }
+            if (Math.random() <= 0.2) {
+                containerManager.addToInventory(chest, new Entity(getRandomMobDrop()));
+            }
+            if (Math.random() <= 0.2) {
                 containerManager.addToInventory(chest, new Entity(generateItem(getRandom(rareBars))));
-            else if (Math.random() <= 0.7) {
+            } else if (Math.random() <= 0.7) {
                 const roll = randomInt(4)
                 for (let j = 0; j < roll; j++) {
                     containerManager.addToInventory(chest, new Entity(generateItem(getRandom(otherBars))), randomInt(3) + 1);
