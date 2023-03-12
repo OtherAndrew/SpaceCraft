@@ -7,20 +7,27 @@ class TextBox {
             x: 15,
             y: HEIGHT - (HEIGHT * .25)
         }
-        this.width = 250
-        this.height = 180
-        this.offset = 5
-        this.text = ''
+        this.width = 250;
+        this.height = 180;
+        this.offset = 5;
+        this.text = '';
         this.list = new LinkedList()
-        this.timer = 0
-        this.timesUp = 5
+        this.timer = 0;
+        this.timesUp = 15;
+        this.helpTimer = 0;
+        this.helpCooldown = 60;
     }
     update(deltaTime) {
-        this.timer += deltaTime
-        if(this.timer > this.timesUp) {
-            this.list.head.next = null
-            this.list.count = 1
-            this.timer = 0
+        this.timer += deltaTime;
+        this.helpTimer += deltaTime;
+        if (this.timer > this.timesUp) {
+            this.list.head.next = null;
+            this.list.count = 1;
+            this.timer = 0;
+        }
+        if (this.helpTimer > this.helpCooldown) {
+            this.append(getRandom(HELP));
+            this.helpTimer = 0;
         }
     }
 

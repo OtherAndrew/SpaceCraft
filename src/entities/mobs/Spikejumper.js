@@ -23,7 +23,7 @@ class Spikejumper {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.75,
+            damage: 1.25,
             maxHealth: 250,
             hasFallDamage: false
         });
@@ -54,10 +54,11 @@ class Spikejumper {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops([generateItem('item_silk')])
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {

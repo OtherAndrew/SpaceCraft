@@ -88,7 +88,9 @@ const generateBlock = (tag, x = 0, y = 0, mode) => {
         sHeight: 16,
         scale: tempScale,
         frameX: randomInt(6),
-        frameY: randomInt(2)
+        frameY: randomInt(2),
+        regenCooldown: 1,
+        regenAmount: 1
     });
 }
 
@@ -125,6 +127,7 @@ const generateItem = (tag) => {
     let image = ASSET_MANAGER.cache[ITEM_PATH[id]];
     return {
         tag: tag,
+        name: 'item',
         components: [
             new CSprite({
                     sprite: image,
@@ -134,6 +137,31 @@ const generateItem = (tag) => {
             )
         ]
     };
+}
+
+const getRandomBar = () => {
+    return generateItem(getRandom([
+        'item_bismuth bar',
+        'item_cobalt bar',
+        'item_copper bar',
+        'item_ferrite bar',
+        'item_gold bar',
+        'item_iron bar',
+        'item_steel bar',
+        'item_tin bar',
+        'item_titanite bar',
+        'item_tungsten bar'
+    ]));
+}
+
+const getRandomMobDrop = () => {
+    return generateItem(getRandom([
+        'item_amber',
+        'item_keratin',
+        'item_shell',
+        'item_slime',
+        'item_silk'
+    ]));
 }
 
 const generatePickaxe = (tag) => {

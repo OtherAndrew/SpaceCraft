@@ -69,7 +69,7 @@ class Silverfish {
         let animState;
         const interval = 10;
 
-        if (distance > BLOCKSIZE * 6) {
+        if (distance > BLOCKSIZE * 5) {
             if (switchInterval(state.elapsedTime, interval/2)) {
                 transform.velocityX = switchInterval(state.elapsedTime, interval) ? speed/3 : -speed/3;
                 animState = transform.velocityX < 0 ? "idleL" : "idleR"
@@ -90,7 +90,7 @@ class Silverfish {
 
         // jump
         if (collider.sideCollision && state.grounded) {
-            transform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
+            transform.velocityY = -(GRAVITY + BLOCKSIZE * 0.33);
             state.grounded = false;
         }
 

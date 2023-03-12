@@ -10,7 +10,7 @@
  */
 class LaserPistol {
     constructor() {
-        this.tag = "Laser Pistol";
+        this.tag = "laserPistol";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -30,7 +30,7 @@ class LaserPistol {
  */
 class LaserGun {
     constructor() {
-        this.tag = "Laser Gun";
+        this.tag = "laserGun";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -50,7 +50,7 @@ class LaserGun {
  */
 class LaserRifle {
     constructor() {
-        this.tag = "Laser Rifle";
+        this.tag = "laserRifle";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -70,7 +70,7 @@ class LaserRifle {
  */
 class Flamethrower {
     constructor() {
-        this.tag = "Flamethrower";
+        this.tag = "flamethrower";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -90,7 +90,7 @@ class Flamethrower {
  */
 class GrenadeLauncher {
     constructor() {
-        this.tag = "Grenade Launcher";
+        this.tag = "grenadeLauncher";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -110,7 +110,7 @@ class GrenadeLauncher {
  */
 class HandCannon {
     constructor() {
-        this.tag = "Hand Cannon";
+        this.tag = "handCannon";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -131,7 +131,7 @@ class HandCannon {
  */
 class Minigun {
     constructor() {
-        this.tag = "Minigun";
+        this.tag = "minigun";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -152,7 +152,7 @@ class Minigun {
  */
 class Railgun {
     constructor() {
-        this.tag = "Railgun";
+        this.tag = "railgun";
         this.name = "weapon";
         this.components = [
             new CSprite({
@@ -160,7 +160,27 @@ class Railgun {
                 sWidth: 36,
                 sHeight: 36,
             }),
-            new CWeaponProps('railgun_bullet', 4)
+            new CWeaponProps('railgun_bullet', 5)
+        ];
+        return this;
+    }
+}
+
+/**
+ * Obliterates everything in its path.
+ * Cheat weapon.
+ */
+class DeathRay {
+    constructor() {
+        this.tag = "deathRay";
+        this.name = "weapon";
+        this.components = [
+            new CSprite({
+                sprite: ASSET_MANAGER.cache[WEAPON_PATH.RAYGUN],
+                sWidth: 32,
+                sHeight: 32
+            }),
+            new CWeaponProps('deathray', 1)
         ];
         return this;
     }

@@ -4,21 +4,14 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-        this.mid = HEIGHT_PIXELS * .5 + WIDTH
         this.drawItems = null;
         this.respawnTime = 5;
         this.invulnTime = 5;
         this.spawnPoint = {
             x: WIDTH_PIXELS * .5,
-            y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
+            y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
-        //other game stats --- display during win condition (rocket scene)
-        //add total each mob kills
-        //total blocks mined
-        //total jetpack used
-        //total jumps
-        //total deaths
-        this.timer = 0
+        this.win = false;
     }
 
     /**
@@ -37,19 +30,19 @@ class WorldScene extends Scene {
         [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
         this.player = this.mobFactory.build('player', this.spawnPoint.x, this.spawnPoint.y);
         this.rocket =
-            this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 11);
+            this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 12);
         this.nativenpc =
-            this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE);
+            this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE * 2);
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
                                                      this.projectileFactory, this.terrainMap);
         this.movementSystem = new MovementSystem(this.entityManager.getEntities, this.player);
         this.mobController = new MobController(this.entityManager.getEntities, this.player, this.projectileFactory);
-        this.renderSystem = new RenderSystem(this.entityManager.getEntities);
+        this.renderSystem = new RenderSystem();
         this.camera = new Camera(this.player);
         this.renderBox = new RenderBox(this.player, GRIDSIZE, BLOCKSIZE);
         this.hud = new HUD(this.containerManager, this.player);
-        this.craftingMenu = new CraftingMenu(this.containerManager);
+        this.craftingMenu = new CraftingMenu(this.containerManager, this.entityManager);
         this.collisionSystem = new CollisionSystem(this.player, this.entityManager.getEntities, this.projectileFactory);
         this.spawnManager = new SpawnManager(this.mobFactory, this.terrainMap, this.player, this.collisionSystem)
         this.cursorSystem = new CursorSystem(this.canvas, this.terrainMap, this.hud, this.player);
@@ -59,44 +52,44 @@ class WorldScene extends Scene {
         this.particleFactory = new ParticleFactory(this.entityManager)
         this.healthSystem = new HealthSystem(this.entityManager, this.particleFactory, this.containerManager);
         this.durationSystem = new DurationSystem(this.entityManager.getEntities);
-        this.weaponSystem = new WeaponSystem(this.entityManager.getEntities)
+        this.weaponSystem = new WeaponSystem(this.entityManager.getEntities);
+        this.armorSystem = new ArmorSystem(this.player, this.containerManager);
 
-        this.giveWeapons2();
         // this.spawnTestEntities();
+        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+        this.startup();
         this.musicPlayer = new MusicPlayer(this.player)
         ASSET_MANAGER.adjustVolume(.2)
 
-        this.drawItems = this.#updateTileState();
+        this.drawItems = this.#checkOnscreen();
     }
 
     spawnTestEntities() {
         const px = this.player.components['boxCollider'].center.x;
         const py = this.player.components['boxCollider'].center.y;
-
     }
 
-    giveWeapons2() {
-        const weps = [
-            generatePickaxe('pickaxe_iron'),
-            generatePickaxe('pickaxe_super'),
-            new LaserPistol(),
-            new LaserGun(),
-            new Flamethrower(),
-            new LaserRifle(),
-            new HandCannon(),
-            new GrenadeLauncher(),
-            new Minigun(),
-            new Railgun(),
-        ]
-        weps.forEach(w => {
-            this.containerManager.addToInventory('player', this.entityManager.addEntity(w))
-        });
+    startup() {
+        this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_iron')));
+        this.containerManager.addToPlayer(this.entityManager.addEntity(new LaserPistol()));
+        this.textBox.append("WASD + SPACE to move.");
+        this.textBox.append("TAB to open inventory.");
+        this.textBox.append("1-9 + SCROLL to change hotbar item.");
+        this.textBox.append("Use placed items by clicking on them");
+        this.textBox.append("    with an empty hand.");
+        this.textBox.append("Plant monsters can be defeated");
+        this.textBox.append("    to obtain wood.");
+        this.textBox.append("Dig with your pickaxe to get");
+        this.textBox.append("    materials to upgrade your");
+        this.textBox.append("    equipment.");
     }
 
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
-            if (this.#checkWinCon()) {
-                this.#onWin();
+            if (this.#checkWinCon() || this.win) {
+                // spawn boss (if not spawned already)
+                // if (boss is dead)
+                    this.#onWin();
             } else if (this.player.components['stats'].isDead) {
                 this.#onDeath(deltaTime);
             } else {
@@ -104,13 +97,15 @@ class WorldScene extends Scene {
                 // **get input**
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
                 this.#setInvulnerability(deltaTime);
+                this.#activateCheats();
             }
+
             // **update state**
             this.entityManager.update();
             this.renderBox.update();
-            this.drawItems = this.#updateTileState();
-            // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            this.drawItems = this.#checkOnscreen();
             this.collisionSystem.refresh();
+            this.movementSystem.refresh();
 
             this.spawnManager.update(deltaTime, this.collisionSystem.mobList);
 
@@ -127,27 +122,102 @@ class WorldScene extends Scene {
             this.healthSystem.update(deltaTime);
             this.durationSystem.update(deltaTime);
             this.weaponSystem.update(deltaTime);
-
+            this.armorSystem.applyArmor();
             // **draw**
             this.camera.update();
             this.renderSystem.update(deltaTime, this.drawItems);
             this.musicPlayer.update(deltaTime)
         }
-        this.cursorSystem.update(menuActive, getGridCell(mouse, this.player))
+        if (!this.win) this.cursorSystem.update(menuActive, getGridCell(mouse, this.player));
         this.craftingMenu.update(menuActive);
         this.containerManager.update(menuActive, mouseDown, mouse);
-        this.textBox.update(deltaTime)
+        if (!this.win) this.textBox.update(deltaTime);
         this.hud.update(menuActive, keys, wheel);
+    }
+
+    #setInvulnerability(deltaTime) {
+        if (this.elapsedInvulnTime < this.invulnTime || this.game.gaveInvincibleCheat) {
+            this.player.components['stats'].invincible = true;
+            this.elapsedInvulnTime += deltaTime;
+        } else {
+            this.player.components['stats'].invincible = false;
+        }
+    }
+
+    #activateCheats() {
+        if (this.game.winCheat) {
+            [generateItem('item_fueltower'), generateItem('item_medical bay')].forEach(item => {
+                this.containerManager.addToPlayer(new Entity(item))
+            });
+            this.textBox.append("sus");
+            this.game.winCheat = false;
+        }
+        if (this.game.pickaxeCheat) {
+            this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_super')));
+            this.textBox.append("Aw man.");
+            this.game.pickaxeCheat = false;
+        }
+        if (this.game.weaponCheat) {
+            [new LaserPistol(),
+                new LaserGun(),
+                new Flamethrower(),
+                new LaserRifle(),
+                new HandCannon(),
+                new GrenadeLauncher(),
+                new Minigun(),
+                new Railgun(),
+                new DeathRay()
+            ].forEach(item => this.containerManager.addToPlayer(this.entityManager.addEntity(item)));
+            [generateItem('item_light armor'), generateItem('item_heavy armor')].forEach(item => {
+                this.containerManager.addToPlayer(new Entity(item))
+            });
+            this.textBox.append("Hey look buddy, I'm an engineer.");
+            this.game.weaponCheat = false;
+        }
+        if (this.game.craftCheat) {
+            [generateInteractive('interact_table'),
+                generateInteractive('interact_furnace'),
+                generateInteractive('interact_anvil'),
+                generateInteractive('interact_trader'),
+                generateInteractive('interact_station'),
+                generateInteractive('interact_hub')
+            ].forEach(item => this.containerManager.addToPlayer(new Entity(item)));
+            this.textBox.append("Craft");
+            this.game.craftCheat = false;
+        }
+        if (this.game.invincibleCheat) {
+            this.textBox.append("I AM BULLETPROOF!!!");
+            this.game.invincibleCheat = false;
+        }
     }
 
     draw(menuActive, ctx, mouse) {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else {
-            ctx.fillStyle = this.player.components.transform.y > this.mid ? '#2a3647' : '#222222'
-            ctx.fillRect(0, 0, WIDTH, HEIGHT)
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+            const playerY = this.player.components['transform'].y;
+            if (this.win) {
+                // https://www.space.com/17193-mars-night-sky-observation-tips.html
+                skyGradient.addColorStop(0.33, "#000000");
+                skyGradient.addColorStop(1, "#09154b");
+            } else if (playerY > 7600) { // underground
+                const gradientOffset = clamp((13400 - playerY) / HEIGHT, -0.5, 0.5);
+                // https://lil-cthulhu.itch.io/pixel-art-cave-background
+                skyGradient.addColorStop(0, "#151227");
+                skyGradient.addColorStop(0.5 + gradientOffset, "#37375c");
+                skyGradient.addColorStop(1, "#151227");
+            } else { // surface
+                const gradientOffset =
+                        clamp((this.spawnPoint.y + BLOCKSIZE * 0.25 - playerY) / HEIGHT, 0, 0.5);
+                // https://astronomy.com/news/2016/06/what-do-the-stars-look-like-from-mars
+                skyGradient.addColorStop(gradientOffset, "#181212");
+                skyGradient.addColorStop(0.5 + gradientOffset, "#bb7e47");
+            }
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
             this.renderSystem.draw(ctx, this.camera, this.drawItems);
         }
-        // this.#drawColliders(ctx);
+        if (this.game.options.debugging) this.#drawColliders(ctx);
 
         this.textBox.draw(ctx)
         this.containerManager.draw(menuActive, ctx, mouse);
@@ -170,7 +240,7 @@ class WorldScene extends Scene {
      * Also, calls check if exposed method to save a loop routine.
      * @todo performance optimization
      */
-    #updateTileState() {
+    #checkOnscreen() {
         let drawables = [];
         let entities = this.entityManager.getEntities;
         let length = entities.length;
@@ -208,91 +278,80 @@ class WorldScene extends Scene {
         const posY = e.components.transform.y / BLOCKSIZE
         let visCheck = this.#isExposed(posY, posX);
         if (visCheck.exposed) {
-            e.visCode = visCheck.visCode; // placeholder
-            // if (!e.components["boxCollider"]) {
-            //     e.addComponent([
-            //         new CBoxCollider({
-            //             x: e.components.transform.x,
-            //             y: e.components.transform.y,
-            //             width: BLOCKSIZE,
-            //             height: BLOCKSIZE
-            //         })
-            //     ]);
-            // }
+            e.visCode = visCheck.visCode;
         } else {
-            delete e.visCode; // placeholder
-            // delete e.components["boxCollider"];
+            delete e.visCode;
         }
     }
 
     #isExposed(posY, posX) {
-        let visCodeC = this.#checkCardinal(posY, posX);
-        let visCodeO = this.#checkOrdinal(posY, posX);
-        let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
-        return {exposed: exposed, visCode: visCodeC};
-        // return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
+        let cardVis = this.#checkCardinal(posY, posX);
+        let ordVis = this.#checkOrdinal(posY, posX);
+        let exposed = posY === 0 || cardVis.overall || ordVis.overall;
+        let visCode = ['c']; // NWES
+        visCode.push((cardVis.n || ordVis.nw && ordVis.ne) ? '1' : '0');
+        visCode.push((cardVis.w || ordVis.nw && ordVis.sw) ? '1' : '0');
+        visCode.push((cardVis.e || ordVis.ne && ordVis.se) ? '1' : '0');
+        visCode.push((cardVis.s || ordVis.sw && ordVis.se) ? '1' : '0');
+        if (!visCode.includes('1')) {
+            visCode = ['o']; // NWNESWSE
+            visCode.push(ordVis.nw ? '1' : '0');
+            visCode.push(ordVis.ne ? '1' : '0');
+            visCode.push(ordVis.sw ? '1' : '0');
+            visCode.push(ordVis.se ? '1' : '0');
+        }
+        return {exposed: exposed, visCode: visCode.join('')};
+    }
+    
+    #checkEmpty(location) {
+        return /air|interact/.test(location.tag);
     }
 
-    // TODO: meld check cardinal and ordinal to get correct obfuscation
-
     #checkCardinal(posY, posX) {
-        let visCode = ['c'];
-        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][posX].tag)) { // N
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)) { // W
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // E
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)) { // S
-            visCode.push('1');
-        } else visCode.push('0');
-        return visCode.join('');
+        let cardVis = {};
+        cardVis.n = this.#checkEmpty(this.terrainMap[clamp(posY - 1, 0, posY)][posX]);
+        cardVis.w = this.#checkEmpty(this.terrainMap[posY][clamp(posX - 1, 0, posX)]);
+        cardVis.e = this.#checkEmpty(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)]);
+        cardVis.s = this.#checkEmpty(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX]);
+        cardVis.overall = cardVis.n || cardVis.w || cardVis.e || cardVis.s;
+        return cardVis/*.join('')*/;
     }
 
     #checkOrdinal(posY, posX) {
-        let visCode = ['o'];
-        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag)) { // NW
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // NE
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)].tag)) { // SW
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // SE
-            visCode.push('1');
-        } else visCode.push('0');
-        return visCode.join('');
+        let ordVis = {};
+        ordVis.nw = this.#checkEmpty(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)]);
+        ordVis.ne = this.#checkEmpty(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)]);
+        ordVis.sw = this.#checkEmpty(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)]);
+        ordVis.se = this.#checkEmpty(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)]);
+        ordVis.overall = ordVis.nw || ordVis.ne || ordVis.sw || ordVis.se;
+        return ordVis;
     }
 
     #checkWinCon() {
-        // let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
-        let requisite = [0, {item: {tag: 'item_bismuth bar'}, count: 5}]
-        return (this.containerManager.checkSufficient(requisite, 'player')
-            && checkCollision(this.player, this.rocket))
+        let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
+        return (this.containerManager.checkSufficient(requisite) && checkCollision(this.player, this.rocket))
     }
 
     #onWin() {
-        this.rocket.components["state"].setState("win");
-        this.rocket.components['transform'].hasGravity = false;
-        this.camera.setTarget(this.rocket);
-        this.renderBox.setTarget(this.rocket);
-        this.player.isDrawable = false;
-        this.player.components['stats'].invincible = true;
         if (this.elapsedRespawnTime === 0) {
+            this.rocket.components['transform'].hasGravity = false;
+            this.camera.setTarget(this.rocket);
+            this.renderBox.setTarget(this.rocket);
+            this.player.isDrawable = false;
+            this.player.components['stats'].invincible = true;
             this.textBox.append("You won!");
+            this.textBox.append(`    Kills: ${this.healthSystem.mobKills}, Deaths: ${this.healthSystem.playerDeaths}`);
             this.elapsedRespawnTime += 1;
+            this.win = true;
         }
+        this.rocket.components['transform'].velocityY -= 0.25;
     }
 
     #onDeath(deltaTime) {
         if (this.elapsedRespawnTime >= this.respawnTime) {
             this.elapsedRespawnTime = 0;
             this.elapsedInvulnTime = 0;
+            this.textBox.helpTimer = 0;
             regenPlayerComponents(this.spawnPoint, this.player);
             this.playerController.refreshPlayerConnection();
             this.camera.setTarget(this.player);
@@ -307,46 +366,9 @@ class WorldScene extends Scene {
                 pTransform.velocityY = 0;
                 this.player.isDrawable = false;
                 this.textBox.append("You died!");
-                this.textBox.append(`Respawning in ${this.respawnTime} seconds...`);
+                this.textBox.append(`    Respawning in ${this.respawnTime} seconds...`);
             }
             this.elapsedRespawnTime += deltaTime;
         }
-    }
-
-    #setInvulnerability(deltaTime) {
-        if (this.elapsedInvulnTime < this.invulnTime) {
-            this.player.components['stats'].invincible = true;
-            this.elapsedInvulnTime += deltaTime;
-        } else {
-            this.player.components['stats'].invincible = false;
-        }
-    }
-}
-
-const setVals = function (obj, vals) {
-    if (obj && vals) {
-        for (let x in vals) {
-            if (vals.hasOwnProperty(x)) {
-                if (obj[x] && typeof vals[x] === 'object') {
-                    obj[x] = setVals(obj[x], vals[x]);
-                } else {
-                    obj[x] = vals[x];
-                }
-            }
-        }
-    }
-    return obj;
-};
-
-const bossBattle = (player, mobFactory) => {
-    console.log('spawning boss')
-    let pos = {
-        x: player.components.transform.x,
-        y: player.components.transform.y
-    }
-    if( pos.y < HEIGHT_PIXELS * .5) {
-        let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH
-        mobFactory.build('spiderboss', x, pos.y - HEIGHT)
-        ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
     }
 }

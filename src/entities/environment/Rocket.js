@@ -1,15 +1,15 @@
 
 class Rocket {
     /**
-     * Initializes rocket (enemy)
-     * @param {Object} props         enemy position and display properties
-     * @param {number} props.x       X position of monster spawn
-     * @param {number} props.y       Y position of monster spawn
-     * @returns {Object}             return enemy
+     * Initializes rocket
+     * @param {Object} props         Position properties
+     * @param {number} props.x       X position
+     * @param {number} props.y       Y position
+     * @returns {Rocket} Rocket NPC blueprint
      * @constructor
      */
     constructor(props) {
-        this.tag = 'rocket ignore npc';
+        this.tag = 'ignore npc';
         this.name = 'rocket';
         this.components = this.#buildComponents(props);
     };
@@ -34,28 +34,10 @@ class Rocket {
             xOffset: (sprite.dWidth - cWidth) / 2,
             height: sprite.dHeight
         });
-
-        this.#addAnimations(sprite);
-        this.#addBehaviors(transform);
         transform.collider = collider
         const state = new CState();
-        state.sprite = sprite;
-        state.transform = transform;
         return [sprite, transform, collider, state];
     }
 
-    #addAnimations(sprite) {
-        const aMap = sprite.animationMap;
-        aMap.set('idleR', new AnimationProps(0, 0,0));
-        aMap.set('win', new AnimationProps(0, 0,0));
-    };
-    #addBehaviors(transform) {
-        const bMap = transform.behaviorMap;
-        bMap.set('idleR', new BehaviorProps(0, 0));
-        bMap.set('win', new BehaviorProps(0, -5));
-    }
-
-    update(tick, projectileManager) {
-        
-    }
+    update(tick, projectileManager) {}
 }

@@ -20,8 +20,8 @@ class ProjectileFactory {
         const projectileQueue = [];
         switch (type) {
             case 'weak_bullet':
-                projectileOrigin.x += directionVector.x * 15
-                projectileOrigin.y += directionVector.y * 15
+                projectileOrigin.x += directionVector.x * 7.5;
+                projectileOrigin.y += directionVector.y * 7.5;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
                     sprite: this.orbSprite(8),
@@ -39,8 +39,8 @@ class ProjectileFactory {
                 ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'mid_bullet':
-                projectileOrigin.x += directionVector.x * 15
-                projectileOrigin.y += directionVector.y * 15
+                projectileOrigin.x += directionVector.x * 7.5;
+                projectileOrigin.y += directionVector.y * 7.5;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
                     sprite: this.orbSprite(11),
@@ -58,8 +58,8 @@ class ProjectileFactory {
                 ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'strong_bullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
+                projectileOrigin.x += directionVector.x * 2.5;
+                projectileOrigin.y += directionVector.y * 2.5;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack',
                     sprite: this.orbSprite(2),
@@ -77,8 +77,8 @@ class ProjectileFactory {
                 ASSET_MANAGER.playAsset(SOUND_PATH.LASER);
                 break;
             case 'minigun_bullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
+                projectileOrigin.x += directionVector.x * 2.5;
+                projectileOrigin.y += directionVector.y * 2.5;
                 for (let i = 0; i < 2; i++) {
                     projectileQueue.push(new Projectile({
                         tag: 'playerAttack',
@@ -97,8 +97,8 @@ class ProjectileFactory {
                 }
                 break;
             case 'railgun_bullet':
-                projectileOrigin.x += directionVector.x * 10
-                projectileOrigin.y += directionVector.y * 10
+                projectileOrigin.x += directionVector.x * 2.5;
+                projectileOrigin.y += directionVector.y * 2.5;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack ignoreTile pierce',
                     sprite: this.orbSprite(4),
@@ -113,8 +113,8 @@ class ProjectileFactory {
                 ASSET_MANAGER.playAsset(SOUND_PATH.STRONG_LASER);
                 break;
             case 'fire':
-                projectileOrigin.x += directionVector.x * 30
-                projectileOrigin.y += directionVector.y * 30
+                projectileOrigin.x += directionVector.x * 25;
+                projectileOrigin.y += directionVector.y * 25;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack pierce fire',
                     sprite: this.fireSprite(),
@@ -128,8 +128,8 @@ class ProjectileFactory {
                 }));
                 break;
             case 'bomb':
-                projectileOrigin.x += directionVector.x * 20;
-                projectileOrigin.y += directionVector.y * 20;
+                projectileOrigin.x += directionVector.x * 12.5;
+                projectileOrigin.y += directionVector.y * 12.5;
                 directionVector.y -= 0.25;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack explosive',
@@ -145,8 +145,8 @@ class ProjectileFactory {
                 ASSET_MANAGER.playAsset(SOUND_PATH.GRENADE_LAUNCHER);
                 break;
             case 'mini_bomb':
-                projectileOrigin.x += directionVector.x * 10;
-                projectileOrigin.y += directionVector.y * 10;
+                projectileOrigin.x += directionVector.x * 2.5;
+                projectileOrigin.y += directionVector.y * 2.5;
                 projectileQueue.push(new Projectile({
                     tag: 'playerAttack mini explosive',
                     sprite: this.miniBombSprite(BLOCKSIZE * 0.45),
@@ -172,6 +172,20 @@ class ProjectileFactory {
                     }));
                 }
                 ASSET_MANAGER.playAsset(SOUND_PATH.HAND_CANNON);
+                break;
+            case 'deathray':
+                projectileQueue.push(new Projectile({
+                    tag: 'playerAttack ignoreTile pierce',
+                    sprite: this.electricitySprite(),
+                    damage: 9001,
+                    speed: BLOCKSIZE * 0.33,
+                    dVector: directionVector,
+                    origin: projectileOrigin,
+                    duration: 1,
+                    hasGravity: false,
+                    spread: 0
+                }));
+                ASSET_MANAGER.playAsset(SOUND_PATH.RAYGUN);
                 break;
             default: console.log(`ProjectileManager.playerShoot: Invalid projectile type: ${type}.`);
         }
@@ -214,8 +228,6 @@ class ProjectileFactory {
                 }));
                 break;
             case 'electroball':
-                origin.x += directionVector.x * 10;
-                origin.y += directionVector.y * 10;
                 projectileQueue.push(new Projectile({
                     tag: 'enemy ignoreTile pierce stun',
                     sprite: this.electricitySprite(),
@@ -227,6 +239,23 @@ class ProjectileFactory {
                     hasGravity: false,
                     spread: 0
                 }));
+                break;
+            case 'web':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                for (let i = 0; i < 3; i++) {
+                    projectileQueue.push(new Projectile({
+                        tag: 'enemy',
+                        sprite: this.orbSprite(15, 1),
+                        damage: 5,
+                        speed: BLOCKSIZE * 0.5,
+                        dVector: directionVector,
+                        origin: origin,
+                        duration: 0.5,
+                        hasGravity: false,
+                        spread: 4
+                    }));
+                }
                 break;
             case 'strongimpact':
                 origin.x += directionVector.x * 20;
@@ -294,7 +323,7 @@ class ProjectileFactory {
                 projectileQueue.push(new Explosion({
                     tag: 'ignoreTile',
                     sprite: this.explosionSprite(BLOCKSIZE * 5),
-                    damage: 1.5,
+                    damage: 3,
                     origin: position,
                 }));
                 ASSET_MANAGER.playAsset(SOUND_PATH.EXPLOSION);

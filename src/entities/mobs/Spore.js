@@ -23,7 +23,8 @@ class Spore {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.25,
-            maxHealth: 100
+            maxHealth: 100,
+            hasFallDamage: false
         });
         // const height = 160;
         const sprite = new CSprite({
@@ -48,10 +49,11 @@ class Spore {
 
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#addDrops())
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -67,4 +69,14 @@ class Spore {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,7));
     };
+
+    #addDrops() {
+        const dropList = [];
+        const num = randomInt(3) + 2;
+        for (let i = 0; i < num; i++) {
+            dropList.push(generateItem('item_wood'));
+        }
+        return dropList;
+    }
+
 }

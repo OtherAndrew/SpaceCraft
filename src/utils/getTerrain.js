@@ -29,7 +29,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'stone',
             'stone',
             'dirt',
-            'dirt',
+            'null',
             'null',
             'null',
             'null'
@@ -48,7 +48,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'null'
         ],
         CHUNK_3: [
-            'bismuth',
+            'iron',
             'tin',
             'iron',
             'silica',
@@ -62,7 +62,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         ],
         CHUNK_4: [
             'tungsten',
-            'bismuth',
+            'silica',
             'tin',
             'iron',
             'stone',
@@ -75,7 +75,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'gold'
         ],
         CHUNK_5: [
-            'titanite',
+            'ferrite',
             'tungsten',
             'tin',
             'coal',
@@ -104,7 +104,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
             'titanite',
             'ruby',
             'tungsten',
-            'coal',
+            'bismuth',
             'stone',
             'stone',
             'null',
@@ -116,7 +116,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         CHUNK_8: [
             'gold',
             'paraffin',
-            'silica',
+            'bismuth',
             'titanite',
             'stone',
             'stone',
@@ -241,10 +241,27 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         let caveBGYVal = HEIGHT_PIXELS - (undergroundHeight * scaleUnder) - HEIGHT * .5
         let offset = BLOCKSIZE * 2
 
-        for (let i = 0; i < 2; i++) {
 
+        entityManager.addEntity({
+            tag: 'background_0',
+            components: [
+                new CTransform({
+                    x: surfaceBackWidth * 0.35 * scale,
+                    y: (-surfaceBackHeight * scale) + HEIGHT_PIXELS * .5 + BLOCKSIZE * 3.5,
+                    maxVelocity: 0
+                }),
+                new CSprite({
+                    sprite: ASSET_MANAGER.cache[ENV_PATH.RED_PLANET],
+                    sWidth: 1070,
+                    sHeight: 1070,
+                    scale: .125,
+                })
+            ]
+        })
+
+        for (let i = 0; i < 2; i++) {
             entityManager.addEntity({
-                tag: 'background_0',
+                tag: 'background_1',
                 components: [
                     new CTransform({
                         x: (surfaceBackWidth * i * scale),
@@ -260,7 +277,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 ]
             })
             entityManager.addEntity({
-                tag: 'background_1',
+                tag: 'background_2',
                 components: [
                     new CTransform({
                         x: (surfaceBackWidth * i * scale),
@@ -291,7 +308,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                     })
                 ]
             })
-
             entityManager.addEntity({
                 tag: 'background_4',
                 components: [
@@ -314,7 +330,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     function generateBorders() {
         // left border collider
         entityManager.addEntity({
-            tag: 'tile_bedrock',
+            tag: 'border',
+            name: 'border',
             components: [
                 new CTransform({
                     x: 0,
@@ -331,7 +348,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
         // right border collider
         entityManager.addEntity({
-            tag: 'tile_bedrock',
+            tag: 'border',
+            name: 'border',
             components: [
                 new CTransform({
                     x: WIDTH_PIXELS - (WIDTH * .5),
@@ -348,7 +366,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
         //top
         entityManager.addEntity({
-            tag: 'tile_bedrock',
+            tag: 'border',
+            name: 'border',
             components: [
                 new CTransform({
                     x: 0,
@@ -365,13 +384,13 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     }
 
     function generateStatues() {
-        let gunParts = ['item_minigun part', 'item_railgun part', 'item_grenadeLauncher part', 'item_handCannon part']
-        for (let r = 0; r < 4; r++) { // for 4 rare gun parts
+        const gunParts = ['item_minigun part', 'item_railgun part', 'item_grenadeLauncher part']
+        for (let r = 0; r < gunParts.length; r++) {
             let pos = chooseRandomLocation(6, 7)
             let pos2 = {}
             pos2.x = pos.x * BLOCKSIZE
             pos2.y = pos.y * BLOCKSIZE
-            let e = entityManager.addEntity({
+            entityManager.addEntity({
                 tag: 'chozo',
                 components: [
                     new CTransform({
@@ -422,14 +441,11 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
     }
 
     function spawnStationaryMobs() {
-
         let y = terrainMap.length * .5 - 5
         for (let x = 20; x < terrainMap[0].length - 20; x++) {
             x += randomInt(15) + 15
             mobFactory.build('wormwood', x * BLOCKSIZE, y * BLOCKSIZE)
         }
-
-
     }
 
     function generateChest(x, y) {
@@ -437,12 +453,11 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         containerManager.registerChest(e);
         terrainMap[y][x] = {tag: e.tag, id: e.id};
         return cleanTag(e.tag);
-        // containerManager.addToInventory(owner, new Entity(generateItem('item_copper bar'))); // Example
-        // Could randomize number of random rolls on loot table (random count for each result as well if desired)
     }
 
     function spawnChests() {
-        let otherBars = ['item_copper bar', 'item_tin bar', 'item_cobalt bar']
+        const rareBars = ['item_bismuth bar', 'item_ferrite bar', 'item_gold bar', 'item_titanite bar', 'item_tungsten bar'];
+        const otherBars = ['item_copper bar', 'item_tin bar', 'item_cobalt bar'];
         for (let i = 0; i < CHEST_SPAWN_COUNT; i++) {
             let x, y
             do {
@@ -450,44 +465,29 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                 y = Math.floor(randomNumber(startRow + blocksPerChunk, terrainMap.length - blocksPerChunk))
             } while (!terrainMap[y + 1][x].tag.includes('tile'))
             punchHole({x: x, y: y}, 1, 1)
-            let chest = generateChest(x, y);
-            let itemChance = Math.random();
-            if (itemChance > 0.8)
-                containerManager.addToInventory(chest, new Entity(generateItem('item_bismuth bar')));
-            else if (itemChance > 0.3){
-                let roll = randomInt(4)
-                for (let j = 0; j < roll; j++)
-                    containerManager.addToInventory(chest, new Entity(generateItem(otherBars[randomInt(3)])), randomInt(3) + 1);
+            const chest = generateChest(x, y);
+            if (Math.random() <= 0.1)
+                containerManager.addToInventory(chest, new Entity(generateBlock('tile_paraffin', 'craftgen')), randomInt(3) + 1);
+            if (Math.random() <= 0.2)
+                containerManager.addToInventory(chest, new Entity(getRandomMobDrop()), randomInt(2) + 1);
+            if (Math.random() <= 0.2)
+                containerManager.addToInventory(chest, new Entity(generateItem(getRandom(rareBars))));
+            else if (Math.random() <= 0.7) {
+                const roll = randomInt(4)
+                for (let j = 0; j < roll; j++) {
+                    containerManager.addToInventory(chest, new Entity(generateItem(getRandom(otherBars))), randomInt(3) + 1);
+                }
             }
         }
-    }
-
-    function generatePlanet() {
-        let e = entityManager.addEntity({
-            tag: 'background_',
-            components: [
-                new CTransform({
-                    x: WIDTH_PIXELS * .5,
-                    y: HEIGHT_PIXELS * .5 - 500,
-                    velocity: 0
-                }),
-                new CSprite({
-                    sprite: ASSET_MANAGER.cache[ENV_PATH.RED_PLANET],
-                    sWidth: 1070,
-                    sHeight: 1070,
-                    scale: .6,
-                })
-            ]
-        })
-        console.log(e.components.transform)
     }
 
     function generateCaveBackgrounds() {
         let width = 160
         let height = 96
         let scale = 2
+        const xRepeat = 23;
         for (let j = 0; j < 8; j++) {
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < xRepeat; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -508,7 +508,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         }
 
         for (let j = 8; j < 16; j++) {
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < xRepeat; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -529,7 +529,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         }
 
         for (let j = 16; j < 24; j++) {
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < xRepeat; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -550,7 +550,7 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         }
 
         for (let j = 24; j < 29; j++) {
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < xRepeat; i++) {
                 entityManager.addEntity({
                     tag: 'cave_background',
                     components: [
@@ -573,7 +573,6 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
 
     }
 
-    generatePlanet()
     generateBackgrounds()
     generateCaveBackgrounds()
     generateNoiseMap()

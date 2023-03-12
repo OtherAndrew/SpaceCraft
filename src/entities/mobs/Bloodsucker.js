@@ -24,7 +24,7 @@ class Bloodsucker {
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
+            damage: 1.25,
             speed: 3,
             maxHealth: 80
         });
@@ -53,9 +53,7 @@ class Bloodsucker {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: (sprite.dHeight - cHeight) * 3/4,
         });
-        const drops = new CDrops([
-            new LaserPistol()
-        ]);
+        const drops = new CDrops([generateItem('item_keratin')]);
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
@@ -106,18 +104,5 @@ class Bloodsucker {
             state.direction = transform.velocityX < 0 ? "left" : "right"
         }
         state.setState(animState);
-    }
-
-    #direction(x1,y1,x2,y2) {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const length = getDistance2(x1, y1, x2, y2);
-        return [dx/length, dy/length];
-    }
-
-    #moveCloser(mover, target, blocksize) {
-        const [x,y] = mover;
-        const [dx,dy] = target;
-        return [x + dx * blocksize, y + dy * blocksize];
     }
 }

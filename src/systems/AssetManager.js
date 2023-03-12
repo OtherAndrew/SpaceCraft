@@ -69,10 +69,6 @@ class AssetManager {
                     this.cache[path] = audio;
                     break;
             }
-            
-
-
-            
         }
     };
 

@@ -7,7 +7,7 @@ class PlayerController {
         this.pSprite = this.player.components.sprite
         this.pStats = this.player.components['stats']
         this.acceleration = 1
-        this.fastFall = 3;
+        this.fastFall = 1;
         this.restrictMovement = false;
         this.timer = 0
         this.timesUp = .25
@@ -38,7 +38,7 @@ class PlayerController {
             }
         }
         if (activeContainer.item) {
-            this.restrictMovement = activeContainer.item.tag === 'Minigun' || activeContainer.item.tag === 'Railgun';
+            this.restrictMovement = activeContainer.item.tag === 'minigun' || activeContainer.item.tag === 'railgun';
         } else {
             this.restrictMovement = false;
         }
@@ -61,7 +61,7 @@ class PlayerController {
     handleKeyboard(key, tick) {
         let animState = this.pSprite.currentState;
 
-        if ((key[' '] || key['w']) && this.pState.grounded && !this.restrictMovement) { //jump
+        if ((key['Space'] || key['KeyW']) && this.pState.grounded && !this.restrictMovement) { //jump
             this.pState.grounded = false;
             this.pTransform.velocityY = -(GRAVITY + BLOCKSIZE / 2);
         }
@@ -76,18 +76,18 @@ class PlayerController {
         //     }
         // }
 
-        if (key['a']) {
+        if (key['KeyA']) {
             this.pState.direction = 'left'
-            if (key['s'] || this.restrictMovement) {
+            if (key['KeyS'] || this.restrictMovement) {
                 this.pTransform.velocityX = -this.pStats.speed / 3;
                 animState = this.pState.grounded ? 'walkL' : 'crouchL';
             } else {
                 this.pTransform.velocityX -= this.acceleration;
                 animState = this.pState.grounded ? 'walkL' : 'jumpL';
             }
-        } else if (key['d']) {
+        } else if (key['KeyD']) {
             this.pState.direction = "right"
-            if (key['s'] || this.restrictMovement) {
+            if (key['KeyS'] || this.restrictMovement) {
                 this.pTransform.velocityX = this.pStats.speed / 3;
                 animState = this.pState.grounded ? 'walkR' : 'crouchR';
             } else {
@@ -95,7 +95,7 @@ class PlayerController {
                 animState = this.pState.grounded ? 'walkR' : 'jumpR';
             }
         } else {
-            if (key['s']) {
+            if (key['KeyS']) {
                 // fast fall/crouch
                 this.pTransform.velocityY += this.fastFall
                 this.pTransform.velocityX = 0;
@@ -156,7 +156,7 @@ class PlayerController {
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_DAMAGE)
                             this.ready = false
                         }
-                        if(e.components.stats.isDead) {
+                        if(e.components['stats'].isDead) {
                             if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
                             selected.tag = 'air'
                             selected.id = null
@@ -165,7 +165,7 @@ class PlayerController {
                             e.isDrawable = false;
                             e.destroy(); // deregister item from entity list
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_BREAK)
-                            this.containerManager.addToInventory('player', e /*resizeBlock(e)*/)
+                            this.containerManager.addToPlayer(e)
                         }
                     }
                 }

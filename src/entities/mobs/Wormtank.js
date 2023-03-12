@@ -25,7 +25,7 @@ class Wormtank {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.25,
+            damage: 0.5,
             speed: 0.5,
             maxHealth: 500
         });
@@ -56,10 +56,11 @@ class Wormtank {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#getDrops());
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -126,5 +127,12 @@ class Wormtank {
         aMap.set('chargeR', new AnimationProps(0, 1, 5, 30));
         aMap.set('chargeL', new AnimationProps(0, 0, 5, 30));
     };
+
+    #getDrops() {
+        const dropList = [generateItem('item_shell')];
+        if (Math.random() < 0.66) dropList.push(getRandomBar());
+        if (Math.random() < 0.33) dropList.push(generateBlock('tile_paraffin', 'craftgen'));
+        return dropList;
+    }
 }
 

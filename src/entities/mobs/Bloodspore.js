@@ -12,7 +12,7 @@ class Bloodspore {
      * @param {Object} props   Position properties.
      * @param {number} props.x X spawn position.
      * @param {number} props.y Y spawn position.
-     * @returns {Spore} Bloodspore blueprint.
+     * @returns {Bloodspore} Bloodspore blueprint.
      * @constructor
      */
     constructor(props) {
@@ -24,7 +24,8 @@ class Bloodspore {
     #buildComponents(props) {
         const stats = new CStats({
             damage: 0.75,
-            maxHealth: 150
+            maxHealth: 150,
+            hasFallDamage: false
         });
         // const height = 160;
         const sprite = new CSprite({
@@ -48,10 +49,11 @@ class Bloodspore {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#addDrops())
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {
@@ -67,4 +69,13 @@ class Bloodspore {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 0,7));
     };
+
+    #addDrops() {
+        const dropList = [];
+        const num = randomInt(3) + 2;
+        for (let i = 0; i < num; i++) {
+            dropList.push(generateItem('item_wood'));
+        }
+        return dropList;
+    }
 }

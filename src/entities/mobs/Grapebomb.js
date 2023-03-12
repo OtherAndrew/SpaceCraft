@@ -24,7 +24,8 @@ class Grapebomb {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 25
+            maxHealth: 25,
+            hasFallDamage: false
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.getAsset(CHAR_PATH.GRAPEBOMB),
@@ -51,10 +52,18 @@ class Grapebomb {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops(this.#addDrops())
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
+    }
+
+    #addDrops() {
+        const dropList = [generateItem('item_slime')];
+        if (Math.random() < 0.25) dropList.push(generateItem('item_slime'));
+        if (Math.random() < 0.25) dropList.push(generateItem('item_slime'));
+        return dropList;
     }
 
     update(target, projectileFactory) {

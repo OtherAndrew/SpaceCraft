@@ -1,5 +1,5 @@
 /** Global Parameters Object */
-const params = { };
+const params = {};
 
 /**
  * @param {Number} n
@@ -68,9 +68,9 @@ const delayFunction = (f, time) => {
 
 /**
  * Returns the angle of p2 from a horizontal line on p1.
- * 
- * @param {CTransform} p1 
- * @param {CTransform} p2 
+ *
+ * @param {CTransform} p1
+ * @param {CTransform} p2
  * @returns result in degrees
  */
 const getAngle = (p1, p2) => {
@@ -94,9 +94,9 @@ const isBetween = (num, min, max) => {
 
 /**
  * Restricts the num in between the min and max values.
- * @param {Number} num 
- * @param {Number} min 
- * @param {Number} max 
+ * @param {Number} num
+ * @param {Number} min
+ * @param {Number} max
  * @returns either the number, min or max.
  */
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
@@ -105,18 +105,18 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
  * Normalizes a vector between two points.
  * @param {x: Number, y: Number} vect1 starting point
  * @param {x: Number, y: Number} vect2 end point
- * @returns normalized x and y 
+ * @returns normalized x and y
  */
 const normalize = (p1, p2) => {
     let d = getDistance(p1, p2)
     return {
-        x: (p2.x - p1.x)/d,
-        y: (p2.y - p1.y)/d
+        x: (p2.x - p1.x) / d,
+        y: (p2.y - p1.y) / d
     }
 }
 
 const randomSpread = (spread) => {
-    return randomNumber(-spread/2, spread/2);
+    return randomNumber(-spread / 2, spread / 2);
 }
 
 const randomNumber = (min, max) => {
@@ -131,20 +131,20 @@ const cleanTag = (tag) => {
 
 /**
  * Converts mouse click coordinates to world coordinates according to player's position.
- * 
- * @param {*} pos 
- * @param {*} player 
+ *
+ * @param {*} pos
+ * @param {*} player
  * @returns new mouse coords
  */
 const getGridCell = (pos, player) => {
-    if(pos === null) return null
+    if (pos === null) return null
     const pCollider = player.components["boxCollider"]
-    let offsetX = pCollider.center.x >= WIDTH/2 ?
-        pCollider.center.x >= WIDTH_PIXELS - WIDTH/2 ?
+    let offsetX = pCollider.center.x >= WIDTH / 2 ?
+        pCollider.center.x >= WIDTH_PIXELS - WIDTH / 2 ?
             WIDTH_PIXELS - (WIDTH_PIXELS - pCollider.center.x) - WIDTH * .75 :
-            (pCollider.center.x - WIDTH/2) : 0
-    let mapX = Math.floor((pos.x + offsetX)/BLOCKSIZE)
-    let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT/2))/BLOCKSIZE)
+            (pCollider.center.x - WIDTH / 2) : 0
+    let mapX = Math.floor((pos.x + offsetX) / BLOCKSIZE)
+    let mapY = Math.floor((pos.y + (pCollider.center.y - HEIGHT / 2)) / BLOCKSIZE)
     //if(mapY < 0) return mapY
     return {
         x: mapX,
@@ -153,7 +153,7 @@ const getGridCell = (pos, player) => {
 }
 
 /**
- * Used when placing a block to world. 
+ * Used when placing a block to world.
  * @param {*} entityA  the player
  * @param {*} entityB the block that is to be placed
  * @returns boolean whether block is placed on player
@@ -174,8 +174,8 @@ const checkBlockOverlap = (entityA, entityB) => {
 
 /**
  * Checks the distance between block placement cell and player
- * @param {*} coords 
- * @param {*} player 
+ * @param {*} coords
+ * @param {*} player
  * @returns the distance in block count
  */
 const checkPlayerDistance = (coords, player) => {
@@ -188,27 +188,27 @@ const checkPlayerDistance = (coords, player) => {
 
 /**
  * Checks to see if block placement cell has a block in one of its cardinal directions.
- * @param {*} coords 
- * @param {*} terrainMap 
- * @returns 
+ * @param {*} coords
+ * @param {*} terrainMap
+ * @returns
  */
 const checkCellConnectedToBlock = (coords, terrainMap) => {
-    if(terrainMap[coords.y][clamp(coords.x-1, 0, terrainMap[0].length-1)].tag.includes('tile')) return true
-    if(terrainMap[coords.y][clamp(coords.x+1, 0, terrainMap[0].length-1)].tag.includes('tile')) return true
-    if(terrainMap[clamp(coords.y-1, 0, terrainMap.length-1)][coords.x].tag.includes('tile')) return true
-    if(terrainMap[clamp(coords.y+1, 0, terrainMap.length-1)][coords.x].tag.includes('tile')) return true
+    if (terrainMap[coords.y][clamp(coords.x - 1, 0, terrainMap[0].length - 1)].tag.includes('tile')) return true
+    if (terrainMap[coords.y][clamp(coords.x + 1, 0, terrainMap[0].length - 1)].tag.includes('tile')) return true
+    if (terrainMap[clamp(coords.y - 1, 0, terrainMap.length - 1)][coords.x].tag.includes('tile')) return true
+    if (terrainMap[clamp(coords.y + 1, 0, terrainMap.length - 1)][coords.x].tag.includes('tile')) return true
 }
 
 /**
  * Handles the call to 3 functions to determine if block placement is allowed in clicked cell.
- * 
- * @param {*} player 
- * @param {*} coords 
- * @param {*} terrainMap 
- * @returns 
+ *
+ * @param {*} player
+ * @param {*} coords
+ * @param {*} terrainMap
+ * @returns
  */
 const isPlaceable = (player, coords, terrainMap) => {
-    if(checkPlayerDistance(coords, player) < BLOCK_PLACEMENT_DISTANCE) {
+    if (checkPlayerDistance(coords, player) < BLOCK_PLACEMENT_DISTANCE) {
         let c = {x: coords.x * BLOCKSIZE, y: coords.y * BLOCKSIZE}
         return !checkBlockOverlap(player, c) && checkCellConnectedToBlock(coords, terrainMap)
     }

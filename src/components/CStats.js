@@ -26,6 +26,7 @@ class CStats {
         this.elapsedTime = this.regenCooldown;
         this.isDamaged = false;
         this.isDead = false;
+        this.defenseMod = 1;
         return this;
     }
 
@@ -35,7 +36,7 @@ class CStats {
      */
     applyDamage(damage) {
         if (!this.invincible) {
-            this.currentHealth = clamp(this.currentHealth - damage, 0, this.maxHealth);
+            this.currentHealth = clamp(this.currentHealth - damage * this.defenseMod, 0, this.maxHealth);
             this.elapsedTime = 0;
             this.isDamaged = true;
             this.isDead = this.currentHealth === 0;
@@ -59,11 +60,7 @@ class CStats {
         return this.elapsedTime >= this.regenCooldown;
     }
 
-    // /**
-    //  * Determines if entity is dead, i.e. current health is 0 or less.
-    //  * @return {boolean} If entity is dead.
-    //  */
-    // isDead {
-    //     return this.currentHealth <= 0;
-    // }
+    getHealthPercentage() {
+        return this.isDead ? 0 : this.currentHealth / this.maxHealth
+    }
 }

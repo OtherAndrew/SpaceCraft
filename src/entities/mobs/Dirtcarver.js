@@ -24,7 +24,7 @@ class Dirtcarver {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.33,
+            damage: 0.75,
             speed: 2,
             maxHealth: 100
         });
@@ -54,10 +54,11 @@ class Dirtcarver {
         });
         const state = new CState();
         const duration = new CDuration();
+        const drops = new CDrops([generateItem('item_keratin')]);
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state, duration, drops];
     }
 
     update(target, projectileManager) {

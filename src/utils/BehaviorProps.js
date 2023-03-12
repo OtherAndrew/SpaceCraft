@@ -2,6 +2,7 @@
  * Stores behavior data for some entity
  * @author Andrew Nguyen
  * @version 1/28/23
+ * @deprecated
  */
 
 class BehaviorProps {

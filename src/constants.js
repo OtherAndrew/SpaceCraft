@@ -3,26 +3,17 @@
  */
 
 //Game Values
-const WIDTH = 1024
-const HEIGHT = 768
-const GRIDSIZE = 15 //don't change lol
-const BLOCKSIZE = 32
-const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE
-const HEIGHT_PIXELS = WIDTH_PIXELS * 2
-const GRAVITY = 1
-const BLOCK_PLACEMENT_DISTANCE = 3.2
-const FALL_DAMAGE_MULTIPLIER = 200;
+const WIDTH = 1024;
+const HEIGHT = 768;
+const GRIDSIZE = 15; //don't change lol
+const BLOCKSIZE = 32;
+const WIDTH_PIXELS = GRIDSIZE * GRIDSIZE * BLOCKSIZE;
+const HEIGHT_PIXELS = WIDTH_PIXELS * 2;
+const GRAVITY = 1;
+const BLOCK_PLACEMENT_DISTANCE = 3.2;
+const FALL_DAMAGE_MULTIPLIER = 150;
 const MOB_TIMEOUT = 300;
-const CHEST_SPAWN_COUNT = 15
-
-const MAXCREEPERILA = 2;
-const MAXDIRTCARVER = 5;
-const MAXLIGHTJELLY = 2;
-const MAXSPORE = 10;
-const MAXLIGHTBUG = 1;
-const MAXGRAPEBOMB = 3;
-const MAXBLOODSUCKER = 2;
-const MAXWORMTANK = 5;
+const CHEST_SPAWN_COUNT = 30;
 
 const GENSTATS = {
     BISMUTH	    :	12,
@@ -63,17 +54,25 @@ const BG_SCROLL = {
     BACKGROUND_5	:	.09
 }
 
+const CHEATCODE = {
+    CRAFT: "space",
+    INVINCIBLE: "uber",
+    PICKAXE: "creeper",
+    WEAPON: "moregun",
+    WIN: "amogus"
+}
+
 const CHAR_PATH = {
     BLOODSPORE  :   './assets/sprites/bloodspore.png',
     BLOODSUCKER :	'./assets/sprites/bloodsucker2.png',
     BOMBFLY     :   './assets/sprites/bombfly.png',
     BROODMOTHER :	'./assets/sprites/broodmother.png',
-    CREEPERILLA :	'./assets/sprites/creeperilla.png',
+    CREEPERILLA :	'./assets/sprites/creeperilla2.png',
     DIRTCARVER  :	'./assets/sprites/dirtcarver2.png',
     ELECTROJELLY:	'./assets/sprites/electrojelly.png',
     ENTITY      :	'./assets/sprites/entity.png',
     GRAPEBOMB   :	'./assets/sprites/grapebomb2.png',
-    LIGHTBUG    :	'./assets/sprites/lightbug.png',
+    LIGHTBUG    :	'./assets/sprites/lightbug2.png',
     LIGHTJELLY  :	'./assets/sprites/lightjelly.png',
     MOSSFLY     :	'./assets/sprites/mossfly.png',
     NATIVENPC    :	'./assets/sprites/nativenpc.png',
@@ -126,17 +125,19 @@ const ITEM_PATH = {
     FERRITE: './assets/items/ferrite_bar.png',
     GOLD: './assets/items/gold_bar.png',
     IRON: './assets/items/iron_bar.png',
-    PARAFFIN: './assets/items/paraffin_bar.png',
     STEEL: './assets/items/steel_bar.png',
     TIN: './assets/items/tin_bar.png',
     TITANITE: './assets/items/titanite_bar.png',
     TUNGSTEN: './assets/items/tungsten_bar.png',
 
+    LIGHT: './assets/items/lightArmor.png',
+    HEAVY: './assets/items/heavyArmor.png',
+
     AMBER: './assets/items/amber.png',
-    DIRTCARVER: './assets/items/mob_dirtCarver.png',
-    WORMTANK: './assets/items/mob_wormTank.png',
-    STICKY: './assets/items/mob_stickySlime.png',
-    SPIDER: './assets/items/spiderSilk.png',
+    KERATIN: './assets/items/mob_dirtCarver.png',
+    SHELL: './assets/items/mob_wormTank2.png',
+    SLIME: './assets/items/slime.png',
+    SILK: './assets/items/spiderSilk2.png',
 
     CIRCUIT: './assets/items/circuit.png',
     SMART: './assets/items/smartCircuit.png',
@@ -148,11 +149,10 @@ const ITEM_PATH = {
 
     HUB: './assets/items/plan_hub.png',
     STATION: './assets/items/plan_station.png',
-    PARAFFINTANK: './assets/items/paraffintank.png',
-    PARAFFINTANKPLAN: './assets/items/plan_paraffintank.png',
+    PARAFFIN: './assets/items/paraffintank.png',
     MEDICAL: './assets/items/medicalBay.png',
-    FUEL: './assets/items/fueltank.png',
-    FUELTOWER: './assets/items/fueltower.png',
+    FUEL: './assets/items/fuelTank.png',
+    FUELTOWER: './assets/items/fuelTower.png',
 }
 
 const MISC_PATH = {
@@ -169,7 +169,7 @@ const MISC_PATH = {
 const OVERLAY_PATH = {
     FOV: './assets/overlays/fov.png',
     INVENTORY: './assets/overlays/inventory.png',
-    OBSCURED: './assets/overlays/obscured.png',
+
     c0000: './assets/overlays/obscured.png',
     c1100: './assets/overlays/obscuredc_nw.png',
     c1000: './assets/overlays/obscuredc_n.png',
@@ -179,10 +179,14 @@ const OVERLAY_PATH = {
     c0101: './assets/overlays/obscuredc_sw.png',
     c0001: './assets/overlays/obscuredc_s.png',
     c0011: './assets/overlays/obscuredc_se.png',
+    
     o1000: './assets/overlays/obscuredo_nw.png',
     o0100: './assets/overlays/obscuredo_ne.png',
     o0010: './assets/overlays/obscuredo_sw.png',
     o0001: './assets/overlays/obscuredo_se.png',
+    o1001: './assets/overlays/obscured.png',
+    o0110: './assets/overlays/obscured.png',
+
     VIGNETTE: './assets/overlays/vignette.png'
 }
 
@@ -210,7 +214,7 @@ const SOUND_PATH = {
     HIT3                    :   './assets/music/sfx/hit3.ogg',
     LASER                   :   './assets/music/sfx/capper_shoot.wav',
     MINIGUN                 :   './assets/music/sfx/minigun_shoot_long.wav',
-    RAILGUN                 :   './assets/music/sfx/sniper_railgun_single_01.wav',
+    RAYGUN                  :   './assets/music/sfx/barret_arm_shot.wav',
     SMALL_EXPLOSION1        :   './assets/music/sfx/air_burster_explode1.wav',
     SMALL_EXPLOSION2        :   './assets/music/sfx/air_burster_explode2.wav',
     SMALL_EXPLOSION3        :   './assets/music/sfx/air_burster_explode3.wav',
@@ -263,19 +267,19 @@ const TILE_PATH = {
 
 const TOOL_DAMAGE = {
     IRON                :   2,
-    STEEL               :   4,
-    TIN                 :   8,
+    COPPER              :   4,
+    STEEL               :   8,
     TITANITE            :   16,
     FERRITE             :   32,
-    SUPER               :   100
+    SUPER               :   1000
 }
 
 const TOOL_PATH = {
-    IRON                :   './assets/icons/item_3503.png',
-    STEEL               :   './assets/icons/item_3509.png',
-    TIN                 :   './assets/icons/item_3521.png',
-    TITANITE            :   './assets/icons/item_3485.png',
-    FERRITE             :   './assets/icons/item_3491.png',
+    IRON                :   './assets/icons/iron_pick.png',
+    COPPER              :   './assets/icons/copper_pick.png',
+    STEEL               :   './assets/icons/steel_pick.png',
+    TITANITE            :   './assets/icons/titanite_pick.png',
+    FERRITE             :   './assets/icons/ferrite_pick.png',
     SUPER               :   './assets/icons/super_pickaxe.png',
 }
 
@@ -316,6 +320,7 @@ const CONSTANTS = {
     BGS         :   BG_PATH,
     BGSCROLLS   :   BG_SCROLL,
     CHARS       :   CHAR_PATH,
+    CHEATCODE   :   CHEATCODE,
     CRAFTS      :   CRAFT_PATH,
     CRAFTCOLORS :   CRAFT_COLOR,
     ITEMS       :   ITEM_PATH,

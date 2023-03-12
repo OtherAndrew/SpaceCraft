@@ -52,9 +52,20 @@ class Wormwood {
             yOffset: yOffset
         });
         const state = new CState();
+        const drops = new CDrops(this.#addDrops());
+        const duration = new CDuration();
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state];
+        return [stats, sprite, transform, collider, state, drops, duration];
+    }
+
+    #addDrops() {
+        const dropList = [];
+        const num = randomInt(3) + 2;
+        for (let i = 0; i < num; i++) {
+            dropList.push(generateItem('item_wood'));
+        }
+        return dropList;
     }
 
     update(target, projectileManager) {

@@ -26,18 +26,35 @@ class GameEngine {
         this.wheel = null;
         this.menuActive = false;
         this.pausemenuActive = false;
-        this.keys = {};
+        this.focused = true;
+        this.keys = [];
 
         // Options and the Details
         this.options = options || {
             debugging: false,
         };
+
+        // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
+        this.bufferArray = [];
+        this.lastKeystrokeTime = 0;
+
+        this.winCheat = false;
+        this.pickaxeCheat = false;
+        this.weaponCheat = false;
+        this.invincibleCheat = false;
+        this.craftCheat = false;
+
+        this.gaveWinCheat = false;
+        this.gavePickaxeCheat = false;
+        this.gaveWeaponCheat = false;
+        this.gaveInvincibleCheat = false;
+        this.gaveCraftCheat = false;
     };
 
     init(ctx, assets, canvas) {
         this.ctx = ctx;
-        this.canvas = canvas
-        this.mainScene.init(this.canvas)
+        this.canvas = canvas;
+        this.mainScene.init(this.canvas);
         this.startInput();
         this.timer = new Timer();
     };
@@ -94,7 +111,7 @@ class GameEngine {
         
         this.ctx.canvas.addEventListener("wheel", e => {
             if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
+                console.log("WHEEL", getXandY(e));
             }
             e.preventDefault(); // Prevent Scrolling
             this.wheel = e;
@@ -113,10 +130,6 @@ class GameEngine {
                 case "Tab":
                     e.preventDefault();
                     break;
-                case "c":
-                    e.preventDefault();
-                    break;
-
             }
             // if (e.code === "Tab") {  // PREVENT TABBING OUT
             //     e.preventDefault();
@@ -133,17 +146,79 @@ class GameEngine {
                     that.menuActive = false;
                     break;
                 case "Tab":
+                case "KeyQ":
                     this.activateMenu();
                     break;
-                case "c":
-                    // this.activatePausemenu();
-                    console.log("key c pressed");
+                case 'Backslash':
+                    this.options.debugging = !this.options.debugging;
                     break;
             }
         }, false);
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.code] = true);
+        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.code] = false);
+
+        // https://medium.com/iecse-hashtag/day-2-cheat-codes-for-websites-8e371c29f02
+        window.addEventListener("keyup", e => {
+            if (Date.now() - this.lastKeystrokeTime > 3000) { // 3 seconds
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            this.bufferArray.push(e.key.toLowerCase());
+            if (this.bufferArray.join("") === CHEATCODE.WIN && !this.gaveWinCheat) {
+                this.winCheat = true;
+                this.gaveWinCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.PICKAXE && !this.gavePickaxeCheat) {
+                this.pickaxeCheat = true;
+                this.gavePickaxeCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.WEAPON && !this.gaveWeaponCheat) {
+                this.weaponCheat = true;
+                this.gaveWeaponCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.INVINCIBLE && !this.gaveInvincibleCheat) {
+                this.invincibleCheat = true;
+                this.gaveInvincibleCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.CRAFT && !this.gaveCraftCheat) {
+                this.craftCheat = true;
+                this.gaveCraftCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+        });
     };
+
+    /**
+     * Periodically checks if the game has focus.
+     * If not then the game is paused.
+     * Borrowed from: https://github.com/Kenpai718/Untitled-Knight-Game/blob/main/engine/gameengine.js
+     */
+    checkGameFocus() {
+        const elem = document.getElementById("gameWorld");
+        if (elem === document.activeElement) {
+            // console.log("focus gained");
+            this.focused = true;
+        }
+        else {
+            // console.log("focus lost")
+            this.focused = false;
+            this.resetControls();
+        }
+    }
+
+    resetControls() {
+        // https://stackoverflow.com/a/40836264
+        Object.keys(this.keys).forEach(key => this.keys[key] = false);
+    }
 
     activateMenu() {
         this.menuActive = !this.menuActive;
@@ -152,6 +227,7 @@ class GameEngine {
             blur(this.screenshot, 2, 1);
         }
     }
+
 
     // activatePausemenu() {
     //     this.pausemenuActive = !this.pausemenuActive;
@@ -169,29 +245,35 @@ class GameEngine {
 
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        // this.ctx.fillStyle = 'rgb(159,109,50)'
-        this.mainScene.draw(this.menuActive, this.ctx, this.mouse)
+        this.mainScene.draw(this.menuActive, this.ctx, this.mouse);
         if (this.currentTime > 1) {
-            this.currentTime = 0
-            this.frames = this.renderedFrames
-            this.renderedFrames = 0
+            this.currentTime = 0;
+            this.frames = this.renderedFrames;
+            this.renderedFrames = 0;
         } else {
-            this.currentTime += this.clockTick
-            this.renderedFrames++
+            this.currentTime += this.clockTick;
+            this.renderedFrames++;
         }
         this.ctx.fillStyle = "white";
-        this.ctx.textAlign = 'left'
-        this.ctx.font = 'bold 15px Helvetica'
-        this.ctx.fillText(`FPS: ${this.frames}`, 10, 20)
+        this.ctx.textAlign = 'left';
+        this.ctx.font = 'bold 15px Helvetica';
+        if (this.focused) {
+            this.ctx.fillText(`FPS: ${this.frames}`, 10, 20);
+        } else {
+            this.ctx.fillText("PAUSED", 10, 20);
+        }
     };
 
     update() {
-        const status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
-        if (status) {
-            this.mainScene = new WorldScene(this)
-            this.mainScene.init(this.canvas);
+        if (this.focused) {
+            const status = this.mainScene.update(this.menuActive, this.keys, this.mouseDown, this.mouse, this.wheel, this.clockTick);
+            if (status) {
+                this.mainScene = new WorldScene(this)
+                this.mainScene.init(this.canvas);
+            }
         }
         this.refreshInput();
+        this.checkGameFocus();
     };
 
     refreshInput() {

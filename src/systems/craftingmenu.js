@@ -1,172 +1,193 @@
 class CraftingMenu {
 
-    builtin_recipes = [ // DONE
+    builtin_recipes = [
+        [{tag: 'laserPistol', name: 'weapon'}],
+        [{tag: 'pickaxe_iron'}],
+        [{tag: 'interact_table'},
+            {tag: 'item_wood', count: 5}],
         [{tag: 'interact_furnace'},
             {tag: 'tile_dirt', count: 10},
             {tag: 'tile_stone', count: 10}],
         [{tag: 'interact_anvil'},
             {tag: 'item_copper bar', count: 5},
-            {tag: 'tile_dirt', count: 5},
-            {tag: 'tile_stone', count: 5}],
-        [{tag: 'interact_table'},
-            {tag: 'item_copper bar', count: 5},
-            /*{tag: 'item_wood', count: 5}*/],
+            {tag: 'tile_stone', count: 20}],
+        [{tag: 'interact_trader'},
+            {tag: 'item_tin bar', count: 5},
+            {tag: 'tile_stone', count: 20}],
         [{tag: 'interact_station'},
-            {tag: 'interact_table'},
             {tag: 'item_station plan'},
-            {tag: 'tile_stone', count: 10}],
+            {tag: 'interact_anvil'},
+            {tag: 'interact_furnace'}],
         [{tag: 'interact_hub'},
-            {tag: 'interact_table'},
             {tag: 'item_hub plan'},
-            {tag: 'tile_stone', count: 10}]
+            {tag: 'interact_trader'},
+            {tag: 'interact_furnace'}]
     ];
 
-    table_recipes = [ // DONE
+    table_recipes = [
         [{tag: 'interact_chest'},
             {tag: 'item_iron bar'},
-            /*{tag: 'item_wood'}*/],
-        [{tag: 'interact_trader'},
-            {tag: 'item_copper bar', count: 5},
-            {tag: 'tile_stone', count: 10}],
+            {tag: 'item_wood', count: 5}],
         [{tag: 'laserGun', name: 'weapon'},
             {tag: 'laserPistol', name: 'weapon'},
-            {tag: 'item_iron bar', count: 5},
+            {tag: 'item_copper bar', count: 5},
             {tag: 'item_charcoal', count: 5}],
         [{tag: 'laserRifle', name: 'weapon'},
             {tag: 'laserGun', name: 'weapon'},
-            {tag: 'item_tin bar', count: 5},
+            {tag: 'item_steel bar', count: 10},
             {tag: 'item_charcoal', count: 5}],
         [{tag: 'flamethrower', name: 'weapon'},
-            {tag: 'laserGun', name: 'weapon'},
-            {tag: 'item_cobalt bar', count: 5},
-            {tag: 'item_charcoal', count: 5}],
+            {tag: 'item_iron bar', count: 5},
+            {tag: 'item_cobalt bar', count: 10},
+            {tag: 'item_charcoal', count: 10}],
         [{tag: 'item_refined silica'},
-            {tag: 'tile_silica'}],
+            {tag: 'tile_silica', count: 5}],
         [{tag: 'item_circuit'},
             {tag: 'item_gold bar'},
-            /*{tag: 'item_amber', count: 5}*/]    // amber drop from mossamber (rare 10% chance) and lightjelly
+            {tag: 'item_amber'}]
     ];
 
-    furnace_recipes = [ // DONE
+    furnace_recipes = [
         [{tag: 'item_charcoal'},
-            /*{tag: 'item_wood'},*/
             {tag: 'tile_coal'}],
+        [{tag: 'item_charcoal'},
+            {tag: 'item_wood', count: 2}],
         [{tag: 'item_glass'},
-            {tag: 'item_charcoal'},
-            {tag: 'tile_sand', count: 2}],
-        [{tag: 'item_plexiglass'},
-            {tag: 'item_charcoal'},
-            {tag: 'item_glass', count: 2}],
-        [{tag: 'item_bismuth bar'},
-            {tag: 'tile_bismuth', count: 2}],
-        [{tag: 'item_cobalt bar'},
-            {tag: 'tile_cobalt', count: 2}],
+            {tag: 'tile_sand', count: 2},
+            {tag: 'item_charcoal'}],
         [{tag: 'item_copper bar'},
-            {tag: 'tile_copper', count: 2}],
-        [{tag: 'item_ferrite bar'},
-            {tag: 'tile_ferrite', count: 2}],
-        [{tag: 'item_gold bar'},
-            {tag: 'tile_gold', count: 2}],
+            {tag: 'tile_copper', count: 2},
+            {tag: 'item_charcoal'}],
+        [{tag: 'item_cobalt bar'},
+            {tag: 'tile_cobalt', count: 2},
+            {tag: 'item_charcoal'}],
         [{tag: 'item_iron bar'},
-            {tag: 'tile_iron', count: 2}],
-        // [{tag: 'item_paraffin bar'},
-        //     {tag: 'tile_paraffin', count: 2}], // new
+            {tag: 'tile_iron', count: 2},
+            {tag: 'item_charcoal'}],
         [{tag: 'item_steel bar'},
-            {tag: 'item_charcoal'},
-            {tag: 'item_iron bar'},
-            {tag: 'tile_silica'}],
+            {tag: 'item_iron bar', count: 2},
+            {tag: 'item_charcoal'}],
         [{tag: 'item_tin bar'},
-            {tag: 'tile_tin', count: 2}],
+            {tag: 'tile_tin', count: 2},
+            {tag: 'item_charcoal'}],
+        [{tag: 'item_gold bar'},
+            {tag: 'tile_gold', count: 2},
+            {tag: 'item_charcoal'}],
         [{tag: 'item_titanite bar'},
-            {tag: 'tile_titanite', count: 2}],
+            {tag: 'tile_titanite', count: 2},
+            {tag: 'item_charcoal'}],
+        [{tag: 'item_ferrite bar'},
+            {tag: 'tile_ferrite', count: 2},
+            {tag: 'item_charcoal'}],
+        [{tag: 'item_bismuth bar'},
+            {tag: 'tile_bismuth', count: 2},
+            {tag: 'item_charcoal'}],
         [{tag: 'item_tungsten bar'},
-            {tag: 'tile_tungsten', count: 2}],
+            {tag: 'tile_tungsten', count: 2},
+            {tag: 'item_charcoal'}],
     ];
 
-    anvil_recipes = [ // TODO PICKAXES
+    anvil_recipes = [
+        [{tag: 'pickaxe_copper'},
+            {tag: 'pickaxe_iron'},
+            {tag: 'item_copper bar', count: 5},
+            {tag: 'item_wood', count: 10}],
         [{tag: 'pickaxe_steel'},
+            {tag: 'pickaxe_copper'},
             {tag: 'item_steel bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/],
-        [{tag: 'pickaxe_tin'},
-            {tag: 'item_tin bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/],
+            {tag: 'item_wood', count: 10}],
         [{tag: 'pickaxe_titanite'},
+            {tag: 'pickaxe_steel'},
             {tag: 'item_titanite bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/],
+            {tag: 'item_wood', count: 10}],
         [{tag: 'pickaxe_ferrite'},
+            {tag: 'pickaxe_titanite'},
             {tag: 'item_ferrite bar', count: 5},
-            /*{tag: 'item_wood', count: 10}*/]
+            {tag: 'item_wood', count: 10}]
     ];
 
-    station_recipes = [ // DONE
-        [{tag: 'grenadeLauncher', name: 'weapon'},
-            {tag: 'item_grenadeLauncher part'},
-            {tag: 'item_ferrite bar', count: 5},
-            {tag: 'item_charcoal', count: 5}],
+    station_recipes = [
         [{tag: 'handCannon', name: 'weapon'},
             {tag: 'item_handCannon part'},
             {tag: 'item_titanite bar', count: 5},
-            {tag: 'item_charcoal', count: 5},
-            /*{tag: 'item_dirtcarver hide', count: 5}*/],
+            {tag: 'item_charcoal', count: 5}],
+        [{tag: 'grenadeLauncher', name: 'weapon'},
+            {tag: 'item_grenadeLauncher part'},
+            {tag: 'item_ferrite bar', count: 5},
+            {tag: 'tile_paraffin', count: 5}],
         [{tag: 'minigun', name: 'weapon'},
             {tag: 'item_minigun part'},
             {tag: 'item_bismuth bar', count: 5},
-            {tag: 'item_charcoal', count: 5},
-            /*{tag: 'item_wormtank hide', count: 5}*/],
+            {tag: 'tile_paraffin', count: 5}],
         [{tag: 'railgun', name: 'weapon'},
             {tag: 'item_railgun part'},
             {tag: 'item_tungsten bar', count: 5},
-            {tag: 'item_charcoal', count: 5},
-            /*{tag: 'item_sticky slime', count: 5}*/]
+            {tag: 'tile_paraffin', count: 5}],
+        [{tag: 'item_light armor'},
+            {tag: 'item_keratin', count: 15},
+            {tag: 'item_slime', count: 10}],
+        [{tag: 'item_heavy armor'},
+            {tag: 'item_light armor'},
+            {tag: 'item_shell', count: 15},
+            {tag: 'item_silk', count: 10}]
     ];
 
-    trader_recipes = [ // DONE
-        // [{tag: 'item_bomb'},
-        //     {tag: 'item_gold bar'}],
-        [{tag: 'item_spider silk', count: 5},
-            {tag: 'item_bismuth bar'}],
+    trader_recipes = [
         [{tag: 'item_station plan'},
-            {tag: 'item_cobalt bar', count: 5}
-            /*{tag: 'item_wood', count: 5},
-            {tag: 'item_amber', count: 5}*/],
+            {tag: 'item_cobalt bar', count: 5},
+            {tag: 'item_keratin', count: 5}],
         [{tag: 'item_hub plan'},
-            {tag: 'item_steel bar', count: 5}],
-        [{tag: 'item_paraffintankplan'},
-            {tag: 'item_spider silk', count: 5},
-            /*{tag: 'item_wormtank hide', count: 5},*/
-            {tag: 'item_plexiglass', count: 5}]
+            {tag: 'item_steel bar', count: 5},
+            {tag: 'item_shell', count: 5}],
+        [{tag: 'item_wood', count: 2},
+            {tag: 'interact_chest'}],
+        [{tag: 'item_handCannon part'},
+            {tag: 'item_silk', count: 5}],
+        [{tag: 'tile_paraffin'},
+            {tag: 'item_keratin', count: 5}],
+        [{tag: 'item_amber'},
+            {tag: 'item_shell', count: 5}],
+        [{tag: 'grenadeLauncher', name: 'weapon'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_shell'}],
+        [{tag: 'minigun', name: 'weapon'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_silk'}],
+        [{tag: 'railgun', name: 'weapon'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_amber'}],
+        [{tag: 'pickaxe_ferrite'},
+            {tag: 'tile_ruby'},
+            {tag: 'item_wood'}]
     ];
 
-    hub_recipes = [ // DONE
-        // [{tag: 'item_graphite'},
-        //     {tag: 'item_charcoal', count: 3},
-        //     {tag: 'item_paraffinTank plan'}],
-        // [{tag: 'item_ferrite_compound bar'},
-        //     {tag: 'item_ferrite bar', count: 3},
-        //     {tag: 'item_iron bar'}],
+    hub_recipes = [
+        [{tag: 'tile_paraffin'},
+            {tag: 'item_charcoal', count: 10}],
+        [{tag: 'item_charcoal', count: 10},
+            {tag: 'tile_paraffin'}],
+        [{tag: 'item_paraffin tank'},
+            {tag: 'item_shell', count: 5},
+            {tag: 'item_glass', count: 5}],
+        [{tag: 'item_fuel tank'},
+            {tag: 'item_paraffin tank'},
+            {tag: 'item_slime', count: 5},
+            {tag: 'item_silk', count: 5}],
+        [{tag: 'item_fueltower'}, // requirement for rocket
+            {tag: 'item_fuel tank', count: 2},
+            {tag: 'tile_paraffin', count: 15}],
         [{tag: 'item_smart circuit'},
-            {tag: 'item_circuit'},
+            {tag: 'item_circuit', count: 2},
             {tag: 'item_tungsten bar'},
             {tag: 'item_refined silica'}],
-        // [{tag: 'item_coal'},
-        //     {tag: 'item_charcoal', count: 3},
-        //     {tag: 'item_keratin'}],      //keratin can drop from bloodsucker
-        [{tag: 'item_paraffintank'},
-            {tag: 'tile_paraffin', count: 5},
-            {tag: 'item_paraffintankplan'}],
-        [{tag: 'item_medical bay'},               // requirement for rocket
+        [{tag: 'item_medical bay'}, // requirement for rocket
             {tag: 'item_bismuth bar', count: 5},
             {tag: 'item_smart circuit', count: 5}],
-        [{tag: 'item_fuel tank'},               // requirement for rocket
-            {tag: 'item_paraffintank', count: 1},
-            {tag: 'item_gold bar'}],
-        [{tag: 'item_fueltower'},               // requirement for rocket
-            {tag: 'item_fuel tank', count: 2},
-            {tag: 'tile_sand'}]    //drop from boss
     ];
 
-    constructor(containManager) {
+    constructor(containManager, entityManager) {
         this.cm = containManager;
+        this.em = entityManager;
         this.recipes = [];
         
         this.x = 30;
@@ -201,14 +222,14 @@ class CraftingMenu {
                 let tag = item.tag;
                 let generate;
                 if (item.name && item.name.includes('weapon')) {
-                    generate = new Entity(generateWeapon(tag));
+                    generate = this.em.addEntity(generateWeapon(tag));
                 } else if (tag.includes('item')) {
                     generate = new Entity(generateItem(tag));
-                } else if (tag.includes('interact')) { // interactive
+                } else if (tag.includes('interact')) {
                     generate = new Entity(generateInteractive(tag));
                 } else if (tag.includes('pickaxe')) {
                     generate = new Entity(generatePickaxe(tag));
-                } else { // tile
+                } else {
                     generate = new Entity(generateBlock(tag,'craftgen'));
                 }
                 this.cm.addToInventory(
