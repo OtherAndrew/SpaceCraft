@@ -266,7 +266,6 @@ class WorldScene extends Scene {
         const posX = e.components.transform.x / BLOCKSIZE
         const posY = e.components.transform.y / BLOCKSIZE
         let visCheck = this.#isExposed(posY, posX);
-        // e.visCode = visCheck.visCode;
         if (visCheck.exposed) {
             e.visCode = visCheck.visCode;
         } else {
@@ -279,11 +278,17 @@ class WorldScene extends Scene {
         let ordVis = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || cardVis.overall || ordVis.overall;
         let visCode = ['c']; // NWES
-        visCode.push((cardVis.n || ordVis.nw && ordVis.ne) ? '1' : '0')
-        visCode.push((cardVis.w || ordVis.nw && ordVis.sw) ? '1' : '0')
-        visCode.push((cardVis.e || ordVis.ne && ordVis.se) ? '1' : '0')
-        visCode.push((cardVis.s || ordVis.sw && ordVis.se) ? '1' : '0')
-        // TODO handle blocks only exposed via ordinal
+        visCode.push((cardVis.n || ordVis.nw && ordVis.ne) ? '1' : '0');
+        visCode.push((cardVis.w || ordVis.nw && ordVis.sw) ? '1' : '0');
+        visCode.push((cardVis.e || ordVis.ne && ordVis.se) ? '1' : '0');
+        visCode.push((cardVis.s || ordVis.sw && ordVis.se) ? '1' : '0');
+        if (!visCode.includes('1')) {
+            visCode = ['o']; // NWNESWSE
+            visCode.push(ordVis.nw ? '1' : '0');
+            visCode.push(ordVis.ne ? '1' : '0');
+            visCode.push(ordVis.sw ? '1' : '0');
+            visCode.push(ordVis.se ? '1' : '0');
+        }
         return {exposed: exposed, visCode: visCode.join('')};
     }
     

@@ -170,7 +170,7 @@ const MISC_PATH = {
 const OVERLAY_PATH = {
     FOV: './assets/overlays/fov.png',
     INVENTORY: './assets/overlays/inventory.png',
-    OBSCURED: './assets/overlays/obscured.png',
+
     c0000: './assets/overlays/obscured.png',
     c1100: './assets/overlays/obscuredc_nw.png',
     c1000: './assets/overlays/obscuredc_n.png',
@@ -185,10 +185,8 @@ const OVERLAY_PATH = {
     o0100: './assets/overlays/obscuredo_ne.png',
     o0010: './assets/overlays/obscuredo_sw.png',
     o0001: './assets/overlays/obscuredo_se.png',
-    
-
-    
-
+    o1001: './assets/overlays/obscured.png',
+    o0110: './assets/overlays/obscured.png',
 
     VIGNETTE: './assets/overlays/vignette.png'
 }
