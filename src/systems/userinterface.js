@@ -62,15 +62,15 @@ class HUD {
     update(menuActive, keys, wheel) {
         if (!menuActive) {
             try {
-                if (keys['1']) this.activeContainer = this.containers[0];
-                if (keys['2']) this.activeContainer = this.containers[1];
-                if (keys['3']) this.activeContainer = this.containers[2];
-                if (keys['4']) this.activeContainer = this.containers[3];
-                if (keys['5']) this.activeContainer = this.containers[4];
-                if (keys['6']) this.activeContainer = this.containers[5];
-                if (keys['7']) this.activeContainer = this.containers[6];
-                if (keys['8']) this.activeContainer = this.containers[7];
-                if (keys['9']) this.activeContainer = this.containers[8];
+                if (keys['Digit1']) this.activeContainer = this.containers[0];
+                if (keys['Digit2']) this.activeContainer = this.containers[1];
+                if (keys['Digit3']) this.activeContainer = this.containers[2];
+                if (keys['Digit4']) this.activeContainer = this.containers[3];
+                if (keys['Digit5']) this.activeContainer = this.containers[4];
+                if (keys['Digit6']) this.activeContainer = this.containers[5];
+                if (keys['Digit7']) this.activeContainer = this.containers[6];
+                if (keys['Digit8']) this.activeContainer = this.containers[7];
+                if (keys['Digit9']) this.activeContainer = this.containers[8];
                 if (wheel) {
                     let scroll = (wheel.deltaY < 0) ? -1 : 1;
                     this.activeContainer = this.containers[(this.activeContainer.slot === 0 && scroll < 0) ?
