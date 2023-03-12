@@ -35,6 +35,7 @@ class WorldScene extends Scene {
             this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 12);
         this.nativenpc =
             this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE * 2);
+        this.boss = null;
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
                                                      this.projectileFactory, this.terrainMap);
