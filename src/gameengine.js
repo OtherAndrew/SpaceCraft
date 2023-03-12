@@ -254,11 +254,11 @@ class GameEngine {
             this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
             this.ctx.fillRect(0, 0, WIDTH, HEIGHT);
             this.ctx.fillStyle = "white";
-            this.ctx.font = 'bold 30px Helvetica';
+            this.ctx.font = 'bold 40px Helvetica';
             this.ctx.textAlign = 'center';
             this.ctx.fillText("PAUSED", WIDTH/2, HEIGHT/2);
-            this.ctx.font = 'bold 15px Helvetica';
-            this.ctx.fillText("Click to resume.", WIDTH/2, HEIGHT/2 + 20);
+            this.ctx.font = 'bold 20px Helvetica';
+            this.ctx.fillText("Click to resume.", WIDTH/2, HEIGHT/2 + 25);
         }
     };
 
