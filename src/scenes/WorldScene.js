@@ -10,7 +10,7 @@ class WorldScene extends Scene {
         this.invulnTime = 5;
         this.spawnPoint = {
             x: WIDTH_PIXELS * .5,
-            y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 0.75
+            y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
         this.win = false;
         //other game stats --- display during win condition (rocket scene)
@@ -193,12 +193,20 @@ class WorldScene extends Scene {
         if (menuActive) ctx.putImageData(this.game.screenshot, 0, 0);
         else {
             const skyGradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+            const playerY = this.player.components['transform'].y;
             if (this.win) {
+                // https://www.space.com/17193-mars-night-sky-observation-tips.html
                 skyGradient.addColorStop(0.33, "#000000");
                 skyGradient.addColorStop(1, "#09154b");
-            } else {
-                const playerY = this.player.components['transform'].y;
-                const gradientOffset = clamp((this.spawnPoint.y - playerY) / HEIGHT, 0, 0.5);
+            } else if (playerY > 7600) { // underground
+                const gradientOffset = clamp((13400 - playerY) / HEIGHT, -0.5, 0.5);
+                // https://lil-cthulhu.itch.io/pixel-art-cave-background
+                skyGradient.addColorStop(0, "#151227");
+                skyGradient.addColorStop(0.5 + gradientOffset, "#37375c");
+                skyGradient.addColorStop(1, "#151227");
+            } else { // surface
+                const gradientOffset =
+                        clamp((this.spawnPoint.y + BLOCKSIZE * 0.25 - playerY) / HEIGHT, 0, 0.5);
                 // https://astronomy.com/news/2016/06/what-do-the-stars-look-like-from-mars
                 skyGradient.addColorStop(gradientOffset, "#181212");
                 skyGradient.addColorStop(0.5 + gradientOffset, "#bb7e47");

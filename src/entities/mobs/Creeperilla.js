@@ -25,7 +25,8 @@ class Creeperilla {
     #buildComponents(props) {
         const stats = new CStats({
             maxHealth: 75,
-            speed: 4
+            speed: 4,
+            hasFallDamage: false
         });
         const sprite = new CSprite({
             sprite: ASSET_MANAGER.cache[CHAR_PATH.CREEPERILLA],
@@ -52,7 +53,7 @@ class Creeperilla {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops(this.#getDrops());
+        const drops = new CDrops([generateItem('item_silk')]);
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
@@ -112,12 +113,5 @@ class Creeperilla {
         aMap.set('walkR', new AnimationProps(0, 1, 3));
         aMap.set('walkL', new AnimationProps(0, 0, 3));
     };
-
-    #getDrops() {
-        const dropList = [generateItem('item_silk')];
-        if (Math.random() < 0.05) dropList.push(new LaserGun());
-        return dropList;
-    }
-
 }
 

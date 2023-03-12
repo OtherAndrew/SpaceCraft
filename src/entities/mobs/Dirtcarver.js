@@ -24,7 +24,7 @@ class Dirtcarver {
 
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 0.5,
+            damage: 0.75,
             speed: 2,
             maxHealth: 100
         });
@@ -54,7 +54,7 @@ class Dirtcarver {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops(this.#getDrops());
+        const drops = new CDrops([generateItem('item_keratin')]);
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
@@ -99,12 +99,5 @@ class Dirtcarver {
         aMap.set('walkR', new AnimationProps(0, 0, 3, 18));
         aMap.set('walkL', new AnimationProps(0, 1, 3, 18));
     };
-
-    #getDrops() {
-        const dropList = [];
-        if (Math.random() < 0.66) dropList.push(generateItem('item_keratin'));
-        if (Math.random() < 0.05) dropList.push(new LaserGun());
-        return dropList;
-    }
 }
 

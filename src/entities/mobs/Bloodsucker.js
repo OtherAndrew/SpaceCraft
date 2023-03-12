@@ -24,7 +24,7 @@ class Bloodsucker {
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
+            damage: 1.25,
             speed: 3,
             maxHealth: 80
         });
@@ -53,7 +53,7 @@ class Bloodsucker {
             xOffset: (sprite.dWidth - cWidth) / 2,
             yOffset: (sprite.dHeight - cHeight) * 3/4,
         });
-        const drops = new CDrops(this.#getDrops());
+        const drops = new CDrops([generateItem('item_keratin')]);
         const state = new CState();
         const duration = new CDuration();
         this.#addAnimations(sprite);
@@ -104,12 +104,5 @@ class Bloodsucker {
             state.direction = transform.velocityX < 0 ? "left" : "right"
         }
         state.setState(animState);
-    }
-
-    #getDrops() {
-        const dropList = [];
-        if (Math.random() < 0.66) dropList.push(generateItem('item_keratin'));
-        if (Math.random() < 0.05) dropList.push(new LaserGun());
-        return dropList;
     }
 }

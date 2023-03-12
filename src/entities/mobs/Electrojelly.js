@@ -23,7 +23,7 @@ class Electrojelly {
     
     #buildComponents(props) {
         const stats = new CStats({
-            damage: 1,
+            damage: 1.25,
             speed: 0.5,
             maxHealth: 60
         });
@@ -54,18 +54,11 @@ class Electrojelly {
         });
         const state = new CState();
         const duration = new CDuration();
-        const drops = new CDrops(this.#addDrops());
+        const drops = new CDrops([generateItem('item_amber')]);
         transform.collider = collider
 
         return [stats, sprite, transform, collider, state, duration, drops];
     }
-
-    #addDrops() {
-        const dropList = [generateItem('item_amber')];
-        if (Math.random() < 0.25) dropList.push(generateItem('item_amber'));
-        return dropList;
-    }
-
 
     update (target, projectileFactory) {
         const collider = this.components['boxCollider']
