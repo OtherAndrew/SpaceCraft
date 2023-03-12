@@ -18,6 +18,7 @@ class WorldScene extends Scene {
         //total jetpack used
         //total jumps
         //total deaths
+        this.timer = 0
     }
 
     /**
@@ -62,7 +63,6 @@ class WorldScene extends Scene {
 
         this.giveWeapons2();
         // this.spawnTestEntities();
-        // ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
         this.musicPlayer = new MusicPlayer(this.player)
         ASSET_MANAGER.adjustVolume(.2)
 
@@ -337,3 +337,16 @@ const setVals = function (obj, vals) {
     }
     return obj;
 };
+
+const bossBattle = (player, mobFactory) => {
+    console.log('spawning boss')
+    let pos = {
+        x: player.components.transform.x,
+        y: player.components.transform.y
+    }
+    if( pos.y < HEIGHT_PIXELS * .5) {
+        let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH
+        mobFactory.build('spiderboss', x, pos.y - HEIGHT)
+        ASSET_MANAGER.playAsset(SOUND_PATH.BOSS)
+    }
+}

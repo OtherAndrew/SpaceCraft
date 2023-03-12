@@ -6,5 +6,6 @@ const HELP = [
     "Mossflies fire faster when they're being chased or attacked.",
     "You're pretty good...",
     "Kept you waiting, huh?",
-    "Explosive weapons deal massive damage, but will hurt you as well."
+    "Explosive weapons deal massive damage, but will hurt you as well.",
+    "Use blocks to build a barrier when in combat."
 ]
