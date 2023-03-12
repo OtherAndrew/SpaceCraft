@@ -46,10 +46,7 @@ const drawHealthbar = (ctx, entity, x, y, w, h) => {
     ctx.rect(x, y, w, h);
     ctx.fill();
     ctx.beginPath();
-    // let healthPercentage = Math.max(0,
-    //     entity.components['stats'].currentHealth / entity.components['stats'].maxHealth);
-    const healthPercentage = entity.components['stats'].isDead ?
-        0 : entity.components['stats'].currentHealth / entity.components['stats'].maxHealth
+    const healthPercentage = entity.components['stats'].getHealthPercentage();
     if (healthPercentage > 0.75) ctx.fillStyle = "green";
     else if (healthPercentage > 0.50) ctx.fillStyle = "yellow";
     else if (healthPercentage > 0.25) ctx.fillStyle = "orange";
@@ -67,9 +64,7 @@ const drawBlockDestruction = (ctx, entity, x, y) => {
     ctx.rect(x, y, BLOCKSIZE, BLOCKSIZE);
     ctx.fill();
     ctx.beginPath();
-    const healthPercentage = entity.components['stats'].isDead ?
-        0 : entity.components['stats'].currentHealth / entity.components['stats'].maxHealth
-    ctx.fillStyle = rgba(0, 0, 0, (1 - healthPercentage) * 0.8);
+    ctx.fillStyle = rgba(0, 0, 0, (1 - entity.components['stats'].getHealthPercentage()) * 0.8);
     ctx.rect(x, y, BLOCKSIZE, BLOCKSIZE);
     ctx.fill();
     ctx.restore();
