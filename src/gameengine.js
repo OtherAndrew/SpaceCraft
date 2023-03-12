@@ -9,6 +9,7 @@ class GameEngine {
         this.frameTime = 0;
         this.frames = 0;
         this.elapsedTime = 0;
+        this.helpText = null;
 
         this.mainScene = new MainMenu()
         // Information on input
