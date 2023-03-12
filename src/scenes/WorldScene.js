@@ -4,7 +4,6 @@ class WorldScene extends Scene {
     constructor(game) {
         super()
         this.game = game;
-        this.mid = HEIGHT_PIXELS * .5 + WIDTH
         this.drawItems = null;
         this.respawnTime = 5;
         this.invulnTime = 5;
@@ -13,12 +12,6 @@ class WorldScene extends Scene {
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
         this.win = false;
-        //other game stats --- display during win condition (rocket scene)
-        //add total each mob kills
-        //total blocks mined
-        //total jetpack used
-        //total jumps
-        //total deaths
     }
 
     /**
@@ -350,6 +343,7 @@ class WorldScene extends Scene {
         this.player.components['stats'].invincible = true;
         if (this.elapsedRespawnTime === 0) {
             this.textBox.append("You won!");
+            this.textBox.append(`    Kills: ${this.healthSystem.mobKills}, Deaths: ${this.healthSystem.playerDeaths}`);
             this.elapsedRespawnTime += 1;
         }
         this.win = true;
