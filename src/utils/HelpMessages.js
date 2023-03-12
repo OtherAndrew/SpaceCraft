@@ -19,6 +19,6 @@ const HELP = [
     "Wormtanks drop metal bars.",
     "Amber drops from Electrojellies.",
     "Silk drops from Spikejumpers and Creeperillas.",
-    "Slime drops from Grapebombs.",
+    "Slime drops from Grapebombs and Bombflies.",
     "Chests may contain metal bars or even parts to craft powerful weapons."
 ]

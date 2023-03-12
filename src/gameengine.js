@@ -250,6 +250,7 @@ class GameEngine {
             this.ctx.font = 'bold 15px Helvetica';
             this.ctx.textAlign = 'left';
             this.ctx.fillText(`FPS: ${this.frames}`, 10, 20);
+            this.helpText = null;
         } else {
             this.ctx.fillStyle = rgba(0, 0, 0, 0.5);
             this.ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -259,6 +260,11 @@ class GameEngine {
             this.ctx.fillText("PAUSED", WIDTH/2, HEIGHT/2);
             this.ctx.font = 'bold 20px Helvetica';
             this.ctx.fillText("Click to resume.", WIDTH/2, HEIGHT/2 + 25);
+            if (!this.helpText) {
+                this.helpText = getRandom(HELP)
+            } else {
+                this.ctx.fillText(`Tip: ${this.helpText}`, WIDTH/2, HEIGHT - 12);
+            }
         }
     };
 
