@@ -156,14 +156,13 @@ class WorldScene extends Scene {
     #activateCheats() {
         if (this.game.winCheat) {
             [generateItem('item_fueltower'), generateItem('item_medical bay')].forEach(item => {
-                this.containerManager.addToInventory('player', this.entityManager.addEntity(item))
+                this.containerManager.addToPlayer(new Entity(item))
             });
             this.textBox.append("sus");
             this.game.winCheat = false;
         }
         if (this.game.pickaxeCheat) {
-            this.containerManager.addToInventory('player',
-                this.entityManager.addEntity(generatePickaxe('pickaxe_super')));
+            this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_super')));
             this.textBox.append("Aw man");
             this.game.pickaxeCheat = false;
         }
@@ -276,59 +275,58 @@ class WorldScene extends Scene {
         const posY = e.components.transform.y / BLOCKSIZE
         let visCheck = this.#isExposed(posY, posX);
         if (visCheck.exposed) {
-            e.visCode = visCheck.visCode; // placeholder
+            e.visCode = visCheck.visCode;
         } else {
-            delete e.visCode; // placeholder
+            delete e.visCode;
         }
     }
 
     #isExposed(posY, posX) {
-        let visCodeC = this.#checkCardinal(posY, posX);
-        let visCodeO = this.#checkOrdinal(posY, posX);
-        let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
-        // return {exposed: exposed, visCode: visCodeC};
-        return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
+        let cardVis = this.#checkCardinal(posY, posX);
+        let ordVis = this.#checkOrdinal(posY, posX);
+        let exposed = posY === 0 || cardVis.overall || ordVis.overall;
+        let visCode = ['c']; // NWES
+        visCode.push((cardVis.n || ordVis.nw && ordVis.ne) ? '1' : '0');
+        visCode.push((cardVis.w || ordVis.nw && ordVis.sw) ? '1' : '0');
+        visCode.push((cardVis.e || ordVis.ne && ordVis.se) ? '1' : '0');
+        visCode.push((cardVis.s || ordVis.sw && ordVis.se) ? '1' : '0');
+        if (!visCode.includes('1')) {
+            visCode = ['o']; // NWNESWSE
+            visCode.push(ordVis.nw ? '1' : '0');
+            visCode.push(ordVis.ne ? '1' : '0');
+            visCode.push(ordVis.sw ? '1' : '0');
+            visCode.push(ordVis.se ? '1' : '0');
+        }
+        return {exposed: exposed, visCode: visCode.join('')};
+    }
+    
+    #checkEmpty(location) {
+        return /air|interact/.test(location.tag);
     }
 
     #checkCardinal(posY, posX) {
-        let visCode = ['c'];
-        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][posX].tag)) { // N
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[posY][clamp(posX - 1, 0, posX)].tag)) { // W
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // E
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX].tag)) { // S
-            visCode.push('1');
-        } else visCode.push('0');
-        return visCode.join('');
+        let cardVis = {};
+        cardVis.n = this.#checkEmpty(this.terrainMap[clamp(posY - 1, 0, posY)][posX]);
+        cardVis.w = this.#checkEmpty(this.terrainMap[posY][clamp(posX - 1, 0, posX)]);
+        cardVis.e = this.#checkEmpty(this.terrainMap[posY][clamp(posX + 1, 0, this.terrainMap[0].length - 1)]);
+        cardVis.s = this.#checkEmpty(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][posX]);
+        cardVis.overall = cardVis.n || cardVis.w || cardVis.e || cardVis.s;
+        return cardVis/*.join('')*/;
     }
 
     #checkOrdinal(posY, posX) {
-        let visCode = ['o'];
-        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)].tag)) { // NW
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // NE
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)].tag)) { // SW
-            visCode.push('1');
-        } else visCode.push('0');
-        if (/air|interact/.test(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)].tag)) { // SE
-            visCode.push('1');
-        } else visCode.push('0');
-        return visCode.join('');
+        let ordVis = {};
+        ordVis.nw = this.#checkEmpty(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX - 1, 0, posX)]);
+        ordVis.ne = this.#checkEmpty(this.terrainMap[clamp(posY - 1, 0, posY)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)]);
+        ordVis.sw = this.#checkEmpty(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX - 1, 0, posX)]);
+        ordVis.se = this.#checkEmpty(this.terrainMap[clamp(posY + 1, 0, this.terrainMap.length - 1)][clamp(posX + 1, 0, this.terrainMap[0].length - 1)]);
+        ordVis.overall = ordVis.nw || ordVis.ne || ordVis.sw || ordVis.se;
+        return ordVis;
     }
 
     #checkWinCon() {
         let requisite = [0, {item: {tag: 'item_fueltower'}, count: 1}, {item: {tag: 'item_medical bay'}, count: 1}]
-        // let requisite = [0, {item: {tag: 'item_bismuth bar'}, count: 5}]
-        return (this.containerManager.checkSufficient(requisite, 'player')
-            && checkCollision(this.player, this.rocket))
+        return (this.containerManager.checkSufficient(requisite) && checkCollision(this.player, this.rocket))
     }
 
     #onWin() {

@@ -15,7 +15,7 @@ class RenderSystem {
                 let destY = e.components.transform.y - ySpeed;
                 if (e.tag.includes('tile')) {
                     if (!e.visCode) {
-                        ctx.drawImage(ASSET_MANAGER.cache[OVERLAY_PATH.OBSCURED], destX, destY)
+                        ctx.drawImage(ASSET_MANAGER.cache[OVERLAY_PATH.c0000], destX, destY)
                     } else {
                         ctx.drawImage(
                             sprite.sprite,
