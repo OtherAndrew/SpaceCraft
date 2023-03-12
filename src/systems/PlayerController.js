@@ -1,7 +1,7 @@
 class PlayerController {
     constructor(player, game, entityManager, containerManager, projectileFactory, terrainMap) {
         // this.player = player
-        Object.assign(this, { player, game, entityManager, containerManager, projectileFactory, terrainMap })
+        Object.assign(this, {player, game, entityManager, containerManager, projectileFactory, terrainMap})
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
         this.pSprite = this.player.components.sprite
@@ -13,7 +13,7 @@ class PlayerController {
         this.timesUp = .25
         this.ready = true
     }
-    
+
     refreshPlayerConnection() {
         this.pTransform = this.player.components.transform
         this.pState = this.player.components.state
@@ -30,9 +30,9 @@ class PlayerController {
      * @param activeContainer
      */
     update(keys, mouseDown, mouse, tick, activeContainer) {
-        if(!this.ready) {
+        if (!this.ready) {
             this.timer += tick
-            if(this.timer > this.timesUp) {
+            if (this.timer > this.timesUp) {
                 this.timer = 0
                 this.ready = true
             }
@@ -146,17 +146,19 @@ class PlayerController {
                     }
                 }
             } else if (active.tag.includes('pickaxe')) {
-                if(/tile|interact/.test(selected.tag) && checkPlayerDistance(coords, this.player) < active.components['stats'].reach) {
+                if (/tile|interact/.test(selected.tag) &&
+                    !this.terrainMap[clamp(mapY - 1, 0, mapY)][mapX].tag.includes('interact') &&
+                    checkPlayerDistance(coords, this.player) < active.components['stats'].reach) {
                     let destroyable = true;
                     if (selected.tag.includes('chest')) destroyable = this.containerManager.checkChest(selected);
                     if (destroyable) {
                         let e = this.entityManager.getEntity(selected.id)
                         e.components['stats'].applyDamage(active.components['stats'].damage);
-                        if(this.ready) {
+                        if (this.ready) {
                             ASSET_MANAGER.playAsset(SOUND_PATH.BLOCK_DAMAGE)
                             this.ready = false
                         }
-                        if(e.components['stats'].isDead) {
+                        if (e.components['stats'].isDead) {
                             if (selected.tag.includes('chest')) this.containerManager.deregisterChest(e);
                             selected.tag = 'air'
                             selected.id = null
