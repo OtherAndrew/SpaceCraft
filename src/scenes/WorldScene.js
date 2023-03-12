@@ -278,11 +278,9 @@ class WorldScene extends Scene {
         let visCodeC = this.#checkCardinal(posY, posX);
         let visCodeO = this.#checkOrdinal(posY, posX);
         let exposed = posY === 0 || visCodeC.includes('1') || visCodeO.includes('1');
-        return {exposed: exposed, visCode: visCodeC};
-        // return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
+        // return {exposed: exposed, visCode: visCodeC};
+        return {exposed: exposed, visCode: visCodeC === 'c0000' ? visCodeO : visCodeC};
     }
-
-    // TODO: meld check cardinal and ordinal to get correct obfuscation
 
     #checkCardinal(posY, posX) {
         let visCode = ['c'];

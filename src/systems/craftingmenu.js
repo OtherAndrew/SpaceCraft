@@ -227,11 +227,11 @@ class CraftingMenu {
                     generate = this.entityManager.addEntity(generateWeapon(tag));
                 } else if (tag.includes('item')) {
                     generate = new Entity(generateItem(tag));
-                } else if (tag.includes('interact')) { // interactive
+                } else if (tag.includes('interact')) {
                     generate = new Entity(generateInteractive(tag));
                 } else if (tag.includes('pickaxe')) {
                     generate = new Entity(generatePickaxe(tag));
-                } else { // tile
+                } else {
                     generate = new Entity(generateBlock(tag,'craftgen'));
                 }
                 this.cm.addToInventory(
