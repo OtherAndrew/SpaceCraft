@@ -61,7 +61,7 @@ class WorldScene extends Scene {
         this.musicPlayer = new MusicPlayer(this.player)
         ASSET_MANAGER.adjustVolume(.2)
 
-        this.drawItems = this.#updateTileState();
+        this.drawItems = this.#checkOnscreen();
     }
 
     spawnTestEntities() {
@@ -103,8 +103,7 @@ class WorldScene extends Scene {
             // **update state**
             this.entityManager.update();
             this.renderBox.update();
-            this.drawItems = this.#updateTileState();
-            // this.entityManager.getEntities.forEach((e) => this.#checkIfExposed(e));
+            this.drawItems = this.#checkOnscreen();
             this.collisionSystem.refresh();
             this.movementSystem.refresh();
 
@@ -241,7 +240,7 @@ class WorldScene extends Scene {
      * Also, calls check if exposed method to save a loop routine.
      * @todo performance optimization
      */
-    #updateTileState() {
+    #checkOnscreen() {
         let drawables = [];
         let entities = this.entityManager.getEntities;
         let length = entities.length;
