@@ -163,7 +163,7 @@ class WorldScene extends Scene {
         }
         if (this.game.pickaxeCheat) {
             this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_super')));
-            this.textBox.append("Aw man");
+            this.textBox.append("Aw man.");
             this.game.pickaxeCheat = false;
         }
         if (this.game.weaponCheat) {
@@ -175,12 +175,24 @@ class WorldScene extends Scene {
                 new GrenadeLauncher(),
                 new Minigun(),
                 new Railgun(),
-                new DeathRay(),
-                generateItem('item_lightArmor'),
-                generateItem('item_heavyArmor')
+                new DeathRay()
             ].forEach(item => this.containerManager.addToInventory('player', this.entityManager.addEntity(item)));
-            this.textBox.append("Hey look buddy, I'm an engineer");
+            [generateItem('item_lightArmor'), generateItem('item_heavyArmor')].forEach(item => {
+                this.containerManager.addToPlayer(new Entity(item))
+            });
+            this.textBox.append("Hey look buddy, I'm an engineer.");
             this.game.weaponCheat = false;
+        }
+        if (this.game.craftCheat) {
+            [generateInteractive('interact_table'),
+                generateInteractive('interact_furnace'),
+                generateInteractive('interact_anvil'),
+                generateInteractive('interact_trader'),
+                generateInteractive('interact_station'),
+                generateInteractive('interact_hub')
+            ].forEach(item => this.containerManager.addToPlayer(new Entity(item)));
+            this.textBox.append("Craft.");
+            this.game.craftCheat = false;
         }
         if (this.game.invincibleCheat) {
             this.textBox.append("I AM BULLETPROOF!!!");

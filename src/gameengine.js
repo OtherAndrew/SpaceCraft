@@ -42,11 +42,13 @@ class GameEngine {
         this.pickaxeCheat = false;
         this.weaponCheat = false;
         this.invincibleCheat = false;
+        this.craftCheat = false;
 
         this.gaveWinCheat = false;
         this.gavePickaxeCheat = false;
         this.gaveWeaponCheat = false;
         this.gaveInvincibleCheat = false;
+        this.gaveCraftCheat = false;
     };
 
     init(ctx, assets, canvas) {
@@ -183,6 +185,12 @@ class GameEngine {
             if (this.bufferArray.join("") === CHEATCODE.INVINCIBLE && !this.gaveInvincibleCheat) {
                 this.invincibleCheat = true;
                 this.gaveInvincibleCheat = true;
+                this.bufferArray = [];
+                this.lastKeystrokeTime = Date.now();
+            }
+            if (this.bufferArray.join("") === CHEATCODE.CRAFT && !this.gaveCraftCheat) {
+                this.craftCheat = true;
+                this.gaveCraftCheat = true;
                 this.bufferArray = [];
                 this.lastKeystrokeTime = Date.now();
             }
