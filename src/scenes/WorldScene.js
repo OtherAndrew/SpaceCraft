@@ -10,7 +10,7 @@ class WorldScene extends Scene {
         this.invulnTime = 5;
         this.spawnPoint = {
             x: WIDTH_PIXELS * .5,
-            y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 1.5
+            y: HEIGHT_PIXELS * .5 - BLOCKSIZE * 0.75
         }
         this.win = false;
         //other game stats --- display during win condition (rocket scene)
@@ -37,9 +37,9 @@ class WorldScene extends Scene {
         [this.terrainMap, airTileMap] = getTerrain(this.entityManager, this.containerManager, this.mobFactory)
         this.player = this.mobFactory.build('player', this.spawnPoint.x, this.spawnPoint.y);
         this.rocket =
-            this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 11);
+            this.mobFactory.build('rocket', this.spawnPoint.x - BLOCKSIZE * 23, this.spawnPoint.y - BLOCKSIZE * 12);
         this.nativenpc =
-            this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE);
+            this.mobFactory.build('nativenpc', this.spawnPoint.x + BLOCKSIZE * 11, this.spawnPoint.y - BLOCKSIZE * 2);
         this.projectileFactory = new ProjectileFactory(this.entityManager)
         this.playerController = new PlayerController(this.player, this.game, this.entityManager, this.containerManager,
                                                      this.projectileFactory, this.terrainMap);
