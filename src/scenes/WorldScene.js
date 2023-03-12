@@ -335,18 +335,18 @@ class WorldScene extends Scene {
     }
 
     #onWin() {
-        this.rocket.components["state"].setState("win");
-        this.rocket.components['transform'].hasGravity = false;
-        this.camera.setTarget(this.rocket);
-        this.renderBox.setTarget(this.rocket);
-        this.player.isDrawable = false;
-        this.player.components['stats'].invincible = true;
         if (this.elapsedRespawnTime === 0) {
+            this.rocket.components['transform'].hasGravity = false;
+            this.camera.setTarget(this.rocket);
+            this.renderBox.setTarget(this.rocket);
+            this.player.isDrawable = false;
+            this.player.components['stats'].invincible = true;
             this.textBox.append("You won!");
             this.textBox.append(`    Kills: ${this.healthSystem.mobKills}, Deaths: ${this.healthSystem.playerDeaths}`);
             this.elapsedRespawnTime += 1;
+            this.win = true;
         }
-        this.win = true;
+        this.rocket.components['transform'].velocityY -= 0.25;
     }
 
     #onDeath(deltaTime) {
