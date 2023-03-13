@@ -373,6 +373,7 @@ class WorldScene extends Scene {
                 pTransform.velocityX = 0;
                 pTransform.velocityY = 0;
                 this.player.isDrawable = false;
+                this.player.components['stats'].invincible = true;
                 this.textBox.append("You died!");
                 this.textBox.append(`    Respawning in ${this.respawnTime} seconds...`);
             }
@@ -386,11 +387,11 @@ class WorldScene extends Scene {
                 x: this.player.components['boxCollider'].center.x,
                 y: this.player.components['boxCollider'].center.y
             }
-            if (pos.y < HEIGHT_PIXELS * .5) {
+            // if (pos.y < HEIGHT_PIXELS * .5) {
                 let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH;
                 this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT);
-                ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
-            }
+                if (!ASSET_MANAGER.isPlaying(SOUND_PATH.BOSS)) ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
+            // }
         }
         if (this.boss) this.bossIsDead = this.boss.components['stats'].isDead;
         if (this.bossIsDead) ASSET_MANAGER.stop(SOUND_PATH.BOSS);

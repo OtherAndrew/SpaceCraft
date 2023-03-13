@@ -258,9 +258,9 @@ class ProjectileFactory {
                 }
                 break;
             case 'strongweb':
-                origin.x += directionVector.x * 10;
-                origin.y += directionVector.y * 10;
-                for (let i = 0; i < 6; i++) {
+                origin.x += directionVector.x * 50;
+                origin.y += directionVector.y * 50;
+                for (let i = 0; i < 9; i++) {
                     projectileQueue.push(new Projectile({
                         tag: 'enemy',
                         sprite: this.orbSprite(15, 1),

@@ -15,7 +15,7 @@ class SpawnManager {
             'vengefly',
             'wormwood',
             'wormwood',
-            null,
+            'lightbug',
             null,
             null,
             null,
