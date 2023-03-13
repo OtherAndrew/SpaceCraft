@@ -96,7 +96,8 @@ const generateBlock = (tag, x = 0, y = 0, mode) => {
 
 const generateInteractive = (tag, x = 0, y = 0) => {
     let id = cleanTag(tag).toUpperCase();
-    if (id.includes('CHEST')) id = 'CHEST';
+    if (tag.includes('fancychest')) id = 'FANCYCHEST';
+    else if (tag.includes('chest')) id = 'CHEST';
     let image = ASSET_MANAGER.cache[CRAFT_PATH[id]];
     return {
         tag: tag,

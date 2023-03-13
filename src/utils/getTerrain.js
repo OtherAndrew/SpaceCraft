@@ -413,7 +413,8 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
                     id: e.id
                 }
             }
-            containerManager.addToInventory(generateChest(pos.x + 1, pos.y + 3), new Entity(generateItem(gunParts[r])));
+            containerManager.addToInventory(generateChest(pos.x + 1, pos.y + 3, true),
+                new Entity(generateItem(gunParts[r])));
         }
     }
 
@@ -448,8 +449,10 @@ const getTerrain = (entityManager, containerManager, mobFactory) => {
         }
     }
 
-    function generateChest(x, y) {
-        let e = entityManager.addEntity(generateInteractive('interact_chest', x, y));
+    function generateChest(x, y, fancy = false) {
+        let e;
+        if (fancy) e = entityManager.addEntity(generateInteractive('interact_fancychest', x, y));
+        else e = entityManager.addEntity(generateInteractive('interact_chest', x, y));
         containerManager.registerChest(e);
         terrainMap[y][x] = {tag: e.tag, id: e.id};
         return cleanTag(e.tag);
