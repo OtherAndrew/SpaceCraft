@@ -257,6 +257,23 @@ class ProjectileFactory {
                     }));
                 }
                 break;
+            case 'strongweb':
+                origin.x += directionVector.x * 10;
+                origin.y += directionVector.y * 10;
+                for (let i = 0; i < 6; i++) {
+                    projectileQueue.push(new Projectile({
+                        tag: 'enemy',
+                        sprite: this.orbSprite(0, 1),
+                        damage: 10,
+                        speed: BLOCKSIZE * 0.5,
+                        dVector: directionVector,
+                        origin: origin,
+                        duration: 1,
+                        hasGravity: false,
+                        spread: 4
+                    }));
+                }
+                break;
             case 'strongimpact':
                 origin.x += directionVector.x * 20;
                 origin.y += directionVector.y * 20;

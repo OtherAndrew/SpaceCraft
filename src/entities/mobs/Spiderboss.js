@@ -15,7 +15,7 @@ class Spiderboss {
 
     #buildComponents(props) {
         const stats = new CStats({
-            maxHealth: 5,
+            maxHealth: 5000,
             damage: 0.5,
             speed: 1,
             hasFallDamage: false
@@ -81,7 +81,7 @@ class Spiderboss {
 
         // shoot
         if ((collider.attackCollision || distance <= attackDistance) && state.attackTime > 1) {
-            projectileManager.entityShoot('web', target.center, origin)
+            projectileManager.entityShoot('strongweb', target.center, origin)
             state.attackTime = 0;
         }
 
