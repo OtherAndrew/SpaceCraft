@@ -17,6 +17,7 @@ class HUD {
         //
         // this.add(new Entity(generateItem('item_fueltower')));
         // this.add(new Entity(generateItem('item_medical bay')));
+        this.add(new Entity((generatePickaxe('pickaxe_ferrite'))))
     }
 
     // TESTING
