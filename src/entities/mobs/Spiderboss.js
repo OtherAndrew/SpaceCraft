@@ -68,7 +68,7 @@ class Spiderboss {
         let animState;
         const attackDistance = WIDTH;
 
-        // if (distance <= attackDistance) { // attack
+        if (distance <= attackDistance) { // attack
             if (checkCollision(collider, target)) {
                 transform.velocityX = 0;
             } else {
@@ -76,10 +76,10 @@ class Spiderboss {
                 state.direction = transform.velocityX < 0 ? "left" : "right"
             }
             animState = target.center.x < origin.x ? "walkL" : "walkR";
-        // } else { // idle
-        //     transform.velocityX = 0;
-        //     animState = state.direction === 'left' ? "idleL" : "idleR";
-        // }
+        } else { // idle
+            transform.velocityX = 0;
+            animState = state.direction === 'left' ? "idleL" : "idleR";
+        }
 
         // shoot
         if ((collider.attackCollision || distance <= attackDistance) && state.attackTime > 1.25) {
@@ -99,7 +99,7 @@ class Spiderboss {
     #addAnimations(sprite) {
         const aMap = sprite.animationMap;
         aMap.set('idleR', new AnimationProps(0, 1, 0));
-        aMap.set('idleL', new AnimationProps(0, 0,0));
+        aMap.set('idleL', new AnimationProps(0, 0, 0));
         aMap.set('walkR', new AnimationProps(0, 1, 3));
         aMap.set('walkL', new AnimationProps(0, 0, 3));
     };
