@@ -106,6 +106,7 @@ const CRAFT_COLOR = {
 const CRAFT_PATH = {
     ANVIL   :   './assets/interactives/furniture/anvil.png',
     CHEST   :   './assets/interactives/furniture/chest.png',
+    FANCYCHEST   :   './assets/interactives/furniture/fancychest.png',
     FURNACE :   './assets/interactives/furniture/furnace.png',
     HUB     :   './assets/interactives/furniture/hub.png',
     STATION :   './assets/interactives/furniture/station.png',

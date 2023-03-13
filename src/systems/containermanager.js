@@ -362,9 +362,9 @@ class ContainerManager {
     }
 
     deregisterChest(chest) {  // interact_chest0, interact_chest1, ... , interact_chestX
-        let index = chest.tag.match(/\d+$/);
-        this.reuseChest.push(index[0]);
-        chest.tag = 'interact_chest'
+        let index = chest.tag.match(/\d+$/)[0];
+        this.reuseChest.push(index);
+        chest.tag = chest.tag.replace(index, '')
     }
 
     checkChest(chest) {
