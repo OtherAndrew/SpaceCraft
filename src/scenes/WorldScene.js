@@ -147,14 +147,20 @@ class WorldScene extends Scene {
 
     #activateCheats() {
         if (this.game.winCheat) {
-            [generateItem('item_fueltower'), generateItem('item_medical bay')].forEach(item => {
-                this.containerManager.addToPlayer(new Entity(item))
-            });
+            [generateItem('item_fueltower'),
+                generateItem('item_medical bay')
+            ].forEach(item =>  this.containerManager.addToPlayer(new Entity(item)));
             this.textBox.append("sus");
             this.game.winCheat = false;
         }
         if (this.game.pickaxeCheat) {
-            this.containerManager.addToPlayer(new Entity(generatePickaxe('pickaxe_super')));
+            [generatePickaxe('pickaxe_iron'),
+                generatePickaxe('pickaxe_copper'),
+                generatePickaxe('pickaxe_steel'),
+                generatePickaxe('pickaxe_titanite'),
+                generatePickaxe('pickaxe_ferrite'),
+                generatePickaxe('pickaxe_super')
+            ].forEach(pickaxe => this.containerManager.addToPlayer(new Entity(pickaxe)));
             this.textBox.append("Aw man.");
             this.game.pickaxeCheat = false;
         }
@@ -168,10 +174,10 @@ class WorldScene extends Scene {
                 new Minigun(),
                 new Railgun(),
                 new DeathRay()
-            ].forEach(item => this.containerManager.addToPlayer(this.entityManager.addEntity(item)));
-            [generateItem('item_light armor'), generateItem('item_heavy armor')].forEach(item => {
-                this.containerManager.addToPlayer(new Entity(item))
-            });
+            ].forEach(weapon => this.containerManager.addToPlayer(this.entityManager.addEntity(weapon)));
+            [generateItem('item_light armor'),
+                generateItem('item_heavy armor')
+            ].forEach(armor => this.containerManager.addToPlayer(new Entity(armor)));
             this.textBox.append("Hey look buddy, I'm an engineer.");
             this.game.weaponCheat = false;
         }
