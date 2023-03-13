@@ -263,7 +263,7 @@ class ProjectileFactory {
                 for (let i = 0; i < 6; i++) {
                     projectileQueue.push(new Projectile({
                         tag: 'enemy',
-                        sprite: this.orbSprite(0, 1),
+                        sprite: this.darkOrbSprite(0, 1),
                         damage: 10,
                         speed: BLOCKSIZE * 0.5,
                         dVector: directionVector,
