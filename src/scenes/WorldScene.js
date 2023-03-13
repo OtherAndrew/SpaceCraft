@@ -11,7 +11,6 @@ class WorldScene extends Scene {
             x: WIDTH_PIXELS * .5,
             y: HEIGHT_PIXELS * .5 - BLOCKSIZE
         }
-        this.bossIsDead = false;
         this.win = false;
     }
 
@@ -89,7 +88,7 @@ class WorldScene extends Scene {
 
     update(menuActive, keys, mouseDown, mouse, wheel, deltaTime) {
         if (!menuActive) {
-            if (this.#checkWinCon() || this.win) {
+            if (this.win || this.#checkWinCon()) {
                 this.#onWin();
             } else if (this.player.components['stats'].isDead) {
                 this.#onDeath(deltaTime);
@@ -99,8 +98,8 @@ class WorldScene extends Scene {
                 this.playerController.update(keys, mouseDown, mouse, deltaTime, this.hud.activeContainer);
                 this.#setInvulnerability(deltaTime);
                 this.#activateCheats();
+                this.#checkBoss();
             }
-            this.#checkBoss();
             // **update state**
             this.entityManager.update();
             this.renderBox.update();
@@ -188,7 +187,7 @@ class WorldScene extends Scene {
                 generateInteractive('interact_trader'),
                 generateInteractive('interact_station'),
                 generateInteractive('interact_hub')
-            ].forEach(item => this.containerManager.addToPlayer(new Entity(item)));
+            ].forEach(crafter => this.containerManager.addToPlayer(new Entity(crafter)));
             this.textBox.append("Craft");
             this.game.craftCheat = false;
         }
@@ -339,7 +338,7 @@ class WorldScene extends Scene {
         return this.containerManager.checkSufficient(requisite)
             && checkCollision(this.player, this.rocket)
             && this.boss
-            && this.bossIsDead;
+            && this.boss.components['stats'].isDead;
     }
 
     #onWin() {
@@ -370,7 +369,6 @@ class WorldScene extends Scene {
             this.playerController.refreshPlayerConnection();
             this.camera.setTarget(this.player);
             this.renderBox.setTarget(this.player);
-            // this.textBox.append("You live once more!");
             this.textBox.append(getRandom(HELP));
         } else {
             if (this.elapsedRespawnTime === 0) {
@@ -393,14 +391,17 @@ class WorldScene extends Scene {
                 x: this.player.components['boxCollider'].center.x,
                 y: this.player.components['boxCollider'].center.y
             }
-            // if (pos.y < HEIGHT_PIXELS * .5) {
-                let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH;
-                this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT);
-                if (!ASSET_MANAGER.isPlaying(SOUND_PATH.BOSS)) ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
-            // }
+            let x = (pos.x - WIDTH) < 0 ? pos.x + WIDTH : pos.x - WIDTH;
+            this.boss = this.mobFactory.build('spiderboss', x, pos.y - HEIGHT);
         }
-        if (this.boss) this.bossIsDead = this.boss.components['stats'].isDead;
-        if (this.bossIsDead) ASSET_MANAGER.stop(SOUND_PATH.BOSS);
+        if (this.boss) {
+            if (!this.boss.components['stats'].isDead) {
+                if (!ASSET_MANAGER.isPlaying(SOUND_PATH.BOSS)) ASSET_MANAGER.playAsset(SOUND_PATH.BOSS);
+            } else if (ASSET_MANAGER.isPlaying(SOUND_PATH.BOSS)) {
+                ASSET_MANAGER.stop(SOUND_PATH.BOSS);
+            }
+        }
+
     }
 
     #spawnBossCon() {

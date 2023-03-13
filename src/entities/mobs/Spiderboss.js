@@ -49,11 +49,10 @@ class Spiderboss {
         this.#addAnimations(sprite);
         transform.collider = collider
         const state = new CState();
-        const duration = new CDuration();
         const drops = new CDrops([generateBlock('tile_ruby', 'craftgen')])
         state.sprite = sprite;
         state.direction = Math.random() < 0.5 ? 'left' : 'right';
-        return [stats, sprite, transform, collider, state, duration, drops];
+        return [stats, sprite, transform, collider, state, drops];
     }
 
     update(target, projectileManager) {

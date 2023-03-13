@@ -50,11 +50,10 @@ class Nativenpc {
             height: sprite.dHeight,
         });
         const state = new CState();
-        const duration = new CDuration();
         this.#addAnimations(sprite);
         transform.collider = collider
         state.sprite = sprite;
-        return [stats, sprite, transform, collider, state, duration];
+        return [stats, sprite, transform, collider, state];
     }
 
     update(target, projectileManager) {
