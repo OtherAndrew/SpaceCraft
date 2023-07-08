@@ -1,4 +1,4 @@
-# SpaceCraft ([Play here!](https://otherandrew.github.io/491-project/))
+# SpaceCraft ([Play here!](https://otherandrew.github.io/SpaceCraft/))
 
 ![Cover image](./cover.png)
 
